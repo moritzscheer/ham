@@ -1,0 +1,10 @@
+<?php
+header('Veranstaltungen');
+header('Veranstaltungen');
+header('Veranstaltungen');
+header('Veranstaltungen');
+header('Veranstaltungen');
+header('Veranstaltungen');
+header('Veranstaltungen');
+header('Veranstaltungen');
+?>
