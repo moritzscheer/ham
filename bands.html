@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html class="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="app">
+<nav>
+
+    <div class="headers">
+        <div>
+            <form action="bands.html" class="header">
+                <input type="submit" value="Bands" class="navbar-button">
+            </form>
+        </div>
+        <div>
+            <form action="events.html" class="header">
+                <input type="submit" value="Veranstaltungen" class="navbar-button">
+            </form>
+        </div>
+        <div>
+            <form action="bands.html" class="header">
+                <input type="submit" value="Wo bin ich" class="navbar-button">
+            </form>
+        </div>
+        <div>
+            <form action="bands.html" class="header">
+                <input type="submit" value="Erstellen" class="navbar-button">
+            </form>
+        </div>
+
+        <div class="header">
+            Profil
+        </div>
+    </div>
+</nav>
+
+<div class="content">
+    <div class="bands-list">
+        min
+    </div>
+    <div>
+        max
+    </div>
+</div>
+</body>
+</html>
+<style itemscope lang="css">
+    .app {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        margin: unset;
+    }
+    .headers {
+        display: inline-flex;
+        flex-wrap: wrap;
+        width: 100%;
+        align-content: stretch;
+        justify-content: space-around;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid gray;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        display: flex;
+        align-content: center;
+    }
+
+    .navbar-button {
+        background-color: lightgrey;
+        height: 50px;
+        width: 150px;
+    }
+    .content {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: calc(100vh - (72px));
+        width: 100%;
+        flex-flow: column;
+    }
+    .bands-list {
+        background-color: red;
+        display: flex;
+        flex-grow: initial;
+        flex-wrap: wrap;
+        column-fill: auto;
+        flex-direction: column;
+        overflow: auto;
+    }
+</style>
