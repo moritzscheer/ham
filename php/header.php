@@ -1,12 +1,12 @@
 
 <nav>
     <div>
-        <form action="bands.html" class="header">
+        <form action="bands.php" class="header">
             <input type="submit" value="Bands" class="navbar-button">
         </form>
     </div>
     <div>
-        <form action="events.html" class="header">
+        <form action="events.php" class="header">
             <input type="submit" value="Veranstaltungen" class="navbar-button">
         </form>
     </div>
