@@ -1,7 +1,7 @@
 <?php include_once "php/head.php" ?>
 
 <body class="app">
-<section>
+<div>
     <div class="signIn">
         <form>
             <label id="Hlogin"><h2>Login</h2></label><br>
@@ -24,6 +24,6 @@
             <input type="submit" value="Login">
         </form>
     </div>
-</section>
+</div>
 </body>
 </html>

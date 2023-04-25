@@ -3,15 +3,10 @@
 <body>
 
     <?php include_once "php/header.php" ?>
-
-    <main>
-
-
-
-    </main>
+    
+    <img src="">
 
     <?php include_once "php/footer.php" ?>
 
 </body>
-
 </html>
