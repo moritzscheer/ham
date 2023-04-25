@@ -2,37 +2,46 @@
 
 <body>
 
-    <?php include_once "php/nav.php" ?>
+    <?php include_once "php/header.php" ?>
 
-    <main>
-        <div class="ProfilNav">
-            <a href="https://de.freepik.com/fotos-kostenlos/leute-beim-konzert-mit-rauchueberlagerungstextur_17228039.htm"
-                <img src="/images/Profilbild.jpg">
-            </a>
+    <div>
+        <br>
+        <div class="acountNav">
+            <img src="/images/Profilbild.jpg" alt="Profilbild">
+
             <a href="profilBearbeiten.php">Profil Bearbeiten</a>
+            <a href="index.php">Ausloggen</a>
+            <a href="passwortÄndern.php">Passwort ändern</a>
         </div>
+        <div>
+            <label>Vorname:</label>
+            <label for="Max"></label><br>
 
-        <div class="attributes">
-            <p>Name:</p>
-            <p>Email:</p>
-            <p>Telefonnummer:</p>
-            <p>Typ:</p>
-            <p>Genre:</p>
-            <p>Mitglieder:</p>
-            <p>Weitere Anmerkungen:</p>
-            </p>
+            <label>Nachname:</label>
+            <label for="nachname">Mustermann</label><br>
+
+            <label>Email:</label>
+            <label for="email">max.mustermann@uni-oldenburg.de</label><br>
+
+            <label>Telefonnummer:</label>
+            <label for="nummer">0176 123456789</label><br>
+
+            <label>Typ:</label>
+            <label for="typ">Musiker</label><br>
+
+            <label>Genre:</label>
+            <label for="genre">Rock</label><br>
+
+            <label>Mitglieder:</label>
+            <label for="mitglieder">Holger, Artur, Moritz</label><br>
+
+            <label>Name:</label>
+            <label for="typ">Musiker</label><br>
+
+            <label>sonstige Anmerkungen:</label>
+            <label for="more">nichts weiters</label><br><br>
         </div>
-
-        <div class="values">
-            <p>Max Mustermann</p>
-            <p>max-mustermann@uni-oldenburg.de</p>
-            <p>0176 123456789</p>
-            <p>Musiker</p>
-            <p>Rock</p>
-            <p>Musiker</p>
-
-        </div>
-    </main>
+    </div>
 
     <?php include_once "php/footer.php" ?>
 

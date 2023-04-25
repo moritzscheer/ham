@@ -2,15 +2,15 @@
 
 <body>
 
-<?php include_once "php/nav.php" ?>
+    <?php include_once "php/header.php" ?>
 
-<main>
+    <main>
 
 
 
-</main>
+    </main>
 
-<?php include_once "php/footer.php" ?>
+    <?php include_once "php/footer.php" ?>
 
 </body>
 
