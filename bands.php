@@ -4,7 +4,11 @@
 </nav>
 
 <div>
+    <h1>Bands</h1>
+
+    <!-- Band 1 -->
     <div>
+
         <img src ="images/band.jpg" alt="bandImage"/>
         <br>
         <span>

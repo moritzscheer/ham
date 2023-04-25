@@ -16,8 +16,8 @@
         </form>
     </div>
     <div>
-        <form action="erstellen.html" class="header">
-            <input type="submit" value="Erstellen" class="navbar-button">
+        <form action="createEvent.php" class="header">
+            <input type="submit" value="Veranstaltung erstellen" class="navbar-button">
         </form>
     </div>
     <div>
