@@ -10,12 +10,12 @@
         <!-- account navigation -->
         <div>
             <input type="File"  id="profilbild" accept=".jpg,.png,.pdf">
-            <img src="/images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
+            <img src="images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
         </div>
 
         <!-- account  information -->
         <div>
-            <form method="acountInfo" action="/account.php">
+            <form method="acountInfo" action="account.php">
                 <label id="vorname">Vorname:</label>
                 <input type="text" name="vorname" value="Max"><br>
 

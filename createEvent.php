@@ -9,9 +9,9 @@
     <div>
         <label id="name">Bild</label> <br>
         <input type="File" id="image" accept=".jpg,.png,.pdf"><br>
-        <img src="/images/event.jpg" alt="eventImage" height="200" width="200">
+        <img src="images/event.jpg" alt="eventImage" height="200" width="200">
         <br>
-        <form method="createEvent" action="/event.php">
+        <form method="createEvent" action="event.php">
             <label id="name">Name:</label>
             <input type="text" name="name" value="Neueröffnung Hornbach Bau- und Gartenmarkt Leipzig"><br>
 

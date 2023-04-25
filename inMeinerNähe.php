@@ -7,7 +7,7 @@
     <div>
         <!-- Filter -->
         <div>
-            <form method="searchMap" action="/event.php">
+            <form method="searchMap" action="event.php">
                 <input type="text" name="search" value="">
                 <label>Umkreis</label>
                 <input type="range" min="10" max="200" id="range" name="range" step="1" value="0">
