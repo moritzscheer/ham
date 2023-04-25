@@ -16,34 +16,34 @@
         <!-- account  information -->
         <div>
             <form method="acountInfo" action="/account.php">
-                <label for="vorname">Vorname:</label>
+                <label id="vorname">Vorname:</label>
                 <input type="text" name="vorname" value="Max"><br>
 
-                <label for="nachname">Nachname:</label>
+                <label id="nachname">Nachname:</label>
                 <input type="text" name="nachname" value="Mustermann"><br>
 
-                <label for="email">Email:</label>
+                <label id="email">Email:</label>
                 <input type="email" name="email" value="max.mustermann@uni-oldenburg.de"><br>
 
-                <label for="nummer">Telefonnummer:</label>
+                <label id="nummer">Telefonnummer:</label>
                 <input type="tel" name="nummer" value="0176 123456789"><br>
 
-                <label for="typ">Typ:</label>
+                <label id="typ">Typ:</label>
                 <input type="radio" name="typ" value="Musiker" checked>
                 <label>Musiker</label>
                 <input type="radio" name="typ" value="Veranstalter">
                 <label>Veranstalter</label><br>
 
-                <label for="genre">Genre:</label>
+                <label id="genre">Genre:</label>
                 <input type="text" name="typ" value="Rock"><br>
 
-                <label for="mitglieder">Mitglieder:</label>
+                <label id="mitglieder">Mitglieder:</label>
                 <input type="text" name="typ" value="Holger, Artur, Moritz"><br>
 
-                <label for="typ">Name:</label>
+                <label id="name">Name:</label>
                 <input type="text" name="typ" value="Musiker"><br>
 
-                <label for="more">sonstige Anmerkungen:</label>
+                <label id="more">sonstige Anmerkungen:</label>
                 <input type="text" name="more" value="nichts weiteres"><br><br>
 
                 <a href="profil.php">

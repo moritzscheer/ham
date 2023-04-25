@@ -5,7 +5,7 @@
 <div>
     <div class="signIn">
         <form>
-            <label id="Hregister"><h1>Registrieren</h1></label>
+            <label id="Hregister"><strong>Registrieren</strong></label>
         </form>
     </div>
     <div class="signIn">

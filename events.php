@@ -1,7 +1,6 @@
 <?php include_once "php/head.php" ?>
 <body>
 <?php include_once "php/header.php" ?>
-</nav>
 <div>
 
     <h1> Events</h1>

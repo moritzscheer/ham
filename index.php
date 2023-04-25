@@ -4,7 +4,7 @@
 
     <?php include_once "php/header.php" ?>
     
-    <img src="">
+    <!-- <img src=""> -->
 
     <?php include_once "php/footer.php" ?>
 

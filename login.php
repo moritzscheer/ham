@@ -4,7 +4,7 @@
 <div>
     <div class="signIn">
         <form>
-            <label id="Hlogin"><h2>Login</h2></label><br>
+            <label id="Hlogin"><strong>Login</strong></label><br>
         </form>
     </div>
     <div class="signIn">

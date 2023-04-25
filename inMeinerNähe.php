@@ -16,7 +16,7 @@
 
         <!-- Map -->
         <div>
-            <img src="/images/map.png"
+            <img src="images/map.png"
         </div>
     </div>
 
