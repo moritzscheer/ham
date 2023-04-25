@@ -1,7 +1,8 @@
 <?php include_once "php/head.php" ?>
 
 <body class="app">
-<section>
+
+<div>
     <div class="signIn">
         <form>
             <label id="Hregister"><h1>Registrieren</h1></label>
@@ -36,6 +37,6 @@
             <input type="submit" value="Registrieren">
         </form>
     </div>
-</section>
+</div>
 </body>
 </html>
