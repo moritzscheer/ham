@@ -5,13 +5,15 @@
     <?php include_once "php/header.php" ?>
 
     <div>
-        <br>
-        <div class="acountNav">
-            <input type="File"  id="profilbild" accept=".jpg,.png,.pdf">
-            <img src="/images/Profilbild.jpg" alt="Profilbild" height="100" width="100">
+        <h1>Profil Bearbeiten</h1>
 
-            <a href="index.php">Account löschen</a>
+        <!-- account navigation -->
+        <div>
+            <input type="File"  id="profilbild" accept=".jpg,.png,.pdf">
+            <img src="/images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
         </div>
+
+        <!-- account  information -->
         <div>
             <form method="acountInfo" action="/account.php">
                 <label for="vorname">Vorname:</label>
@@ -21,7 +23,7 @@
                 <input type="text" name="nachname" value="Mustermann"><br>
 
                 <label for="email">Email:</label>
-                <input type="email" name="emal" value="max.mustermann@uni-oldenburg.de"><br>
+                <input type="email" name="email" value="max.mustermann@uni-oldenburg.de"><br>
 
                 <label for="nummer">Telefonnummer:</label>
                 <input type="tel" name="nummer" value="0176 123456789"><br>

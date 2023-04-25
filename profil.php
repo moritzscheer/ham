@@ -5,16 +5,21 @@
     <?php include_once "php/header.php" ?>
 
     <div>
-        <br>
-        <div class="acountNav">
-            <img src="/images/Profilbild.jpg" alt="Profilbild">
+        <h1>Profil</h1>
+
+        <!-- account navigation -->
+        <div>
+            <img src="/images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
 
             <a href="profilBearbeiten.php">Profil Bearbeiten</a>
             <a href="index.php">Ausloggen</a>
             <a href="passwortÄndern.php">Passwort ändern</a>
+            <a href="index.php">Account löschen</a>
         </div>
+
+        <!-- account information -->
         <div>
-            <label>Vorname:</label>
+            <labelS>Vorname:</labelS>
             <label for="Max"></label><br>
 
             <label>Nachname:</label>
