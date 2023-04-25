@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>ham register</title>
-    <!-- include php file for picture ? -->
-    <h2>ham</h2>
-</head>
+<?php include_once "php/head.php" ?>
+
 <body class="app">
 <section>
     <div class="signIn">
