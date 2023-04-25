@@ -9,13 +9,11 @@
     </div>
     <div class="signIn">
         <form>
-            <!-- <label for="email">E-Mail Adresse:</label><br> -->
             <input type="email" id="lemail" value="E-Mail Adresse"><br><br>
         </form>
     </div>
     <div class="signIn">
         <form>
-            <!-- <label for="password"> Passwort:</label><br> -->
             <input type="password" id="lpassword"><br><br>
         </form>
     </div>
