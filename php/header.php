@@ -20,7 +20,7 @@
             <input type="submit" value="Erstellen" class="navbar-button">
         </form>
     </div>
-    <div >
+    <div>
         <form action="profil.php" class="header">
             <input type="submit" value="Profil" class="navbar-button">
         </form>
