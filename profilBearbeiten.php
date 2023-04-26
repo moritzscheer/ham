@@ -15,7 +15,7 @@
 
         <!-- account  information -->
         <div>
-            <form method="post" action="account.php">
+            <form method="get" action="account.php">
                 <label id="vorname">Vorname:</label>
                 <input type="text" name="vorname" value="Max"><br>
 

@@ -43,7 +43,7 @@
         </div>
         <br>
 
-        <!-- Event 1 -->
+        <!-- Event 2 -->
         <div>
             <img src="images/event2.jpg" alt="eventImage"/>
             <br>
