@@ -1,5 +1,5 @@
 <div>
-    <img src="/images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
+    <img src="images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
 
     <a href="profilBearbeiten.php">Profil Bearbeiten</a>
     <a href="index.php">Ausloggen</a>
