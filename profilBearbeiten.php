@@ -15,7 +15,7 @@
 
         <!-- account  information -->
         <div>
-            <form method="acountInfo" action="account.php">
+            <form method="post" action="account.php">
                 <label id="vorname">Vorname:</label>
                 <input type="text" name="vorname" value="Max"><br>
 
@@ -47,7 +47,7 @@
                 <input type="text" name="more" value="nichts weiteres"><br><br>
 
                 <a href="profil.php">
-                    <input type="button" name="submit" value="Einstellungen speichern">
+                    <input type="submit" name="submit" value="Einstellungen speichern">
                 </a>
             </form>
         </div>
