@@ -1,4 +1,4 @@
-HAM
+DI-12-F
 Namen der Studierenden:
 - Holger Dirks
 - Artur Scheling
