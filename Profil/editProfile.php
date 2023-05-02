@@ -14,7 +14,7 @@
             <!-- account navigation -->
             <div class="profilNav">
                 <input type="File"  id="profilbild" accept=".jpg,.png,.pdf">
-                <img src="images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
+                <img src="../images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
             </div>
 
             <!-- account  information -->
