@@ -1,4 +1,4 @@
-<div>
+<div class="profilNav">
     <img src="images/profilePicture.jpg" alt="Profilbild" height="100" width="100" class="profilPicture">
 
     <a href="profilBearbeiten.php">Profil Bearbeiten</a>
