@@ -6,41 +6,36 @@
 
         <?php include_once "php/header.php" ?>
 
-        <div class="content">
-            <div class="headline">
-                <h1>Profil</h1>
-            </div>
+        <div class="profileContent">
+            <!-- headline -->
+            <h1 class="headline">Profil</h1>
 
             <!-- account navigation -->
             <?php include_once "profil_navigation.php" ?>
 
-            <!-- account information -->
-            <div class="info">
-                <label>Vorname:</label>
-                <label id="Max"></label><br>
+            <!-- account information parameter -->
+            <div class="label">
+                <label>Vorname:</label><br>
+                <label>Nachname:</label><br>
+                <label>Email:</label><br>
+                <label>Telefonnummer:</label><br>
+                <label>Typ:</label><br>
+                <label>Genre:</label><br>
+                <label>Mitglieder:</label><br>
+                <label>Name:</label><br>
+                <label>sonstige Anmerkungen:</label><br>
+            </div>
 
-                <label>Nachname:</label>
+            <!-- account information value -->
+            <div class="labelInfo">
+                <label id="Max">Max</label><br>
                 <label id="nachname">Mustermann</label><br>
-
-                <label>Email:</label>
                 <label id="email">max.mustermann@uni-oldenburg.de</label><br>
-
-                <label>Telefonnummer:</label>
                 <label id="nummer">0176 123456789</label><br>
-
-                <label>Typ:</label>
                 <label id="typ">Musiker</label><br>
-
-                <label>Genre:</label>
                 <label id="genre">Rock</label><br>
-
-                <label>Mitglieder:</label>
                 <label id="mitglieder">Holger, Artur, Moritz</label><br>
-
-                <label>Name:</label>
                 <label id="name">Musiker</label><br>
-
-                <label>sonstige Anmerkungen:</label>
                 <label id="more">nichts weiters</label><br><br>
             </div>
         </div>

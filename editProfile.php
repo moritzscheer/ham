@@ -50,7 +50,7 @@
                     <label id="more">sonstige Anmerkungen:</label>
                     <input type="text" name="more" value="nichts weiteres"><br><br>
 
-                    <a href="profil.php">
+                    <a href="profile.php">
                         <input type="submit" name="submit" value="Einstellungen speichern">
                     </a>
                 </form>

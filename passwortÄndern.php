@@ -13,7 +13,7 @@
     <!-- Passwort änder Feld-->
     <div class="change_password">
 
-        <form action="profil.php">
+        <form action="profile.php">
             <label>Aktuelles Passwort:</label>
             <input type="password" id="password_actuell"><br>
 
