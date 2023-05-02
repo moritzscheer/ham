@@ -90,3 +90,19 @@ footer {
     grid-column: 1 / span 3;
     grid-row: 4;
 }
+
+#item-list-view {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: calc(100vh - (72px));
+    width: 100%;
+    flex-flow: column;
+}
+#item-list {
+    display: flex;
+    flex-grow: initial;
+    flex-wrap: wrap;
+    column-fill: auto;
+    flex-direction: column;
+    overflow: auto;
+}
