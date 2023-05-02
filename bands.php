@@ -12,37 +12,23 @@
     <div id="item-list-view">
         <div id="item-list">
             <div id="item">
-                <div>
-                    <img src="images/band.jpg" alt="bandImage"/>
-                </div>
-                <div>
-                      <span>
-            Name: Chrystal Ball
-        </span>
+                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                <div id="item-description">
+                    <span>Name: Chrystal Ball</span>
                     <br>
-                    <span>
-              Genre: Hard Rock
-        </span>
+                    <span>Genre: Hard Rock</span>
                     <br>
-                    <span>
-           2 Gitarre
-        </span>
+                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkas</span>
                     <br>
-                    <span>
-             1 Schlagzeug
-        </span>
+                    <span>1 Schlagzeug</span>
                     <br>
-                    <span>
-            1 Bass
-        </span>
+                    <span>1 Bass</span>
                     <br>
-                    <span>
-            Gage: 1480 € pro Abend
-        </span>
+                    <span>Gage: 1480 € pro Abend</span>
                 </div>
             </div>
         </div>
-        <div>
+        <div id="item-details">
             moin
         </div>
     </div>

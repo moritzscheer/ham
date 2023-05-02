@@ -5,6 +5,10 @@
     grid-template-rows: auto auto auto;
 }
 
+.main {
+    font: 16px "Roboto Light";
+}
+
 
 
 /* header list */
@@ -105,4 +109,29 @@ footer {
     column-fill: auto;
     flex-direction: column;
     overflow: auto;
+}
+#item {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding: 5px 5px 5px 5px;
+}
+
+#item-image {
+    border-radius: 8px;
+    width: 40%;
+}
+
+#item-description {
+    margin-left: 5%;
+    background-color: lightgray;
+    padding: 5px;
+    border-radius: 8px;
+    width: 50%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#item-details {
+    background-color: lightgray;
+    border-radius: 8px;
 }
