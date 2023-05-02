@@ -8,7 +8,7 @@
     <h1>Profil</h1>
 
     <!-- Navigation -->
-    <?php include_once "profil_navigation.php" ?>
+    <?php include_once "profilNavigation.php" ?>
 
     <!-- Passwort änder Feld-->
     <div class="change_password">
