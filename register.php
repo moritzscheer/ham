@@ -2,6 +2,8 @@
 
 <body class="app">
 
+<!-- require bei E-Mail und password, sodass die Felder ausfüllpflichtig ist -->
+
 <div>
     <div class="signIn">
         <form>
@@ -10,25 +12,25 @@
     </div>
     <div class="signIn">
         <form>
-            <label for="rname">Name:</label><br>
+            <label id="rname">Name:</label><br>
             <input type="text" id="rname"><br><br>
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label for="remail">E-Mail Adresse:</label><br>
+            <label id="remail">E-Mail Adresse:</label><br>
             <input type="email" id="remail"><br><br>
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label for="rpassword">Passwort eingeben:</label><br>
+            <label id="rpassword">Passwort eingeben:</label><br>
             <input type="password" id="rpassword"><br><br>
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label for="repassword">Passwort wiederholen:</label><br>
+            <label id="repassword">Passwort wiederholen:</label><br>
             <input type="password" id="repassword"><br><br>
         </form>
     </div>
