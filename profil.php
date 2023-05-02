@@ -2,46 +2,52 @@
 
 <body>
 
-    <?php include_once "php/header.php" ?>
+    <div class="grid">
 
-    <div>
-        <h1>Profil</h1>
+        <?php include_once "php/header.php" ?>
 
-        <!-- account navigation -->
-        <?php include_once "profil_navigation.php" ?>
+        <div class="content">
+            <div class="headline">
+                <h1>Profil</h1>
+            </div>
 
-        <!-- account information -->
-        <div>
-            <label>Vorname:</label>
-            <label id="Max"></label><br>
+            <!-- account navigation -->
+            <?php include_once "profil_navigation.php" ?>
 
-            <label>Nachname:</label>
-            <label id="nachname">Mustermann</label><br>
+            <!-- account information -->
+            <div class="info">
+                <label>Vorname:</label>
+                <label id="Max"></label><br>
 
-            <label>Email:</label>
-            <label id="email">max.mustermann@uni-oldenburg.de</label><br>
+                <label>Nachname:</label>
+                <label id="nachname">Mustermann</label><br>
 
-            <label>Telefonnummer:</label>
-            <label id="nummer">0176 123456789</label><br>
+                <label>Email:</label>
+                <label id="email">max.mustermann@uni-oldenburg.de</label><br>
 
-            <label>Typ:</label>
-            <label id="typ">Musiker</label><br>
+                <label>Telefonnummer:</label>
+                <label id="nummer">0176 123456789</label><br>
 
-            <label>Genre:</label>
-            <label id="genre">Rock</label><br>
+                <label>Typ:</label>
+                <label id="typ">Musiker</label><br>
 
-            <label>Mitglieder:</label>
-            <label id="mitglieder">Holger, Artur, Moritz</label><br>
+                <label>Genre:</label>
+                <label id="genre">Rock</label><br>
 
-            <label>Name:</label>
-            <label id="name">Musiker</label><br>
+                <label>Mitglieder:</label>
+                <label id="mitglieder">Holger, Artur, Moritz</label><br>
 
-            <label>sonstige Anmerkungen:</label>
-            <label id="more">nichts weiters</label><br><br>
+                <label>Name:</label>
+                <label id="name">Musiker</label><br>
+
+                <label>sonstige Anmerkungen:</label>
+                <label id="more">nichts weiters</label><br><br>
+            </div>
         </div>
-    </div>
 
-    <?php include_once "php/footer.php" ?>
+        <?php include_once "php/footer.php" ?>
+
+    </div>
 
 </body>
 

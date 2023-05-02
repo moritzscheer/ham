@@ -1,0 +1,92 @@
+/* grid */
+.grid {
+    display: grid;
+    grid-template-columns: auto auto auto 80px;
+}
+
+
+
+/* header */
+nav {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+}
+
+ul {
+    list-style-type: none;
+    background-color: gray;
+}
+
+li {
+    float: left;
+    padding: 0px 10px 5px 10px;
+}
+
+li form input{
+    display: block;
+    border: none;
+    background-color: white;
+    text-align: center;
+}
+
+/* profile picture */
+.profilPicture {
+    border-radius: 50%;
+}
+
+/* dropdown profile */
+.dropdown {
+    overflow: hidden;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content form input {
+    float: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown:hover .dropdown-content{
+    display: block;
+}
+
+
+
+/* content */
+.content {
+    grid-column: 1 / span 3;
+    grid-row: 2 / span 3;
+    display: grid;
+    grid-template-columns: auto auto auto 80px;
+}
+
+.headline {
+    grid-column: 1 / span 4;
+    grid-row: 1;
+}
+
+.profilNav {
+    grid-column: 1;
+    grid-row: 2 / span 3;
+}
+
+.info {
+    grid-column: 2 / span 3;
+    grid-row: 2 / span 3;
+}
+
+
+
+/* footer */
+footer {
+    grid-column: 1 / span 3;
+    grid-row: 5;
+}
