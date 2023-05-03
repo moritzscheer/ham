@@ -1,0 +1,24 @@
+/*
+Stylesheet for login and register
+*/
+
+body {
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+input {
+    border: transparent;
+    outline: none;
+}
+
+/*email and password input */
+input[type=email], input[type=password], input[type=text] {
+    background-color: #d9d9d9;
+    padding-left: 10px;
+    margin: 5px 5px 5px 5px;
+    height: 30px;
+    border-radius: 4px;
+    position: relative;
+}

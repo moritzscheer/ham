@@ -1,44 +1,41 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head.php" ?>
 
 <body class="app">
-
-<!-- require bei E-Mail und password, sodass die Felder ausfüllpflichtig ist -->
-
-<div>
+<div class="register">
     <div class="signIn">
         <form>
-            <label id="Hregister"><strong>Registrieren</strong></label>
+            <label id="Hregister">Registrieren</label>
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label id="rname">Name:</label><br>
-            <input type="text" id="rname"><br><br>
+            <label id="rname">Name:</label>
+            <input type="text" id="rname">
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label id="remail">E-Mail Adresse:</label><br>
-            <input type="email" id="remail"><br><br>
+            <label id="remail">E-Mail Adresse:</label>
+            <input type="email" id="remail">
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label id="rpassword">Passwort eingeben:</label><br>
-            <input type="password" id="rpassword"><br><br>
+            <label id="rpassword">Passwort eingeben:</label>
+            <input type="password" id="rpassword">
         </form>
     </div>
     <div class="signIn">
         <form>
-            <label id="repassword">Passwort wiederholen:</label><br>
-            <input type="password" id="repassword"><br><br>
+            <label id="repassword">Passwort wiederholen:</label>
+            <input type="password" id="repassword">
         </form>
     </div>
     <div class="signIn">
-        <form>
-            <input type="submit" value="Registrieren">
-        </form>
+            <input type="submit" id="registerSubmit" value="Registrieren">
     </div>
 </div>
+<link rel="stylesheet" type="text/css" href="../css/signIn.css">
+<link rel="stylesheet" type="text/css" href="../css/register.css">
 </body>
 </html>
