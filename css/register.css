@@ -2,23 +2,43 @@
 
 /*all register elements*/
 .register {
-    grid-area: 2 / 2 / 2 / 2;
+    grid-area: 2 / 2 ;
     justify-self: center;
     place-items: center;
 
     display: grid;
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: minmax(50px, auto);
     width: auto;
-    place-items: center;
+    /*background-color: #f5f5f5;*/
+    background-image: linear-gradient(to bottom, #e6feff, #e1feff, #dbfeff, #d6feff, #d0feff);
+    box-shadow: 5px 5px 5px lightgrey;
+    border-radius: 4px;
 }
 
-div {
-
-    grid-template-rows: 2fr;
-    /*width: 200px;*/
+#Hregister {
+    font-family: Tahoma, sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+    padding: 0px;
 }
 
+.registerElement {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+label {
+    padding-left: 20px;
+}
 
 #registerSubmit {
+    color: white;
+    text-shadow: black;
+    height: 30px;
+    width: 180px;
+    border-radius: 4px;
+    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
+    font-family: Tahoma, sans-serif;
 
 }
