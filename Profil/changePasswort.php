@@ -1,8 +1,8 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head.php" ?>
 
 <body>
 
-<?php include_once "php/header.php" ?>
+<?php include_once "../php/header.php" ?>
 
 <div>
     <h1>Profil</h1>

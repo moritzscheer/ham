@@ -1,10 +1,10 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head.php" ?>
 
 <body>
 
     <div class="grid">
 
-        <?php include_once "php/header.php" ?>
+        <?php include_once "../php/header.php" ?>
 
         <div class="profileContent">
             <!-- headline -->
@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <?php include_once "php/footer.php" ?>
+        <?php include_once "../php/footer.php" ?>
 
     </div>
 

@@ -4,7 +4,7 @@
 
     <div class="grid">
 
-        <?php include_once "../php/header.php" ?>
+        <?php include_once "../php/head<er.php" ?>
 
         <div class="content">
             <div class="headline">
@@ -20,35 +20,46 @@
             <!-- account  information -->
             <div class="info">
                 <form class="info-elements" method="get" action="account.php">
-                    <label id="vorname">Vorname:</label>
-                    <input type="text" name="vorname" value="Max"><br>
+                    <label id="vorname">Vorname:
+                    <input type="text" name="vorname" value="Max">
+                    </label>
 
-                    <label id="nachname">Nachname:</label>
-                    <input type="text" name="nachname" value="Mustermann"><br>
+                    <label id="nachname">Nachname:
+                    <input type="text" name="nachname" value="Mustermann">
+                    </label>
 
-                    <label id="email">Email:</label>
-                    <input type="email" name="email" value="max.mustermann@uni-oldenburg.de"><br>
+                    <label id="email">Email:
+                    <input type="email" name="email" value="max.mustermann@uni-oldenburg.de">
+                    </label>
 
-                    <label id="nummer">Telefonnummer:</label>
-                    <input type="tel" name="nummer" value="0176 123456789"><br>
+                    <label id="nummer">Telefonnummer:
+                    <input type="tel" name="nummer" value="0176 123456789">
+                    </label>
 
                     <label id="typ">Typ:</label>
-                    <input type="radio" name="typ" value="Musiker" checked>
-                    <label>Musiker</label>
-                    <input type="radio" name="typ" value="Veranstalter">
-                    <label>Veranstalter</label><br>
+                    <div class="chooseRole">
+                        <input type="radio" name="typ" value="Musiker" checked>
+                        <label>Musiker</label>
+                    </div>
+                    <div class="chooseRole">
+                        <input type="radio" name="typ" value="Veranstalter">
+                        <label>Veranstalter</label>
+                    </div>
 
-                    <label id="genre">Genre:</label>
-                    <input type="text" name="typ" value="Rock"><br>
+                    <label id="genre">Genre:
+                    <input type="text" name="typ" value="Rock">
+                    </label>
 
-                    <label id="mitglieder">Mitglieder:</label>
-                    <input type="text" name="typ" value="Holger, Artur, Moritz"><br>
+                    <label id="mitglieder">Mitglieder:
+                    <input type="text" name="typ" value="Holger, Artur, Moritz">
+                    </label>
 
-                    <label id="name">Name:</label>
-                    <input type="text" name="typ" value="Musiker"><br>
+                    <label id="name">Name:
+                    <input type="text" name="typ" value="Musiker">
+                    </label>
 
                     <label id="more">sonstige Anmerkungen:</label>
-                    <input type="text" name="more" value="nichts weiteres"><br><br>
+                    <input type="text" name="more" value="nichts weiteres">
 
                     <a href="profile.php">
                         <input type="submit" name="submit" value="Einstellungen speichern">

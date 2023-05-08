@@ -6,5 +6,19 @@
 .info-elements {
     display: flex;
     flex-direction: column;
+
+}
+
+label {
+
+}
+
+input {
+    margin: 5px 10px;
+    padding-left: 5px;
+    border-radius: 8px;
+    height: 30px;
+    width: 50%;
+
 }
 
