@@ -1,22 +1,21 @@
 /*
 Stylesheet for login and register
 */
-
 body {
     display: grid;
-    grid-template-rows: 1fr 2fr 1fr;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: minmax(150px, auto) 2fr minmax(100px, auto);
+    grid-template-columns: auto 2fr auto;
 }
 
+/*for all input objects*/
 input {
     border: transparent;
     outline: none;
 }
 
-/*email and password input */
+/*email and password input for login and register*/
 input[type=email], input[type=password], input[type=text] {
-    background-color: #ffffff;
-    box-shadow: inset 0 0 5px lightgrey;
+    background-color: lightblue;
     padding-left: 10px;
     margin: 10px 20px 10px 20px;
     height: 30px;

@@ -19,6 +19,7 @@
     font-family: Tahoma, sans-serif;
     font-weight: bolder;
     font-size: 20px;
+    color: black;
     padding: 0px;
 }
 
@@ -30,6 +31,7 @@
 
 label {
     padding-left: 20px;
+    color: #647c85;
 }
 
 #registerSubmit {
@@ -40,5 +42,6 @@ label {
     border-radius: 4px;
     background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
     font-family: Tahoma, sans-serif;
-
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

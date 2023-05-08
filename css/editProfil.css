@@ -1,0 +1,10 @@
+.content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.info-elements {
+    display: flex;
+    flex-direction: column;
+}
+

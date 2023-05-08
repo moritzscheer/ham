@@ -1,10 +1,10 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head.php" ?>
 
 <body>
 
     <div class="grid">
 
-        <?php include_once "php/header.php" ?>
+        <?php include_once "../php/header.php" ?>
 
         <div class="content">
             <div class="headline">
@@ -19,7 +19,7 @@
 
             <!-- account  information -->
             <div class="info">
-                <form method="get" action="account.php">
+                <form class="info-elements" method="get" action="account.php">
                     <label id="vorname">Vorname:</label>
                     <input type="text" name="vorname" value="Max"><br>
 
@@ -58,10 +58,10 @@
         </div>
 
 
-        <?php include_once "php/footer.php" ?>
+        <?php include_once "../php/footer.php" ?>
 
     </div>
-
+    <link rel="stylesheet" type="text/css" href="../css/editProfil.css">
 
 </body>
 
