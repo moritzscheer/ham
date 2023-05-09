@@ -23,6 +23,7 @@
         grid-template-columns: auto auto auto;
         grid-template-rows: auto;
         margin-top: 100px;
+        margin-bottom: 50px;
     }
 
     .column {
