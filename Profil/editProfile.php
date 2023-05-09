@@ -1,79 +1,67 @@
 <?php include_once "../php/head.php" ?>
-
 <body>
+<?php include_once "../php/header.php" ?>
 
-    <div class="grid">
+    <h1>edit profile</h1>
 
-        <?php include_once "../php/head<er.php" ?>
+    <div class="profileGrid">
 
-        <div class="content">
-            <div class="headline">
-                <h1>Profil Bearbeiten</h1>
-            </div>
-
-            <!-- account navigation -->
-            <div class="profilNav">
-                <input type="File"  id="profilbild" accept=".jpg,.png,.pdf">
-                <img src="../images/profilePicture.jpg" alt="Profilbild" height="200" width="200">
-            </div>
-
-            <!-- account  information -->
-            <div class="info">
-                <form class="info-elements" method="get" action="account.php">
-                    <label id="vorname">Vorname:
-                    <input type="text" name="vorname" value="Max">
-                    </label>
-
-                    <label id="nachname">Nachname:
-                    <input type="text" name="nachname" value="Mustermann">
-                    </label>
-
-                    <label id="email">Email:
-                    <input type="email" name="email" value="max.mustermann@uni-oldenburg.de">
-                    </label>
-
-                    <label id="nummer">Telefonnummer:
-                    <input type="tel" name="nummer" value="0176 123456789">
-                    </label>
-
-                    <label id="typ">Typ:</label>
-                    <div class="chooseRole">
-                        <input type="radio" name="typ" value="Musiker" checked>
-                        <label>Musiker</label>
-                    </div>
-                    <div class="chooseRole">
-                        <input type="radio" name="typ" value="Veranstalter">
-                        <label>Veranstalter</label>
-                    </div>
-
-                    <label id="genre">Genre:
-                    <input type="text" name="typ" value="Rock">
-                    </label>
-
-                    <label id="mitglieder">Mitglieder:
-                    <input type="text" name="typ" value="Holger, Artur, Moritz">
-                    </label>
-
-                    <label id="name">Name:
-                    <input type="text" name="typ" value="Musiker">
-                    </label>
-
-                    <label id="more">sonstige Anmerkungen:</label>
-                    <input type="text" name="more" value="nichts weiteres">
-
-                    <a href="profile.php">
-                        <input type="submit" name="submit" value="Einstellungen speichern">
-                    </a>
-                </form>
-            </div>
+        <!-- profile navigation -->
+        <div class="profileNav">
+            <label for="image" >
+                <input type="file" name="image" id="image" style="display:none;"/>
+                <img src="../images/profilePicture.jpg" alt="profile picture" height="100" width="100" class="profilePicture">
+            </label>
         </div>
 
+            <!-- profile content -->
+        <form method="get" action="account.php" class="profileContent">
+            <label class="entry">Name:
+                <input type="text" name="name" value="Max">
+            </label>
 
-        <?php include_once "../php/footer.php" ?>
+            <label class="entry">Surname:
+                <input type="text" name="surname" value="Mustermann">
+            </label>
+
+            <label class="entry">E-Mail:
+                <input type="email" name="email" value="max.mustermann@uni-oldenburg.de">
+            </label>
+
+            <label class="entry">Phone Number:
+                <input type="tel" name="phoneNumber" value="0176 123456789">
+            </label>
+
+            <label class="entry">Type:
+                <div id="type">
+                    <label>Musician
+                        <input type="radio" name="type" value="musician" checked>
+                    </label>
+                    <label>Host
+                        <input type="radio" name="type" value="host">
+                    </label>
+                </div>
+            </label>
+
+            <label class="entry">Genre:
+                <input type="text" name="genre" value="rock">
+            </label>
+
+            <label class="entry">Members:
+                <input type="text" name="members" value="Holger, Artur, Moritz">
+            </label>
+
+            <label class="entry">Other Remarks:
+                <input type="text" name="otherRemarks" value="nothing more">
+            </label>
+
+            <a href="../Profile/profile.php" class="accountSubmit">
+                <input type="submit" name="submit" value="save changes">
+            </a>
+        </form>
 
     </div>
-    <link rel="stylesheet" type="text/css" href="../css/editProfil.css">
 
+<?php include_once "../php/footer.php" ?>
 </body>
-
 </html>
