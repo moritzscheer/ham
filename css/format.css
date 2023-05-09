@@ -1,5 +1,5 @@
 * {
-    font: 16px "Roboto Light";
+    font-family: "Roboto Light", serif;
 }
 
 a {
@@ -81,46 +81,117 @@ label {
 
 
 
-
-
 /* events */
+#bands {
+    padding: 0 2%
+}
+#item-list-head {
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: start;
+}
+.filter-box {
+    width: 80%;
+    height: 100%;
+    display: inherit;
+    align-content: inherit;
+    flex-wrap: inherit;
+
+}
+.flexbox-center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+.filter {
+    background-color: #EEEEEE;
+    border: 2px solid #D3D3D3;
+    width: 60%;
+    height: 60%;
+}
+.filter-label {
+    padding: 0 5px
+}
+
+
 #item-list-view {
     display: grid;
-    grid-template-columns: 60% 40%;
-    grid-template-rows: calc(100vh - (72px));
+    grid-template-columns: 50% 50%;
+    grid-template-rows: calc(100vh - 140px - 130px - 120px);
     width: 100%;
-    flex-flow: column;
+}
+#item-list-view ::-webkit-scrollbar {
+    width: 20px;
+}
+#item-list-view ::-webkit-scrollbar-thumb {
+    width: 30px;
+    border-radius: 8px;
+    background-color: #D3D3D3;
+}
+#item-list-view ::-webkit-scrollbar-track {
+    width: 30px;
+    border-radius: 8px;
+    background-color: #EEEEEE;
 }
 #item-list {
     display: flex;
-    flex-grow: initial;
+    gap: 20px;
     flex-wrap: wrap;
     column-fill: auto;
-    flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
+    margin-right: 5%;
 }
 #item {
-    display: inline-flex;
-    flex-wrap: wrap;
-    padding: 5px 5px 5px 5px;
+    width: 100%;
+    display: inline-grid;
+    grid-template-columns: 40% 55%;
+    padding: 0px 5px 5px 5px;
+    justify-items: stretch;
 }
 
 #item-image {
     border-radius: 8px;
-    width: 40%;
+    object-fit: cover;
 }
 
 #item-description {
     margin-left: 5%;
-    background-color: lightgray;
+    background-color: #EEEEEE;
     padding: 5px;
     border-radius: 8px;
-    width: 50%;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 
 #item-details {
-    background-color: lightgray;
+    position: relative;
+    display: flex;
+    background-color: #EEEEEE;
     border-radius: 8px;
+    padding: 8px;
+    flex-direction: column;
+    justify-content: start;
+}
+
+#item-details-title {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto auto;
+    align-content: center;
+}
+#item-details-name {
+    display: flex;
+    flex-wrap: inherit;
+    align-content: center;
+}
+#item-details-foot {
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - (10px + 16px));
+    height: auto;
+    background-color: #D3D3D3;
+    border-radius: 8px;
+    padding: 5px;
 }
