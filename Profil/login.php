@@ -1,20 +1,28 @@
 <?php include_once "../php/head.php" ?>
 
 <body>
-<div class="login">
+<section class="login">
     <div class="loginElement">
-        <label id="Hlogin">Login</label>
+        <form>
+            <label id="Hlogin">Login</label>
+        </form>
     </div>
     <div class="loginElement">
-        <input type="email" id="lemail" placeholder="E-Mail adresse" required>
+        <form>
+            <input type="email" id="lemail" placeholder="E-Mail adresse" required>
+        </form>
     </div>
     <div class="loginElement">
-        <input type="password" id="lpassword" placeholder="Passwort" required>
+        <form>
+            <input type="password" id="lpassword" placeholder="Passwort" required>
+        </form>
     </div>
     <div class="loginElement">
-        <input type="submit" id="loginSubmit" value="Login">
+        <form>
+            <input type="submit" id="loginSubmit" value="Login">
+        </form>
     </div>
-</div>
+</section>
 <link rel="stylesheet" type="text/css" href="../css/signIn.css">
 <link rel="stylesheet" type="text/css" href="../css/login.css">
 </body>
