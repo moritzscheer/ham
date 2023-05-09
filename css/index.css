@@ -1,0 +1,66 @@
+/* for index (homepage)*/
+
+/*all elements in section*/
+#about-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 20%;
+    padding-bottom: 20%;
+    margin-top: 20px;
+    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
+    border-radius: 20px;
+}
+
+/*div of logo-image*/
+#about-picture {
+    grid-area: 1 / 1;
+    place-self: center;
+    padding-left: 50px;
+}
+
+/*logo-image*/
+#about-logo-img {
+
+}
+/*all the content next to the logo*/
+#about-content {
+    grid-area: 1 / 2;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    place-self: center;
+    gap: 20px;
+    font-family: Tahoma, sans-serif;
+    padding-right: 50px;
+    color: white;
+}
+
+/*Welcome header*/
+#welcome-head {
+    font-family: Tahoma, sans-serif;
+    font-weight: bolder;
+    padding: 0px;
+    margin: 0px;
+    font-size: 40px;
+}
+
+/*About Text*/
+p {
+    font-family: Tahoma, sans-serif;
+    font-size: medium;
+    margin: 0px;
+    line-height: 1.5;
+}
+
+#about-register-button {
+    font-family: Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: large;
+    color: #e1e1e1;
+    height: 50px;
+    width: 150px;
+    border: 2px solid #e1e1e1;
+    border-radius: 30px;
+    background-color: transparent;
+    cursor: pointer;
+}
