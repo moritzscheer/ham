@@ -326,3 +326,11 @@ input[type=range]::-webkit-slider-runnable-track {
     border-radius: 8px;
     padding: 5px;
 }
+
+#create-event {
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+.big-text {
+    font-weight: bold;
+}
