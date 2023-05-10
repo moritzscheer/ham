@@ -7,12 +7,11 @@
     <div class="profileGrid">
 
         <!-- account navigation -->
-        <div  class="profileNav">
-            <img src="../images/profilePicture.jpg" alt="profile picture" height="100" width="100" class="profilePicture">
-            <a href="editProfile.php">Profil Bearbeiten</a>
-            <a href="../index.php">Ausloggen</a>
-            <a href="changePasswort.php">Passwort ändern</a>
-            <a href="../index.php">Account löschen</a>
+        <div  class="profileNavBox">
+            <div class="profilePictureBox">
+                <img src="../images/profilePicture.jpg" alt="profile picture" height="120" width="120" class="profilePicture">
+            </div>
+            <?php include_once "../Profil/profilNavigation.php" ?>
         </div>
 
 

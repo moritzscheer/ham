@@ -16,19 +16,11 @@ h1 {
     padding: 30px;
 }
 
-input {
-    height: 16px;
-}
-
-label {
-    height: 16px;
-}
 
 
 
 
-
-/* profile & editProfile*/
+/* main grid in profile*/
 .profileGrid {
     display: grid;
     grid-template-columns: 20% auto;
@@ -36,22 +28,59 @@ label {
     background-color: black;
 }
 
-.profilePicture {
-    border-radius: 50%;
-}
-
-.profileNav {
+/* left side of the profile grid  */
+.profileNavBox {
     grid-column: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: max-content auto;
     background-color: white;
 }
 
-.profileNav a, .profileNav img {
-    margin: 10px;
+/* profile picture box */
+.profilePicture {
+    grid-row: 1;
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+
 }
 
+.profilePicture {
+}
+
+#profilePictureEdit:hover {
+    -webkit-filter: blur(4px);
+}
+
+.profilePictureBox label {
+    margin: auto;
+}
+
+/* profile navigation box */
+.profileNav {
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* right side of the profile grid */
 .profileContent {
     display: flex;
     flex-direction: column;
@@ -62,7 +91,8 @@ label {
 .entry {
     display: grid;
     grid-template-columns: 20% auto;
-    padding: 20px 50px 20px 50px;
+    grid-template-rows: auto;
+    padding: 20px 60px 20px 60px;
 }
 
 .attributes {
@@ -76,6 +106,7 @@ label {
 .accountSubmit {
     grid-row: 2;
     text-align: center;
+    margin: 30px;
 }
 
 

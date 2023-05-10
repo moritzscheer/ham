@@ -1,4 +1,4 @@
-<div>
+<div class="profileNav">
     <a href="../editProfile.php">Profil Bearbeiten</a>
     <a href="../index.php">Ausloggen</a>
     <a href="../changePasswort.php">Passwort ändern</a>

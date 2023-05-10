@@ -7,11 +7,12 @@
     <div class="profileGrid">
 
         <!-- profile navigation -->
-        <div class="profileNav">
-            <label for="image" >
+        <div class="profileNavBox">
+            <div for="image" class="profilePicture">
+                <label class="profilePictureLabel">Profilbild ändern</label>
                 <input type="file" name="image" id="image" style="display:none;"/>
-                <img src="../images/profilePicture.jpg" alt="profile picture" height="100" width="100" class="profilePicture">
-            </label>
+            </div>
+            <?php include_once "../Profil/profilNavigation.php" ?>
         </div>
 
             <!-- profile content -->
