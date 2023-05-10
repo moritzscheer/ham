@@ -23,11 +23,13 @@
         grid-template-columns: auto auto auto;
         grid-template-rows: auto;
         margin-top: 100px;
+        margin-bottom: 50px;
     }
 
     .column {
         display: flex;
         flex-direction: column;
+        gap: 10px;
         align-items: center;
     }
 </style>
