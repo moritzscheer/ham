@@ -2,9 +2,9 @@
 <footer>
     <div class="column">
         <h3>Information</h3>
-        <a href="impressum.php">Impressum</a>
-        <a href="datenschutz.php">Data protection</a>
-        <a href="nutzungsbedingungen.php">Terms of Use</a>
+        <a href="php/footer-content/impressum.php">Impressum</a>
+        <a href="php/footer-content/datenschutz.php">Data protection</a>
+        <a href="php/footer-content/nutzungsbedingungen.php">Terms of Use</a>
     </div>
     <div class="column">
         <h3>Social Media</h3>

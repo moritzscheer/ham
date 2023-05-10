@@ -176,7 +176,6 @@ textarea {
     grid-column: 1;
     height: 30px;
     font-size: large;
-    font-family: Tahoma, sans-serif;
     border-radius: 25px;
     margin-right: 30px;
     padding-left: 10px;
@@ -184,6 +183,7 @@ textarea {
 
 .closeToMe-Radius-Box {
     grid-column: 3;
+    font-size: larger;
     display: grid;
     width: 100%;
     grid-template-columns: max-content auto max-content;

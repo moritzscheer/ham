@@ -7,7 +7,7 @@
     <div class="closeToMe-Grid">
         <form method="searchMap" action="event.php" class="closeToMe-Filter">
             <input type="text" name="search" placeholder="search" class="closeToMe-Search">
-            <label class="closeToMe-Radius-Box">radius
+            <label class="closeToMe-Radius-Box">Radius
                 <input type="range" min="10" max="200" id="range" name="range" step="1" value="0" class="closeToMe-Radius">
                  _____ Km
             </label>
