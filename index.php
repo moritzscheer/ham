@@ -16,7 +16,7 @@
             Gig? Dann bist du hier bei ham genau richtig. ham steht für high authentic music-events und bietet dir die
             Möglichkeit dich mit Veranstaltern und Künstern zu vernetzen. Registriere dich jetzt!
         </p>
-        <form action="Profil/register.php">
+        <form action="profile/register.php">
             <input id="about-register-button" type="submit" value="Registrieren">
         </form>
     </div>

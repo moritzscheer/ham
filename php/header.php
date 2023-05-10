@@ -25,7 +25,7 @@
             <img src="../images/profilePicture.jpg" height="50" width="50" class="profilePicture">
 
             <div class="dropdown-content">
-                <form action="../Profil/profile.php" id="header">
+                <form action="../profile/profile.php" id="header">
                     <input type="submit" value="Profile" id="navbar-button">
                 </form>
                 <form action="../index.php" id="header">
