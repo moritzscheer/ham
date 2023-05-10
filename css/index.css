@@ -2,10 +2,13 @@
 
 /*all elements in section*/
 #about-area {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
+    place-items: center;
     padding-top: 20%;
     padding-bottom: 20%;
+    padding-left: 50px;
+    padding-right: 50px;
     margin-top: 20px;
     background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
     border-radius: 20px;
@@ -13,25 +16,24 @@
 
 /*div of logo-image*/
 #about-picture {
-    grid-area: 1 / 1;
-    place-self: center;
-    padding-left: 50px;
+    display: grid;
+    place-items: center;
+    margin: 5%;
 }
 
 /*logo-image*/
 #about-logo-img {
-
+    place-self: center;
+    max-width: 100%;
 }
 /*all the content next to the logo*/
 #about-content {
-    grid-area: 1 / 2;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     place-self: center;
     gap: 20px;
     font-family: Tahoma, sans-serif;
-    padding-right: 50px;
     color: white;
 }
 
@@ -47,7 +49,7 @@
 /*About Text*/
 p {
     font-family: Tahoma, sans-serif;
-    font-size: medium;
+    font-size: x-large;
     margin: 0px;
     line-height: 1.5;
 }

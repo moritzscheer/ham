@@ -1,5 +1,6 @@
 * {
-    font-family: "Roboto Light", serif;
+    /*font-family: "Roboto Light", serif;*/
+    font-family: Tahoma, sans-serif;
 }
 
 a {
@@ -173,6 +174,9 @@ textarea {
 
 .closeToMe-Search {
     grid-column: 1;
+    height: 30px;
+    font-size: large;
+    font-family: Tahoma, sans-serif;
     border-radius: 25px;
     margin-right: 30px;
     padding-left: 10px;
