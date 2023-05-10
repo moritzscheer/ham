@@ -4,7 +4,6 @@
 
 <?php include_once "php/header.php" ?>
 
-<!-- <img src=""> -->
 <section id="about-area">
     <div id="about-picture">
         <img id="about-logo-img" src="images/logo/ham_white.png" alt="ham-Logo">
