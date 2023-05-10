@@ -24,6 +24,5 @@
     </div>
 </section>
 <link rel="stylesheet" type="text/css" href="../css/signIn.css">
-<link rel="stylesheet" type="text/css" href="../css/login.css">
 </body>
 </html>
