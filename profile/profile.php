@@ -20,35 +20,35 @@
             <div class="profile-Content-Grid">
                 <div class="profile-Content">
                     <label class="entry">Name:
-                        <label id="Max">Max</label>
+                        <label><?php echo $_POST["name"]; ?></label>
                     </label>
 
                     <label class="entry">Surname:
-                        <label id="nachname">Mustermann</label>
+                        <label><?php echo $_POST["surname"]; ?></label>
                     </label>
 
                     <label class="entry">E-Mail:
-                        <label id="email">max.mustermann@uni-oldenburg.de</label>
+                        <label><?php echo $_POST["email"]; ?></label>
                     </label class="entry">
 
                     <label class="entry">Phone Number:
-                        <label id="nummer">0176 123456789</label>
+                        <label><?php echo $_POST["phoneNumber"]; ?></label>
                     </label>
 
                     <label class="entry">Type:
-                        <label id="typ">musician</label>
+                        <label><?php echo $_POST["type"]; ?></label>
                     </label>
 
                     <label class="entry">Genre:
-                        <label id="genre">rock</label>
+                        <label><?php echo $_POST["genre"]; ?></label>
                     </label>
 
                     <label class="entry">Members:
-                        <label id="mitglieder">Holger, Artur, Moritz</label>
+                        <label><?php echo $_POST["members"]; ?></label>
                     </label>
 
                     <label class="entry">Other Remarks:
-                        <label id="more">nothing more</label><br>
+                        <label><?php echo $_POST["otherRemarks"]; ?></label><br>
                     </label>
                 </div>
             </div>

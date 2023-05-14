@@ -4,12 +4,19 @@
 
     <h1> In meiner Nähe</h1>
 
+    <?php
+
+    $range = (isset($_POST["range"]) &&
+        is_string($_POST["range"])) ? $_POST["range"] : "";
+    $range = htmlspecialchars($range);
+    echo $range;
+    ?>
+
     <div class="closeToMe-Grid">
-        <form method="searchMap" action="event.php" class="closeToMe-Filter">
+        <form method="post" class="closeToMe-Filter">
             <input type="text" name="search" placeholder="search" class="closeToMe-Search">
             <label class="closeToMe-Radius-Box">Radius
                 <input type="range" min="10" max="200" id="range" name="range" step="1" value="0" class="closeToMe-Radius">
-                 _____ Km
             </label>
         </form>
 

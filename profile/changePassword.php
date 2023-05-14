@@ -4,6 +4,16 @@
 
     <h1 >Change Password</h1>
 
+    <?php
+    $name = (isset($_POST["name"]) && is_string($_POST["name"])) ? $_POST["name"] : "";
+    $surname = (isset($_POST["surname"]) && is_string($_POST["surname"])) ? $_POST["surname"] : "";
+    $email = (isset($_POST["email"]) && is_string($_POST["email"])) ? $_POST["email"] : "";
+
+    $name = htmlspecialchars($name);
+    $surname = htmlspecialchars($surname);
+    $email = htmlspecialchars($email);
+    ?>
+
     <div class="profile-outer-Grid">
         <div class="profile-inner-Grid">
 
@@ -16,7 +26,7 @@
             </div>
 
             <!-- Passwort änder Feld -->
-            <form action="profile.php" class="profile-Content">
+            <form method="post" action="profile.php" class="profile-Content">
                 <label class="entry" id="changePassword">Aktuelles Passwort:
                     <input type="password" id="password_actuell"><br>
                 </label>
@@ -29,11 +39,10 @@
                     <input type="password" id="password_new_2"><br>
                 </label>
 
+                <input type="submit" id="confirm_new_password" value="Neues Passwort einstellen" href="../Profile/profile.php" >
+
             </form>
         </div>
-        <form action="profile.php" class="profile-Submit">
-            <input type="submit" id="confirm_new_password" value="Neues Passwort einstellen" href="../Profile/profile.php" >
-        </form>
     </div>
 <?php include_once "../php/footer.php" ?>
 </body>

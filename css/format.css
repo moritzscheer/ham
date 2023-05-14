@@ -1,6 +1,7 @@
 * {
     /*font-family: "Roboto Light", serif;*/
     font-family: Tahoma, sans-serif;
+    color: white;
 
     /* defined colors */
     --white: white;
@@ -17,11 +18,10 @@
     --browngrey: #45433e;
     --black2: #1c1f23;
     --black: #19171a;
+
+
 }
 
-a {
-    color: black;
-}
 
 .main {
     /*font: 16px "Roboto Light";*/
@@ -36,8 +36,9 @@ body {
     background-size: cover;*/
 }
 
-
-
+input, textarea {
+    color: black;
+}
 
 h1 {
     text-align: center;
@@ -165,7 +166,7 @@ p {
     display: grid;
     grid-template-columns: 20% auto;
     grid-gap: 1px;
-    background-color: black;
+    background-color: white;
 }
 
 /* left side of the profile grid */
@@ -173,7 +174,7 @@ p {
     grid-column: 1;
     display: grid;
     grid-template-rows: max-content auto;
-    background-color: white;
+    background-color: var(--black2);
 }
 
 .profilePicture-Box {
@@ -220,7 +221,7 @@ p {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    background-color: white;
+    background-color: var(--black2);
 }
 
 .entry {
@@ -308,10 +309,6 @@ p {
     gap: 10px;
 }
 
-
-input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-}
 
 
 
