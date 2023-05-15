@@ -1,12 +1,6 @@
 <?php include_once "../php/head.php" ?>
 
 <body>
-<?php
-    $logmail = (isset($_POST["logmail"]) && is_string($_POST["logmail"])) ? $_POST["logmail"] : "";
-    $logpassword = (isset($_POST["logpassword"]) && is_string($_POST["logpassword"])) ? $_POST["logpassword"] : "";
-    $logmail = htmlentities($_POST["logmail"]);
-    $logpassword = htmlentities($_POST["logpassword"]);
-?>
 
 <section class="login">
     <div class="loginElement">
@@ -16,17 +10,17 @@
     </div>
     <div class="loginElement">
         <form method="post">
-            <input type="email" id="lemail" name="logmail" placeholder="E-Mail adresse" required>
+            <input type="email" id="lemail" name="logMail" placeholder="E-Mail adresse" required>
         </form>
     </div>
     <div class="loginElement">
         <form method="post">
-            <input type="password" id="lpassword" name="logpassword" placeholder="Passwort" required>
+            <input type="password" id="lpassword" name="logPassword" placeholder="Passwort" required>
         </form>
     </div>
     <div class="loginElement">
-        <form method="post">
-            <input type="submit" id="loginSubmit" name="logsubmit" value="Login">
+        <form method="post" action="../index.php">
+            <input type="submit" id="loginSubmit" name="login" value="Login">
         </form>
     </div>
 </section>

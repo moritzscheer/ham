@@ -4,16 +4,6 @@
 
     <h1 >Change Password</h1>
 
-    <?php
-    $name = (isset($_POST["name"]) && is_string($_POST["name"])) ? $_POST["name"] : "";
-    $surname = (isset($_POST["surname"]) && is_string($_POST["surname"])) ? $_POST["surname"] : "";
-    $email = (isset($_POST["email"]) && is_string($_POST["email"])) ? $_POST["email"] : "";
-
-    $name = htmlspecialchars($name);
-    $surname = htmlspecialchars($surname);
-    $email = htmlspecialchars($email);
-    ?>
-
     <div class="profile-outer-Grid">
         <div class="profile-inner-Grid">
 
@@ -27,15 +17,15 @@
 
             <!-- Passwort änder Feld -->
             <form method="post" action="profile.php" class="profile-Content">
-                <label class="entry" id="changePassword">Aktuelles Passwort:
+                <label class="entry" id="changePassword">Old Password:
                     <input type="password" id="password_actuell"><br>
                 </label>
 
-                <label class="entry" id="changePassword">Neues Passwort eingeben:
+                <label class="entry" id="changePassword">New Password:
                     <input type="password" id="password_new_1"><br>
                 </label>
 
-                <label class="entry" id="changePassword">Neues Passwort wiederholen:
+                <label class="entry" id="changePassword">Repeat new Password:
                     <input type="password" id="password_new_2"><br>
                 </label>
 

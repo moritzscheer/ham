@@ -1,8 +1,16 @@
 <div class="profilePicture-Link">
-    <a href="../editProfile.php">Profil Bearbeiten</a>
-    <a href="../index.php">Ausloggen</a>
-    <a href="../changePasswort.php">Passwort ändern</a>
-    <a href="../index.php">Account löschen</a>
+    <form action="editProfile.php">
+        <input type="submit" value="Edit Profile">
+    </form>
+    <form action="../index.php">
+        <input type="submit" value="Log-out" name="logout">
+    </form>
+    <form action="changePassword.php">
+        <input type="submit" value="Change Password">
+    </form>
+    <form action="../index.php">
+        <input type="submit" value="Delete Account">
+    </form>
 </div>
 <style itemscope lang="css">
 

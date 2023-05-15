@@ -67,11 +67,26 @@
 
 
 
+.visible {
+    display: block !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
 .dropdown {
     overflow: hidden;
 }
 
-.dropdown-content {
+#dropdown-header {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: 40% 60%;
+}
+
+
+#dropdown-content {
     display: none;
     position: absolute;
     background-color: transparent;
@@ -82,10 +97,10 @@
     transform: translate(-100px, 60px);
 }
 
-.dropdown-content form input {
+#dropdown-content form input {
     text-align: left;
 }
 
-.dropdown:hover .dropdown-content{
+.dropdown:hover #dropdown-content{
     display: block;
 }
