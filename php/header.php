@@ -20,7 +20,7 @@
         </div>
 
         <div id="header">
-            <form action="createEvent.php" class="blue-button">
+            <form action="createEvent.php" class="<?php echo $_SESSION["profileHeader"]?>">
                 <input type="submit" value="create" id="navbar-create-button">
             </form>
         </div>

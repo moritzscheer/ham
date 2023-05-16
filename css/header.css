@@ -69,6 +69,7 @@
 
 .visible {
     display: block !important;
+    justify-content: center;
 }
 
 .hidden {
