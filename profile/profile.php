@@ -10,7 +10,7 @@
             <!-- account navigation -->
             <div class="profileNavigation">
                 <div class="profilePicture-Box">
-                    <img src="../images/profilePicture.jpg" alt="profile picture" height="120" width="120" class="profilePicture">
+                    <img src="../images/profile/custom.jpg" alt="profile picture" height="120" width="120" class="profilePicture">
                 </div>
                 <?php include_once "../profile/profilNavigation.php" ?>
             </div>

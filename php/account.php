@@ -46,7 +46,7 @@ $logpassword = htmlentities($_SESSION["logPassword"]);
 if (isset($_POST["login"])) {
     $_SESSION["loggedIn"] = 1;
 } elseif (isset($_POST["logout"])) {
-    $_SESSION["loggedIn"] = -1;
+    $_SESSION["loggedIn"] = 0;
 }
 // switches the header elements
 if( $_SESSION["loggedIn"] === 1 ){
@@ -55,8 +55,4 @@ if( $_SESSION["loggedIn"] === 1 ){
 } else{
     $_SESSION["normalHeader"] = "visible";
     $_SESSION["profileHeader"] = "hidden";
-}
-
-if (isset($_FILES["profilePicture"])) {
-
 }

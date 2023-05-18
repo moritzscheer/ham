@@ -10,7 +10,7 @@
             <!-- profile navigation -->
             <div class="profileNavigation">
                 <div for="image" class="profilePicture-Box">
-                    <img src="../images/profilePicture.jpg" alt="Profile could not load" height="120" width="120" class="profilePicture" id="editProfilePicture">
+                    <img src="../images/profile/custom.jpg" alt="Profile could not load" height="120" width="120" class="profilePicture" id="editProfilePicture">
                     <label id="profile-Link">Profilbild ändern
                         <input type="file" name="profilePicture" id="image" style="display:none;" id="profile-Link"/>
                     </label>
