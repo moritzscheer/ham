@@ -2,7 +2,7 @@
     <div id="navbar">
         <div id="navbar-Item" class="logo">
             <a href="index.php">
-                <img src="images/logo/ham_white_small.png" alt="logo" height="50">
+                <img src="../images/logo/ham_white_small.png" alt="logo" height="50">
             </a>
         </div>
 
@@ -26,7 +26,7 @@
 
         <div id="navbar-Item" class="desktop <?php echo $_SESSION["profileHeader"]?>">
             <form action="createEvent.php">
-                <input type="submit" value="create" id="navbar-create-button">
+                <input type="submit" value="create" id="navbar-button" class="create">
             </form>
         </div>
 
@@ -43,15 +43,19 @@
         </div>
 
         <div id="navbar-Item" class="mobile dropdown dropdownProfile <?php echo $_SESSION["profileHeader"]?>">
-            <div>
-                <?php echo $_SESSION["name"]; ?>
-                <?php echo $_SESSION["type"]; ?>
+            <div id="navbar-Profile">
+                <div>
+                    <?php echo $_SESSION["name"]; ?>
+                </div>
+                <div>
+                    <?php echo $_SESSION["type"]; ?>
+                </div>
             </div>
-            <img src="images/profile/default.png" height="50" width="50" alt="profilePicture" class="profilePicture">
+            <img src="../images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>
 
         <div id="navbar-Item" class="mobile dropdown dropdownGeneral">
-            <img src="images/header/menu.png" alt="profile" height="50">
+            <img src="../images/header/menu.png" alt="profile" height="50">
         </div>
     </div>
 

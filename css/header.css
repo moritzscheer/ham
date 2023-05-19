@@ -32,9 +32,9 @@ nav {
     grid-template-rows: min-content min-content;
     grid-template-columns: auto;
     margin: 30px 3% 10px 3%;
-    height: 80px;
-    overflow: visible;
-}
+    height: 55px;
+    overflow: hidden;
+}                       
 
 /* navigation bar header */
 #navbar {
@@ -42,20 +42,22 @@ nav {
     display: inline-flex;
     justify-content: space-evenly;
     flex-wrap: nowrap;
-    border: lightgrey dashed 2px;
+    gap: 100px;
     border-radius: 8px;
 }
 .logo {
-    margin-right: 20%;
+    margin-right: auto;
 }
 .dropdown {
     overflow: visible;
     height: 105%;
 }
+#navbar-Item input{
+    width: min-content;
+}
 #navbar-button {
     background-color: transparent;
-    height: 50px;
-    width: 150px;
+    height: 50px;   
     border: transparent;
     cursor: pointer;
     /*font: bold 18px sans-serif;*/
@@ -66,31 +68,22 @@ nav {
 #navbar-button:hover {
     border-bottom: 2px solid gray;
 }
-#navbar-create-button{
+.create{
     /*background-image: linear-gradient(to right, var(--oceanblue) 0%, var(--darkblue)  51%, var(--oceanblue)  100%);*/
     --gradientDegree: 180deg;
     background-image: linear-gradient(var(--gradientDegree), var(--darkblue), var(--oceanblue));
-
-    margin-left: 30px;
-    margin-right: 30px;
-    height: 50px;
-    width: 150px;
+    
     transition: 0.5s;
     /*background-size: 200% auto;*/
     color: var(--white);
     border-radius: 10px;
-    border: transparent;
     cursor: pointer;
-    font-size: large;
-    font-weight: bold;
 }
 #navbar-create-button:hover {
     /*background-position: right center; /* change the direction of the change here */
     text-decoration: none;
     font-size: larger;
 }
-
-
 
 /* navigation bar dropdown content */
 .content {
@@ -111,31 +104,38 @@ nav {
     justify-content: center;
     margin-left: auto;
 }
-#navbar:has(.dropdownGeneral:hover) ~ #content-general{
+#navbar:has(.dropdownGeneral:hover) ~ #content-general, #content-general:hover{
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+.dropdownGeneral:hover{
+    rotate: 90deg;
+    transition: rotate 0.5s;
+}
+.dropdownProfile {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+#navbar-Profile {
+    display: grid;
+    grid-template-rows: auto auto;
+    place-items: center;
 }
 
 
 
 
 
-
-
-
-
-
-/* ----------------- formatting for tablet resolution ----------------- */
-@media screen and (min-width: 760px) and (max-width: 1200px) {
+@media screen and (max-width: 900px), screen and (min-width: 760px) {
     #navbar {
-        justify-content: right;
-        gap: 5px;
+        gap: 20px;
     }
     .logo {
         margin-right: auto;
     }
 }
+
 
 
 
@@ -155,8 +155,11 @@ nav {
         height: 80px;
         width: auto;
     }
+    .logo {
+        margin-right: auto;
+    }
     #navbar {
-        gap: 50px;
+        gap: 30px;
         justify-content: right;
     }
     #navbar:has(.dropdownProfile:hover) ~ #content-profile {
@@ -170,8 +173,32 @@ nav {
         font-size: 24px;
         height: 80px;
     }
+    .dropdownProfile {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+    #navbar-Profile {
+        display: grid;
+        grid-template-rows: auto auto;
+        place-items: baseline;
+        padding-right: 20px;
+    }
 }
 
+/* ----------------- formatting for desktop resolution ----------------- */
+@media screen and (max-width: 760px) {
+    nav img {
+        height: 50px;
+        width: auto;
+    }
+    #content-profile form input, #content-general form input{
+        font-size: 16px;
+        height: 40px;
+    }
+    #navbar:has(.dropdownProfile:hover) ~ #content-profile, #content-profile:hover {
+        width: 100%;
+    }
+}
 
 
 

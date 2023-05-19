@@ -1,4 +1,4 @@
-<div class="profilePicture-Link">
+<div class="profile-Links">
     <form action="editProfile.php">
         <input type="submit" value="Edit Profile">
     </form>
