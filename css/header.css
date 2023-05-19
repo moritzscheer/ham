@@ -33,7 +33,7 @@ nav {
     grid-template-columns: auto;
     margin: 30px 3% 10px 3%;
     height: 55px;
-    overflow: hidden;
+    overflow: visible;
 }                       
 
 /* navigation bar header */
@@ -42,11 +42,10 @@ nav {
     display: inline-flex;
     justify-content: space-evenly;
     flex-wrap: nowrap;
-    gap: 100px;
     border-radius: 8px;
 }
 .logo {
-    margin-right: auto;
+    margin-right: 20%;
 }
 .dropdown {
     overflow: visible;
@@ -127,14 +126,7 @@ nav {
 
 
 
-@media screen and (max-width: 900px), screen and (min-width: 760px) {
-    #navbar {
-        gap: 20px;
-    }
-    .logo {
-        margin-right: auto;
-    }
-}
+
 
 
 
