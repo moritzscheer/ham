@@ -10,42 +10,42 @@
             <div class="profile-Picture-Box">
                 <img src="../images/profile/custom.jpg" alt="profile picture" height="120" width="120" class="profile-Picture">
             </div>
-            <?php include_once "../profile/profilNavigation.php" ?>
+            <?php include_once "../profile/profileNavigation.php" ?>
         </div>
 
 
         <!-- account information -->
         <div class="profile-Content">
             <label class="entry">Name:
-                <label><?php echo $_POST["name"]; ?></label>
+                <label><?php echo $_SESSION["name"]; ?></label>
             </label>
 
             <label class="entry">Surname:
-                <label><?php echo $_POST["surname"]; ?></label>
+                <label><?php echo $_SESSION["surname"]; ?></label>
             </label>
 
             <label class="entry">E-Mail:
-                <label><?php echo $_POST["email"]; ?></label>
+                <label><?php echo $_SESSION["email"]; ?></label>
             </label class="entry">
 
             <label class="entry">Phone Number:
-                <label><?php echo $_POST["phoneNumber"]; ?></label>
+                <label><?php echo $_SESSION["phoneNumber"]; ?></label>
             </label>
 
             <label class="entry">Type:
-                <label><?php echo $_POST["type"]; ?></label>
+                <label><?php echo $_SESSION["type"]; ?></label>
             </label>
 
             <label class="entry">Genre:
-                <label><?php echo $_POST["genre"]; ?></label>
+                <label><?php echo $_SESSION["genre"]; ?></label>
             </label>
 
             <label class="entry">Members:
-                <label><?php echo $_POST["members"]; ?></label>
+                <label><?php echo $_SESSION["members"]; ?></label>
             </label>
 
             <label class="entry">Other Remarks:
-                <label><?php echo $_POST["otherRemarks"]; ?></label><br>
+                <label><?php echo $_SESSION["otherRemarks"]; ?></label><br>
             </label>
         </div>
     </div>

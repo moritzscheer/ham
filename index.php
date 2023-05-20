@@ -1,6 +1,4 @@
-<?php
-$_SESSION["loggedIn"] = 0;
-?>
+<?php $_SESSION["loggedIn"] = 0; ?>
 <?php include_once "php/head.php" ?>
 <body>
 

@@ -11,25 +11,24 @@
             <div class="profile-Picture-Box">
                 <img src="../images/profile/custom.jpg" alt="profile picture" height="120" width="120" class="profile-Picture">
             </div>
-            <?php include_once "../profile/profilNavigation.php" ?>
+            <?php include_once "../profile/profileNavigation.php" ?>
         </div>
 
         <!-- Passwort änder Feld -->
-        <form method="post" action="profile.php" class="profile-Content">
-            <label class="entry" id="changePassword">Old Password:
-                <input type="password" id="password_actuell"><br>
+        <form method="post" action="../Profile/profile.php" class="profile-Content" id="profile-Content-Change-Password">
+            <label class="entry">Old Password:
+                <input type="password" id="password_actuell">
             </label>
 
-            <label class="entry" id="changePassword">New Password:
-                <input type="password" id="password_new_1"><br>
+            <label class="entry">New Password:
+                <input type="password" id="password_new_1">
             </label>
 
-            <label class="entry" id="changePassword">Repeat new Password:
-                <input type="password" id="password_new_2"><br>
+            <label class="entry">Repeat new Password:
+                <input type="password" id="password_new_2">
             </label>
 
-            <input type="submit" id="confirm_new_password" value="Neues Passwort einstellen" href="../Profile/profile.php" >
-
+            <input type="submit" value="Neues Passwort einstellen" id="profile-Submit">
         </form>
     </div>
 <?php include_once "../php/footer.php" ?>

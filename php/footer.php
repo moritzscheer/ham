@@ -1,19 +1,25 @@
 
 <footer>
     <div class="column">
-        <h3>Information</h3>
-        <a href="php/footer-content/impressum.php">Impressum</a>
-        <a href="php/footer-content/datenschutz.php">Data protection</a>
-        <a href="php/footer-content/nutzungsbedingungen.php">Terms of Use</a>
+        <h2>Information</h2>
+        <form action="php/footer-content/impressum.php">
+            <input type="submit" value="Impressum">
+        </form>
+        <form action="php/footer-content/datenschutz.php">
+            <input type="submit" value="Data protection">
+        </form>
+        <form action="php/footer-content/nutzungsbedingungen.php">
+            <input type="submit" value="Terms of Use">
+        </form>
     </div>
     <div class="column">
-        <h3>Social Media</h3>
+        <h2>Social Media</h2>
         <a href="www.Instagram.com">Instagram</a>
         <a href="www.facebook.com">Facebook</a>
         <a href="www.Twitter.com">Twitter</a>
     </div>
     <div class="column">
-        <h3>Other</h3>
+        <h2>Other</h2>
         <a href="www.uol.de">Universität Oldenburg</a>
     </div>
 </footer>

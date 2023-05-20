@@ -8,17 +8,17 @@
 
         <!-- profile navigation -->
         <div class="profile-Navigation">
-            <div for="image" class="profile-Picture-Box">
+            <div class="profile-Picture-Box">
                 <img src="../images/profile/custom.jpg" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
-                <label id="profile-Picture-Link">Profilbild ändern
+                <label id="profile-Picture-Link">change Image
                     <input type="file" name="profilePicture" id="image" style="display:none;" id="profile-Picture-Link"/>
                 </label>
             </div>
-            <?php include_once "../profile/profilNavigation.php" ?>
+            <?php include_once "../profile/profileNavigation.php" ?>
         </div>
 
         <!-- profile content -->
-        <form method="post" action="profile.php" class="profile-Content">
+        <form method="post" action="../profile/profile.php" class="profile-Content">
             <label class="entry">Name:
                 <input type="text" name="name" value="Max">
             </label>
@@ -55,10 +55,10 @@
             </label>
 
             <label class="entry">Other Remarks:
-                <textarea type="text" name="otherRemarks" rows="5" resize>nothing more</textarea>
+                <textarea name="otherRemarks" rows="5">nothing more</textarea>
             </label>
 
-            <input type="submit" value="Change Password" class="profile-Submit">
+            <input type="submit" value="Change Password" id="profile-Submit">
         </form>
     </div>
 

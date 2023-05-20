@@ -112,8 +112,8 @@ textarea {
 #welcome-head {
     font-family: Tahoma, sans-serif;
     font-weight: bolder;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     font-size: 40px;
 }
 
@@ -121,7 +121,7 @@ textarea {
 p {
     font-family: Tahoma, sans-serif;
     font-size: x-large;
-    margin: 0px;
+    margin: 0;
     line-height: 1.5;
 }
 
@@ -162,6 +162,7 @@ p {
     grid-row: 1;
     display: grid;
     grid-template-columns: 20% auto;
+    grid-template-rows: 600px;
     background-color: white;
     gap: 1px;
 }
@@ -222,6 +223,9 @@ p {
     gap: 30px;
     background-color: var(--black2);
 }
+#profile-Content-Change-Password {
+    gap: 60px;
+}
 .entry {
     display: grid;
     grid-template-columns: 20% auto;
@@ -229,11 +233,7 @@ p {
     padding-left: 100px;
     padding-right: 100px;
 }
-#changePassword {
-    display: grid;
-    grid-template-columns: 20% auto 50%;
-}
-.profile-Submit {
+#profile-Submit {
     grid-row: 2;
     margin-right: auto;
     margin-left: auto;
@@ -243,12 +243,14 @@ p {
 /* ----------------- formatting for desktop resolution ----------------- */
 @media screen and (max-width: 760px) {
     .profile-Grid {
-        grid-template-rows: min-content auto;
-        grid-template-columns: auto;
+        grid-template-rows: auto;
+        grid-template-columns: min-content auto;
     }
     .entry {
         padding-left: 20px;
         padding-right: 20px;
+        grid-template-columns: 30% auto;
+
     }
     .profile-Navigation {
         grid-row: 1 / span 2;
@@ -262,7 +264,7 @@ p {
 
 
 /* ----------------- formatting for tablet resolution ----------------- */
-@media screen and (min-width: 760px) {
+@media screen and (min-device-width: 760px) and (max-device-width: 1200px) {
     .entry {
         padding-left: 50px;
         padding-right: 50px;
