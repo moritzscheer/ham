@@ -17,67 +17,75 @@
     <div id="item-list-view">
         <section id="item-list">
             <div id="item">
+                <div class="item-head">
                 <img id="item-image" src="images/event.jpg" alt="eventImage"/>
-                <div id="item-description">
+                    <div id="item-description">
                    <span>
                        Name: Neueröffnung Hornbach Bau- und Gartenmarkt Leipzig
                    </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Datum: 12 April 2023
                     </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Adresse: Steinweg 2, 42275 Wuppertal
                     </span>
+                    </div>
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="images/event2.jpg" alt="eventImage"/>
-                <div id="item-description">
+                <div class="item-head">
+                    <img id="item-image" src="images/event2.jpg" alt="eventImage"/>
+                    <div id="item-description">
                      <span>
                          Name: MyWellness - Wellness-Center
                      </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Datum 22 Februar 2023
                     </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Adresse: Richard Lehmann Straße 117, 04103 Leipzig
                     </span>
+                    </div>
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="images/event.jpg" alt="eventImage"/>
-                <div id="item-description">
+                <div class="item-head">
+                    <img id="item-image" src="images/event.jpg" alt="eventImage"/>
+                    <div id="item-description">
                    <span>
                        Name: Neueröffnung Hornbach Bau- und Gartenmarkt Leipzig
                    </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Datum: 12 April 2023
                     </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Adresse: Steinweg 2, 42275 Wuppertal
                     </span>
+                    </div>
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="images/event2.jpg" alt="eventImage"/>
-                <div id="item-description">
+                <div class="item-head">
+                    <img id="item-image" src="images/event2.jpg" alt="eventImage"/>
+                    <div id="item-description">
                      <span>
                          Name: MyWellness - Wellness-Center
                      </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Datum 22 Februar 2023
                     </span>
-                    <br>
-                    <span>
+                        <br>
+                        <span>
                         Adresse: Richard Lehmann Straße 117, 04103 Leipzig
                     </span>
+                    </div>
                 </div>
             </div>
         </section>
