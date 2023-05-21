@@ -19,27 +19,27 @@
     <div id="item-list-view">
         <section id="item-list">
             <div id="item">
-                <label id="item-link" >
-                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
-                    <input type="checkbox" id="item-click">
-                <div id="item-description">
-                    <span>Name: Chrystal Ball</span>
-                    <br>
-                    <span>Genre: Hard Rock</span>
-                    <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
-                    <br>
-                    <span>1 Schlagzeug</span>
-                    <br>
-                    <span>1 Bass</span>
-                    <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                <div class="item-head">
+                    <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                    <div id="item-description">
+                        <span>Name: Chrystal Ball</span>
+                        <br>
+                        <span>Genre: Hard Rock</span>
+                        <br>
+                        <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                        <br>
+                        <span>1 Schlagzeug</span>
+                        <br>
+                        <span>1 Bass</span>
+                        <br>
+                        <span>Gage: 1480 € pro Abend</span>
+                    </div>
                 </div>
-                <div id="item-details">
+                <div class="item-m-details">
                     <div id="item-details-title">
                         <img id="item-image" src="images/band.jpg" alt="bandImage"/>
                         <h2 id="item-details-name"> Chrystal Ball </h2>
-                        <button class="close-popup">&times; </button>
+                        <button class="close-popup">&times;</button>
                     </div>
                     <div>
                         <p>
@@ -60,7 +60,7 @@
                         <p>
                             Hits <br>
                             <br>
-                            Keane:  <br>
+                            Keane: <br>
                             https://www.youtube.com/watch?v=xEHy0QwvAYE <br>
                             <br>
                             Styx <br>
@@ -68,54 +68,59 @@
                         </p>
                     </div>
                 </div>
-                </label>
             </div>
             <div id="item">
-                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
-                <div id="item-description">
-                    <span>Name: Chrystal Ball</span>
-                    <br>
-                    <span>Genre: Hard Rock</span>
-                    <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
-                    <br>
-                    <span>1 Schlagzeug</span>
-                    <br>
-                    <span>1 Bass</span>
-                    <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                <div class="item-head">
+                    <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                    <div id="item-description">
+                        <span>Name: Chrystal Ball</span>
+                        <br>
+                        <span>Genre: Hard Rock</span>
+                        <br>
+                        <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                        <br>
+                        <span>1 Schlagzeug</span>
+                        <br>
+                        <span>1 Bass</span>
+                        <br>
+                        <span>Gage: 1480 € pro Abend</span>
+                    </div>
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
-                <div id="item-description">
-                    <span>Name: Chrystal Ball</span>
-                    <br>
-                    <span>Genre: Hard Rock</span>
-                    <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
-                    <br>
-                    <span>1 Schlagzeug</span>
-                    <br>
-                    <span>1 Bass</span>
-                    <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                <div class="item-head">
+                    <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                    <div id="item-description">
+                        <span>Name: Chrystal Ball</span>
+                        <br>
+                        <span>Genre: Hard Rock</span>
+                        <br>
+                        <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                        <br>
+                        <span>1 Schlagzeug</span>
+                        <br>
+                        <span>1 Bass</span>
+                        <br>
+                        <span>Gage: 1480 € pro Abend</span>
+                    </div>
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
-                <div id="item-description">
-                    <span>Name: Chrystal Ball</span>
-                    <br>
-                    <span>Genre: Hard Rock</span>
-                    <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
-                    <br>
-                    <span>1 Schlagzeug</span>
-                    <br>
-                    <span>1 Bass</span>
-                    <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                <div class="item-head">
+                    <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                    <div id="item-description">
+                        <span>Name: Chrystal Ball</span>
+                        <br>
+                        <span>Genre: Hard Rock</span>
+                        <br>
+                        <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                        <br>
+                        <span>1 Schlagzeug</span>
+                        <br>
+                        <span>1 Bass</span>
+                        <br>
+                        <span>Gage: 1480 € pro Abend</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -123,7 +128,7 @@
             <div id="item-details-title">
                 <img id="item-image" src="images/band.jpg" alt="bandImage"/>
                 <h2 id="item-details-name"> Chrystal Ball </h2>
-                <button class="close-popup">&times; </button>
+                <button class="close-popup">&times;</button>
             </div>
             <div>
                 <p>
@@ -143,8 +148,8 @@
             <div id="item-details-foot">
                 <p>
                     Hits <br>
-                        <br>
-                    Keane:  <br>
+                    <br>
+                    Keane: <br>
                     https://www.youtube.com/watch?v=xEHy0QwvAYE <br>
                     <br>
                     Styx <br>
@@ -152,11 +157,12 @@
                 </p>
             </div>
         </section>
-        <div id="popup-background"</div>
     </div>
 </div>
+<div class="footer-area">
+    <?php include_once "php/footer.php" ?>
+</div>
 
-<?php include_once "php/footer.php" ?>
 </body>
 </html>
 
