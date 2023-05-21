@@ -85,6 +85,7 @@
             <div id="item-details-title">
                 <img id="item-image" src="images/event.jpg" alt="eventImage"/>
                 <h2 id="item-details-name"> Neueröffnung Hornbach Bau- und Gartenmarkt Leipzig </h2>
+                <button class="close-popup">&times; </button>
             </div>
             <div>
                 <p>
@@ -105,6 +106,7 @@
                 </p>
             </div>
         </section>
+        <div id="popup-background"</div>
     </div>
 </div>
 

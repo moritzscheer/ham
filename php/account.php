@@ -15,6 +15,7 @@ if (isset($_POST["login"])) {
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = 0;
 }
+
 // switches the header elements
 if( $_SESSION["loggedIn"] === 1 ){
     $_SESSION["normalHeader"] = "hidden";
@@ -94,9 +95,8 @@ $_SESSION["members"] = htmlspecialchars($members);
 $_SESSION["otherRemarks"] = htmlspecialchars($otherRemarks);
 
 
-
-
-
+// login
+$_SESSION["loggedIn"] = 0;
 
 
 

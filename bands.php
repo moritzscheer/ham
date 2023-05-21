@@ -19,7 +19,59 @@
     <div id="item-list-view">
         <section id="item-list">
             <div id="item">
-                <img id="item-image" src="/images/band.jpg" alt="bandImage"/>
+                <label id="item-link" >
+                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                    <input type="checkbox" id="item-click">
+                <div id="item-description">
+                    <span>Name: Chrystal Ball</span>
+                    <br>
+                    <span>Genre: Hard Rock</span>
+                    <br>
+                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                    <br>
+                    <span>1 Schlagzeug</span>
+                    <br>
+                    <span>1 Bass</span>
+                    <br>
+                    <span>Gage: 1480 € pro Abend</span>
+                </div>
+                <div id="item-details">
+                    <div id="item-details-title">
+                        <img id="item-image" src="images/band.jpg" alt="bandImage"/>
+                        <h2 id="item-details-name"> Chrystal Ball </h2>
+                        <button class="close-popup">&times; </button>
+                    </div>
+                    <div>
+                        <p>
+                            Gesang: Steven Mageney <br>
+                            Leadgitarre: Scott Leach <br>
+                            Rhythmusgitarre:Peter Berger <br>
+                            Schlagzeug:Marcel Sardella <br>
+                            Bass:Cris Stone <br>
+                            <br>
+                            info@crystal-ball.de <br>
+                            <br>
+                            Gage: 1480 € pro Abend <br>
+                            <br>
+                            Gebiet: Niedersachsen und MVP <br>
+                        </p>
+                    </div>
+                    <div id="item-details-foot">
+                        <p>
+                            Hits <br>
+                            <br>
+                            Keane:  <br>
+                            https://www.youtube.com/watch?v=xEHy0QwvAYE <br>
+                            <br>
+                            Styx <br>
+                            https://www.youtube.com/watch?v=9b-i0XknSnM
+                        </p>
+                    </div>
+                </div>
+                </label>
+            </div>
+            <div id="item">
+                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -35,7 +87,7 @@
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="/images/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -51,23 +103,7 @@
                 </div>
             </div>
             <div id="item">
-                <img id="item-image" src="/images/band.jpg" alt="bandImage"/>
-                <div id="item-description">
-                    <span>Name: Chrystal Ball</span>
-                    <br>
-                    <span>Genre: Hard Rock</span>
-                    <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
-                    <br>
-                    <span>1 Schlagzeug</span>
-                    <br>
-                    <span>1 Bass</span>
-                    <br>
-                    <span>Gage: 1480 € pro Abend</span>
-                </div>
-            </div>
-            <div id="item">
-                <img id="item-image" src="/images/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -85,8 +121,9 @@
         </section>
         <section id="item-details">
             <div id="item-details-title">
-                <img id="item-image" src="/images/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="images/band.jpg" alt="bandImage"/>
                 <h2 id="item-details-name"> Chrystal Ball </h2>
+                <button class="close-popup">&times; </button>
             </div>
             <div>
                 <p>
@@ -115,6 +152,7 @@
                 </p>
             </div>
         </section>
+        <div id="popup-background"</div>
     </div>
 </div>
 
