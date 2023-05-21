@@ -46,7 +46,7 @@
             <div id="navbar-Profile">
                 <div>
                     <?php echo $_SESSION["name"]; ?>
-                    <?php echo $_SESSION["surname"]; ?>
+                    <?php echo $_SESSION["name"]; ?>
                 </div>
                 <div>
                     <?php echo $_SESSION["type"]; ?>
