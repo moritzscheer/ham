@@ -115,6 +115,7 @@
 
 /* ----------------- item details for desktop resolution ----------------- */
 
+/* for mobile version*/
 .item-m-details{
     display: none;
     justify-self: center;
