@@ -1,6 +1,7 @@
 <?php include_once "../php/head.php" ?>
-
 <body>
+<?php include_once "../php/header.php" ?>
+
 
 <section class="login">
     <div class="loginElement">

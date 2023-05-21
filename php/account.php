@@ -5,7 +5,9 @@ ini_set("session.use_trans_sid", 1);
 session_start();
 
 
-// -------------- Different User Interface depending on if a user is logged in or not -------------- //
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                     Different User Interface depending on if a user is logged in or not                            */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 // switches the logged in status
 if (isset($_POST["login"])) {
@@ -22,42 +24,87 @@ if( $_SESSION["loggedIn"] === 1 ){
     $_SESSION["profileHeader"] = "hidden";
 }
 
-// --------------------------------- variables for the profile page --------------------------------- //
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                          variables for the profile page                                            */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+$_SESSION["Step1"] = "visible";
+$_SESSION["Step2"] = "hidden";
+$_SESSION["Step3"] = "hidden";
+$_SESSION["status2"] = "inactive";
+$_SESSION["status3"] = "inactive";
+
+// switches the header elements
+if(isset($_POST["toStep1"])){
+    $_SESSION["Step1"] = "visible";
+    $_SESSION["Step2"] = "hidden";
+    $_SESSION["Step3"] = "hidden";
+    $_SESSION["status2"] = "inactive";
+    $_SESSION["status3"] = "inactive";
+} elseif (isset($_POST["toStep2"])){
+    $_SESSION["Step1"] = "hidden";
+    $_SESSION["Step2"] = "visible";
+    $_SESSION["Step3"] = "hidden";
+    $_SESSION["status2"] = "active";
+    $_SESSION["status3"] = "inactive";
+
+} elseif (isset($_POST["toStep3"])){
+    $_SESSION["Step1"] = "hidden";
+    $_SESSION["Step2"] = "hidden";
+    $_SESSION["Step3"] = "visible";
+    $_SESSION["status2"] = "active";
+    $_SESSION["status3"] = "active";
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                          variables for the profile page                                            */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+// Form 1
+$email = (isset($_POST["email"]) && is_string($_POST["email"])) ? $_POST["email"] : "";
+$password = (isset($_POST["password"]) && is_string($_POST["password"])) ? $_POST["password"] : "";
+$repeatPassword = (isset($_POST["repeatPassword"]) && is_string($_POST["repeatPassword"])) ? $_POST["repeatPassword"] : "";
+
+$_SESSION["email"] = htmlspecialchars($email);
+$_SESSION["password"] = htmlentities($password);
+$_SESSION["repeatPassword"] = htmlentities($repeatPassword);
+
+
+// Form 2
 $name = (isset($_POST["name"]) && is_string($_POST["name"])) ? $_POST["name"] : "";
 $surname = (isset($_POST["surname"]) && is_string($_POST["surname"])) ? $_POST["surname"] : "";
-$email = (isset($_POST["email"]) && is_string($_POST["email"])) ? $_POST["email"] : "";
 $phoneNumber = (isset($_POST["phoneNumber"]) && is_string($_POST["phoneNumber"])) ? $_POST["phoneNumber"] : "";
-$type = (isset($_POST["type"]) && is_string($_POST["type"])) ? $_POST["type"] : "";
-$genre = (isset($_POST["genre"]) && is_string($_POST["genre"])) ? $_POST["genre"] : "";
-$members = (isset($_POST["members"]) && is_string($_POST["members"])) ? $_POST["members"] : "";
-$otherRemarks = (isset($_POST["otherRemarks"]) && is_string($_POST["otherRemarks"])) ? $_POST["otherRemarks"] : "";
 
 $_SESSION["name"] = htmlspecialchars($name);
 $_SESSION["surname"] = htmlspecialchars($surname);
-$_SESSION["email"] = htmlspecialchars($email);
 $_SESSION["phoneNumber"] = htmlspecialchars($phoneNumber);
+
+
+// Form 3
+$genre = (isset($_POST["genre"]) && is_string($_POST["genre"])) ? $_POST["genre"] : "";
+$members = (isset($_POST["members"]) && is_string($_POST["members"])) ? $_POST["members"] : "";
+$otherRemarks = (isset($_POST["otherRemarks"]) && is_string($_POST["otherRemarks"])) ? $_POST["otherRemarks"] : "";
+$type = (isset($_POST["type"]) && is_string($_POST["type"])) ? $_POST["type"] : "";
+
 $_SESSION["type"] = htmlspecialchars($type);
 $_SESSION["genre"] = htmlspecialchars($genre);
 $_SESSION["members"] = htmlspecialchars($members);
 $_SESSION["otherRemarks"] = htmlspecialchars($otherRemarks);
 
-// --------------------------------- variables for the register page --------------------------------- //
-$regName = (isset($_POST["regName"]) && is_string($_POST["regName"])) ? $_POST["regName"] : "";
-$regMail = (isset($_POST["regMail"]) && is_string($_POST["regMail"])) ? $_POST["regMail"] : "";
-$regPassword = (isset($_POST["regPassword"]) && is_string($_POST["regPassword"])) ? $_POST["regPassword"] : "";
-$reRegPassword = (isset($_POST["reRegPassword"]) && is_string($_POST["reRegPassword"])) ? $_POST["reRegPassword"] : "";
 
-$_SESSION["regName"] = htmlentities($regName);
-$_SESSION["regMail"] = htmlentities($regMail);
-$_SESSION["regPassword"] = htmlentities($regPassword);
-$_SESSION["reRegPassword"] = htmlentities($reRegPassword);
 
-// ---------------------------------- variables for the login page ---------------------------------- //
-$logMail = (isset($_POST["logMail"]) && is_string($_POST["logMail"])) ? $_POST["logMail"] : "";
-$logPassword = (isset($_POST["logPassword"]) && is_string($_POST["logPassword"])) ? $_POST["logPassword"] : "";
 
-$_SESSION["logMail"] = htmlentities($logMail);
-$_SESSION["logPassword"] = htmlentities($logPassword);
+
+
+
+
+
+
+
+
+
 
 
 

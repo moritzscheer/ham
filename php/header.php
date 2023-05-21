@@ -1,51 +1,52 @@
 <nav>
     <div id="navbar">
-        <div id="navbar-Item" class="logo">
+        <div class="logo">
             <a href="index.php">
                 <img src="../images/logo/ham_white_small.png" alt="logo" height="50">
             </a>
         </div>
 
-        <div id="navbar-Item" class="desktop">
+        <div class="desktop">
             <form action="bands.php">
                 <input type="submit" value="Bands" id="navbar-button">
             </form>
         </div>
 
-        <div id="navbar-Item" class="desktop">
+        <div class="desktop">
             <form action="events.php">
                 <input type="submit" value="Events" id="navbar-button">
             </form>
         </div>
 
-        <div id="navbar-Item" class="desktop">
+        <div class="desktop">
             <form action="closeToMe.php">
                 <input type="submit" value="Close to Me" id="navbar-button">
             </form>
         </div>
 
-        <div id="navbar-Item" class="desktop <?php echo $_SESSION["profileHeader"]?>">
+        <div class="desktop <?php echo $_SESSION["profileHeader"]?>">
             <form action="createEvent.php">
                 <input type="submit" value="create" id="navbar-button" class="create">
             </form>
         </div>
 
-        <div id="navbar-Item" class="desktop <?php echo $_SESSION["normalHeader"]?>">
+        <div class="desktop <?php echo $_SESSION["normalHeader"]?>">
             <form action="profile/register.php">
                 <input type="submit" value="Sign Up" id="navbar-button">
             </form>
         </div>
 
-        <div id="navbar-Item" class="desktop <?php echo $_SESSION["normalHeader"]?>">
+        <div class="desktop <?php echo $_SESSION["normalHeader"]?>">
             <form action="profile/login.php">
                 <input type="submit" value="Log-In" id="navbar-button">
             </form>
         </div>
 
-        <div id="navbar-Item" class="mobile dropdown dropdownProfile <?php echo $_SESSION["profileHeader"]?>">
+        <div id="dropdownProfile" class="mobile dropdown  <?php echo $_SESSION["profileHeader"]?>">
             <div id="navbar-Profile">
                 <div>
                     <?php echo $_SESSION["name"]; ?>
+                    <?php echo $_SESSION["surname"]; ?>
                 </div>
                 <div>
                     <?php echo $_SESSION["type"]; ?>
@@ -54,14 +55,14 @@
             <img src="../images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>
 
-        <div id="navbar-Item" class="mobile dropdown dropdownGeneral">
+        <div id="dropdownGeneral" class="mobile dropdown">
             <img src="../images/header/menu.png" alt="profile" height="50">
         </div>
     </div>
 
 
 
-    <div id="content-general" class="content">
+    <div id="content-general" class="Header-Content">
         <div id="content-Item" >
             <form action="bands.php" >
                 <input type="submit" value="Bands" id="navbar-button">
@@ -87,7 +88,7 @@
         </div>
     </div>
 
-    <div id="content-profile" class="content">
+    <div id="content-profile" class="Header-Content">
         <div id="content-Item" class=" <?php echo $_SESSION["normalHeader"]?>">
             <form action="profile/register.php">
                 <input type="submit" value="Sign Up" id="navbar-button">

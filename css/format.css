@@ -1,3 +1,6 @@
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for all pages                                                     */
+/* ------------------------------------------------------------------------------------------------------------------ */
 * {
     /*font-family: "Roboto Light", serif;*/
     font-family: Tahoma, sans-serif;
@@ -21,7 +24,6 @@
 
 
 }
-
 
 .main {
     /*font: 16px "Roboto Light";*/
@@ -49,22 +51,23 @@ textarea {
     resize: vertical;
 }
 
+/* visibility for items with loggedIn status */
+.visible {
+    display: block;
+}
 
+.hidden {
+    display: none !important;
+}
 
+input[type=submit] {
+    margin-right: auto;
+    margin-left: auto;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-/* for index (homepage)*/
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for index (homepage)                                              */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 /*all elements in section*/
 #about-area {
@@ -138,6 +141,15 @@ p {
     cursor: pointer;
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for register page                                                 */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+.register {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto;
+}
 
 
 
@@ -145,17 +157,84 @@ p {
 
 
 
+.progressBar {
+    grid-row: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    list-style-type: none;
+    width: 60%;
+}
+#progressBar-Step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+#progressBar-Step:before {
+    --size: 1rem;
+    content: "";
+    display: block;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: darkgrey;
+    margin: 0 auto;
+}
+#progressBar-Step:not(:last-child):after {
+    content: "";
+    position: relative;
+    top: 25px;
+    left: calc(50% + 6px + 25px);
+    width: calc(100% - 12px - 50px);
+    height: 2px;
+    background-color: darkgrey;
+    order: -1;
+}
 
 
 
 
 
 
+.progressBar-Content {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+.progressBar-Content .entry {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.active:not(:last-child):after{
+    background-color: dodgerblue !important;
+}
+.active:before {
+    background-color: dodgerblue !important;
+}
+.inActive {
+    color: darkgray;
+}
+
+/* ----------------- formatting for smartphone resolution ----------------- */
+@media screen and (max-width: 760px) {
+    .progressBar {
+        width: max-content;
+    }
+    .progressBar-Content {
+        display: flex;
+        flex-direction: column;
+        width: 600px;
+    }
+}
 
 
 
 
 
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for profile pages                                                 */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 /* main grid in profile */
 .profile-Grid {
@@ -235,8 +314,6 @@ p {
 }
 #profile-Submit {
     grid-row: 2;
-    margin-right: auto;
-    margin-left: auto;
     width: 200px;
 }
 
@@ -318,20 +395,9 @@ p {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for closeToMe page                                                */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
     /* main grid in closeToMe */
 .closeToMe-Grid {
@@ -380,20 +446,9 @@ p {
     gap: 10px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                        for bands page                                              */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 /* events */
 #bands {
@@ -533,5 +588,3 @@ p {
 .big-text {
     font-weight: bold;
 }
-
-
