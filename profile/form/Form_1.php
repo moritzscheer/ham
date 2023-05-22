@@ -1,4 +1,4 @@
-<form method="post" class="progressBar-Content <?php echo $_SESSION["Step1"]?>">
+<form method="post" id="<?php echo $_SESSION["Step1"]?>" class="progressBar-Content">
     <label class="entry">E-Mail address:
         <input type="email" name="email" id="email" required>
     </label>

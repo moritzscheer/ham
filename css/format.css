@@ -50,12 +50,12 @@ textarea {
 }
 
 /* visibility for items with loggedIn status */
-.visible {
+#visible {
     display: block;
 }
 
-.hidden {
-    display: none !important;
+#hidden {
+    display: none;
 }
 
 input[type=submit] {
@@ -168,9 +168,8 @@ p {
 .progressBar {
     grid-row: 1;
     display: flex;
-    flex-wrap: nowrap;
     list-style-type: none;
-    width: 60%;
+    padding-left: 0;
 }
 #progressBar-Step {
     flex: 1;
@@ -207,6 +206,7 @@ p {
 .progressBar-Content {
     display: flex;
     flex-direction: column;
+    gap: 50px;
     width: 30%;
 }
 .progressBar-Content .entry {
@@ -226,7 +226,10 @@ p {
 /* ----------------- formatting for smartphone resolution ----------------- */
 @media screen and (max-width: 760px) {
     .progressBar {
-        width: max-content;
+        width: 100%;
+    }
+    #progressBar-Step {
+        width: min-content;
     }
     .progressBar-Content {
         display: flex;
@@ -248,7 +251,7 @@ p {
 .profile-Grid {
     grid-row: 1;
     display: grid;
-    grid-template-columns: 20% auto;
+    grid-template-columns: 25% auto;
     grid-template-rows: 600px;
     background-color: white;
     gap: 1px;
@@ -258,8 +261,9 @@ p {
 .profile-Navigation {
     grid-column: 1;
     display: grid;
-    grid-template-rows: max-content auto;
+    grid-template-rows: min-content auto;
     background-color: var(--black2);
+    padding: 20px;
 }
 .profile-Navigation form input {
     background-color: transparent;
@@ -309,13 +313,14 @@ p {
     flex-direction: column;
     gap: 30px;
     background-color: var(--black2);
+    padding: 20px;
 }
 #profile-Content-Change-Password {
     gap: 60px;
 }
 .entry {
     display: grid;
-    grid-template-columns: 20% auto;
+    grid-template-columns: 25% auto;
     grid-template-rows: auto;
     padding-left: 100px;
     padding-right: 100px;
@@ -328,13 +333,12 @@ p {
 /* ----------------- formatting for desktop resolution ----------------- */
 @media screen and (max-width: 760px) {
     .profile-Grid {
-        grid-template-rows: auto;
         grid-template-columns: min-content auto;
     }
     .entry {
         padding-left: 20px;
         padding-right: 20px;
-        grid-template-columns: 30% auto;
+        grid-template-columns: 40% 60%;
 
     }
     .profile-Navigation {
@@ -362,7 +366,7 @@ p {
         display: grid;
         grid-template-rows: max-content auto;
         grid-template-columns: auto;
-        margin: 20px;
+        margin: 10px;
     }
     .profile-Navigation {
         grid-row: 1;
@@ -370,7 +374,6 @@ p {
         display: grid;
         grid-template-columns: max-content auto;
         align-items: center;
-        padding: 20px;
     }
     .profile-Content {
         grid-row: 2;
@@ -384,22 +387,26 @@ p {
         grid-column: 1;
         grid-row: 1;
     }
+    .profile-Navigation .profile-Picture-Box, .profile-Navigation .profile-Picture {
+        width: 100px;
+        height: 100px;
+    }
     .profile-Links {
         grid-column: 2;
         grid-row: 1;
-        flex-direction: row;
         flex-wrap: nowrap;
         justify-content: space-evenly;
-        height: max-content;
-        padding: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
     .profile-Links input {
-        scale: 1.5;
+        font-size: 16px;
+        text-align: center;
     }
     .entry {
         grid-template-columns: 20% auto;
-        padding-left: 50px;
-        padding-right: 50px;
+        padding-left: 0;
+        padding-right: 0;
     }
 }
 

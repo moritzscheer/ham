@@ -4,7 +4,7 @@
 
     <h1 >profile</h1>
 
-    <div class="profile-Grid">
+    <section class="profile-Grid">
         <!-- account navigation -->
         <div class="profile-Navigation">
             <div class="profile-Picture-Box">
@@ -48,7 +48,7 @@
                 <label><?php echo $_SESSION["otherRemarks"]; ?></label><br>
             </label>
         </div>
-    </div>
+    </section>
 
 
 <?php include_once "../php/footer.php" ?>

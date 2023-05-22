@@ -4,7 +4,7 @@
 
     <h1>edit profile</h1>
 
-    <div class="profile-Grid">
+    <section class="profile-Grid">
 
         <!-- profile navigation -->
         <div class="profile-Navigation">
@@ -58,9 +58,9 @@
                 <textarea name="otherRemarks" rows="5">nothing more</textarea>
             </label>
 
-            <input type="submit" value="Change Password" id="profile-Submit">
+            <input type="submit" value="Save Changes" id="profile-Submit">
         </form>
-    </div>
+    </section>
 
 <?php include_once "../php/footer.php" ?>
 </body>

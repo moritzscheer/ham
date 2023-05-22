@@ -35,7 +35,7 @@ nav {
     display: inline-flex;
     justify-content: right;
     flex-wrap: nowrap;
-    gap: 40px;
+    gap: 20px;
     border-radius: 8px;
 }
 .logo {
@@ -48,7 +48,7 @@ nav {
 #navbar-button {
     background-color: transparent;
     height: 50px;
-    width: 150px;
+    width: 130px;
     border: transparent;
     cursor: pointer;
     /*font: bold 18px sans-serif;*/
@@ -60,12 +60,15 @@ nav {
     border-bottom: 2px solid gray;
 }
 .create {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.create input {
     /*background-image: linear-gradient(to right, var(--oceanblue) 0%, var(--darkblue)  51%, var(--oceanblue)  100%);*/
     --gradientDegree: 180deg;
     background-image: linear-gradient(var(--gradientDegree), var(--darkblue), var(--oceanblue));
 
     /*background-size: 200% auto;*/
-    margin: 0 30px 0 30px;
     color: var(--white);
     border-radius: 10px;
     cursor: pointer;
@@ -75,6 +78,27 @@ nav {
     text-decoration: none;
     font-size: larger;
 }
+.dropdownGeneral:hover{
+    rotate: 90deg;
+    transition: rotate 0.5s;
+}
+.dropdownProfile {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+#navbar-Profile {
+    display: grid;
+    grid-template-rows: auto auto;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    font-size: 12px;
+    text-align: right;
+    vertical-align: center;
+    align-items: center;
+}
+
+
 
 /* navigation bar dropdown content */
 .Header-Content {
@@ -85,35 +109,22 @@ nav {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     transition: 2s;
 }
-#content-Item form input{
+#content-general div form input, #content-profile div form input{
     width: 100%;
 }
-#navbar:has(#dropdownProfile:hover) ~ #content-profile, #content-profile:hover {
+#navbar:has(.dropdownProfile:hover) ~ #content-profile, #content-profile:hover {
     width: 20%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-left: auto;
 }
-#navbar:has(#dropdownGeneral:hover) ~ #content-general, #content-general:hover{
+#navbar:has(.dropdownGeneral:hover) ~ #content-general, #content-general:hover{
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-#dropdownGeneral:hover{
-    rotate: 90deg;
-    transition: rotate 0.5s;
-}
-#dropdownProfile {
-    display: grid;
-    grid-template-columns: auto auto;
-}
-#navbar-Profile {
-    display: grid;
-    grid-template-rows: auto auto;
-    place-items: center;
-    padding-right: 20px;
-}
+
 
 
 
@@ -144,10 +155,10 @@ nav {
         margin-right: auto;
     }
     #navbar {
-        gap: 30px;
+        gap: 10px;
         justify-content: right;
     }
-    #navbar:has(#dropdownProfile:hover) ~ #content-profile {
+    #navbar:has(.dropdownProfile:hover) ~ #content-profile {
         width: 100%;
     }
     #navbar-create-button {
@@ -158,17 +169,22 @@ nav {
         font-size: 24px;
         height: 80px;
     }
-    #dropdownProfile {
-        display: grid;
+    .dropdownProfile {
+        display: grid !important;
         grid-template-columns: auto auto;
+    }
+    .login {
+        display: none !important;
     }
     #navbar-Profile {
         display: grid;
         grid-template-rows: auto auto;
-        place-items: baseline;
-        padding-right: 20px;
+        padding-right: 10px;
     }
     .create {
+        display: none;
+    }
+    .hidden {
         display: none;
     }
 }
@@ -183,19 +199,23 @@ nav {
         font-size: 16px;
         height: 40px;
     }
-    #navbar:has(#dropdownProfile:hover) ~ #content-profile, #content-profile:hover {
+    #navbar:has(.dropdownProfile:hover) ~ #content-profile, #content-profile:hover {
         width: 100%;
+    }
+    .create {
+        display: none !important;
     }
 }
 
 /* ----------------- formatting for desktop resolution ----------------- */
 @media screen and (min-width: 760px) and (max-width: 1200px){
     #navbar {
-        gap: 20px;
+        gap: 10px;
 
     }
     .create {
-        margin: 0px;
+        padding-left: 0;
+        padding-right: 0;
     }
     #navbar-button {
         width: min-content;

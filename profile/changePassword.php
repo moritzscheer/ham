@@ -4,8 +4,7 @@
 
     <h1 >Change Password</h1>
 
-    <div class="profile-Grid">
-
+    <section class="profile-Grid">
         <!-- account navigation -->
         <div class="profile-Navigation">
             <div class="profile-Picture-Box">
@@ -30,7 +29,7 @@
 
             <input type="submit" value="Neues Passwort einstellen" id="profile-Submit">
         </form>
-    </div>
+    </section>
 <?php include_once "../php/footer.php" ?>
 </body>
 </html>

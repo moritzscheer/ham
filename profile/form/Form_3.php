@@ -1,4 +1,4 @@
-<form method="post" action="../index.php" class="progressBar-Content <?php echo $_SESSION["Step3"] ?>">
+<form method="post" action="../index.php" id="<?php echo $_SESSION["Step3"] ?>" class="progressBar-Content">
     <label class="entry">Type:
         <div id="type">
             <label>Musician

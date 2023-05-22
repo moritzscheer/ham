@@ -95,8 +95,6 @@ $_SESSION["members"] = htmlspecialchars($members);
 $_SESSION["otherRemarks"] = htmlspecialchars($otherRemarks);
 
 
-// login
-$_SESSION["loggedIn"] = 0;
 
 
 

@@ -1,6 +1,7 @@
 /*
 Stylesheet for login and register
 */
+/*
 body {
     display: grid;
     grid-template-rows: minmax(20vh, auto) 2fr minmax(20vh, auto);
@@ -8,6 +9,8 @@ body {
     height: 100vh;
     margin: 0;
 }
+ */
+
 
 /*for all input objects*/
 input {
