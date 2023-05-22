@@ -8,6 +8,8 @@ session_start();
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                     Different User Interface depending on if a user is logged in or not                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
+$_SESSION["loggedIn"] = 0;
+
 
 // switches the logged in status
 if (isset($_POST["login"])) {
