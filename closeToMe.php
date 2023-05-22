@@ -16,7 +16,7 @@
         <form method="post" class="closeToMe-Filter">
             <input type="text" name="search" placeholder="search" class="closeToMe-Search">
             <label class="closeToMe-Radius-Box">Radius
-                <input type="range" min="10" max="200" id="range" name="range" step="1" value="0" class="closeToMe-Radius">
+                <input type="range" min="10" max="200" id="range-radius" name="range" step="1" value="0" class="closeToMe-Radius">
             </label>
         </form>
 
