@@ -19,48 +19,48 @@
                 <section>
                     <label id="name" class="big-text">Name:</label> <br>
                     <input class="name-input" type="text" name="name"
-                           value="Neueröffnung Hornbach Bau- und Gartenmarkt Leipzig" required><br>
+                           value="Grand Opening of Hornbach Building and Garden Center Leipzig" required><br>
                 </section>
 
                 <section>
                     <div>
-                        <h3>Adresse</h3>
+                        <h3>Address</h3>
                     </div>
                     <div class="address-inputs">
                         <div class="street">
-                            <label id="street">Straße:</label> <br>
+                            <label id="street">Street:</label> <br>
                             <input type="text" name="street" value="Steinweg" required>
                         </div>
                        <div class="houseNr">
-                           <label id="houseNr">Hausnummer:</label><br>
+                           <label id="houseNr">House Number:</label><br>
                            <input type="text" name="houseNr" value="2" required>
                        </div>
                         <div class="postalCode">
-                            <label id="postalCode">PLZ:</label><br>
+                            <label id="postalCode">Postal Code:</label><br>
                             <input type="text" maxlength="5" minlength="0" name="postalCode" value="42275" pattern="[0-9]*"
                                    required>
                         </div>
                        <div class="city">
-                           <label id="city">Ort:</label><br>
+                           <label id="city">City:</label><br>
                            <input type="text" name="city" value="Wuppertal" required>
                        </div>
                     </div>
                 </section>
                 <section>
-                    <h3>Zeit</h3>
+                    <h3>Time</h3>
 
                     <div class="time-inputs">
                         <div>
-                            <label id="date">Datum:</label> <br>
+                            <label id="date">Date:</label> <br>
                             <input type="date" name="date" value="2023-04-12" required>
                         </div>
                         <div class="times">
                             <div>
-                                <label id="startTime">Startzeit:</label><br>
+                                <label id="startTime">Starting Time:</label><br>
                                 <input type="time" name="startTime" value="14:00" required>
                             </div>
                             <div>
-                                <label id="endTime">Endzeit:</label><br>
+                                <label id="endTime">Ending Time:</label><br>
                                 <input type="time" name="endTime" value="17:00" required>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                 </section>
 
                 <section class="requirements">
-                    <label id="requirements">Anforderungen:</label> <br>
+                    <label id="requirement">Requirements:</label> <br>
                     <textarea name="requirements" rows="5">Jazzband mit Repertoir für einen Nachmittag (3std)
     Kostenlose Verpflegung
     Bis 2000€

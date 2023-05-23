@@ -8,13 +8,13 @@
                     <br>
                     <span>Genre: Hard Rock</span>
                     <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                    <span>2 guitars</span>
                     <br>
-                    <span>1 Schlagzeug</span>
+                    <span>1 drum set</span>
                     <br>
-                    <span>1 Bass</span>
+                    <span>1 bass</span>
                     <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                    <span>Fee: 1480 € per evening</span>
                 </div>
             </div>
             <div class="item-m-details">
@@ -25,17 +25,17 @@
                 </div>
                 <div>
                     <p>
-                        Gesang: Steven Mageney <br>
-                        Leadgitarre: Scott Leach <br>
-                        Rhythmusgitarre:Peter Berger <br>
-                        Schlagzeug:Marcel Sardella <br>
-                        Bass:Cris Stone <br>
+                        Vocals: Steven Mageney <br>
+                        Lead guitar: Scott Leach <br>
+                        Rhythm guitar: Peter Berger <br>
+                        Drums: Marcel Sardella <br>
+                        Bass: Cris Stone <br>
                         <br>
                         info@crystal-ball.de <br>
                         <br>
-                        Gage: 1480 € pro Abend <br>
+                        Fee: 1480 € per evening <br>
                         <br>
-                        Gebiet: Niedersachsen und MVP <br>
+                        Region: Niedersachsen and Mecklenburg-Vorpommern (MVP) <br>
                     </p>
                 </div>
                 <div id="item-details-foot">
@@ -59,13 +59,13 @@
                     <br>
                     <span>Genre: Hard Rock</span>
                     <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                    <span>2 guitars</span>
                     <br>
-                    <span>1 Schlagzeug</span>
+                    <span>1 drum set</span>
                     <br>
-                    <span>1 Bass</span>
+                    <span>1 bass</span>
                     <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                    <span>Fee: 1480 € per evening</span>
                 </div>
             </div>
         </div>
@@ -77,13 +77,13 @@
                     <br>
                     <span>Genre: Hard Rock</span>
                     <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                    <span>2 guitars</span>
                     <br>
-                    <span>1 Schlagzeug</span>
+                    <span>1 drum set</span>
                     <br>
-                    <span>1 Bass</span>
+                    <span>1 bass</span>
                     <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                    <span>Fee: 1480 € per evening</span>
                 </div>
             </div>
         </div>
@@ -95,13 +95,13 @@
                     <br>
                     <span>Genre: Hard Rock</span>
                     <br>
-                    <span>2 Gitarrelkajhsdlkajsldkjalsdmasdaösdkaölskdölaksdölkaksljdlfjsldfjsldfssölklösskdöaksödlkaöskdöaslkdöalkdöl</span>
+                    <span>2 guitars</span>
                     <br>
-                    <span>1 Schlagzeug</span>
+                    <span>1 drum set</span>
                     <br>
-                    <span>1 Bass</span>
+                    <span>1 bass</span>
                     <br>
-                    <span>Gage: 1480 € pro Abend</span>
+                    <span>Fee: 1480 € per evening</span>
                 </div>
             </div>
         </div>
@@ -114,17 +114,17 @@
         </div>
         <div>
             <p>
-                Gesang: Steven Mageney <br>
-                Leadgitarre: Scott Leach <br>
-                Rhythmusgitarre:Peter Berger <br>
-                Schlagzeug:Marcel Sardella <br>
-                Bass:Cris Stone <br>
+                Vocals: Steven Mageney <br>
+                Lead guitar: Scott Leach <br>
+                Rhythm guitar: Peter Berger <br>
+                Drums: Marcel Sardella <br>
+                Bass: Cris Stone <br>
                 <br>
                 info@crystal-ball.de <br>
                 <br>
-                Gage: 1480 € pro Abend <br>
+                Fee: 1480 € per evening <br>
                 <br>
-                Gebiet: Niedersachsen und MVP <br>
+                Region: Niedersachsen and Mecklenburg-Vorpommern (MVP) <br>
             </p>
         </div>
         <div id="item-details-foot">
