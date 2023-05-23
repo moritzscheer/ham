@@ -2,7 +2,7 @@
     <div id="navbar">
         <div class="logo">
             <a href="index.php">
-                <img src="../images/logo/ham_white_small.png" alt="logo" height="50">
+                <img src="../../../resources/images/logo/ham_white_small.png" alt="logo" height="50">
             </a>
         </div>
 
@@ -52,11 +52,11 @@
                     <?php echo $_SESSION["type"]; ?>
                 </div>
             </div>
-            <img src="../images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
+            <img src="../../../resources/images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>
 
         <div class="mobile dropdown dropdownGeneral">
-            <img src="../images/header/menu.png" alt="profile" height="50">
+            <img src="../../../resources/images/header/menu.png" alt="profile" height="50">
         </div>
     </div>
 
@@ -113,5 +113,5 @@
             </form>
         </div>
     </div>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/header.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../../../resources/css/header.css">
 </nav>

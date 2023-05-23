@@ -1,9 +1,9 @@
 <?php $_SESSION["loggedIn"] = 0; ?>
-<?php include_once "php/head.php" ?>
+<?php include_once "../resources/php/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/index.css">
 </head>
 <body>
-<?php include_once "php/header.php" ?>
+<?php include_once "../resources/php/header.php" ?>
 
 <section id="about-area">
     <div id="about-picture">
