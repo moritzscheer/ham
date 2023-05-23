@@ -1,8 +1,8 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/closeToMe.css">
 </head>
 <body>
-<?php include_once "php/header.php" ?>
+<?php include_once "../php/navigation/header/header.php" ?>
 
     <h1> In meiner Nähe</h1>
 
@@ -28,11 +28,11 @@
         </div>
 
         <!-- List of Items (Bands or Events) -->
-        <?php include_once "itemList.php" ?>
+        <?php include_once "../php/itemList.php" ?>
 
     </div>
 
-    <?php include_once "php/footer.php" ?>
+<?php include_once "../php/navigation/footer/footer.php" ?>
 
 </body>
 

@@ -1,8 +1,8 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/posts.css">
 </head>
 <body>
-<?php include_once "php/header.php" ?>
+<?php include_once "../php/navigation/header/header.php" ?>
 
     <div id="bands">
         <div id="item-list-head">
@@ -16,10 +16,10 @@
         </div>
 
         <!-- List of Items (Bands or Events) -->
-        <?php include_once "itemList.php" ?>
+        <?php include_once "../php/itemList.php" ?>
 
     </div>
 
-<?php include_once "php/footer.php" ?>
+<?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

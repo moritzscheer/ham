@@ -1,8 +1,8 @@
-<?php include_once "../php/head.php" ?>
+<?php include_once "../php/head/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/login.css">
 </head>
 <body>
-<?php include_once "../php/header.php" ?>
+<?php include_once "../php/navigation/header/header.php" ?>
 
 
 <section class="login">

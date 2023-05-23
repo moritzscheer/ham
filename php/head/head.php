@@ -1,4 +1,4 @@
-<?php include("account.php");?>
+<?php include("../account.php");?>
 <!DOCTYPE html>
 <html lang="de">
 

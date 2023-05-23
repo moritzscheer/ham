@@ -1,8 +1,8 @@
-<?php include_once "../php/head.php" ?>
+<?php include_once "../php/head/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/profile.css">
 </head>
 <body>
-<?php include_once "../php/header.php" ?>
+<?php include_once "../php/navigation/header/header.php" ?>
 
     <h1 >profile</h1>
 
@@ -12,7 +12,7 @@
             <div class="profile-Picture-Box">
                 <img src="../resources/images/profile/custom.jpg" alt="profile picture" height="120" width="120" class="profile-Picture">
             </div>
-            <?php include_once "../profile/profileNavigation.php" ?>
+            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
         </div>
 
 
@@ -52,7 +52,6 @@
         </div>
     </section>
 
-
-<?php include_once "../php/footer.php" ?>
+<?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

@@ -1,8 +1,8 @@
-<?php include_once "../php/head.php" ?>
+<?php include_once "../php/head/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/profile.css">
 </head>
 <body>
-<?php include_once "../php/header.php" ?>
+<?php include_once "../php/navigation/header/header.php" ?>
 
     <h1>edit profile</h1>
 
@@ -16,7 +16,7 @@
                     <input type="file" name="profilePicture" id="image" style="display:none;" id="profile-Picture-Link"/>
                 </label>
             </div>
-            <?php include_once "../profile/profileNavigation.php" ?>
+            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
         </div>
 
         <!-- profile content -->
@@ -64,6 +64,6 @@
         </form>
     </section>
 
-<?php include_once "../php/footer.php" ?>
+<?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

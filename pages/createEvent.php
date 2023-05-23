@@ -1,8 +1,8 @@
-<?php include_once "php/head.php" ?>
+<?php include_once "../php/head/head.php" ?>
 <link rel="stylesheet" type="text/css" href="../resources/css/createEvent.css">
 </head>
 <body>
-<?php include_once "php/header.php" ?>
+<?php include_once "../php/navigation/header/header.php" ?>
 
     <div>
         <h1> Veranstaltung erstellen </h1>
@@ -82,6 +82,6 @@
         </div>
     </div>
 
-<?php include_once "php/footer.php" ?>
+<?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
