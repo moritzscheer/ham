@@ -1,0 +1,68 @@
+input {
+    border: 2px solid lightblue;
+    border-radius: 20px;
+    padding: 0 20px;
+    margin-top: 10px;
+    height: 30px;
+    width: -webkit-fill-available;
+}
+textarea {
+    border: 2px solid lightblue;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+
+.left-column {
+    display: grid;
+    padding-right: 10%;
+}
+
+.right-column {
+    display: grid;
+    width: 70%;
+}
+
+.name-input {
+    margin-top: 10px;
+    height: 30px;
+}
+.address-inputs {
+    display: grid;
+    grid-template-columns: 25% 25% 25%;
+    row-gap: 10px;
+    column-gap: 20px;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+                "street street houseNr"
+                "postalCode city city";
+}
+.time-inputs {
+    width: 50%;
+}
+.times {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 10px;
+    width: 100%;
+}
+.requirements {
+    display: grid;
+    width: 50%;
+    margin-top: 20px;
+}
+.submit {
+    width: 50%;
+}
+.street {
+    grid-area: street;
+}
+.houseNr {
+    grid-area: houseNr;
+}
+.postalCode {
+    grid-area: postalCode;
+}
+.city {
+    grid-area: city;
+}

@@ -1,4 +1,6 @@
 <?php include_once "../php/head.php" ?>
+<link rel="stylesheet" type="text/css" href="../resources/css/profile.css">
+</head>
 <body>
 <?php include_once "../php/header.php" ?>
 

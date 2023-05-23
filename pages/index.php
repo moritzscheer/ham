@@ -1,7 +1,8 @@
 <?php $_SESSION["loggedIn"] = 0; ?>
 <?php include_once "php/head.php" ?>
+<link rel="stylesheet" type="text/css" href="../resources/css/index.css">
+</head>
 <body>
-
 <?php include_once "php/header.php" ?>
 
 <section id="about-area">
