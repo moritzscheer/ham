@@ -9,7 +9,7 @@
         <!-- profile navigation -->
         <div class="profile-Navigation">
             <div class="profile-Picture-Box">
-                <img src="../images/profile/custom.jpg" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
+                <img src="../resources/images/profile/custom.jpg" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
                 <label id="profile-Picture-Link">change Image
                     <input type="file" name="profilePicture" id="image" style="display:none;" id="profile-Picture-Link"/>
                 </label>
@@ -18,7 +18,7 @@
         </div>
 
         <!-- profile content -->
-        <form method="post" action="../profile/profile.php" class="profile-Content">
+        <form method="post" action="profile.php" class="profile-Content">
             <label class="entry">Name:
                 <input type="text" name="name" value="Max">
             </label>

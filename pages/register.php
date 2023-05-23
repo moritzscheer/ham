@@ -16,9 +16,9 @@
                 <h4>More<br>Information</h4>
             </li>
         </ul>
-        <?php include_once "../profile/form/Form_1.php" ?>
-        <?php include_once "../profile/form/Form_2.php" ?>
-        <?php include_once "../profile/form/Form_3.php" ?>
+        <?php include_once "../profile/register_form/Form_1.php" ?>
+        <?php include_once "../profile/register_form/Form_2.php" ?>
+        <?php include_once "../profile/register_form/Form_3.php" ?>
     </section>
 </body>
 </html>

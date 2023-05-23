@@ -10,7 +10,7 @@
         <section class="left-column">
             <label id="bild" class="big-text">Bild</label>
             <input type="File" id="image" accept=".jpg,.png,.pdf">
-            <img src="images/event.jpg" alt="eventImage" height="200" width="200">
+            <img src="../resources/images/events/event.jpg" alt="eventImage" height="200" width="200">
             <label id="description" class="big-text">Beschreibung:</label>
             <textarea name="description" rows="5">Hornbach Bau- und Gartenmarkt eröffnet voraussichtlich im Frühjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.
             </textarea>

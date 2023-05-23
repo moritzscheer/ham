@@ -8,7 +8,8 @@ session_start();
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                     Different User Interface depending on if a user is logged in or not                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
-$_SESSION["loggedIn"] = 0;
+// todo: remove
+$_SESSION["loggedIn"] = 1;
 
 
 // switches the logged in status

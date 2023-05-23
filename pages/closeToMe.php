@@ -26,7 +26,7 @@
         </div>
 
         <!-- List of Items (Bands or Events) -->
-        <?php include_once "itemList.php"?>
+        <?php include_once "itemList.php" ?>
 
     </div>
 
