@@ -80,6 +80,7 @@
     flex-wrap: wrap;
     column-fill: auto;
     overflow-y: auto;
+    overflow-x: hidden;
     margin-right: 5%;
 }
 
@@ -91,7 +92,7 @@
 #item .item-head {
     width: 100%;
     display: grid;
-    grid-template-columns: 40% 55%;
+    grid-template-columns: 40% 58%;
     padding: 0px 5px 5px 5px;
     justify-items: stretch;
 }
