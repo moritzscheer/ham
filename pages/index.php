@@ -20,7 +20,7 @@
         </form>
     </div>
 </section>
-<link rel="stylesheet" type="text/css" media="screen" href="format.css">
+<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/format.css">
 <?php include_once "php/footer.php" ?>
 
 </body>

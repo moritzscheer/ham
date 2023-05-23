@@ -1,4 +1,7 @@
-/* for index (homepage)*/
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for index (homepage)                                              */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 
 /*all elements in section*/
 #about-area {
@@ -10,8 +13,23 @@
     padding-left: 50px;
     padding-right: 50px;
     margin-top: 20px;
-    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
+    /*background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
+    */
+    /*background-image: url("../images/background-img.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;*/
     border-radius: 20px;
+}
+@media only screen and (max-width: 850px) {
+    #about-area{
+        padding-top: 0%;
+        flex-direction: column;
+    }
+
+    #about-logo-img {
+        height: 70%;
+    }
 }
 
 /*div of logo-image*/
@@ -41,8 +59,8 @@
 #welcome-head {
     font-family: Tahoma, sans-serif;
     font-weight: bolder;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     font-size: 40px;
 }
 
@@ -50,7 +68,7 @@
 p {
     font-family: Tahoma, sans-serif;
     font-size: x-large;
-    margin: 0px;
+    margin: 0;
     line-height: 1.5;
 }
 
@@ -66,3 +84,4 @@ p {
     background-color: transparent;
     cursor: pointer;
 }
+
