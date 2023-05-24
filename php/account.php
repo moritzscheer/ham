@@ -1,63 +1,67 @@
 <?php
+
+// Set session parameters
 ini_set("session.use_cookies", 1);
 ini_set("session.use_only_cookies", 0);
 ini_set("session.use_trans_sid", 1);
+session_set_cookie_params(1);
+
+// Initialize the session.
 session_start();
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                     Different User Interface depending on if a user is logged in or not                            */
+/*                            Different Headers depending on if a user is logged in or not                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
-// todo: remove
-$_SESSION["loggedIn"] = 1;
-
+$_SESSION["normalHeader"] = "";
+$_SESSION["profileHeader"] = "";
 
 // switches the logged in status
 if (isset($_POST["login"])) {
-    $_SESSION["loggedIn"] = 1;
+    $_SESSION["loggedIn"] = true;
 } elseif (isset($_POST["logout"])) {
-    $_SESSION["loggedIn"] = 0;
-}
-
-// switches the header elements
-if( $_SESSION["loggedIn"] === 1 ){
-    $_SESSION["normalHeader"] = "hidden";
-    $_SESSION["profileHeader"] = "visible";
-} else{
+    unset($_SESSION["loggedIn"]);
     $_SESSION["normalHeader"] = "visible";
     $_SESSION["profileHeader"] = "hidden";
 }
+
+if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
+    $_SESSION["normalHeader"] = "hidden";
+    $_SESSION["profileHeader"] = "visible";
+}
+
+    //session_destroy();
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                          variables for the profile page                                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-$_SESSION["Step1"] = "visible";
-$_SESSION["Step2"] = "hidden";
-$_SESSION["Step3"] = "hidden";
-$_SESSION["status2"] = "inactive";
-$_SESSION["status3"] = "inactive";
+$_SESSION["step1"] = "visible";
+$_SESSION["step2"] = "hidden";
+$_SESSION["step3"] = "hidden";
+$_SESSION["progress2"] = "inactive";
+$_SESSION["progress3"] = "inactive";
 
 // switches the header elements
 if(isset($_POST["toStep1"])){
-    $_SESSION["Step1"] = "visible";
-    $_SESSION["Step2"] = "hidden";
-    $_SESSION["Step3"] = "hidden";
-    $_SESSION["status2"] = "inactive";
-    $_SESSION["status3"] = "inactive";
+    $_SESSION["step1"] = "visible";
+    $_SESSION["step2"] = "hidden";
+    $_SESSION["step3"] = "hidden";
+    $_SESSION["progress2"] = "inactive";
+    $_SESSION["progress3"] = "inactive";
 } elseif (isset($_POST["toStep2"])){
-    $_SESSION["Step1"] = "hidden";
-    $_SESSION["Step2"] = "visible";
-    $_SESSION["Step3"] = "hidden";
-    $_SESSION["status2"] = "active";
-    $_SESSION["status3"] = "inactive";
-
+    $_SESSION["step1"] = "hidden";
+    $_SESSION["step2"] = "visible";
+    $_SESSION["step3"] = "hidden";
+    $_SESSION["progress2"] = "active";
+    $_SESSION["progress3"] = "inactive";
 } elseif (isset($_POST["toStep3"])){
-    $_SESSION["Step1"] = "hidden";
-    $_SESSION["Step2"] = "hidden";
-    $_SESSION["Step3"] = "visible";
-    $_SESSION["status2"] = "active";
-    $_SESSION["status3"] = "active";
+    $_SESSION["step1"] = "hidden";
+    $_SESSION["step2"] = "hidden";
+    $_SESSION["step3"] = "visible";
+    $_SESSION["progress2"] = "active";
+    $_SESSION["progress3"] = "active";
 }
 
 

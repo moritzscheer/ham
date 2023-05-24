@@ -1,12 +1,11 @@
 /* ----------------- formatting for desktop resolution ----------------- */
-.desktop {
-    display: block;
+.visible {
+    display: block !important;
 }
 
-.mobile {
-    display: none;
+.hidden {
+    display: none !important;
 }
-
 
 
 

@@ -11,10 +11,10 @@
             <li id="progressBar-Step" class="active">
                 <h4>E-Mail and<br>Password</h4>
             </li>
-            <li id="progressBar-Step" class="<?php echo $_SESSION["status2"]?>">
+            <li id="progressBar-Step" class="<?php echo $_SESSION["progress2"]?>">
                 <h4>Personal<br>Data</h4>
             </li>
-            <li id="progressBar-Step" class="<?php echo $_SESSION["status3"]?>">
+            <li id="progressBar-Step" class="<?php echo $_SESSION["progress3"]?>">
                 <h4>More<br>Information</h4>
             </li>
         </ul>

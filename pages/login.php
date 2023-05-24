@@ -4,7 +4,6 @@
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
-
 <section class="login">
     <div class="loginElement">
         <form method="post">
