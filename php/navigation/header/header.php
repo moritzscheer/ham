@@ -44,13 +44,16 @@
 
         <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> dropdown dropdownProfile">
             <div id="navbar-Profile">
-                <div>
-                    <?php echo $_SESSION["name"]; ?>
-                    <?php echo $_SESSION["surname"]; ?>
-                </div>
-                <div>
-                    <?php echo $_SESSION["type"]; ?>
-                </div>
+                <?php
+                if(isset($_POST["login"]) || $_SESSION["name"] != null) {
+                    echo "<div>";
+                    echo $_SESSION["name"] . " " . $_SESSION["surname"];
+                    echo "</div>";
+                    echo "<div>";
+                    echo $_SESSION["type"];
+                    echo "</div>";
+                }
+                ?>
             </div>
             <img src="../../../resources/images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>

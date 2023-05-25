@@ -1,22 +1,77 @@
 <?php
 
-// Set session parameters
-ini_set("session.use_cookies", 1);
-ini_set("session.use_only_cookies", 0);
-ini_set("session.use_trans_sid", 1);
-ini_set("session.auto_start", 0);
-ini_set("session.cookie_lifetime", 0);
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                          reset for all account variables                                           */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
-// Initialize the session.
-session_start();
+
+// unsets all the session variables
+if(isset($_POST["reset"]) || isset($_POST["logout"])) {
+    unset($_SESSION["email"]);
+    unset($_SESSION["password"]);
+    unset($_SESSION["repeatPassword"]);
+    unset($_SESSION["name"]);
+    unset($_SESSION["surname"]);
+    unset($_SESSION["address"]);
+    unset($_SESSION["phoneNumber"]);
+    unset($_SESSION["type"]);
+    unset($_SESSION["genre"]);
+    unset($_SESSION["members"]);
+    unset($_SESSION["otherRemarks"]);
+}
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                            Different Headers depending on if a user is logged in or not                            */
+/*                                          variables for the account                                                 */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
+
+// initialize session variables
+$_SESSION["email"] = checkVariable("email");
+$_SESSION["password"] = checkVariable("password");
+$_SESSION["repeatPassword"] = checkVariable("repeatPassword");
+
+$_SESSION["name"] = checkVariable("name");
+$_SESSION["surname"] = checkVariable("surname");
+$_SESSION["address"] = checkVariable("address");
+$_SESSION["phoneNumber"] = checkVariable("phoneNumber");
+
+$_SESSION["type"] = checkVariable("type");
+$_SESSION["genre"] = checkVariable("genre");
+$_SESSION["members"] = checkVariable("members");
+$_SESSION["otherRemarks"] = checkVariable("otherRemarks");
+
+
+// for radio button
+$_SESSION["musician"] = "";
+$_SESSION["host"] = "";
+
+if($_SESSION["type"] === "musician") {
+    $_SESSION["musician"] = "checked";
+} elseif ($_SESSION["type"] === "host") {
+    $_SESSION["host"] = "checked";
+}
+
+
+// checks if a post variable was set then if a session variable is set, else the variable is set to an empty string
+function checkVariable($var): String {
+    if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
+        return htmlspecialchars($_POST["$var"]);
+    } elseif (isset($_SESSION["$var"]) && is_string($_SESSION["$var"])) {
+        return $_SESSION["$var"];
+    } else {
+        return "";
+    }
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                   change header elements on logged in status                                       */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 
 $_SESSION["normalHeader"] = "";
 $_SESSION["profileHeader"] = "";
-
 
 
 // switches the logged in status
@@ -37,52 +92,7 @@ if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
 
 
 
-    //session_destroy();
 
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                          variables for the profile page                                            */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-
-
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                          variables for the profile page                                            */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-
-// Form 1
-$email = (isset($_POST["email"]) && is_string($_POST["email"])) ? $_POST["email"] : "";
-$password = (isset($_POST["password"]) && is_string($_POST["password"])) ? $_POST["password"] : "";
-$repeatPassword = (isset($_POST["repeatPassword"]) && is_string($_POST["repeatPassword"])) ? $_POST["repeatPassword"] : "";
-
-$_SESSION["email"] = htmlspecialchars($email);
-$_SESSION["password"] = htmlentities($password);
-$_SESSION["repeatPassword"] = htmlentities($repeatPassword);
-
-
-// Form 2
-$name = (isset($_POST["name"]) && is_string($_POST["name"])) ? $_POST["name"] : "";
-$surname = (isset($_POST["surname"]) && is_string($_POST["surname"])) ? $_POST["surname"] : "";
-$phoneNumber = (isset($_POST["phoneNumber"]) && is_string($_POST["phoneNumber"])) ? $_POST["phoneNumber"] : "";
-
-$_SESSION["name"] = htmlspecialchars($name);
-$_SESSION["surname"] = htmlspecialchars($surname);
-$_SESSION["phoneNumber"] = htmlspecialchars($phoneNumber);
-
-
-// Form 3
-$genre = (isset($_POST["genre"]) && is_string($_POST["genre"])) ? $_POST["genre"] : "";
-$members = (isset($_POST["members"]) && is_string($_POST["members"])) ? $_POST["members"] : "";
-$otherRemarks = (isset($_POST["otherRemarks"]) && is_string($_POST["otherRemarks"])) ? $_POST["otherRemarks"] : "";
-$type = (isset($_POST["type"]) && is_string($_POST["type"])) ? $_POST["type"] : "";
-
-$_SESSION["type"] = htmlspecialchars($type);
-$_SESSION["genre"] = htmlspecialchars($genre);
-$_SESSION["members"] = htmlspecialchars($members);
-$_SESSION["otherRemarks"] = htmlspecialchars($otherRemarks);
 
 
 

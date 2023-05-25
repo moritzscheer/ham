@@ -1,6 +1,4 @@
 <?php include_once "../php/head/head.php" ?>
-<link rel="stylesheet" type="text/css" href="../resources/css/profile.css">
-</head>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
@@ -22,42 +20,42 @@
         <!-- profile content -->
         <form method="post" action="profile.php" class="profile-Content">
             <label class="entry">Name:
-                <input type="text" name="name" value="Max">
+                <input type="text" name="name" value="<?php echo $_SESSION["name"] ?>">
             </label>
 
             <label class="entry">Surname:
-                <input type="text" name="surname" value="Mustermann">
+                <input type="text" name="surname" value="<?php echo $_SESSION["surname"] ?>">
             </label>
 
             <label class="entry">E-Mail:
-                <input type="email" name="email" value="max.mustermann@uni-oldenburg.de">
+                <input type="email" name="email" value="<?php echo $_SESSION["address"] ?>">
             </label>
 
             <label class="entry">Phone Number:
-                <input type="tel" name="phoneNumber" value="0176 123456789">
+                <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["phoneNumber"] ?>">
             </label>
 
             <label class="entry">Type:
                 <div id="type">
                     <label>Musician
-                        <input type="radio" name="type" value="musician" checked>
+                        <input type="radio" name="type" value="musician" <?php echo $_SESSION["musician"] ?>>
                     </label>
                     <label>Host
-                        <input type="radio" name="type" value="host">
+                        <input type="radio" name="type" value="host" <?php echo $_SESSION["host"] ?>>
                     </label>
                 </div>
             </label>
 
             <label class="entry">Genre:
-                <input type="text" name="genre" value="rock">
+                <input type="text" name="genre" value="<?php echo $_SESSION["genre"] ?>">
             </label>
 
             <label class="entry">Members:
-                <input type="text" name="members" value="Holger, Artur, Moritz">
+                <input type="text" name="members" value="<?php echo $_SESSION["members"] ?>">
             </label>
 
             <label class="entry">Other Remarks:
-                <textarea name="otherRemarks" rows="5">nothing more</textarea>
+                <textarea name="otherRemarks" rows="5">value="<?php echo $_SESSION["otherRemarks"] ?>"</textarea>
             </label>
 
             <input type="submit" value="Save Changes" id="profile-Submit">
