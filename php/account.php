@@ -21,10 +21,8 @@ $_SESSION["profileHeader"] = "";
 
 // switches the logged in status
 if (isset($_POST["login"])) {
-    
     setcookie("loggedIn", true, time()+5);
     $_SESSION["loggedIn"] = true;
-
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = false;
 }
@@ -46,58 +44,7 @@ if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
 /*                                          variables for the profile page                                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-// initial variables
-$_SESSION["step1To3"] = "visible";
-$step1 = "hidden";
-$step2 = "hidden";
-$step3 = "hidden";
-$step4 = "hidden";
-$_SESSION["progress2"] = "inActive";
-$_SESSION["progress3"] = "inActive";
-$_SESSION["progress4"] = "inActive";
-$_SESSION["button1"] = "continue";
-$step = 1;
 
-if(isset($_POST["reset"])) {
-    unset($_SESSION["step"]);
-}
-
-// use Session variable if exits
-if(isset($_SESSION["step"])) {
-    $step = $_SESSION["step"];
-}
-
-// climber for $step
-if (isset($_POST["nextStep"])) {
-    $step++;
-    $_SESSION["step"] = $step;
-}
-
-// different states depending on the $step
-if($step == 1) {
-    $step1 = "visible";
-} elseif ($step == 2) {
-    $step2 = "visible";
-    $_SESSION["progress2"] = "active";
-}  elseif ($step == 3) {
-    $step3 = "visible";
-    $_SESSION["progress2"] = "active";
-    $_SESSION["progress3"] = "active";
-    $_SESSION["button"] = "Finish";
-} elseif($step == 4) {
-    $_SESSION["step1To3"] = "hidden";
-    $step4 = "visible";
-    $_SESSION["progress2"] = "active";
-    $_SESSION["progress3"] = "active";
-    $_SESSION["progress4"] = "active";
-
-    // todo set session or cookie timer
-    if (isset($_POST["yes"])) {
-        unset($_SESSION["step"]);
-    } elseif (isset($_POST["no"])) {
-        unset($_SESSION["step"]);
-    }
-}
 
 
 
