@@ -4,31 +4,40 @@
 ini_set("session.use_cookies", 1);
 ini_set("session.use_only_cookies", 0);
 ini_set("session.use_trans_sid", 1);
-session_set_cookie_params(1);
+ini_set("session.auto_start", 0);
+ini_set("session.cookie_lifetime", 0);
 
 // Initialize the session.
 session_start();
 
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                            Different Headers depending on if a user is logged in or not                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 $_SESSION["normalHeader"] = "";
 $_SESSION["profileHeader"] = "";
 
+
+
 // switches the logged in status
 if (isset($_POST["login"])) {
+    
+    setcookie("loggedIn", true, time()+5);
     $_SESSION["loggedIn"] = true;
+
 } elseif (isset($_POST["logout"])) {
-    unset($_SESSION["loggedIn"]);
-    $_SESSION["normalHeader"] = "visible";
-    $_SESSION["profileHeader"] = "hidden";
+    $_SESSION["loggedIn"] = false;
 }
 
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
     $_SESSION["normalHeader"] = "hidden";
     $_SESSION["profileHeader"] = "visible";
+} elseif (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === false) {
+    $_SESSION["normalHeader"] = "visible";
+    $_SESSION["profileHeader"] = "hidden";
 }
+
+
 
     //session_destroy();
 
@@ -37,32 +46,59 @@ if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
 /*                                          variables for the profile page                                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-$_SESSION["step1"] = "visible";
-$_SESSION["step2"] = "hidden";
-$_SESSION["step3"] = "hidden";
-$_SESSION["progress2"] = "inactive";
-$_SESSION["progress3"] = "inactive";
+// initial variables
+$_SESSION["step1To3"] = "visible";
+$step1 = "hidden";
+$step2 = "hidden";
+$step3 = "hidden";
+$step4 = "hidden";
+$_SESSION["progress2"] = "inActive";
+$_SESSION["progress3"] = "inActive";
+$_SESSION["progress4"] = "inActive";
+$_SESSION["button1"] = "continue";
+$step = 1;
 
-// switches the header elements
-if(isset($_POST["toStep1"])){
-    $_SESSION["step1"] = "visible";
-    $_SESSION["step2"] = "hidden";
-    $_SESSION["step3"] = "hidden";
-    $_SESSION["progress2"] = "inactive";
-    $_SESSION["progress3"] = "inactive";
-} elseif (isset($_POST["toStep2"])){
-    $_SESSION["step1"] = "hidden";
-    $_SESSION["step2"] = "visible";
-    $_SESSION["step3"] = "hidden";
+if(isset($_POST["reset"])) {
+    unset($_SESSION["step"]);
+}
+
+// use Session variable if exits
+if(isset($_SESSION["step"])) {
+    $step = $_SESSION["step"];
+}
+
+// climber for $step
+if (isset($_POST["nextStep"])) {
+    $step++;
+    $_SESSION["step"] = $step;
+}
+
+// different states depending on the $step
+if($step == 1) {
+    $step1 = "visible";
+} elseif ($step == 2) {
+    $step2 = "visible";
     $_SESSION["progress2"] = "active";
-    $_SESSION["progress3"] = "inactive";
-} elseif (isset($_POST["toStep3"])){
-    $_SESSION["step1"] = "hidden";
-    $_SESSION["step2"] = "hidden";
-    $_SESSION["step3"] = "visible";
+}  elseif ($step == 3) {
+    $step3 = "visible";
     $_SESSION["progress2"] = "active";
     $_SESSION["progress3"] = "active";
+    $_SESSION["button"] = "Finish";
+} elseif($step == 4) {
+    $_SESSION["step1To3"] = "hidden";
+    $step4 = "visible";
+    $_SESSION["progress2"] = "active";
+    $_SESSION["progress3"] = "active";
+    $_SESSION["progress4"] = "active";
+
+    // todo set session or cookie timer
+    if (isset($_POST["yes"])) {
+        unset($_SESSION["step"]);
+    } elseif (isset($_POST["no"])) {
+        unset($_SESSION["step"]);
+    }
 }
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */

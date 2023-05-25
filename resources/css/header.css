@@ -7,7 +7,14 @@
     display: none !important;
 }
 
+/* visibility for items with loggedIn status */
+#desktop {
+    display: block;
+}
 
+#mobile {
+    display: none;
+}
 
 
 
@@ -131,10 +138,10 @@ nav {
 
 /* ----------------- formatting for smartphone resolution ----------------- */
 @media screen and (max-width: 768px) {
-    .desktop {
+    #desktop {
         display: none;
     }
-    .mobile {
+    #mobile {
         display: block;
     }
     nav {
@@ -174,12 +181,6 @@ nav {
         display: grid;
         grid-template-rows: auto auto;
         padding-right: 10px;
-    }
-    .create {
-        display: none;
-    }
-    .hidden {
-        display: none;
     }
     nav img {
         height: 50px;

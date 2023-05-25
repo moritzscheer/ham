@@ -1,17 +1,17 @@
 <div class="profile-Links">
-    <form action="../../../pages/editProfile.php">
+    <form method="post" action="editProfile.php">
         <input type="submit" value="Edit Profile">
     </form>
-    <form action="../../../pages/index.php">
-        <input type="submit" value="Log-out" name="logout">
-    </form>
-    <form action="../../../pages/changePassword.php">
+
+    <form method="post" action="changePassword.php">
         <input type="submit" value="Change Password">
     </form>
-    <form action="../../../pages/index.php">
-        <input type="submit" value="Delete Account">
+
+    <form method="post" action="index.php">
+        <input type="submit" name="logout" value="Log-out">
+    </form>
+    
+    <form method="post" action="index.php">
+        <input type="submit" name="logout" value="Delete Account">
     </form>
 </div>
-<style itemscope lang="css">
-
-</style>

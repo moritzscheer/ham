@@ -4,6 +4,8 @@
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
+    <h1>Events</h1>
+
     <div id="bands">
         <div id="item-list-head">
             <h2>Events</h2>

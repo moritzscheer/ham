@@ -49,15 +49,6 @@ textarea {
     resize: vertical;
 }
 
-/* visibility for items with loggedIn status */
-#visible {
-    display: block;
-}
-
-#hidden {
-    display: none;
-}
-
 input[type=submit] {
     margin-right: auto;
     margin-left: auto;

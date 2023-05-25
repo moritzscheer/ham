@@ -5,44 +5,44 @@
                 <img src="../../../resources/images/logo/ham_white_small.png" alt="logo" height="50">
             </a>
         </div>
-        <p>Current session ID: <?php echo session_id(); ?></p>
-        <div id="visible">
+
+        <div id="desktop">
             <form action="bands.php">
                 <input type="submit" value="Bands" id="navbar-button">
             </form>
         </div>
 
-        <div id="visible">
+        <div id="desktop">
             <form action="events.php">
                 <input type="submit" value="Events" id="navbar-button">
             </form>
         </div>
 
-        <div id="visible">
+        <div id="desktop">
             <form action="closeToMe.php">
                 <input type="submit" value="Close to Me" id="navbar-button">
             </form>
         </div>
 
-        <div id="hidden" class="<?php echo $_SESSION["profileHeader"]?> create">
+        <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> create">
             <form action="createEvent.php">
                 <input type="submit" value="create" id="navbar-button">
             </form>
         </div>
 
-        <div id="visible" class="<?php echo $_SESSION["normalHeader"]?> login">
-            <form action="register.php">
-                <input type="submit" value="Sign Up" id="navbar-button">
+        <div id="desktop" class="<?php echo $_SESSION["normalHeader"]?> login">
+            <form action="register.php" method="post">
+                <input type="submit" value="Sign Up" id="navbar-button" name="reset">
             </form>
         </div>
 
-        <div id="visible" class="<?php echo $_SESSION["normalHeader"]?> login">
+        <div id="desktop" class="<?php echo $_SESSION["normalHeader"]?> login">
             <form action="login.php">
-                <input type="submit" value="Log-In" id="navbar-button">
+                <input type="submit" value="Log-In" id="navbar-button" name="reset">
             </form>
         </div>
 
-        <div id="hidden" class="<?php echo $_SESSION["profileHeader"]?> dropdown dropdownProfile">
+        <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> dropdown dropdownProfile">
             <div id="navbar-Profile">
                 <div>
                     <?php echo $_SESSION["name"]; ?>
@@ -55,7 +55,7 @@
             <img src="../../../resources/images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>
 
-        <div class="hidden dropdown dropdownGeneral">
+        <div id="mobile" class="dropdown dropdownGeneral">
             <img src="../../../resources/images/header/menu.png" alt="profile" height="50">
         </div>
     </div>
@@ -81,7 +81,7 @@
             </form>
         </div>
 
-        <div class="<?php echo $_SESSION["profileHeader"]?>>
+        <div id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <form action="createEvent.php"">
                 <input type="submit" value="create" id="navbar-create-button">
             </form>
@@ -101,13 +101,13 @@
             </form>
         </div>
 
-        <div class="<?php echo $_SESSION["profileHeader"]?>">
+        <div id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <form action="profile.php" id="navbar-Item">
                 <input type="submit" value="Profile" id="navbar-button">
             </form>
         </div>
 
-        <div class="<?php echo $_SESSION["profileHeader"]?>">
+        <div id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <form action="index.php" method="post" id="navbar-Item">
                 <input type="submit" value="Log-out" id="navbar-button" name="logout">
             </form>

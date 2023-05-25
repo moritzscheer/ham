@@ -13,7 +13,7 @@
             <div class="profile-Picture-Box">
                 <img src="../resources/images/profile/custom.jpg" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
                 <label id="profile-Picture-Link">change Image
-                    <input type="file" name="profilePicture" id="image" style="display:none;" id="profile-Picture-Link"/>
+                    <input type="file" name="profilePicture" style="display:none;" id="profile-Picture-Link"/>
                 </label>
             </div>
             <?php include_once "../php/navigation/profile/profileNavigation.php" ?>

@@ -109,7 +109,7 @@
 
 
 /* ----------------- formatting for tablet resolution ----------------- */
-@media screen and (min-device-width: 760px) and (max-device-width: 1200px) {
+@media screen and (min-width: 760px) and (max-width: 1200px) {
     .entry {
         padding-left: 50px;
         padding-right: 50px;
@@ -117,7 +117,7 @@
 }
 
 /* ----------------- formatting for smartphone resolution ----------------- */
-@media screen and (max-device-width: 760px) {
+@media screen and (max-width: 760px) {
     .profile-Grid {
         display: grid;
         grid-template-rows: max-content auto;
@@ -128,7 +128,7 @@
         grid-row: 1;
         grid-column: 1 / span 2;
         display: grid;
-        grid-template-columns: max-content auto;
+        grid-template-rows: max-content auto;
         align-items: center;
     }
     .profile-Content {
@@ -140,7 +140,6 @@
         padding-bottom: 50px;
     }
     .profile-Picture-Box {
-        grid-column: 1;
         grid-row: 1;
     }
     .profile-Navigation .profile-Picture-Box, .profile-Navigation .profile-Picture {
@@ -148,8 +147,7 @@
         height: 100px;
     }
     .profile-Links {
-        grid-column: 2;
-        grid-row: 1;
+        grid-row: 2;
         flex-wrap: nowrap;
         justify-content: space-evenly;
         padding-top: 20px;
