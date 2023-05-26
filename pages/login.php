@@ -19,6 +19,13 @@
         </form>
     </div>
     <div class="loginElement">
+        <form method="post">
+            <label>Stay Logged In?
+                <input type="checkbox" id="stayLoggedIn" name="login">
+            </label>
+        </form>
+    </div>
+    <div class="loginElement">
         <form method="post" action="index.php">
             <input type="submit" id="loginSubmit" name="login" value="Login">
         </form>

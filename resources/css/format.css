@@ -55,6 +55,23 @@ input[type=submit] {
 }
 
 
+/* visibility classes */
+.visible {
+    display: grid !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* visibility id's */
+#visible {
+    display: block;
+}
+
+#hidden {
+    display: none !important;
+}
 
 
 

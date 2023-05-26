@@ -1,13 +1,6 @@
-/* ----------------- formatting for desktop resolution ----------------- */
-.visible {
-    display: block !important;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* visibility for items with loggedIn status */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                  for header                                                        */
+/* ------------------------------------------------------------------------------------------------------------------ */
 #desktop {
     display: block;
 }
@@ -18,19 +11,13 @@
 
 
 
-
-
-
-
-
-
 /* navigation bar */
 nav {
     display: grid;
     gap: 0;
     grid-template-rows: min-content min-content;
     grid-template-columns: auto;
-    margin: 30px 3% 10px 3%;
+    margin: 30px 3% 30px 3%;
     height: 55px;
     overflow: visible;
 }                       
@@ -148,10 +135,6 @@ nav {
         height: min-content;
         overflow: visible;
     }
-    nav img {
-        height: 80px;
-        width: auto;
-    }
     .logo {
         margin-right: auto;
     }
@@ -183,7 +166,7 @@ nav {
         padding-right: 10px;
     }
     nav img {
-        height: 50px;
+        height: 40px;
         width: auto;
     }
     #content-profile form input, #content-general form input{

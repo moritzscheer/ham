@@ -45,7 +45,7 @@
         <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> dropdown dropdownProfile">
             <div id="navbar-Profile">
                 <?php
-                if(isset($_POST["login"]) || $_SESSION["name"] != null) {
+                if(isset($_POST["login"]) && isset($_SESSION["name"])) {
                     echo "<div>";
                     echo $_SESSION["name"] . " " . $_SESSION["surname"];
                     echo "</div>";

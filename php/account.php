@@ -76,12 +76,12 @@ $_SESSION["profileHeader"] = "";
 
 // switches the logged in status
 if (isset($_POST["login"])) {
-    setcookie("loggedIn", true, time()+5);
     $_SESSION["loggedIn"] = true;
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = false;
 }
 
+// switches the header
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
     $_SESSION["normalHeader"] = "hidden";
     $_SESSION["profileHeader"] = "visible";
