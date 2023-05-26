@@ -21,7 +21,7 @@
                 <div id="item-details-title">
                     <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
                     <h2 id="item-details-name"> Chrystal Ball </h2>
-                    <button class="close-popup">&times;</button>
+                    <!-- <button class="close-popup">&times;</button> -->
                 </div>
                 <div>
                     <p>
@@ -112,7 +112,7 @@
             <h2 id="item-details-name"> Chrystal Ball </h2>
             <button class="close-popup">&times;</button>
         </div>
-        <div>
+        <div id="item-details-description">
             <p>
                 Vocals: Steven Mageney <br>
                 Lead guitar: Scott Leach <br>
