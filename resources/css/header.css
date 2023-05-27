@@ -135,9 +135,6 @@ nav {
         height: min-content;
         overflow: visible;
     }
-    .logo {
-        margin-right: auto;
-    }
     #navbar {
         gap: 10px;
         justify-content: right;
@@ -167,7 +164,7 @@ nav {
     }
     nav img {
         height: 40px;
-        width: 40px;
+        width: auto;
     }
     .profile-Picture {
         border-radius: 50%;
@@ -185,7 +182,7 @@ nav {
 }
 
 
-/* ----------------- formatting for desktop resolution ----------------- */
+/* ----------------- formatting for Tablet resolution ----------------- */
 @media screen and (min-width: 768px) and (max-width: 1200px){
     #navbar {
         gap: 10px;
