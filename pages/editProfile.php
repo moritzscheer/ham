@@ -11,10 +11,10 @@
             <form method="post" class="profile-Picture-Box" enctype="multipart/form-data">
                 <img src="<?php echo $_SESSION["profilePicture"]; ?>" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
                 <div id="profile-Picture-Link">
-                    <label >change Image:
-                        <input type="file" name="profilePicture">
+                    <label >Select Image
+                        <input type="file" name="profilePicture" accept=".jpg, .png, .jpeg">
                     </label>
-                    <input type="submit" value="Upload" name="submitProfilePicture" class="profile-Picture-Submit">
+                    <input type="submit" value="Upload"name="profilePicture" class="profile-Picture-Submit">
                 </div>
 
             </form>
@@ -24,6 +24,12 @@
 
         <!-- profile content -->
         <form method="post" action="profile.php" class="profile-Content">
+            <label class="entry">E-Mail:
+                <label><?php echo $_SESSION["email"]; ?></label>
+            </label>
+
+            <br>
+
             <label class="entry">Name:
                 <input type="text" name="name" value="<?php echo $_SESSION["name"] ?>">
             </label>
@@ -32,13 +38,15 @@
                 <input type="text" name="surname" value="<?php echo $_SESSION["surname"] ?>">
             </label>
 
-            <label class="entry">E-Mail:
-                <input type="email" name="email" value="<?php echo $_SESSION["address"] ?>">
+            <label class="entry">Address:
+                <input type="text" name="email" value="<?php echo $_SESSION["address"] ?>">
             </label>
 
             <label class="entry">Phone Number:
                 <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["phoneNumber"] ?>">
             </label>
+
+            <br>
 
             <label class="entry">Type:
                 <div id="type">
@@ -60,7 +68,7 @@
             </label>
 
             <label class="entry">Other Remarks:
-                <textarea name="otherRemarks" rows="5">value="<?php echo $_SESSION["otherRemarks"] ?>"</textarea>
+                <textarea name="otherRemarks" rows="5"><?php echo $_SESSION["otherRemarks"] ?></textarea>
             </label>
 
             <input type="submit" value="Save Changes" id="profile-Submit">

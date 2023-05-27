@@ -36,7 +36,7 @@
                 <input type="password" value="<?php echo $_SESSION["repeatPassword"] ?>" name="repeatPassword" id="repeatPassword" required>
             </label>
 
-            <div class="entry submit">
+            <div class="submit">
                 <a href="index.php">Cancel</a>
                 <input type="submit" value="Next Step" name="register">
             </div>
@@ -60,7 +60,7 @@
                 <input type="tel" value="<?php echo $_SESSION["phoneNumber"] ?>" name="phoneNumber" id="phoneNumber">
             </label>
 
-            <div class="entry submit">
+            <div class="submit">
                 <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
                 <input type="submit" value="Next Step">
             </div>
@@ -91,7 +91,7 @@
                 <textarea name="otherRemarks" rows="5"></textarea>
             </label>
 
-            <div class="entry submit">
+            <div class="submit">
                 <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
                 <input type="submit" value="Next Step">
             </div>

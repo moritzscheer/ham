@@ -16,6 +16,12 @@
 
         <!-- account information -->
         <div class="profile-Content">
+            <label class="entry">E-Mail:
+                <label><?php echo $_SESSION["email"]; ?></label>
+            </label>
+
+            <br>
+
             <label class="entry">Name:
                 <label><?php echo $_SESSION["name"]; ?></label>
             </label>
@@ -31,6 +37,8 @@
             <label class="entry">Phone Number:
                 <label><?php echo $_SESSION["phoneNumber"]; ?></label>
             </label>
+
+            <br>
 
             <label class="entry">Type:
                 <label><?php echo $_SESSION["type"]; ?></label>

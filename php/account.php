@@ -20,6 +20,7 @@ if(isset($_POST["reset"]) || isset($_POST["logout"])) {
     unset($_SESSION["genre"]);
     unset($_SESSION["members"]);
     unset($_SESSION["otherRemarks"]);
+    unset($_SESSION["profilePicture"]);
 }
 
 
@@ -153,60 +154,38 @@ function getLastUrl($var): String {
 
 
 
-$_SESSION["profilePicture"] = "../resources/images/profile/default.png";
+$_SESSION["profilePicture"] = (isset($_SESSION["profilePicture"])) ? $_SESSION["profilePicture"] : "../resources/images/profile/default.png";
 $_SESSION["error"] = "";
-
 
 if(isset($_POST["profilePicture"])) {
     try {
-        $_SESSION["error"] = "1234";
+        $errors= array();
+        $file_name = $_FILES["profilePicture"]["name"];
+        $file_size = $_FILES["profilePicture"]["size"];
+        $file_tmp = $_FILES["profilePicture"]["tmp_name"];
+        $file_type = $_FILES["profilePicture"]["type"];
+        $file_format = strtolower(pathinfo($_FILES["profilePicture"]['name'], PATHINFO_EXTENSION));
+        $expected_format = array("jpeg","jpg","png");
 
-        if (!isset($_FILES["profilePicture"]["error"]) || is_array($_FILES["profilePicture"]["error"])) {
-            throw new RuntimeException('Invalid parameters.');
+        // checking file format
+        if (!in_array($file_format, $expected_format)) {
+            throw new RuntimeException("invalid format");
         }
 
-        // Check the Files value
-        switch ($_FILES["profilePicture"]["error"]) {
-            case UPLOAD_ERR_OK:
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                throw new RuntimeException("No file sent.");
-            case UPLOAD_ERR_INI_SIZE:
-            case UPLOAD_ERR_FORM_SIZE:
-                throw new RuntimeException("Exceeded filesize limit.");
-            default:
-                throw new RuntimeException("Unknown errors.");
+        // checking image size
+        if ($file_size > 2000000) {
+            throw new RuntimeException("exceeds filesize limit");
         }
 
-        // Check the Files size
-        if ($_FILES["profilePicture"]["size"] > 1000000) {
-            throw new RuntimeException("Exceeded filesize limit.");
+        // moving file to dictionary
+        if (!move_uploaded_file($file_tmp,"../resources/images/profile/".$file_name)) {
+            throw new RuntimeException("failed to upload image");
         }
 
-        // Check MIME Type
-        $fInfo = new finfo(FILEINFO_MIME_TYPE);
-        if (false === $ext = array_search(
-                $fInfo -> file($_FILES["profilePicture"]["tmp_name"]),
-                array(
-                    "jpg" => "image/jpeg",
-                    "png" => "image/png",
-                ),
-                true
-            )) {
-            throw new RuntimeException("Invalid file format.");
-        }
-
-        // On this example, obtain safe unique name from its binary data.
-        if (!move_uploaded_file($_FILES["profilePicture"]["tmp_name"],
-            sprintf("../resources/images/profile/%s.%s", sha1_file($_FILES["profilePicture"]['tmp_name']), $ext))
-        ) {
-            throw new RuntimeException("Failed to move uploaded file.");
-        }
-
-        $_SESSION["profilePicture"] = "../resources/images/profile/custom.png";
-
+        $_SESSION["profilePicture"] = "../resources/images/profile/$file_name";
     } catch (RuntimeException $e) {
         $_SESSION["error"] = $e->getMessage();
+
     }
 }
 
