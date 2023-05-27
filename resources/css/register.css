@@ -83,15 +83,9 @@
     text-align: right;
     gap: 10px;
 }
-.submit {
-    display: grid;
-    grid-template-columns: auto auto;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    gap: 20px;
-}
-.register div input, .register a {
+.submit input, .submit a {
+    grid-column: 2;
+    grid-row: 1;
     border: 1px;
     border-radius: 2px;
     background-color: var(--grey);
@@ -100,6 +94,7 @@
     font-size: 16px;
     color: white;
     text-decoration-line: unset;
+    text-align: center;
 }
 #type input{
     width: 30px;
@@ -115,7 +110,9 @@
     border-radius: 20px;
     justify-content: space-evenly;
 }
-
+p {
+    text-align: center;
+}
 
 
 

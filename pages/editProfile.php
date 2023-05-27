@@ -8,13 +8,18 @@
 
         <!-- profile navigation -->
         <div class="profile-Navigation">
-            <div class="profile-Picture-Box">
-                <img src="../resources/images/profile/custom.jpg" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
-                <label id="profile-Picture-Link">change Image
-                    <input type="file" name="profilePicture" style="display:none;" id="profile-Picture-Link"/>
-                </label>
-            </div>
+            <form method="post" class="profile-Picture-Box" enctype="multipart/form-data">
+                <img src="<?php echo $_SESSION["profilePicture"]; ?>" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
+                <div id="profile-Picture-Link">
+                    <label >change Image:
+                        <input type="file" name="profilePicture">
+                    </label>
+                    <input type="submit" value="Upload" name="submitProfilePicture" class="profile-Picture-Submit">
+                </div>
+
+            </form>
             <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
+            <p><?php echo $_SESSION["error"]?></p>
         </div>
 
         <!-- profile content -->
