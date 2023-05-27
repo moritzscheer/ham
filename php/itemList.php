@@ -16,12 +16,13 @@
                     <br>
                     <span>Fee: 1480 € per evening</span>
                 </div>
+                <input type="checkbox" id="item-click">
             </div>
-            <div class="item-m-details">
+            <div id="item-m-details">
                 <div id="item-details-title">
                     <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
                     <h2 id="item-details-name"> Chrystal Ball </h2>
-                    <!-- <button class="close-popup">&times;</button> -->
+                    <button class="close-popup">&times;</button>
                 </div>
                 <div>
                     <p>
