@@ -77,7 +77,7 @@
 
             <section class="requirements">
                 <label id="requirement">Requirements: <br/>
-                    <textarea name="requirements" rows="5">Jazzband mit Repertoir für einen Nachmittag (3std)
+                    <textarea class="full-width" name="requirements" rows="5">Jazzband mit Repertoir für einen Nachmittag (3std)
     Kostenlose Verpflegung
     Bis 2000€
                 </textarea>
