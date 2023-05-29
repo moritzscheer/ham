@@ -47,19 +47,19 @@ $newEvent["requirements"] = "Jazzband mit Repertoir für einen Nachmittag (3std)
 
 
 if (isset($_POST["submit"])) {
-    $newEvent["image"] = checkVariable("image");
-    $newEvent["description"] = checkVariable("description");
-    $newEvent["name"] = checkVariable("name");
+    $newEvent["image"] = checkValue("image");
+    $newEvent["description"] = checkValue("description");
+    $newEvent["name"] = checkValue("name");
 
-    $newEvent["street"] = checkVariable("street");
-    $newEvent["houseNr"] = checkVariable("houseNr");
-    $newEvent["postalCode"] = checkVariable("postalCode");
-    $newEvent["city"] = checkVariable("city");
+    $newEvent["street"] = checkValue("street");
+    $newEvent["houseNr"] = checkValue("houseNr");
+    $newEvent["postalCode"] = checkValue("postalCode");
+    $newEvent["city"] = checkValue("city");
 
-    $newEvent["date"] = checkVariable("date");
-    $newEvent["startTime"] = checkVariable("startTime");
-    $newEvent["endTime"] = checkVariable("endTime");
-    $newEvent["requirements"] = checkVariable("requirements");
+    $newEvent["date"] = checkValue("date");
+    $newEvent["startTime"] = checkValue("startTime");
+    $newEvent["endTime"] = checkValue("endTime");
+    $newEvent["requirements"] = checkValue("requirements");
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -95,10 +95,17 @@ function writeEvent(): void
     global $xmlWriter;
     $xmlWriter->startElement('event');
 
-    $xmlWriter->startElement('street');
-    $xmlWriter->writeAttribute('waehrung', 'Euro');
-    $xmlWriter->text('4,80');
-    $xmlWriter->endElement();
+    writeElement('image');
+    writeElement('description');
+    writeElement('name');
+    writeElement('street');
+    writeElement('houseNr');
+    writeElement('postalCode');
+    writeElement('city');
+    writeElement('date');
+    writeElement('startTime');
+    writeElement('endTime');
+    writeElement('requirements');
     $xmlWriter->endElement();
 }
 
@@ -106,8 +113,18 @@ function writeElement($el)
 {
     global $xmlWriter;
     $xmlWriter->startElement($el);
-    $xmlWriter->text(checkVariable($el));
+    $xmlWriter->text(checkValue($el));
     $xmlWriter->endElement();
+}
+
+function checkValue($var): String {
+    if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
+        return htmlspecialchars($_POST["$var"]);
+    } elseif (isset($newEvent["$var"]) && is_string($newEvent["$var"])) {
+        return $newEvent["$var"];
+    } else {
+        return "";
+    }
 }
 
 
