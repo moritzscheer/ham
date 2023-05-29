@@ -17,6 +17,28 @@
  *
  *
  */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                              store                                                                 */
+/* ------------------------------------------------------------------------------------------------------------------ */
+global $newEvent;
+$newEvent = [];
+
+// dummy data
+
+$newEvent["image"] = '';
+$newEvent["description"] = 'Hornbach Bau- und Gartenmarkt eröffnet voraussichtlich im Frühjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.';
+$newEvent["name"] = "Hornbach Bau- und Gartenmarkt";
+$newEvent["street"] = "Steinweg";
+$newEvent["houseNr"] = 2;
+$newEvent["postalCode"] = 42275;
+$newEvent["city"] = "Wuppertal";
+
+$newEvent["date"] = "2023-04-12";
+$newEvent["startTime"] = "14:00";
+$newEvent["endTime"] = "17:00";
+$newEvent["requirements"] = "Jazzband mit Repertoir für einen Nachmittag (3std)
+    Kostenlose Verpflegung
+    Bis 2000€";
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -24,9 +46,31 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
+if (isset($_POST["submit"])) {
+    $newEvent["image"] = checkVariable("image");
+    $newEvent["description"] = checkVariable("description");
+    $newEvent["name"] = checkVariable("name");
+
+    $newEvent["street"] = checkVariable("street");
+    $newEvent["houseNr"] = checkVariable("houseNr");
+    $newEvent["postalCode"] = checkVariable("postalCode");
+    $newEvent["city"] = checkVariable("city");
+
+    $newEvent["date"] = checkVariable("date");
+    $newEvent["startTime"] = checkVariable("startTime");
+    $newEvent["endTime"] = checkVariable("endTime");
+    $newEvent["requirements"] = checkVariable("requirements");
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                              parser functions                                                             */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
 initialize();
 
-function initialize(): void {
+function initialize(): void
+{
     global $xmlWriter;
     $xmlWriter = new XMLWriter();
     $xmlWriter->openMemory();
@@ -37,7 +81,8 @@ function initialize(): void {
 
 }
 
-function close(): void {
+function close(): void
+{
     global $xmlWriter;
     $xmlWriter->endElement();
     $xmlWriter->endDocument();
@@ -45,7 +90,8 @@ function close(): void {
 }
 
 
-function writeEvent(): void {
+function writeEvent(): void
+{
     global $xmlWriter;
     $xmlWriter->startElement('event');
 
@@ -56,7 +102,8 @@ function writeEvent(): void {
     $xmlWriter->endElement();
 }
 
-function writeElement($el) {
+function writeElement($el)
+{
     global $xmlWriter;
     $xmlWriter->startElement($el);
     $xmlWriter->text(checkVariable($el));
@@ -64,13 +111,4 @@ function writeElement($el) {
 }
 
 
-function checkVariable($var): String {
-    if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
-        return htmlspecialchars($_POST["$var"]);
-    } elseif (isset($_SESSION["$var"]) && is_string($_SESSION["$var"])) {
-        return $_SESSION["$var"];
-    } else {
-        return "";
-    }
-}
 ?>
