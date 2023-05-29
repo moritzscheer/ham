@@ -102,6 +102,10 @@
     justify-items: stretch;
 }
 
+#item-click {
+    appearance: none;
+}
+
 #item-image {
     border-radius: 8px;
     object-fit: cover;
@@ -218,12 +222,7 @@
         display: none;
     }
 
-    /* show details on item click
-    #item:hover #item-m-details{
-        display: flex;
-    }*/
-
-
+    /*Show Item Details by clicking an Item */
     .item-head:has(input[type=checkbox]:checked) ~ #item-m-details {
         display: flex;
     }
@@ -261,7 +260,5 @@
         border: none;
         cursor: pointer;
     }
-
-
 
 }
