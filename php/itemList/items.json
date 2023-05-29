@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Chrystal Ball",
+    "type" : "musician",
+    "genre" : "Hard-Rock",
+    "members": ["Vocals: Steven Mageney", "Lead guitar: Scott Leach", "Rhythm guitar: Peter Berger", "Drums: Marcel Sardella", "Bass: Cris Stone"],
+    "costs" : "1480 € per evening",
+    "region" : "Niedersachsen and Mecklenburg-Vorpommern (MVP)",
+    "email" : "info@crystal-ball.de",
+    "links" : ["Keane:\n https://www.youtube.com/watch?v=xEHy0QwvAYE", "Styx \n https://www.youtube.com/watch?v=9b-i0XknSnM"]
+  },
+  {
+    "name": "Gogo Penguin",
+    "type" : "musician",
+    "genre" : "Jazz",
+    "members": ["Piano: Chris Illingworth", "Contrabass: Nick Blacka", "Drums: Jon Scott"],
+    "costs" : "1500 € per evening",
+    "region" : "England",
+    "email" : "kerstan@funkyflymusic.com",
+    "links" : ["Youtube-Channel:\n https://www.youtube.com/channel/UC-2EEGGKW0UFQN1sfz3Q34A"]
+  }
+]

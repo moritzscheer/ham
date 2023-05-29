@@ -2,7 +2,7 @@
     <section id="item-list">
         <div id="item">
             <label class="item-head">
-                <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -20,7 +20,7 @@
             </label>
             <div id="item-m-details">
                 <div id="item-details-title">
-                    <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
+                    <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
                     <h2 id="item-details-name"> Chrystal Ball </h2>
                     <!-- <button class="close-popup">&times;</button> -->
                 </div>
@@ -54,7 +54,7 @@
         </div>
         <div id="item">
             <div class="item-head">
-                <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -72,7 +72,7 @@
         </div>
         <div id="item">
             <div class="item-head">
-                <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -90,7 +90,7 @@
         </div>
         <div id="item">
             <div class="item-head">
-                <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
+                <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
                 <div id="item-description">
                     <span>Name: Chrystal Ball</span>
                     <br>
@@ -109,7 +109,7 @@
     </section>
     <section id="item-details">
         <div id="item-details-title">
-            <img id="item-image" src="../resources/images/bands/band.jpg" alt="bandImage"/>
+            <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
             <h2 id="item-details-name"> Chrystal Ball </h2>
             <button class="close-popup">&times;</button>
         </div>

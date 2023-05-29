@@ -16,7 +16,7 @@
         </div>
 
         <!-- List of Items (Bands or Events) -->
-        <?php include_once "../php/itemList.php" ?>
+        <?php include_once "../php/itemList/itemList.php" ?>
 
     <div class="footer-area">
         <?php include_once "../php/navigation/footer/footer.php" ?>
