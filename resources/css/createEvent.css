@@ -2,7 +2,7 @@ input {
     border: 2px solid lightblue;
     border-radius: 20px;
     padding: 0 20px;
-    margin-top: 10px;
+    margin: 10px 0;
     height: 30px;
     width: -webkit-fill-available;
 }
@@ -16,6 +16,11 @@ textarea {
 .left-column {
     display: grid;
     padding-right: 10%;
+}
+
+#create-event {
+    display: grid;
+    grid-template-columns: 30% 70%;
 }
 
 .right-column {
@@ -39,6 +44,9 @@ textarea {
 }
 .time-inputs {
     width: 50%;
+}
+.full-width {
+    width: 100%;
 }
 .times {
     display: grid;
@@ -65,4 +73,11 @@ textarea {
 }
 .city {
     grid-area: city;
+}
+
+@media screen and (max-width: 1000px) {
+    #create-event {
+        display: block;
+        grid-template-columns: 30% 70%;
+    }
 }
