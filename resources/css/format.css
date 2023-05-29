@@ -49,11 +49,6 @@ textarea {
     resize: vertical;
 }
 
-input[type=submit] {
-    margin-right: auto;
-    margin-left: auto;
-}
-
 
 /* visibility classes */
 .visible {
@@ -73,6 +68,9 @@ input[type=submit] {
     display: none !important;
 }
 
+.profile-Picture {
+    border-radius: 50%;
+}
 
 
 

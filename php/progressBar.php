@@ -1,37 +1,21 @@
 <?php
+global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                 initialize variables                                               */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-$step1 = "hidden";
-$step2 = "hidden";
-$step3 = "hidden";
-$step4 = "hidden";
+$step_1 = "hidden";
+$step_2 = "hidden";
+$step_3 = "hidden";
+$step_4 = "hidden";
 
-$_SESSION["progress2"] = "inActive";
-$_SESSION["progress3"] = "inActive";
-
-$_SESSION["musician"] = "";
-$_SESSION["host"] = "";
+$progress_2 = "inActive";
+$progress_3 = "inActive";
 
 $step = (isset($_GET["step"]) && is_string($_GET["step"])) ? $_GET["step"] : "1";
 
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                               functions to switch urls                                             */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-
-function getNextUrl($var): String {
-    $var++;
-    return "register.php?step=" . $var;
-}
-
-function getLastUrl($var): String {
-    $var--;
-    return "register.php?step=" . $var;
-}
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -42,18 +26,18 @@ function getLastUrl($var): String {
 if(!isset($_POST["cancel"])) {
     // different states depending on the $step
     if($step == 1) {
-        $step1 = "visible";
+        $step_1 = "visible";
     } elseif ($step == 2) {
-        $step2 = "visible";
-        $_SESSION["progress2"] = "active";
+        $step_2 = "visible";
+        $progress_2 = "active";
     }  elseif ($step == 3) {
-        $step3 = "visible";
-        $_SESSION["progress2"] = "active";
-        $_SESSION["progress3"] = "active";
+        $step_3 = "visible";
+        $progress_2 = "active";
+        $progress_3 = "active";
     } elseif($step == 4) {
-        $step4 = "visible";
-        $_SESSION["progress2"] = "active";
-        $_SESSION["progress3"] = "active";
+        $step_4 = "visible";
+        $progress_2 = "active";
+        $progress_3 = "active";
     }
 }
 

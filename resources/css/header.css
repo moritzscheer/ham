@@ -135,9 +135,6 @@ nav {
         height: min-content;
         overflow: visible;
     }
-    .logo {
-        margin-right: auto;
-    }
     #navbar {
         gap: 10px;
         justify-content: right;
@@ -169,6 +166,9 @@ nav {
         height: 40px;
         width: auto;
     }
+    .profile-Picture {
+        border-radius: 50%;
+    }
     #content-profile form input, #content-general form input{
         font-size: 16px;
         height: 40px;
@@ -182,7 +182,7 @@ nav {
 }
 
 
-/* ----------------- formatting for desktop resolution ----------------- */
+/* ----------------- formatting for Tablet resolution ----------------- */
 @media screen and (min-width: 768px) and (max-width: 1200px){
     #navbar {
         gap: 10px;

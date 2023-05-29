@@ -44,18 +44,9 @@
 
         <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> dropdown dropdownProfile">
             <div id="navbar-Profile">
-                <?php
-                if(isset($_POST["login"]) && isset($_SESSION["name"])) {
-                    echo "<div>";
-                    echo $_SESSION["name"] . " " . $_SESSION["surname"];
-                    echo "</div>";
-                    echo "<div>";
-                    echo $_SESSION["type"];
-                    echo "</div>";
-                }
-                ?>
+                <?php echo $_SESSION["profileHeaderBox"]; ?>
             </div>
-            <img src="../../../resources/images/profile/default.png" height="50" width="50" alt="profilePicture" class="profile-Picture">
+            <img src="<?php echo $_SESSION["profilePicture"]; ?>" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>
 
         <div id="mobile" class="dropdown dropdownGeneral">
@@ -93,8 +84,8 @@
 
     <div id="content-profile" class="Header-Content">
         <div class="<?php echo $_SESSION["normalHeader"]?>">
-            <form action="register.php">
-                <input type="submit" value="Sign Up" id="navbar-button">
+            <form action="register.php" method="post">
+                <input type="submit" value="Sign Up" id="navbar-button" name="reset">
             </form>
         </div>
 

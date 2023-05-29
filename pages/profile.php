@@ -8,7 +8,7 @@
         <!-- account navigation -->
         <div class="profile-Navigation">
             <div class="profile-Picture-Box">
-                <img src="../resources/images/profile/custom.jpg" alt="profile picture" height="120" width="120" class="profile-Picture">
+                <img src="<?php echo $_SESSION["profilePicture"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
             </div>
             <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
         </div>
@@ -16,6 +16,12 @@
 
         <!-- account information -->
         <div class="profile-Content">
+            <label class="entry">E-Mail:
+                <label><?php echo $_SESSION["email"]; ?></label>
+            </label>
+
+            <br>
+
             <label class="entry">Name:
                 <label><?php echo $_SESSION["name"]; ?></label>
             </label>
@@ -31,6 +37,8 @@
             <label class="entry">Phone Number:
                 <label><?php echo $_SESSION["phoneNumber"]; ?></label>
             </label>
+
+            <br>
 
             <label class="entry">Type:
                 <label><?php echo $_SESSION["type"]; ?></label>
