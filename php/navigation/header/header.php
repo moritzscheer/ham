@@ -7,7 +7,7 @@
         </div>
 
         <div id="desktop">
-            <form action="bands.php">
+            <form action="bands.php" method="get">
                 <input type="submit" value="Bands" id="navbar-button">
             </form>
         </div>
