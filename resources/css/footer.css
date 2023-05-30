@@ -13,6 +13,7 @@ footer {
 }
 
 a {
+    color: var(--grey);
     text-decoration: none;
 }
 
