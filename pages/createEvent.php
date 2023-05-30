@@ -9,7 +9,6 @@ global $newEvent;
     <h1> Create Event </h1>
     <form method="post" action="events.php">
         <div id="create-event">
-
             <section class="left-column">
                 <label id="bild" class="big-text">Bild:
                     <input type="File" id="image" accept=".jpg,.png,.pdf" value="<?php echo $newEvent["image"] ?>">

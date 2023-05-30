@@ -6,11 +6,14 @@
 .profile-Picture-Large-Box {
     height: 370px;
     width: 100%;
+    background:transparent;
 }
 .profile-Picture-Large {
     height: 400px;
     width: 100%;
     object-fit: cover;
+    background: transparent;
+    background: linear-gradient(top, rgba( 255, 255, 255, 255 ) 0%, rgba( 255, 255, 255, 1 ) 100% );
 }
 .profile-Picture-Large-Box div {
     display: none;
@@ -166,31 +169,20 @@ input[type=file] {
     width: 100%;
     height: auto;
 }
-#image1, #image2, #image3, #image4 {
-    display: grid;
+.newImage-Link {
+    background-color: white;
+    display: flex;
+    justify-content: space-evenly;
     place-items: center;
+    height: 30px;
+}
+.newImage-Link label, .newImage-Link input {
+    background-color: transparent;
+    border: 0;
+    color: black;
+
 }
 
-.image1-Link, .image2-Link, .image3-Link, .image4-Link {
-    display: none;
-}
-
-#image1 img:hover ~ .image1-Link, .image1-Link:hover {
-    display: block;
-    position: absolute;
-}
-#image2 img:hover ~ .image2-Link, .image2-Link:hover {
-    display: block;
-    position: absolute;
-}
-#image3 img:hover ~ .image3-Link, .image3-Link:hover {
-    display: block;
-    position: absolute;
-}
-#image4 img:hover ~ .image4-Link, .image4-Link:hover {
-    display: block;
-    position: absolute;
-}
 
 
 
@@ -216,6 +208,9 @@ input[type=file] {
 @media screen and (max-width: 766px) {
     .profile-Picture-Large, .profile-Picture-Large-Box {
         height: 200px;
+    }
+    .profile-Picture-Large-Box:hover > div{
+        top: 270px;
     }
     .profile-Grid {
         grid-template-columns: auto;
@@ -244,6 +239,9 @@ input[type=file] {
     .profile-Links input {
         font-size: 16px;
         text-align: center;
+    }
+    .profile-Content {
+        margin-bottom: 30px;
     }
     .entry {
         grid-template-columns: 140px auto;

@@ -27,8 +27,9 @@
                 <input type="password" id="password_new_2">
             </label>
 
-            <input type="submit" value="Neues Passwort einstellen" id="profile-Submit">
         </form>
+
+        <input type="submit" value="Neues Passwort einstellen" id="profile-Submit">
 
         <div id="uploaded-Images">
             <img src="" alt="could not load Image" height="120" width="120">
