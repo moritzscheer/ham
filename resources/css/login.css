@@ -1,56 +1,28 @@
-/*
-Stylesheet for login and register
-*/
-/*
-body {
-    display: grid;
-    grid-template-rows: minmax(20vh, auto) 2fr minmax(20vh, auto);
-    grid-template-columns: auto 2fr auto;
-    height: 100vh;
-    margin: 0;
-}
- */
 
-
-/*for all input objects*/
-input {
-    border: transparent;
-    outline: none;
-}
-
-/*email and password input for login and register*/
-input[type=email], input[type=password], input[type=text], input[type=submit] {
-    background-color: var(--lighterblue);
-    padding-left: 10px;
-    margin: 10px 20px 10px 20px;
-    height: 30px;
-    border-radius: 4px;
-    position: relative;
-}
-
-@media screen and (max-width: 1024px) {
-    body {
-        grid-template-columns: 5vh 2fr 5vh;
-    }
-}
 
 
 
 /*for login*/
+.login-view {
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
+
+}
 
 /*all login elements*/
-.login {
+.login-container {
     grid-area: 2 / 2;
     justify-self: center;
-
     display: flex;
     flex-direction: column;
     place-items: center;
-    width: auto;
-    height: 230px;
-    background-image: linear-gradient(to bottom, #e6feff, #e1feff, #dbfeff, #d6feff, #d0feff);
-
+    width: 35vh;
+    /*height: 230px;*/
+    height: auto;
     border-radius: 4px;
+    border: 2px solid var(--bluegrey);
 }
 
 /*Login Label*/
@@ -60,7 +32,47 @@ input[type=email], input[type=password], input[type=text], input[type=submit] {
     font-family: Tahoma, sans-serif;
     font-weight: bolder;
     font-size: 20px;
-    color: black;
+    color: var(--white);
+}
+
+/*for all input objects*/
+input {
+    border: transparent;
+    outline: none;
+}
+
+/*email and password input for login and register*/
+input[type=email], input[type=password], input[type=text], input[type=submit] {
+    background-color: var(--bluegrey);
+    padding-left: 10px;
+    margin: 10px 20px 10px 20px;
+    height: 30px;
+    border-radius: 4px;
+    position: relative;
+    color: var(--white);
+}
+
+input::placeholder{
+    color: var(--grey);
+}
+
+/*div of stay loggedin*/
+.staylogin {
+    place-self: center;
+    place-items: start;
+    margin-bottom: 20px;
+}
+
+/*label of stay loggin*/
+#stayLogin {
+    padding-right: 90px;
+    color: var(--white);
+    font-size: small;
+}
+
+/* checkbox of stay loggedin*/
+#stayLoggedIn {
+
 }
 
 /*login button*/
@@ -74,7 +86,7 @@ input[type=email], input[type=password], input[type=text], input[type=submit] {
     width: 180px;
     background-image: linear-gradient(to right bottom, #1ecf25, #22d939, #26e24a, #29ec5b, #2df66a);
     margin-top: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     box-sizing: content-box;
 }
 
@@ -117,7 +129,7 @@ input[type=email], input[type=password], input[type=text], input[type=submit] {
 
 /*labels in register*/
 label {
-    padding-left: 20px;
+
     color: #647c85;
 }
 
@@ -132,4 +144,10 @@ label {
     font-family: Tahoma, sans-serif;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+@media screen and (max-width: 800px) {
+   .login-view {
+
+   }
 }
