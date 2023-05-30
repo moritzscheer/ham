@@ -23,6 +23,7 @@
 global $newEvent;
 $newEvent = [];
 
+
 // dummy data
 
 $newEvent["image"] = '';
@@ -61,7 +62,6 @@ if (isset($_POST["submit"])) {
     $newEvent["endTime"] = checkValue("endTime");
     $newEvent["requirements"] = checkValue("requirements");
 }
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                              parser functions                                                             */
 /* ------------------------------------------------------------------------------------------------------------------ */

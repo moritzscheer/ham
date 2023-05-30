@@ -7,13 +7,13 @@
         </div>
 
         <div id="desktop">
-            <form action="bands.php">
+            <form action="bands.php?type=bands" method="post">
                 <input type="submit" value="Bands" id="navbar-button">
             </form>
         </div>
 
         <div id="desktop">
-            <form action="events.php">
+            <form action="events.php?type=events" method="post">
                 <input type="submit" value="Events" id="navbar-button">
             </form>
         </div>
