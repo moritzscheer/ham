@@ -1,13 +1,13 @@
 <?php include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php";
-include_once "../php/events.php";
+include_once "../php/itemList/items.php";
 global $newEvent;
 ?>
 
 <div>
     <h1> Create Event </h1>
-    <form method="post" action="events.php">
+    <form method="post" action="events.php?item=events">
         <div id="create-event">
             <section class="left-column">
                 <label id="bild" class="big-text">Bild:
@@ -22,7 +22,7 @@ global $newEvent;
             <div class="right-column">
                 <section>
                     <label id="name" class="big-text">Name:
-                        <input class="name-input" type="text" name="eventName"
+                        <input class="name-input" type="text" name="name"
                                value="<?php echo $newEvent["name"] ?>" required>
                     </label>
                 </section>
@@ -47,7 +47,7 @@ global $newEvent;
                         <div class="postalCode">
                             <label id="postalCode">Postal Code:
                                 <input type="text" maxlength="5" minlength="0"
-                                       name="<?php echo $newEvent["postalCode"] ?>" value="42275"
+                                       name="postalCode" value="<?php echo $newEvent["postalCode"] ?>"
                                        pattern="[0-9]*"
                                        required>
                             </label>

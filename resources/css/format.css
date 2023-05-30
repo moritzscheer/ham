@@ -73,6 +73,9 @@ textarea {
     border-radius: 50%;
     object-fit: cover;
 }
+.text-line-pre {
+    white-space: pre-line;
+}
 
 
 
