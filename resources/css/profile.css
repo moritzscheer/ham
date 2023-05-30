@@ -2,28 +2,38 @@
 /*                                                  for profile pages                                                 */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
-/* main grid in profile */
-.profile-Grid {
-    grid-row: 1;
-
-    display: grid;
-    grid-template-columns: 25% auto;
-    grid-template-rows: auto;
-    gap: 1px;
-
-    background-color: white;
+/* ------------------------ Image on top ------------------------ */
+.profile-Picture-Large-Box {
+    height: 370px;
+    width: 100%;
+}
+.profile-Picture-Large {
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+}
+.profile-Picture-Large-Box div {
+    display: none;
+}
+.profile-Picture-Large-Box:hover > div{
+    display: block;
+    position: absolute;
+    right: 16px;
+    top: 480px;
 }
 
-/* left side of the profile grid */
+
+
+
+
+
+/* ------------------------ profile navigation bar ------------------------ */
 .profile-Navigation {
-    grid-column: 1;
     display: grid;
-    grid-template-rows: min-content auto;
-    justify-content: center;
+    grid-template-columns: min-content auto;
     gap: 50px;
-    background-color: var(--black2);
-    padding-top: 20px;
+    padding: 0 0 10px 50px;
+    overflow: visible;
 }
 .profile-Navigation form input {
     background-color: transparent;
@@ -32,14 +42,18 @@
     /*font: bold 18px sans-serif;*/
     color: white;
     font-weight: bold;
+    font-size: 16px;
 }
 .profile-Picture-Box {
-    grid-row: 1;
+    grid-column: 1;
     border-radius: 50%;
     margin: auto;
     place-items: center;
     width: 120px;
     height: 120px;
+}
+.profile-Picture-Box img {
+    border: 1px white solid;
 }
 .profile-Picture-Box:hover > #editProfilePicture {
     filter: blur(5px);
@@ -59,90 +73,201 @@
     display: none;
 }
 .profile-Links {
-    grid-row: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-}
-
-/* right side of the profile grid */
-.profile-Content {
     grid-column: 2;
     display: flex;
-    flex-direction: column;
-    gap: 30px;
-    background-color: var(--black2);
+    align-items: center;
+    gap: 20px;
+    padding-top: 50px;
+}
+
+
+/* ------------------------ styling for profile-Grid (the main grid) ------------------------ */
+.profile-Grid {
+    display: grid;
+    grid-template-columns: auto 400px;
+    grid-template-rows: auto;
+    gap: 0.5vw;
+    margin: 0.5vw;
+}
+.profile-Content > div, #uploaded-Images, #loginData {
     padding: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: var(--black) 1px solid;
+}
+.profile-Grid h2 {
+    text-align: center;
+}
+#uploaded-Images, #about-me, #contact-Information, #loginData {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: min-content;
+}
+
+
+/* formatting for the Information box on the left */
+.profile-Content {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    gap: 0.5vw;
+}
+#loginData {
+    grid-row: 1 / span 2;
+}
+#contact-Information {
+    grid-row: 1;
+}
+#about-me {
+    grid-row: 2;
 }
 #profile-Content-Change-Password {
     gap: 60px;
 }
 .entry {
     display: grid;
-    grid-template-columns: 25% auto;
+    grid-template-columns: 160px auto;
     grid-template-rows: auto;
-    padding-left: 100px;
-    padding-right: 100px;
+    width: 100%;
+    margin: 10px 0 10px 0;
 }
-#profile-Submit {
-    grid-row: 2;
-    width: 200px;
+.entry input, .entry textarea{
+    border: 0;
+    background: transparent;
+    color: white;
+    border: 1px rgba(255, 255, 255, 0.1) solid;
+    padding: 5px;
+    border-radius: 5px;
+}
+input:-webkit-autofill {
+    -webkit-text-fill-color: white;
+    -webkit-font-feature-settings: unset;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 input[type=file] {
     display: none;
 }
-input[type=submit] {
-    margin-right: auto;
+#profile-Submit {
+    width: 200px;
     margin-left: auto;
+    margin-right: auto;
 }
 
 
-/* ----------------- formatting for tablet resolution ----------------- */
-@media screen and (min-width: 760px) and (max-width: 1200px) {
-    .entry {
-        padding-left: 50px;
-        padding-right: 50px;
+
+/* formatting for the image upload box on the right */
+#uploaded-Images {
+    grid-column: 2;
+    gap: 10px;
+    width: 100%;
+}
+#uploaded-Images img {
+    width: 100%;
+    height: auto;
+}
+#image1, #image2, #image3, #image4 {
+    display: grid;
+    place-items: center;
+}
+
+.image1-Link, .image2-Link, .image3-Link, .image4-Link {
+    display: none;
+}
+
+#image1 img:hover ~ .image1-Link, .image1-Link:hover {
+    display: block;
+    position: absolute;
+}
+#image2 img:hover ~ .image2-Link, .image2-Link:hover {
+    display: block;
+    position: absolute;
+}
+#image3 img:hover ~ .image3-Link, .image3-Link:hover {
+    display: block;
+    position: absolute;
+}
+#image4 img:hover ~ .image4-Link, .image4-Link:hover {
+    display: block;
+    position: absolute;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------- formatting for bigger resolution ----------------- */
+@media screen and (min-width: 766px) and (max-width: 1200px) {
+    .profile-Grid {
+        grid-template-columns: auto 300px;
     }
 }
+
 
 /* ----------------- formatting for smartphone resolution ----------------- */
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 766px) {
+    .profile-Picture-Large, .profile-Picture-Large-Box {
+        height: 200px;
+    }
     .profile-Grid {
-        display: grid;
-        grid-template-rows: max-content auto;
         grid-template-columns: auto;
-        margin: 10px;
+        grid-template-rows: auto auto auto auto;
+    }
+    .profile-Grid div {
+        padding: 10px;
+    }
+    .entry input {
+        height: min-content;
     }
     .profile-Navigation {
-        grid-row: 1;
-        grid-column: 1 / span 2;
-        display: grid;
+        grid-template-columns: auto;
         grid-template-rows: max-content auto;
         align-items: center;
-    }
-    .profile-Content {
-        grid-row: 2;
-        grid-column: 1 / span 2;
-        display: flex;
-        flex-direction: column;
-        padding-top: 50px;
-        padding-bottom: 50px;
+        background-color: var(--black2);
+        margin: 10% 30% 10% 30%;
+        padding: 0;
     }
     .profile-Links {
         grid-row: 2;
-        flex-wrap: nowrap;
-        justify-content: space-evenly;
-        padding-top: 20px;
-        padding-bottom: 20px;
+        grid-column: 1;
+        flex-direction: column;
+        padding: 0;
     }
     .profile-Links input {
         font-size: 16px;
         text-align: center;
     }
     .entry {
-        grid-template-columns: 30% auto;
-        padding-left: 0;
-        padding-right: 0;
+        grid-template-columns: 140px auto;
+    }
+    #uploaded-Images {
+        grid-row: 3;
+        grid-column: 1;
+    }
+    #profile-Submit {
+        grid-row: 4;
+    }
+}
+
+/* ----------------- formatting for bigger resolution ----------------- */
+@media screen and (min-width: 1800px) {
+    .profile-Grid {
+        width: 1780px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .profile-Navigation {
+        width: 1780px;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

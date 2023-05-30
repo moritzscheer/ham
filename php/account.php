@@ -20,7 +20,12 @@ if(isset($_POST["reset"]) || isset($_POST["logout"])) {
     unset($_SESSION["genre"]);
     unset($_SESSION["members"]);
     unset($_SESSION["otherRemarks"]);
-    unset($_SESSION["profilePicture"]);
+    unset($_SESSION["profile-Picture-Small"]);
+    unset($_SESSION["profile-Picture-Large"]);
+    unset($_SESSION["Image1"]);
+    unset($_SESSION["Image2"]);
+    unset($_SESSION["Image3"]);
+    unset($_SESSION["Image4"]);
 }
 
 
@@ -121,7 +126,7 @@ $_SESSION["profileHeaderBox"] = "";
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
     $_SESSION["normalHeader"] = "hidden";
     $_SESSION["profileHeader"] = "visible";
-    $_SESSION["profileHeaderBox"] = "<div>".$_SESSION["name"]." ".$_SESSION["surname"]."</div><div>".$_SESSION["type"]."</div>";
+    $_SESSION["profileHeaderBox"] = "<div id='name'>".$_SESSION["name"]." ".$_SESSION["surname"]."</div><div id='type'>".$_SESSION["type"]."</div>";
 } elseif (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === false) {
     $_SESSION["normalHeader"] = "visible";
     $_SESSION["profileHeader"] = "hidden";
@@ -149,22 +154,43 @@ function getLastUrl($var): String {
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                          profile Picture verification                                              */
+/*                                          Image verification                                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
 
-$_SESSION["profilePicture"] = (isset($_SESSION["profilePicture"])) ? $_SESSION["profilePicture"] : "../resources/images/profile/default.png";
+$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/defaultSmall.png";
+$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/defaultLarge.jpeg";
+$_SESSION["Image1"] = (isset($_SESSION["Image1"])) ? $_SESSION["Image1"] : "../resources/images/profile/imagePlaceholder.jpeg";
+$_SESSION["Image2"] = (isset($_SESSION["Image2"])) ? $_SESSION["Image2"] : "../resources/images/profile/imagePlaceholder.jpeg";
+$_SESSION["Image3"] = (isset($_SESSION["Image3"])) ? $_SESSION["Image3"] : "../resources/images/profile/imagePlaceholder.jpeg";
+$_SESSION["Image4"] = (isset($_SESSION["Image4"])) ? $_SESSION["Image4"] : "../resources/images/profile/imagePlaceholder.jpeg";
+
+
+
+
 $_SESSION["error"] = "";
 
-if(isset($_POST["profilePicture"])) {
+if(isset($_POST["profile-Picture-Small"])) {
+    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/".verifyImage("profile-Picture-Small");
+} elseif(isset($_POST["profile-Picture-Large"])) {
+    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/".verifyImage("profile-Picture-Large");
+} elseif(isset($_POST["Image1"])) {
+    $_SESSION["Image1"] = "../resources/images/profile/".verifyImage("Image1");
+} elseif(isset($_POST["Image2"])) {
+    $_SESSION["Image2"] = "../resources/images/profile/".verifyImage("Image2");
+} elseif(isset($_POST["Image3"])) {
+    $_SESSION["Image3"] = "../resources/images/profile/".verifyImage("Image3");
+} elseif(isset($_POST["Image4"])) {
+    $_SESSION["Image4"] = "../resources/images/profile/".verifyImage("Image4");
+}
+
+function verifyImage($name): String {
     try {
-        $errors= array();
-        $file_name = $_FILES["profilePicture"]["name"];
-        $file_size = $_FILES["profilePicture"]["size"];
-        $file_tmp = $_FILES["profilePicture"]["tmp_name"];
-        $file_type = $_FILES["profilePicture"]["type"];
-        $file_format = strtolower(pathinfo($_FILES["profilePicture"]['name'], PATHINFO_EXTENSION));
+        $file_name = $_FILES["$name"]["name"];
+        $file_size = $_FILES["$name"]["size"];
+        $file_tmp = $_FILES["$name"]["tmp_name"];
+        $file_format = strtolower(pathinfo($_FILES["$name"]["name"], PATHINFO_EXTENSION));
         $expected_format = array("jpeg","jpg","png");
 
         // checking file format
@@ -182,12 +208,14 @@ if(isset($_POST["profilePicture"])) {
             throw new RuntimeException("failed to upload image");
         }
 
-        $_SESSION["profilePicture"] = "../resources/images/profile/$file_name";
+        return $file_name;
     } catch (RuntimeException $e) {
         $_SESSION["error"] = $e->getMessage();
-
+        return "";
     }
 }
+
+
 
 
 

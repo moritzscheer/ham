@@ -25,15 +25,15 @@
         <form method="post" id="<?php echo $step_1 ?>" class="progressBar-Content">
             <?php echo $error_message ?>
             <label class="entry">* E-Mail address:
-                <input type="email" value="<?php echo $_SESSION["email"] ?>" name="email" id="email" required>
+                <input type="email" value="<?php echo $_SESSION["email"] ?>" name="email">
             </label>
 
             <label class="entry">* Enter Password:
-                <input type="password" value="<?php echo $_SESSION["password"] ?>" name="password" id="password" required>
+                <input type="password" value="<?php echo $_SESSION["password"] ?>" name="password">
             </label>
 
             <label class="entry">* Repeat Password:
-                <input type="password" value="<?php echo $_SESSION["repeatPassword"] ?>" name="repeatPassword" id="repeatPassword" required>
+                <input type="password" value="<?php echo $_SESSION["repeatPassword"] ?>" name="repeatPassword"required>
             </label>
 
             <div class="submit">
@@ -45,19 +45,19 @@
 
         <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_2 ?>" class="progressBar-Content">
             <label class="entry">* Name:
-                <input type="text" value="<?php echo $_SESSION["name"] ?>" name="name" id="name" required>
+                <input type="text" value="<?php echo $_SESSION["name"] ?>" name="name"required>
             </label>
 
             <label class="entry">* Surname:
-                <input type="text" value="<?php echo $_SESSION["surname"] ?>" name="surname" id="surname" required>
+                <input type="text" value="<?php echo $_SESSION["surname"] ?>" name="surname" required>
             </label>
 
             <label class="entry">Address:
-                <input type="text" value="<?php echo $_SESSION["address"] ?>" name="address" id="address">
+                <input type="text" value="<?php echo $_SESSION["address"] ?>" name="address">
             </label>
 
             <label class="entry">Phone Number:
-                <input type="tel" value="<?php echo $_SESSION["phoneNumber"] ?>" name="phoneNumber" id="phoneNumber">
+                <input type="tel" value="<?php echo $_SESSION["phoneNumber"] ?>" name="phoneNumber">
             </label>
 
             <div class="submit">
@@ -71,10 +71,10 @@
             <label class="entry">* Type:
                 <div id="type">
                     <label>Musician
-                        <input type="radio" name="type" value="musician" required>
+                        <input type="radio" name="type" value="Musician" required>
                     </label>
                     <label>Host
-                        <input type="radio" name="type" value="host" required>
+                        <input type="radio" name="type" value="Host" required>
                     </label>
                 </div>
             </label>

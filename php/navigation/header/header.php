@@ -46,7 +46,7 @@
             <div id="navbar-Profile">
                 <?php echo $_SESSION["profileHeaderBox"]; ?>
             </div>
-            <img src="<?php echo $_SESSION["profilePicture"]; ?>" height="50" width="50" alt="profilePicture" class="profile-Picture">
+            <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" height="50" width="50" alt="profilePicture" class="profile-Picture">
         </div>
 
         <div id="mobile" class="dropdown dropdownGeneral">
