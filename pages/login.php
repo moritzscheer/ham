@@ -31,6 +31,5 @@
         </form>
     </div>
 </section>
-<link rel="stylesheet" type="text/css" href="../resources/css/login.css">
 </body>
 </html>
