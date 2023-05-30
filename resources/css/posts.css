@@ -82,6 +82,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     margin-right: 5%;
+    align-content: flex-start;
 }
 
 #item {

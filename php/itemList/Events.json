@@ -1,22 +1,41 @@
 [
   {
-    "name": "Chrystal Ball",
-    "type" : "musician",
-    "genre" : "Hard-Rock",
-    "members": ["Vocals: Steven Mageney", "Lead guitar: Scott Leach", "Rhythm guitar: Peter Berger", "Drums: Marcel Sardella", "Bass: Cris Stone"],
-    "costs" : "1480 € per evening",
-    "region" : "Niedersachsen and Mecklenburg-Vorpommern (MVP)",
-    "email" : "info@crystal-ball.de",
-    "links" : ["Keane:\n https://www.youtube.com/watch?v=xEHy0QwvAYE", "Styx \n https://www.youtube.com/watch?v=9b-i0XknSnM"]
+    "image": "",
+    "description": "Hornbach Bau- und Gartenmarkt eröffnet voraussichtlich im Frühjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
+    "name": "Hornbach Bau- und Gartenmarkt",
+    "street": "Steinweg",
+    "houseNr": 2,
+    "postalCode": 42275,
+    "city": "Wuppertal",
+    "Date": "2023-04-12",
+    "startTime": "14:00",
+    "endTime": "14:00",
+    "requirements": "Jazzband mit Repertoir für einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000€"
   },
   {
-    "name": "Gogo Penguin",
-    "type" : "musician",
-    "genre" : "Jazz",
-    "members": ["Piano: Chris Illingworth", "Contrabass: Nick Blacka", "Drums: Jon Scott"],
-    "costs" : "1500 € per evening",
-    "region" : "England",
-    "email" : "kerstan@funkyflymusic.com",
-    "links" : ["Youtube-Channel:\n https://www.youtube.com/channel/UC-2EEGGKW0UFQN1sfz3Q34A"]
+    "image": "",
+    "description": "Hornbach Bau- und Gartenmarkt eröffnet voraussichtlich im Frühjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
+    "name": "Hornbach Bau- und Gartenmarkt",
+    "street": "Steinweg",
+    "houseNr": 2,
+    "postalCode": 42275,
+    "city": "Wuppertal",
+    "Date": "2023-04-12",
+    "startTime": "14:00",
+    "endTime": "14:00",
+    "requirements": "Jazzband mit Repertoir für einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000€"
+  },
+  {
+    "image": "",
+    "description": "Hornbach Bau- und Gartenmarkt eröffnet voraussichtlich im Frühjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
+    "name": "Hornbach Bau- und Gartenmarkt",
+    "street": "Steinweg",
+    "houseNr": 2,
+    "postalCode": 42275,
+    "city": "Wuppertal",
+    "Date": "2023-04-12",
+    "startTime": "14:00",
+    "endTime": "14:00",
+    "requirements": "Jazzband mit Repertoir für einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000€"
   }
 ]
