@@ -21,9 +21,10 @@
         </div>
         <div class="loginElement staylogin">
             <form method="post">
-                <label id="stayLogin">
-                    <input type="checkbox" id="stayLoggedIn" name="login">
-                    Stay Logged In
+                <label class="staylogin-container">
+                    <span id="stayLogin-Text">Stay Logged In</span>
+                    <input type="checkbox" id="stayLogin-checkbox" name="login">
+                    <span id="stayLogin-checkmark"></span>
                 </label>
             </form>
         </div>
