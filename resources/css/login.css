@@ -170,23 +170,20 @@ input::placeholder{
     margin: 5px;
 }
 
-/*labels in register*/
-label {
-
-    color: #647c85;
-}
 
 /*register submit button*/
-#register-Submit-Button {
+#registerSubmit {
     color: white;
     text-shadow: black;
-    height: 30px;
-    width: 180px;
-    border-radius: 4px;
-    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
     font-family: Tahoma, sans-serif;
+    border-radius: 4px;
+    height: 30px;
+    padding-left: 5px;
+    width: 180px;
+    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    box-sizing: content-box;
 }
 
 @media screen and (max-width: 800px) {

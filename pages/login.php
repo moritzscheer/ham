@@ -33,6 +33,14 @@
                 <input type="submit" id="loginSubmit" name="login" value="Login">
             </form>
         </div>
+        <div class="loginElement">
+            <span id="noAccountText">No Account yet ?</span>
+        </div>
+        <div class="loginElement">
+            <form action="register.php">
+                <input type="submit" id="registerSubmit" value="Register">
+            </form>
+        </div>
     </div>
 </section>
 </body>
