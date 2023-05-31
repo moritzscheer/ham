@@ -1,5 +1,6 @@
 [
   {
+    "image": "../resources/images/bands/band.jpg",
     "name": "Chrystal Ball",
     "type" : "musician",
     "genre" : "Hard-Rock",
@@ -10,6 +11,7 @@
     "links" : ["Keane:\n https://www.youtube.com/watch?v=xEHy0QwvAYE", "Styx \n https://www.youtube.com/watch?v=9b-i0XknSnM"]
   },
   {
+    "image": "../resources/images/bands/band.jpg",
     "name": "Gogo Penguin",
     "type" : "musician",
     "genre" : "Jazz",

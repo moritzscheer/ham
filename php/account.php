@@ -172,20 +172,20 @@ $_SESSION["Image4"] = (isset($_SESSION["Image4"])) ? $_SESSION["Image4"] : "../r
 $_SESSION["error"] = "";
 
 if(isset($_POST["profile-Picture-Small"])) {
-    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/".verifyImage("profile-Picture-Small");
+    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/".verifyImage("profile-Picture-Small", "profile");
 } elseif(isset($_POST["profile-Picture-Large"])) {
-    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/".verifyImage("profile-Picture-Large");
+    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/".verifyImage("profile-Picture-Large", "profile");
 } elseif(isset($_POST["Image1"])) {
-    $_SESSION["Image1"] = "../resources/images/profile/".verifyImage("Image1");
+    $_SESSION["Image1"] = "../resources/images/profile/".verifyImage("Image1", "profile");
 } elseif(isset($_POST["Image2"])) {
-    $_SESSION["Image2"] = "../resources/images/profile/".verifyImage("Image2");
+    $_SESSION["Image2"] = "../resources/images/profile/".verifyImage("Image2", "profile");
 } elseif(isset($_POST["Image3"])) {
-    $_SESSION["Image3"] = "../resources/images/profile/".verifyImage("Image3");
+    $_SESSION["Image3"] = "../resources/images/profile/".verifyImage("Image3", "profile");
 } elseif(isset($_POST["Image4"])) {
-    $_SESSION["Image4"] = "../resources/images/profile/".verifyImage("Image4");
+    $_SESSION["Image4"] = "../resources/images/profile/".verifyImage("Image4", "profile");
 }
 
-function verifyImage($name): String {
+function verifyImage($name, $type): String {
     try {
         $file_name = $_FILES["$name"]["name"];
         $file_size = $_FILES["$name"]["size"];
@@ -204,7 +204,7 @@ function verifyImage($name): String {
         }
 
         // moving file to dictionary
-        if (!move_uploaded_file($file_tmp,"../resources/images/profile/".$file_name)) {
+        if (!move_uploaded_file($file_tmp,"../resources/images/".$type."/".$file_name)) {
             throw new RuntimeException("failed to upload image");
         }
 

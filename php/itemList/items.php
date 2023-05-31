@@ -21,11 +21,14 @@ $type = (isset($_GET["type"]) && is_string($_GET["type"])) ? $_GET["type"] : "";
 $items = [];
 
 
-$file = file_get_contents($type === 'bands' ? "Bands.json" : "Events.json", true);
+$file = file_get_contents(__DIR__ . ($type === 'bands' ? "\Bands.json" : "\Events.json"), true);
 $items = json_decode($file, false);
 
+
 if (isset($_POST["submit"])) {
-    $newEvent["image"] = checkValue("image");
+    if(isset($_POST["image"])) {
+        $newEvent["image"] = "../resources/images/events/".verifyImage("image", "events");
+    }
     $newEvent["description"] = checkValue("description");
     $newEvent["name"] = checkValue("name");
 
@@ -39,15 +42,15 @@ if (isset($_POST["submit"])) {
     $newEvent["endTime"] = checkValue("endTime");
     $newEvent["requirements"] = checkValue("requirements");
     if ($items[count($items) - 1]->name !== $newEvent["name"]) {
-        echo $newEvent["name"];
         createNewEvent($newEvent);
     }
 }
+var_dump($newEvent);
 function createNewEvent($newEvent)
 {
-    global $items, $type;
-    $items[count($items)] = getEventAsJson($newEvent);
-
+    global $items;
+    $items[] = (object) $newEvent;
+    file_put_contents(__DIR__ . "\Events.json", json_encode($items));
 }
 
 function getEventAsJson($newEvent)
@@ -102,8 +105,8 @@ function getBands(): void
         }
         echo '
          <div id="item">
-            <label class="item-head" pn>
-                <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
+            <label class="item-head">
+                <img id="item-image" src="' . $band ->image.'" alt="bandImage"/>
                 <div id="item-description" class="text-line-pre">
                     <span>Name: ' . $band->name . '</span>
                     <br>
@@ -117,7 +120,7 @@ function getBands(): void
             </label>
             <div id="item-m-details">
                 <div id="item-details-title">
-                    <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
+                    <img id="item-image" src="' . $band ->image.'" alt="bandImage"/>
                     <h2 id="item-details-name"> ' . $band->name . ' </h2>
                 </div>
                 <div>
@@ -143,7 +146,7 @@ function getBands(): void
     echo '
     <section id="item-details">
         <div id="item-details-title">
-                    <img id="item-image" src="../../resources/images/bands/band.jpg" alt="bandImage"/>
+                    <img id="item-image" src="' . $band ->image.'" alt="bandImage"/>
                     <h2 id="item-details-name"> ' . $band->name . ' </h2>
                 </div>
         <div class="item-details-description">
@@ -176,27 +179,27 @@ function getEvents(): void
         echo '
          <div id="item">
             <label class="item-head">
-                <img id="item-image" src="../../resources/images/events/event.jpg" alt="bandImage"/>
+                <img id="item-image" src="' . $event ->image.'" alt="bandImage"/>
                 <div id="item-description" class="text-line-pre">
                     <span>' . $event->name . '</span>
                     <br>
                     <span>Address: ' . $address . '</span>
                     <br>
-                    <span>' . $time . '</span>
+                    <span> ' . $time . '</span>
                     <input type="checkbox" id="item-click">
                 </div>
             </label>
             <div id="item-m-details">
                 <div id="item-details-title">
-                    <img id="item-image" src="../../resources/images/events/event.jpg" alt="bandImage"/>
+                    <img id="item-image" src="' . $event ->image.'" alt="bandImage"/>
                     <h2 id="item-details-name"> ' . $event->name . ' </h2>
                 </div>
                 <div class="item-details-description">
                     <p>' . $event->description . '</p>
                 </div>
                 <div id="item-details-foot">
-                    <p style="white-space: pre-line">
-                        Hits <br>
+                    <p class="text-line-pre">
+                        Requirements <br>
                         ' . $event->requirements . '
                     </p>
                 </div>
@@ -207,15 +210,15 @@ function getEvents(): void
     echo '
     <section id="item-details">
          <div id="item-details-title">
-                    <img id="item-image" src="../../resources/images/events/event.jpg" alt="bandImage"/>
+                    <img id="item-image" src="' . $event ->image.'" alt="bandImage"/>
                     <h2 id="item-details-name"> ' . $event->name . ' </h2>
                 </div>
                 <div class="item-details-description">
                     <p>' . $event->description . '</p>
                 </div>
                 <div id="item-details-foot">
-                    <p style="white-space: pre-line">
-                        Hits <br>
+                    <p class="text-line-pre" ">
+                        Requirements <br>
                         ' . $event->requirements . '
                     </p>
                 </div>

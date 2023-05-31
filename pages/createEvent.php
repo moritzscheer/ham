@@ -10,8 +10,8 @@ global $newEvent;
     <form method="post" action="events.php?item=events">
         <div id="create-event">
             <section class="left-column">
-                <label id="bild" class="big-text">Bild:
-                    <input type="File" id="image" accept=".jpg,.png,.pdf" value="<?php echo $newEvent["image"] ?>">
+                <label id="image" class="big-text">Image:
+                    <input type="File" id="image" accept=".jpg, .png, .jpeg" value="<?php echo $newEvent["image"] ?>">
                 </label>
                 <img class="full-width" src="../resources/images/events/event.jpg" alt="eventImage">
                 <label id="description" class="big-text">Description: <br/>
