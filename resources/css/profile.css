@@ -84,6 +84,7 @@
 }
 
 
+
 /* ------------------------ styling for profile-Grid (the main grid) ------------------------ */
 .profile-Grid {
     display: grid;
@@ -92,21 +93,18 @@
     gap: 0.5vw;
     margin: 0.5vw;
 }
-.profile-Content > div, #uploaded-Images, #loginData {
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: var(--black) 1px solid;
-}
 .profile-Grid h2 {
     text-align: center;
 }
 #uploaded-Images, #about-me, #contact-Information, #loginData {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: var(--black) 1px solid;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     height: min-content;
 }
-
 
 /* formatting for the Information box on the left */
 .profile-Content {
@@ -124,15 +122,15 @@
 #about-me {
     grid-row: 2;
 }
-#profile-Content-Change-Password {
-    gap: 60px;
-}
 .entry {
     display: grid;
-    grid-template-columns: 160px auto;
+    grid-template-columns: 180px auto;
     grid-template-rows: auto;
-    width: 100%;
+    width: 90%;
     margin: 10px 0 10px 0;
+}
+.entry > label, .entry > div {
+    padding-left: 5px;
 }
 .entry input, .entry textarea{
     border: 0;
@@ -152,11 +150,20 @@ input[type=file] {
     display: none;
 }
 #profile-Submit {
-    width: 200px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 400px;
+    margin: 20px auto 20px auto;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
 }
-
+#profile-Submit a, #profile-Submit input{
+    background-color: white;
+    width: 150px;
+    border: 1px black solid;
+    border-radius: 5px;
+    color: black;
+    font-size: 14px;
+}
 
 
 /* formatting for the image upload box on the right */
@@ -164,6 +171,7 @@ input[type=file] {
     grid-column: 2;
     gap: 10px;
     width: 100%;
+    height: 20px;
 }
 #uploaded-Images img {
     width: 100%;
@@ -175,17 +183,25 @@ input[type=file] {
     justify-content: space-evenly;
     place-items: center;
     height: 30px;
+    border: 1px black solid;
+    border-radius: 5px;
 }
 .newImage-Link label, .newImage-Link input {
-    background-color: transparent;
-    border: 0;
+    background-color: white;
+    border: none;
     color: black;
-
+    font-size: 14px;
 }
 
 
 
 
+/* ------------------------ styling for changePassword-Grid (the main grid) ------------------------ */
+#change-Password-Content {
+    gap: 0.5vw;
+    margin-left: 20px;
+    margin-right: 20px;
+}
 
 
 
@@ -252,6 +268,14 @@ input[type=file] {
     }
     #profile-Submit {
         grid-row: 4;
+    }
+    #change-Password-Content {
+        margin-bottom: 30px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #loginData {
+        width: 100vw;
     }
 }
 

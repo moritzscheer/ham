@@ -13,12 +13,12 @@
         <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
     </div>
 
-    <section class="profile-Grid">
-        <form method="post" action="../Profile/profile.php" id="loginData">
+    <form method="post" action="profile.php" id="change-Password-Content" class="profile-Content">
+        <div id="loginData">
             <label class="entry">Old Password:
                 <input type="password" id="password_actuell">
             </label>
-
+    
             <label class="entry">New Password:
                 <input type="password" id="password_new_1">
             </label>
@@ -26,15 +26,14 @@
             <label class="entry">Repeat new Password:
                 <input type="password" id="password_new_2">
             </label>
-
-        </form>
-
-        <input type="submit" value="Neues Passwort einstellen" id="profile-Submit">
-
-        <div id="uploaded-Images">
-            <img src="" alt="could not load Image" height="120" width="120">
         </div>
-    </section>
+
+        <div id="profile-Submit">
+            <a href="profile.php">Cancel</a>
+            <input type="submit" value="Save Changes">
+        </div>
+    </form>
+
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

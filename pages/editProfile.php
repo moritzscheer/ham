@@ -78,7 +78,10 @@
                 </label>
             </div>
 
-            <input type="submit" value="Save Changes" id="profile-Submit">
+            <div id="profile-Submit">
+                <a href="profile.php">Cancel</a>
+                <input type="submit" value="Save Changes">
+            </div>
         </form>
 
         <form method="post" enctype="multipart/form-data" id="uploaded-Images">
