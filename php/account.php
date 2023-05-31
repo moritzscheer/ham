@@ -6,7 +6,6 @@ global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-
 // unsets all the session variables
 if(isset($_POST["reset"]) || isset($_POST["logout"])) {
     unset($_SESSION["email"]);
@@ -22,18 +21,13 @@ if(isset($_POST["reset"]) || isset($_POST["logout"])) {
     unset($_SESSION["otherRemarks"]);
     unset($_SESSION["profile-Picture-Small"]);
     unset($_SESSION["profile-Picture-Large"]);
-    unset($_SESSION["Image1"]);
-    unset($_SESSION["Image2"]);
-    unset($_SESSION["Image3"]);
-    unset($_SESSION["Image4"]);
+    unset($_SESSION["newImage"]);
 }
-
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 
 // checks if a post variable was set then if a session variable is set, else the variable is set to an empty string
@@ -73,26 +67,22 @@ if($_SESSION["type"] === "musician") {
 }
 
 
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               Register checking                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 
 $error_message = "";
 
 if(isset($_POST["register"])) {
     if($_SESSION["password"] === $_SESSION["repeatPassword"]) {
-        // todo: if password and email already exist in database, then continue, else error message
+        // todo: if password and email not exist in database, then continue, else error message
         header("Location: " . getNextUrl($step));
         exit();
-
     } else {
         $error_message = "<p>passwords must be the same</p>";
     }
 }
-
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -100,9 +90,7 @@ if(isset($_POST["register"])) {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-
-
-
+// todo: if database exists, ask database if email and password is correct
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -110,6 +98,10 @@ if(isset($_POST["register"])) {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
+// initialize session variables
+$_SESSION["normalHeader"] = "";
+$_SESSION["profileHeader"] = "";
+$_SESSION["profileHeaderBox"] = "";
 
 // switches the logged in status
 if (isset($_POST["login"])) {
@@ -117,10 +109,6 @@ if (isset($_POST["login"])) {
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = false;
 }
-
-$_SESSION["normalHeader"] = "";
-$_SESSION["profileHeader"] = "";
-$_SESSION["profileHeaderBox"] = "";
 
 // switches the header
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
@@ -133,57 +121,71 @@ if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
 }
 
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                          functions to switch urls in register                                      */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-
+// gets the url for the next step in the register progressbar
 function getNextUrl($var): String {
     $var++;
     return "register.php?step=" . $var;
 }
 
+// gets the url for the last step in the register progressbar
 function getLastUrl($var): String {
     $var--;
     return "register.php?step=" . $var;
 }
 
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                 initialize image variables and call functions                                      */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+// initialize session variable
+$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/defaultSmall.png";
+$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/defaultLarge.jpeg";
+
+$_SESSION["error"] = "";
+
+
+// if an image was submitted call verifyImage method to check if the image is valid. If so the filename is returned else an empty string
+if (isset($_POST["profile-Picture-Small"])) {
+    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/".verifyImage("profile-Picture-Small", "profile");
+} elseif (isset($_POST["profile-Picture-Large"])) {
+    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/".verifyImage("profile-Picture-Large", "profile");
+} elseif (isset($_POST["newImage"])) {
+    // funktioniert noch nicht
+    $fileName = verifyImage("newImage", "profile");
+    if(!$fileName == "") {
+        $path = "../resources/images/profile/".$fileName;
+        $items[] = (object) $path;
+        file_put_contents("../resources/json/images.json", json_encode($items));
+    }
+}
+
+
+// funktioniert noch nicht
+function getImageItems(): void {
+    $_SESSION["newImage"] = json_decode("../resources/json/images.json", true);
+    var_dump($_SESSION["newImage"]);
+
+    if(empty($_SESSION["newImage"])) {
+        echo "<p>No Images were Uploaded</p>";
+    } else {
+        for($a = 0; $a < $_SESSION["newImage"]; $a++) {
+            echo "<img src=".$_SESSION["newImage"][$a]." alt='could not load Image'>";
+        }
+    }
+}
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                          Image verification                                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
-
-$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/defaultSmall.png";
-$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/defaultLarge.jpeg";
-$_SESSION["Image1"] = (isset($_SESSION["Image1"])) ? $_SESSION["Image1"] : "../resources/images/profile/imagePlaceholder.jpeg";
-$_SESSION["Image2"] = (isset($_SESSION["Image2"])) ? $_SESSION["Image2"] : "../resources/images/profile/imagePlaceholder.jpeg";
-$_SESSION["Image3"] = (isset($_SESSION["Image3"])) ? $_SESSION["Image3"] : "../resources/images/profile/imagePlaceholder.jpeg";
-$_SESSION["Image4"] = (isset($_SESSION["Image4"])) ? $_SESSION["Image4"] : "../resources/images/profile/imagePlaceholder.jpeg";
-
-
-
-
-$_SESSION["error"] = "";
-
-if(isset($_POST["profile-Picture-Small"])) {
-    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/".verifyImage("profile-Picture-Small", "profile");
-} elseif(isset($_POST["profile-Picture-Large"])) {
-    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/".verifyImage("profile-Picture-Large", "profile");
-} elseif(isset($_POST["Image1"])) {
-    $_SESSION["Image1"] = "../resources/images/profile/".verifyImage("Image1", "profile");
-} elseif(isset($_POST["Image2"])) {
-    $_SESSION["Image2"] = "../resources/images/profile/".verifyImage("Image2", "profile");
-} elseif(isset($_POST["Image3"])) {
-    $_SESSION["Image3"] = "../resources/images/profile/".verifyImage("Image3", "profile");
-} elseif(isset($_POST["Image4"])) {
-    $_SESSION["Image4"] = "../resources/images/profile/".verifyImage("Image4", "profile");
-}
 
 function verifyImage($name, $type): String {
     try {
@@ -215,12 +217,6 @@ function verifyImage($name, $type): String {
     }
 }
 
-
-
-
-
-
-//session_destroy();
 
 
 
