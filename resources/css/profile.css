@@ -171,7 +171,6 @@ input[type=file] {
     grid-column: 2;
     gap: 10px;
     width: 100%;
-    height: 20px;
 }
 #uploaded-Images img {
     width: 100%;

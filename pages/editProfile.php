@@ -85,6 +85,7 @@
         </form>
 
         <form method="post" enctype="multipart/form-data" id="uploaded-Images">
+            <?php echo getImageItems() ?>
             <div class="newImage-Link">
                 <label>Select Image
                     <input type="file" accept=".jpg, .png, .jpeg" name="newImage">
