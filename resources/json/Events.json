@@ -1,6 +1,6 @@
 [
   {
-    "image": "../resources/images/events/event.jpg",
+    "image": "..\/resources\/images\/events\/event.jpg",
     "description": "Hornbach Bau- und Gartenmarkt er\u00f6ffnet voraussichtlich im Fr\u00fchjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
     "name": "Hornbach Bau- und Gartenmarkt",
     "street": "Steinweg",
@@ -13,7 +13,7 @@
     "requirements": "Jazzband mit Repertoir f\u00fcr einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000\u20ac"
   },
   {
-    "image": "../resources/images/events/event2.jpg",
+    "image": "..\/resources\/images\/events\/event2.jpg",
     "description": "Hornbach Bau- und Gartenmarkt er\u00f6ffnet voraussichtlich im Fr\u00fchjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
     "name": "Hornbach Bau- und Gartenmarkt",
     "street": "Steinweg",

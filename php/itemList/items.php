@@ -1,5 +1,4 @@
 <?php
-
 global $type, $items, $decodedFile, $currentItem, $newEvent;
 
 $newEvent["image"] = "";
@@ -21,12 +20,10 @@ $type = (isset($_GET["type"]) && is_string($_GET["type"])) ? $_GET["type"] : "";
 $items = [];
 
 
-$file = file_get_contents(__DIR__ . ($type === 'bands' ? "\Bands.json" : "\Events.json"), true);
+$file = file_get_contents("../resources/json" . ($type === 'bands' ? "/Bands.json" : "/Events.json"), true);
 $items = json_decode($file, false);
-
-
 if (isset($_POST["submit"])) {
-    if(isset($_POST["image"])) {
+    if(isset($_FILES["image"])) {
         $newEvent["image"] = "../resources/images/events/".verifyImage("image", "events");
     }
     $newEvent["description"] = checkValue("description");
@@ -45,17 +42,11 @@ if (isset($_POST["submit"])) {
         createNewEvent($newEvent);
     }
 }
-var_dump($newEvent);
 function createNewEvent($newEvent)
 {
     global $items;
     $items[] = (object) $newEvent;
-    file_put_contents(__DIR__ . "\Events.json", json_encode($items));
-}
-
-function getEventAsJson($newEvent)
-{
-    return json_encode($newEvent);
+    file_put_contents("../resources/json/Events.json", json_encode($items));
 }
 
 
@@ -228,6 +219,5 @@ function getEvents(): void
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                              getter                                                                */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 

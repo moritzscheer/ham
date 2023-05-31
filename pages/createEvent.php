@@ -7,11 +7,11 @@ global $newEvent;
 
 <div>
     <h1> Create Event </h1>
-    <form method="post" action="events.php?item=events">
+    <form method="post" action="events.php?item=events" enctype="multipart/form-data">
         <div id="create-event">
             <section class="left-column">
                 <label id="image" class="big-text">Image:
-                    <input type="File" id="image" accept=".jpg, .png, .jpeg" value="<?php echo $newEvent["image"] ?>">
+                    <input type="File" id="image" accept=".jpg, .png, .jpeg" name="image">
                 </label>
                 <img class="full-width" src="../resources/images/events/event.jpg" alt="eventImage">
                 <label id="description" class="big-text">Description: <br/>
