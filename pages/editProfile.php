@@ -4,7 +4,7 @@
 
     <form method="post" class="profile-Picture-Large-Box" enctype="multipart/form-data">
         <img src="<?php echo $_SESSION["profile-Picture-Large"]; ?>" alt="could not load image" class="profile-Picture-Large">
-        <div>
+        <div id="image-Select">
             <label>Select Image
                 <input type="file" accept=".jpg, .png, .jpeg" name="profile-Picture-Large">
             </label>
@@ -43,24 +43,24 @@
                 <h2>About Me</h2>
 
                 <label class="entry">Name:
-                    <input type="text" name="name" value="<?php echo $_SESSION["name"] ?>">
+                    <input type="text" name="name" value="<?php echo $_SESSION["name"] ?>" required>
                 </label>
 
                 <label class="entry">Surname:
-                    <input type="text" name="surname" value="<?php echo $_SESSION["surname"] ?>">
+                    <input type="text" name="surname" value="<?php echo $_SESSION["surname"] ?>" required>
                 </label>
 
                 <label class="entry">Address:
-                    <input type="text" name="email" value="<?php echo $_SESSION["address"] ?>">
+                    <input type="text" name="address" value="<?php echo $_SESSION["address"] ?>">
                 </label>
 
                 <label class="entry">Type:
                     <div id="type">
                         <label>Musician
-                            <input type="radio" name="type" value="musician" <?php echo $_SESSION["musician"] ?>>
+                            <input type="radio" name="type" <?php echo $_SESSION["musician"] ?> required>
                         </label>
                         <label>Host
-                            <input type="radio" name="type" value="host" <?php echo $_SESSION["host"] ?>>
+                            <input type="radio" <?php echo $_SESSION["host"] ?>>
                         </label>
                     </div>
                 </label>
@@ -85,7 +85,8 @@
         </form>
 
         <form method="post" enctype="multipart/form-data" id="uploaded-Images">
-            <?php echo getImageItems() ?>
+            <?php echo getImageItems(false) ?>
+            <?php echo $_SESSION["error"] ?>
             <div class="newImage-Link">
                 <label>Select Image
                     <input type="file" accept=".jpg, .png, .jpeg" name="newImage">

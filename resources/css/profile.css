@@ -6,25 +6,23 @@
 .profile-Picture-Large-Box {
     height: 370px;
     width: 100%;
-    background:transparent;
 }
 .profile-Picture-Large {
     height: 400px;
     width: 100%;
     object-fit: cover;
-    background: transparent;
-    background: linear-gradient(top, rgba( 255, 255, 255, 255 ) 0%, rgba( 255, 255, 255, 1 ) 100% );
+    position: relative;
+    z-index: -1;
 }
 .profile-Picture-Large-Box div {
     display: none;
 }
-.profile-Picture-Large-Box:hover > div{
+.profile-Picture-Large-Box:hover > #image-Select{
     display: block;
     position: absolute;
     right: 16px;
     top: 480px;
 }
-
 
 
 
@@ -112,6 +110,7 @@
     grid-template-columns: auto;
     grid-template-rows: auto auto;
     gap: 0.5vw;
+    height: min-content;
 }
 #loginData {
     grid-row: 1 / span 2;

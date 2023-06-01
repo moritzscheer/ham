@@ -12,17 +12,17 @@ ini_set("session.use_trans_sid", 1);
 
 
 ini_set("session.cache_limiter", "");
-// each client should remember their session id for EXACTLY 1 hour
+// each client should remember their session id
 ini_set("session.cookie_lifetime", 0);
-// server should keep session data for AT LEAST 1 hour
+// server keeps session data
 ini_set('session.gc_maxlifetime', 0);
 
 
 // If the user does not want to stay logged In
 if(isset($_POST["login"]) && $_POST["login"] == "on") {
-    // each client remembers their session id
+    // each client remembers their session id for EXACTLY 1 hour
     ini_set("session.cookie_lifetime", 3600);
-    // server keeps session data
+    // server keeps session data for EXACTLY 1 hour
     ini_set('session.gc_maxlifetime', 3600);
 }
 

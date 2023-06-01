@@ -53,7 +53,7 @@
         </div>
                                             
         <div id="uploaded-Images">
-            
+            <?php echo getImageItems(true) ?>
         </div>
     </section>
 

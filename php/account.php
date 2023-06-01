@@ -1,5 +1,5 @@
 <?php
-global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
+global $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                          reset for all account variables                                           */
@@ -145,46 +145,63 @@ function getLastUrl($var): String {
 
 
 // initialize session variable
-$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/defaultSmall.png";
-$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/defaultLarge.jpeg";
+$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/default/defaultSmall.png";
+$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/default/defaultLarge.jpeg";
 
 $_SESSION["error"] = "";
 
+$images = [];
+$newImage["name"] = "";
+$newImage["path"] = "";
 
-// if an image was submitted call verifyImage method to check if the image is valid. If so the filename is returned else an empty string
+$file = file_get_contents("../resources/json/images.json", true);
+$images = json_decode($file, false);
+
+
+
 if (isset($_POST["profile-Picture-Small"])) {
-    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/".verifyImage("profile-Picture-Small", "profile");
+
+    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/default/".verifyImage("profile-Picture-Small", "profile/default");
+
 } elseif (isset($_POST["profile-Picture-Large"])) {
-    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/".verifyImage("profile-Picture-Large", "profile");
+
+    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/default/".verifyImage("profile-Picture-Large", "profile/default");
+
 } elseif (isset($_POST["newImage"])) {
-    // funktioniert noch nicht
-    $fileName = verifyImage("newImage", "profile");
-    if(!$fileName == "") {
-        $path = "../resources/images/profile/".$fileName;
-        $items[] = (object) $path;
-        file_put_contents("../resources/json/images.json", json_encode($items));
+
+    $fileName = verifyImage("newImage", "profile/custom");
+    $path = "../resources/images/profile/custom/".$fileName;
+
+    if(!empty($fileName)) {
+        $newImage["name"] = $fileName;
+        $newImage["path"] = $path;
+        addImageItems($newImage);
     }
 }
 
 
-// funktioniert noch nicht
-function getImageItems(): void {
-    $_SESSION["newImage"] = json_decode("../resources/json/images.json", true);
-    var_dump($_SESSION["newImage"]);
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                              Image functions                                                       */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
-    if(empty($_SESSION["newImage"])) {
-        echo "<p>No Images were Uploaded</p>";
+
+function addImageItems($newImage): void {
+    global $images;
+    $images[] = (object) $newImage;
+    file_put_contents("../resources/json/images.json", json_encode($images));
+}
+
+
+function getImageItems($public): void {
+    global $images;
+    if($public && empty($images)) {
+        echo "No Images were Uploaded.";
     } else {
-        for($a = 0; $a < $_SESSION["newImage"]; $a++) {
-            echo "<img src=".$_SESSION["newImage"][$a]." alt='could not load Image'>";
+        foreach ($images as $image) {
+            echo "<img src=".$image -> path.' alt="could not load Image">';
         }
     }
 }
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                          Image verification                                                        */
-/* ------------------------------------------------------------------------------------------------------------------ */
 
 
 function verifyImage($name, $type): String {
@@ -218,7 +235,4 @@ function verifyImage($name, $type): String {
 }
 
 
-
-
-
-
+// session_destroy();
