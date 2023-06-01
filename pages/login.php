@@ -21,15 +21,24 @@
         </div>
         <div class="loginElement staylogin">
             <form method="post">
-                <label id="stayLogin">
-                    <input type="checkbox" id="stayLoggedIn" name="login">
-                    Stay Logged In
+                <label class="staylogin-container">
+                    <span id="stayLogin-Text">Stay Logged In</span>
+                    <input type="checkbox" id="stayLogin-checkbox" name="login">
+                    <span id="stayLogin-checkmark"></span>
                 </label>
             </form>
         </div>
         <div class="loginElement">
             <form method="post" action="index.php">
                 <input type="submit" id="loginSubmit" name="login" value="Login">
+            </form>
+        </div>
+        <div class="loginElement">
+            <span id="noAccountText">No Account yet ?</span>
+        </div>
+        <div class="loginElement">
+            <form action="register.php">
+                <input type="submit" id="registerSubmit" value="Register">
             </form>
         </div>
     </div>

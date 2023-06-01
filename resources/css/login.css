@@ -18,7 +18,7 @@
     display: flex;
     flex-direction: column;
     place-items: center;
-    width: 35vh;
+    width: 250px;
     /*height: 230px;*/
     height: auto;
     border-radius: 4px;
@@ -58,22 +58,65 @@ input::placeholder{
 
 /*div of stay loggedin*/
 .staylogin {
-    place-self: center;
-    place-items: start;
+    place-self: start;
     margin-bottom: 20px;
 }
 
 /*label of stay loggin*/
-#stayLogin {
-    padding-right: 90px;
+.staylogin-container {
+    display: grid;
+    grid-template-columns: 20px auto;
+    position: relative;
+    padding-left: 40px;
+}
+
+#stayLogin-Text {
+    grid-column: 2;
     color: var(--white);
     font-size: small;
 }
 
-/* checkbox of stay loggedin*/
-#stayLoggedIn {
-
+/* old checkbox */
+#stayLogin-checkbox {
+    appearance: none;
 }
+
+/* new checkbox*/
+#stayLogin-checkmark {
+    grid-column: 1;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: var(--bluegrey);
+}
+
+#stayLogin-checkmark:after {
+    grid-column: 1;
+    position: absolute;
+    display: none;
+}
+
+/* checked box: change color*/
+.staylogin-container:has(#stayLogin-checkbox:checked) #stayLogin-checkmark {
+    background-color: var(--grey);
+}
+
+.staylogin-container:has(#stayLogin-checkbox:checked) #stayLogin-checkmark:after{
+    display: block;
+}
+/*
+.staylogin-container #stayLogin-checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}*/
+
 
 /*login button*/
 #loginSubmit {
@@ -127,23 +170,20 @@ input::placeholder{
     margin: 5px;
 }
 
-/*labels in register*/
-label {
-
-    color: #647c85;
-}
 
 /*register submit button*/
-#register-Submit-Button {
+#registerSubmit {
     color: white;
     text-shadow: black;
-    height: 30px;
-    width: 180px;
-    border-radius: 4px;
-    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
     font-family: Tahoma, sans-serif;
+    border-radius: 4px;
+    height: 30px;
+    padding-left: 5px;
+    width: 180px;
+    background-image: linear-gradient(to right bottom, #2c82ee, #0093f2, #00a2f2, #00afef, #21bceb);
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    box-sizing: content-box;
 }
 
 @media screen and (max-width: 800px) {
