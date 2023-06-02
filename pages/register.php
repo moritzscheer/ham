@@ -1,6 +1,6 @@
 <?php
     global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message;
-    include_once "../php/progressBar.php";
+    include_once "../php/register/progressBar.php";
     include_once "../php/head/head.php";
 ?>
 <body>

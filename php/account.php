@@ -1,9 +1,10 @@
 <?php
-global $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
+global $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                          reset for all account variables                                           */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 // unsets all the session variables
@@ -25,9 +26,11 @@ if(isset($_POST["reset"]) || isset($_POST["logout"])) {
 }
 
 
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 // checks if a post variable was set then if a session variable is set, else the variable is set to an empty string
@@ -57,14 +60,15 @@ $_SESSION["genre"] = checkVariable("genre");
 $_SESSION["members"] = checkVariable("members");
 $_SESSION["otherRemarks"] = checkVariable("otherRemarks");
 
-$_SESSION["musician"] = "";
-$_SESSION["host"] = "";
+$_SESSION["Musician"] = "";
+$_SESSION["Host"] = "";
 
-if($_SESSION["type"] === "musician") {
-    $_SESSION["musician"] = "checked";
-} elseif ($_SESSION["type"] === "host") {
-    $_SESSION["host"] = "checked";
+if($_SESSION["type"] === "Musician") {
+    $_SESSION["Musician"] = "checked";
+} elseif ($_SESSION["type"] === "Host") {
+    $_SESSION["Host"] = "checked";
 }
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -72,11 +76,26 @@ if($_SESSION["type"] === "musician") {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
+
 $error_message = "";
 
 if(isset($_POST["register"])) {
     if($_SESSION["password"] === $_SESSION["repeatPassword"]) {
-        // todo: if password and email not exist in database, then continue, else error message
+        if(connectToDatabase()) {
+            $email = $_SESSION["email"];
+            $sql = 'SELECT email FROM user WHERE user.email EQUALS '.$email;
+            $resultEmail = $db->query( $sql );
+            echo '<ul>';
+            while ( $zeile = $resultEmail->fetch_assoc() ) {
+                echo '<li>' . htmlspecialchars( $zeile['id'] ) .
+                    ': ' . htmlspecialchars( $zeile['feld'] ) . '</li>';
+            }
+            echo '</ul>';
+
+
+            closeDatabase();
+        }
+
         header("Location: " . getNextUrl($step));
         exit();
     } else {
@@ -85,17 +104,21 @@ if(isset($_POST["register"])) {
 }
 
 
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                 Login checking                                                     */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
+
 // todo: if database exists, ask database if email and password is correct
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                   change header elements on logged in status                                       */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 // initialize session variables
@@ -114,16 +137,18 @@ if (isset($_POST["login"])) {
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
     $_SESSION["normalHeader"] = "hidden";
     $_SESSION["profileHeader"] = "visible";
-    $_SESSION["profileHeaderBox"] = "<div id='name'>".$_SESSION["name"]." ".$_SESSION["surname"]."</div><div id='type'>".$_SESSION["type"]."</div>";
+    $_SESSION["profileHeaderBox"] = "<div id='name'>".$_SESSION["name"]." ".$_SESSION["surname"].'</div><div id="type">'.$_SESSION["type"]."</div>";
 } elseif (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === false) {
     $_SESSION["normalHeader"] = "visible";
     $_SESSION["profileHeader"] = "hidden";
 }
 
 
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                          functions to switch urls in register                                      */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 // gets the url for the next step in the register progressbar
@@ -139,9 +164,11 @@ function getLastUrl($var): String {
 }
 
 
+
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                 initialize image variables and call functions                                      */
+/*                                 initialize upload and verification                                                 */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 // initialize session variable
@@ -160,15 +187,12 @@ $images = json_decode($file, false);
 
 
 if (isset($_POST["profile-Picture-Small"])) {
-
     $_SESSION["profile-Picture-Small"] = "../resources/images/profile/default/".verifyImage("profile-Picture-Small", "profile/default");
 
 } elseif (isset($_POST["profile-Picture-Large"])) {
-
     $_SESSION["profile-Picture-Large"] = "../resources/images/profile/default/".verifyImage("profile-Picture-Large", "profile/default");
 
 } elseif (isset($_POST["newImage"])) {
-
     $fileName = verifyImage("newImage", "profile/custom");
     $path = "../resources/images/profile/custom/".$fileName;
 
@@ -180,16 +204,13 @@ if (isset($_POST["profile-Picture-Small"])) {
 }
 
 
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                              Image functions                                                       */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
 
 function addImageItems($newImage): void {
     global $images;
     $images[] = (object) $newImage;
     file_put_contents("../resources/json/images.json", json_encode($images));
 }
+
 
 
 function getImageItems($public): void {
@@ -202,6 +223,7 @@ function getImageItems($public): void {
         }
     }
 }
+
 
 
 function verifyImage($name, $type): String {

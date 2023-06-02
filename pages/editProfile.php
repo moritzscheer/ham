@@ -57,10 +57,10 @@
                 <label class="entry">Type:
                     <div id="type">
                         <label>Musician
-                            <input type="radio" name="type" <?php echo $_SESSION["musician"] ?> required>
+                            <input type="radio" name="type" value="Musician" <?php echo $_SESSION["Musician"] ?> required>
                         </label>
                         <label>Host
-                            <input type="radio" <?php echo $_SESSION["host"] ?>>
+                            <input type="radio" name="type" value="Host" <?php echo $_SESSION["Host"] ?> required>
                         </label>
                     </div>
                 </label>

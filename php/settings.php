@@ -1,4 +1,5 @@
 <?php
+global $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -21,9 +22,9 @@ ini_set('session.gc_maxlifetime', 0);
 // If the user does not want to stay logged In
 if(isset($_POST["login"]) && $_POST["login"] == "on") {
     // each client remembers their session id for EXACTLY 1 hour
-    ini_set("session.cookie_lifetime", 3600);
+    ini_set("session.cookie_lifetime", 3600 * 24 * 7 * 30);
     // server keeps session data for EXACTLY 1 hour
-    ini_set('session.gc_maxlifetime', 3600);
+    ini_set('session.gc_maxlifetime', 3600 * 24 * 7 * 30);
 }
 
 
@@ -34,6 +35,7 @@ session_start();
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                  assign urls to stylesheets                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 $_SESSION["url2"] = "";
 
@@ -48,3 +50,57 @@ if(str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER
 } else {
     $_SESSION["url1"] = "../resources/css/" . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . ".css";
 }
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                             initialize mysql connection                                            */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+function connectToDatabase(): Boolean {
+    global $db;
+    try {
+        $servername = 'localhost:63342';
+        $user = 'root';
+        $pw = null;
+
+        $dbname = 'PHP';
+        $db = new MySQLi( $servername, $user, $pw, $dbname );
+        echo 'Verbindungsaufbau erfolgreich.';
+
+        return true;
+    } catch ( Exception $ex ) {
+        echo 'Fehler: ' . $ex->getMessage();
+        return false;
+    }
+}
+
+function closeDatabase(): void {
+    global $db;
+    $db->close();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

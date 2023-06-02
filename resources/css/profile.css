@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                                  for profile pages                                                 */
+/*                                               for desktop resolution                                               */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-/* ------------------------ Image on top ------------------------ */
+/* ------------------------ Image on top ------------------- */
 .profile-Picture-Large-Box {
     height: 370px;
     width: 100%;
@@ -26,9 +26,7 @@
 
 
 
-
-
-/* ------------------------ profile navigation bar ------------------------ */
+/* ------------------- profile navigation bar -------------- */
 .profile-Navigation {
     display: grid;
     grid-template-columns: min-content auto;
@@ -83,7 +81,7 @@
 
 
 
-/* ------------------------ styling for profile-Grid (the main grid) ------------------------ */
+/* ------- styling for profile-Grid (the main grid) -------- */
 .profile-Grid {
     display: grid;
     grid-template-columns: auto 400px;
@@ -165,7 +163,8 @@ input[type=file] {
 }
 
 
-/* formatting for the image upload box on the right */
+
+/* --- formatting for the image upload box on the right ---- */
 #uploaded-Images {
     grid-column: 2;
     gap: 10px;
@@ -193,8 +192,7 @@ input[type=file] {
 
 
 
-
-/* ------------------------ styling for changePassword-Grid (the main grid) ------------------------ */
+/* ---- styling for changePassword-Grid (the main grid) ---- */
 #change-Password-Content {
     gap: 0.5vw;
     margin-left: 20px;
@@ -205,12 +203,32 @@ input[type=file] {
 
 
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                           formatting for bigger resolution                                         */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+@media screen and (min-width: 1800px) {
+    .profile-Grid {
+        width: 1780px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .profile-Navigation {
+        width: 1780px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 
 
 
 
 
-/* ----------------- formatting for bigger resolution ----------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                 for Tablet resolution                                              */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 @media screen and (min-width: 766px) and (max-width: 1200px) {
     .profile-Grid {
         grid-template-columns: auto 300px;
@@ -218,12 +236,18 @@ input[type=file] {
 }
 
 
-/* ----------------- formatting for smartphone resolution ----------------- */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                               for Smartphone resolution                                            */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
 @media screen and (max-width: 766px) {
     .profile-Picture-Large, .profile-Picture-Large-Box {
         height: 200px;
     }
-    .profile-Picture-Large-Box:hover > div{
+    .profile-Picture-Large-Box:hover > #image-Select {
         top: 270px;
     }
     .profile-Grid {
@@ -263,6 +287,10 @@ input[type=file] {
     #uploaded-Images {
         grid-row: 3;
         grid-column: 1;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: inline-block;
     }
     #profile-Submit {
         grid-row: 4;
@@ -277,17 +305,3 @@ input[type=file] {
     }
 }
 
-/* ----------------- formatting for bigger resolution ----------------- */
-@media screen and (min-width: 1800px) {
-    .profile-Grid {
-        width: 1780px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .profile-Navigation {
-        width: 1780px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
