@@ -56,24 +56,26 @@ if(str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER
 /*                                             initialize mysql connection                                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+$_SESSION["connection"] = "";
+
+try {
+    $servername = 'localhost';
+    $user = 'root';
+    $pw = null;
+
+    $dbname = 'ham';
+    $db = new MySQLi( $servername, $user, $pw, $dbname );
+    echo 'Verbindungsaufbau erfolgreich.';
+
+    $_SESSION["connection"] = "successful";
+} catch ( Exception $ex ) {
+    $_SESSION["connection"] = "not successful";
+}
 
 
-function connectToDatabase(): Boolean {
+function connectToDatabase(): void {
     global $db;
-    try {
-        $servername = 'localhost:63342';
-        $user = 'root';
-        $pw = null;
 
-        $dbname = 'PHP';
-        $db = new MySQLi( $servername, $user, $pw, $dbname );
-        echo 'Verbindungsaufbau erfolgreich.';
-
-        return true;
-    } catch ( Exception $ex ) {
-        echo 'Fehler: ' . $ex->getMessage();
-        return false;
-    }
 }
 
 function closeDatabase(): void {

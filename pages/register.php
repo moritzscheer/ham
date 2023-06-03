@@ -111,7 +111,7 @@
             </div>
         </form>
     </section>
-
+<?php echo var_dump($_SESSION["connection"]) ?>
 <?php include "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
