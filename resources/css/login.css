@@ -173,6 +173,8 @@ input::placeholder{
 
 /*register submit button*/
 #registerSubmit {
+    display: grid;
+    place-items: center;
     color: white;
     text-shadow: black;
     font-family: Tahoma, sans-serif;
