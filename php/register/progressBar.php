@@ -14,6 +14,8 @@ $step_4 = "hidden";
 $progress_2 = "inActive";
 $progress_3 = "inActive";
 
+$progressBar = "";
+
 $step = (isset($_GET["step"]) && is_string($_GET["step"])) ? $_GET["step"] : "1";
 
 
@@ -36,8 +38,7 @@ if(!isset($_POST["cancel"])) {
         $progress_3 = "active";
     } elseif($step == 4) {
         $step_4 = "visible";
-        $progress_2 = "active";
-        $progress_3 = "active";
+        $progressBar = "hidden";
     }
 }
 

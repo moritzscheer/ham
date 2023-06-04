@@ -13,7 +13,7 @@
     height: auto;
     justify-content: center;
 }
-.progressBar {
+#progressBar {
     grid-row: 1;
     display: flex;
     list-style-type: none;
@@ -92,10 +92,10 @@
     text-decoration-line: unset;
     text-align: center;
 }
-#type input{
+.type input{
     width: 30px;
 }
-#type {
+.type {
     text-align: left;
 }
 .lastStep {
@@ -106,6 +106,7 @@
     border-radius: 20px;
     justify-content: space-evenly;
     padding: 20px;
+    margin: 20vh;
 }
 p {
     text-align: center;
@@ -141,7 +142,7 @@ p {
     .submit input, .submit a {
         width: 80px;
     }
-    #type input{
+    .type input{
         width: 20px;
     }
     .lastStep {

@@ -86,7 +86,6 @@ nav {
     padding-left: 10px;
 
     font-size: 12px;
-    text-align: center;
 }
 #name {
     margin-top: auto;
@@ -97,6 +96,7 @@ nav {
 #type {
     margin-top: 2px;
     margin-bottom: auto;
+    text-align: center;
 }
 
 

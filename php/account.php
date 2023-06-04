@@ -5,10 +5,8 @@ global $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progres
 /*                                          reset for all account variables                                           */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
-
 // unsets all the session variables
-if(isset($_POST["reset"]) || isset($_POST["logout"])) {
+function resetVariables(): void {
     unset($_SESSION["email"]);
     unset($_SESSION["password"]);
     unset($_SESSION["repeatPassword"]);
@@ -23,6 +21,10 @@ if(isset($_POST["reset"]) || isset($_POST["logout"])) {
     unset($_SESSION["profile-Picture-Small"]);
     unset($_SESSION["profile-Picture-Large"]);
     unset($_SESSION["newImage"]);
+}
+
+if(isset($_POST["reset"]) || isset($_POST["logout"])) {
+    resetVariables();
 }
 
 
@@ -69,6 +71,9 @@ if($_SESSION["type"] === "Musician") {
     $_SESSION["Host"] = "checked";
 }
 
+$error_message = "";
+$successful = (isset($_GET["successful"]) && is_string($_GET["successful"])) ? $_GET["successful"] : "false";
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -77,29 +82,40 @@ if($_SESSION["type"] === "Musician") {
 
 
 
-$error_message = "";
-
 if(isset($_POST["register"])) {
-    if($_SESSION["password"] === $_SESSION["repeatPassword"]) {
-        if(connectToDatabase()) {
-            $email = $_SESSION["email"];
-            $sql = 'SELECT email FROM user WHERE user.email EQUALS '.$email;
-            $resultEmail = $db->query( $sql );
-            echo '<ul>';
-            while ( $zeile = $resultEmail->fetch_assoc() ) {
-                echo '<li>' . htmlspecialchars( $zeile['id'] ) .
-                    ': ' . htmlspecialchars( $zeile['feld'] ) . '</li>';
+    try {
+        if($_SESSION["password"] === $_SESSION["repeatPassword"]) {
+            connectToDatabase();
+            
+            // checking if email already exist
+            $sqlEmail = "SELECT * FROM user WHERE email = '".$_SESSION["email"]."';";
+            $resultEmail = $db->query($sqlEmail);
+            if(mysqli_num_rows($resultEmail) > 0) {
+                throw new Exception("Email already exist");
             }
-            echo '</ul>';
 
+            // checking if password already exist
+            $sqlPassword = "SELECT * FROM user WHERE password = '".$_SESSION["password"]."';";
+            $resultPassword = $db->query($sqlPassword);
+            if (mysqli_num_rows($resultPassword) > 0) {
+                throw new Exception("Password already exist");
+            }
+
+            // change type to typeID
+            ($_SESSION["type"] == "Musician") ? $type = 1 : $type = 2;
+
+            // saving information in the user table
+            $sql = "INSERT INTO user VALUES ('0', '".$_SESSION["email"]."', '".$_SESSION["password"]."', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["address"]."', '".$_SESSION["phoneNumber"]."', '".$type."', '".$_SESSION["genre"]."', '".$_SESSION["members"]."', '".$_SESSION["otherRemarks"]."');";
+            $db->query($sql);
 
             closeDatabase();
+            header("Location: " . getNextUrl($step) . "&successful=true");
+            exit();
+        } else {
+            throw new Exception("Passwords must be the same.");
         }
-
-        header("Location: " . getNextUrl($step));
-        exit();
-    } else {
-        $error_message = "<p>passwords must be the same</p>";
+    } catch (Exception $ex) {
+        $error_message = "Error: " . $ex->getMessage();
     }
 }
 
@@ -115,6 +131,28 @@ if(isset($_POST["register"])) {
 
 
 
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                 delete User                                                     */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+function deleteUser(): void {
+    global $db, $error_message;
+    try {
+        connectToDatabase();
+        
+        $sql = "DELETE FROM user WHERE email = '".$_SESSION["email"]."';";
+        $db->query($sql);
+
+        closeDatabase();
+    } catch (Exception $ex) {
+        $error_message = "Error: " . $ex->getMessage();
+    }
+}
+
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                   change header elements on logged in status                                       */
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -126,12 +164,15 @@ $_SESSION["normalHeader"] = "";
 $_SESSION["profileHeader"] = "";
 $_SESSION["profileHeaderBox"] = "";
 
+
 // switches the logged in status
-if (isset($_POST["login"])) {
+if (isset($_POST["login"]) || $successful==="true") {
     $_SESSION["loggedIn"] = true;
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = false;
 }
+
+$_SESSION["a"] = $successful;
 
 // switches the header
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
@@ -257,4 +298,4 @@ function verifyImage($name, $type): String {
 }
 
 
-// session_destroy();
+

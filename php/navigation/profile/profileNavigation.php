@@ -12,6 +12,6 @@
     </form>
     
     <form method="post" action="index.php">
-        <input type="submit" name="logout" value="Delete Account">
+        <input type="submit" name="logout" onclick="<?php deleteUser(); ?>" value="Delete Account">
     </form>
 </div>
