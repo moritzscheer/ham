@@ -131,19 +131,20 @@ if(isset($_POST["login"])) {
     try {
         connectToDatabase();
 
+        // checking if email and password already exist
         $sqlLogin = "SELECT email, password FROM user WHERE email = '".$_SESSION["email"]."' AND password = '".$_SESSION["password"]."';";
         $resultLogin = $db->query($sqlLogin);
+        $_SESSION["a"] = $sqlLogin;
 
         if (mysqli_num_rows($resultLogin) == 0) {
             throw new Exception("Email or Password are not correct!");
         }
-        $_SESSION["a"] = $sqlLogin;
 
         closeDatabase();
         header("Location: index.php?loginSuccessful=true");
         exit();
-    } catch (Exception $ex) {
-        $error_message = "Error: " . $ex->getMessage();
+    } catch (Exception $ex) {           
+        $error_message = $ex->getMessage();
     }
 }
 

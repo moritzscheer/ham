@@ -133,7 +133,9 @@ input::placeholder{
     box-sizing: content-box;
 }
 
-
+#loginError {
+    width: 70%;
+}
 
 
 

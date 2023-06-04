@@ -3,18 +3,17 @@
     include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
-
 <section class="login-view">
     <form method="post" class="login-container">
         <div class="loginElement">
             <label id="Hlogin">Login</label>
         </div>
-        <?php echo $error_message ?>
+        <p id="loginError"><?php echo $error_message ?></p>
         <div class="loginElement">
-            <input type="email" id="lemail" name="logMail" placeholder="E-Mail adresse" required>
+            <input type="email" id="lemail" name="email" placeholder="E-Mail adresse" required>
         </div>
         <div class="loginElement">
-            <input type="password" id="lpassword" name="logPassword" placeholder="Passwort" required>
+            <input type="password" id="lpassword" name="password" placeholder="Passwort" required>
         </div>
         <div class="loginElement staylogin">
             <label class="staylogin-container">
@@ -34,6 +33,5 @@
         </div>
     </form>
 </section>
-<?php echo $_SESSION["a"] ?>
 </body>
 </html>
