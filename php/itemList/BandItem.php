@@ -2,7 +2,7 @@
 
 class BandItem implements Item
 {
-    private object $image;
+    private string $image;
     private string $id, $name, $type, $genre, $costs, $region, $email;
     private $members, $links = array();
 
@@ -18,7 +18,7 @@ class BandItem implements Item
      * @param $members
      * @param array $links
      */
-    public function __construct(object $image, string $id, string $name, string $type, string $genre, string $costs, string $region, string $email, $members, array $links)
+    public function __construct(string $image, string $id, string $name, string $type, string $genre, string $costs, string $region, string $email, $members, array $links)
     {
         $this->image = $image;
         $this->id = $id;

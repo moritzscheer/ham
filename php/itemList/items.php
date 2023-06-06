@@ -1,9 +1,5 @@
 <?php
-include 'ItemListDAO.php';
-include 'FileItemListDAO.php';
-include 'Item.php';
-include 'BandItem.php';
-include 'EventItem.php';
+include 'classes.php';
 
 global $type, $items, $decodedFile, $currentItem, $newEvent, $itemListManager;
 

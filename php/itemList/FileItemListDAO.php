@@ -1,5 +1,5 @@
 <?php
-
+include_once 'classes.php';
 class FileItemListDAO implements ItemListDAO
 {
 
@@ -19,11 +19,10 @@ class FileItemListDAO implements ItemListDAO
      */
     public function loadItems($type): array
     {
-        //$this->file = file_get_contents("../resources/json" . ($type === 'bands' ? "/Bands.json" : "/Events.json"), true);
-
         switch ($type) {
             case "bands":
-                $items = json_decode($this->bandFile, false);
+                $items = json_decode($this->bandFile, true);
+                var_dump($items);
                 return $this->loadBands($items);
 
             case "events":
@@ -44,7 +43,9 @@ class FileItemListDAO implements ItemListDAO
     private function loadBands($items): array
     {
         $bands = array();
+
         foreach ($items as $item) {
+            echo gettype($item -> costs);
             $band = new BandItem(
                 $item->image,
                 $item->id,
@@ -70,6 +71,7 @@ class FileItemListDAO implements ItemListDAO
     {
         $events = array();
         foreach ($items as $item) {
+            var_dump($item);
             $event = new EventItem(
                 $item->image,
                 $item->type,

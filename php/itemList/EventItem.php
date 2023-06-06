@@ -26,7 +26,7 @@ class EventItem implements Item
      * @param int $houseNr
      * @param int $postalCode
      */
-    public function __construct(?object $image, string $type, string $description, string $name, string $street, string $city, string $date, string $startTime, string $endTime, string $requirements, int $houseNr, int $postalCode)
+    public function __construct(string $image, string $type, string $description, string $name, string $street, string $city, string $date, string $startTime, string $endTime, string $requirements, int $houseNr, int $postalCode)
     {
         if($image == null){
             $image = new object();
