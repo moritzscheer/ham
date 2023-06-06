@@ -129,7 +129,6 @@ function initDatabase(): void {
         // creates the type user table
         $sql = "CREATE TABLE type_user (
               user_type_ID bigint(20) DEFAULT NULL AUTO_INCREMENT,
-              type_ID tinyint(1) NOT NULL,
               user_ID bigint(20) NOT NULL,
               genre varchar(30) DEFAULT NULL,
               members varchar(50) DEFAULT NULL,
@@ -141,16 +140,28 @@ function initDatabase(): void {
         );";
         $db->exec($sql);
 
+        // creates the event table
+        $sql = "CREATE TABLE event (
+              event_ID bigint(20) DEFAULT NULL AUTO_INCREMENT,
+              image BLOB NOT NULL,
+              description varchar(255) DEFAULT NULL,
+              name varchar(50) NOT NULL,
+              address_ID bigint(20) NOT NULL,
+              date Date NOT NULL,
+              startTime TIME NOT NULL,
+              endTime TIME NOT NULL,
+              requirements varchar(255) DEFAULT Null,
+              PRIMARY KEY (event_ID),
+              foreign key (address_ID);
+        );";
+        $db->exec($sql);
+
         closeDatabase();
         $_SESSION["initDatabase"] = "Database successfully created";
     } catch (PDOException $ex) {
         $error_message = $ex->getMessage();
     }
 }
-
-
-
-
 //session_destroy();
 
 
