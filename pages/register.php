@@ -32,8 +32,20 @@
                 <input type="text" value="<?php echo $_SESSION["surname"] ?>" name="surname" required>
             </label>
 
-            <label class="entry">Address:
-                <input type="text" value="<?php echo $_SESSION["address"] ?>" name="address">
+            <label class="entry">Street:
+                <input type="text" value="<?php echo $_SESSION["street_name"] ?>" name="address">
+            </label>
+
+            <label class="entry">House Number:
+                <input type="text" value="<?php echo $_SESSION["house_number"] ?>" name="address">
+            </label>
+
+            <label class="entry">Postal Code:
+                <input type="text" value="<?php echo $_SESSION["postal_code"] ?>" name="address">
+            </label>
+
+            <label class="entry">City:
+                <input type="text" value="<?php echo $_SESSION["city"] ?>" name="address">
             </label>
 
             <label class="entry">Phone Number:

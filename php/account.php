@@ -21,6 +21,7 @@ function resetVariables(): void {
     unset($_SESSION["profile-Picture-Small"]);
     unset($_SESSION["profile-Picture-Large"]);
     unset($_SESSION["newImage"]);
+    unset($_SESSION["initDatabase"]);
 }
 
 if(isset($_POST["reset"]) || isset($_POST["logout"])) {
@@ -62,6 +63,11 @@ $_SESSION["genre"] = checkVariable("genre");
 $_SESSION["members"] = checkVariable("members");
 $_SESSION["otherRemarks"] = checkVariable("otherRemarks");
 
+$_SESSION["street_name"] = checkVariable("street_name");
+$_SESSION["house_number"] = checkVariable("house_number");
+$_SESSION["postal_code"] = checkVariable("postal_code");
+$_SESSION["city"] = checkVariable("city");
+
 $_SESSION["Musician"] = "";
 $_SESSION["Host"] = "";
 
@@ -72,8 +78,8 @@ if($_SESSION["type"] === "Musician") {
 }
 
 $error_message = "";
-$registrationSuccessful = (isset($_GET["registrationSuccessful"]) && is_string($_GET["registrationSuccessful"])) ? $_GET["registrationSuccessful"] : "false";
-$loginSuccessful = (isset($_GET["loginSuccessful"]) && is_string($_GET["loginSuccessful"])) ? $_GET["loginSuccessful"] : "false";
+$_SESSION["registrationSuccessful"] = (isset($_SESSION["registrationSuccessful"])) ? $_SESSION["registrationSuccessful"] : false;
+$_SESSION["loginSuccessful"] = (isset($_SESSION["loginSuccessful"])) ? $_SESSION["loginSuccessful"] : false;
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -86,30 +92,48 @@ if(isset($_POST["register"])) {
     try {
         if($_SESSION["password"] === $_SESSION["repeatPassword"]) {
             connectToDatabase();
+            $db->exec("SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE");
+            $db->beginTransaction();
 
-            // checking if email already exist
-            $sqlEmail = "SELECT * FROM user WHERE email = '".$_SESSION["email"]."';";
-            $resultEmail = $db->query($sqlEmail);
-            if(mysqli_num_rows($resultEmail) > 0) {
+            /**
+             *  checking if email already exist
+             */
+            $sql = "SELECT * FROM user WHERE email = '".$_SESSION["email"]."';";
+            $result = $db->exec($sql);
+            if ($result > 0) {
                 throw new Exception("Email already exist");
             }
-
-            // checking if password already exist
-            $sqlPassword = "SELECT * FROM user WHERE password = '".$_SESSION["password"]."';";
-            $resultPassword = $db->query($sqlPassword);
-            if (mysqli_num_rows($resultPassword) > 0) {
+            
+            /**
+             *  checking if password already exist
+             */
+            $sql = "SELECT * FROM user WHERE password = '".$_SESSION["password"]."';";
+            $result = $db->exec($sql);
+            if ($result > 0) {
                 throw new Exception("Password already exist");
             }
 
             // change type to typeID
             ($_SESSION["type"] == "Musician") ? $type = 1 : $type = 2;
+            
+            /**
+             *  inserting data in the user and address table
+             */
+            if($_SESSION["street_name"] != null || $_SESSION["house_number"] != null || $_SESSION["postal_code"] != null || $_SESSION["city"] != null) {
+                // if any data is given for address put in data
+                $sql = "INSERT INTO address VALUES ('null', '".$_SESSION["street_name"]."', '".$_SESSION["house_number"]."', '".$_SESSION["postal_code"]."', '".$_SESSION["city"]."');";
+                $db->exec($sql);
+                $sql = "INSERT INTO user VALUES ('null', '".$type."', '".LAST_INSERT_ID()."', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["password"]."', '".$_SESSION["phoneNumber"]."', '".$_SESSION["email"]."');";
+                $db->exec($sql);
+            } else {
+                // if no data is given set addressID to null
+                $sql = "INSERT INTO user VALUES ('null', '".$type."', 'null', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["password"]."', '".$_SESSION["phoneNumber"]."', '".$_SESSION["email"]."');";
+                $db->exec($sql);
+            }
 
-            // saving information in the user table
-            $sql = "INSERT INTO user VALUES ('0', '".$_SESSION["email"]."', '".$_SESSION["password"]."', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["address"]."', '".$_SESSION["phoneNumber"]."', '".$type."', '".$_SESSION["genre"]."', '".$_SESSION["members"]."', '".$_SESSION["otherRemarks"]."');";
-            $db->query($sql);
-
+            $db->commit();
             closeDatabase();
-            header("Location: " . getNextUrl($step) . "&registrationSuccessful=true");
+            header("Location: " . getNextUrl($step));
             exit();
         } else {
             throw new Exception("Passwords must be the same.");
@@ -134,14 +158,13 @@ if(isset($_POST["login"])) {
         // checking if email and password already exist
         $sqlLogin = "SELECT email, password FROM user WHERE email = '".$_SESSION["email"]."' AND password = '".$_SESSION["password"]."';";
         $resultLogin = $db->query($sqlLogin);
-        $_SESSION["a"] = $sqlLogin;
 
         if (mysqli_num_rows($resultLogin) == 0) {
             throw new Exception("Email or Password are not correct!");
         }
 
         closeDatabase();
-        header("Location: index.php?loginSuccessful=true");
+        header("Location: index.php");
         exit();
     } catch (Exception $ex) {           
         $error_message = $ex->getMessage();
@@ -185,7 +208,7 @@ $_SESSION["profileHeaderBox"] = "";
 
 
 // switches the logged in status
-if ($loginSuccessful==="true" || $registrationSuccessful==="true") {
+if ($_SESSION["loginSuccessful"] === true || $_SESSION["registrationSuccessful"] === true) {
     $_SESSION["loggedIn"] = true;
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = false;
