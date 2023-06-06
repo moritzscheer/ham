@@ -57,10 +57,8 @@ if(str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-
-
-
-function connectToDatabase(): void {
+//todo: put all Database stuff into a DBItemListDAO class
+function connectToDatabase(): Boolean {
     global $db;
     $servername = 'localhost';
     $user = 'root';
@@ -68,6 +66,7 @@ function connectToDatabase(): void {
 
     $dbname = 'ham';
     $db = new MySQLi( $servername, $user, $pw, $dbname );
+    return new Boolean(true); // todo: fix this
 }
 
 function closeDatabase(): void {

@@ -1,5 +1,15 @@
 <?php
-global $type, $items, $decodedFile, $currentItem, $newEvent;
+include 'ItemListDAO.php';
+include 'FileItemListDAO.php';
+include 'Item.php';
+include 'BandItem.php';
+include 'EventItem.php';
+
+global $type, $items, $decodedFile, $currentItem, $newEvent, $itemListManager;
+
+$itemListManager = new FileItemListDAO("../resources/json/Bands.json", "../resources/json/Events.json");
+
+
 
 $newEvent["image"] = "";
 $newEvent["description"] = "";
@@ -9,54 +19,78 @@ $newEvent["street"] = "";
 $newEvent["houseNr"] = "";
 $newEvent["postalCode"] = "";
 $newEvent["city"] = "";
-
 $newEvent["date"] = "";
 $newEvent["startTime"] = "";
 $newEvent["endTime"] = "";
 $newEvent["requirements"] = "";
 
 
+
 $type = (isset($_GET["type"]) && is_string($_GET["type"])) ? $_GET["type"] : "";
-$items = [];
 
-
-$file = file_get_contents("../resources/json" . ($type === 'bands' ? "/Bands.json" : "/Events.json"), true);
-$items = json_decode($file, false);
 if (isset($_POST["submit"])) {
-    if(isset($_FILES["image"])) {
-        $newEvent["image"] = "../resources/images/events/".verifyImage("image", "events");
+
+    if (isset($_FILES["image"])) {
+        $eventImage = "../resources/images/events/" . verifyImage("image", "events");
     }
+    /*
     $newEvent["description"] = checkValue("description");
     $newEvent["name"] = checkValue("name");
 
     $newEvent["street"] = checkValue("street");
+    $newEvent["city"] = checkValue("city");
     $newEvent["houseNr"] = checkValue("houseNr");
     $newEvent["postalCode"] = checkValue("postalCode");
-    $newEvent["city"] = checkValue("city");
+
 
     $newEvent["date"] = checkValue("date");
     $newEvent["startTime"] = checkValue("startTime");
     $newEvent["endTime"] = checkValue("endTime");
     $newEvent["requirements"] = checkValue("requirements");
-    if ($items[count($items) - 1]->name !== $newEvent["name"]) {
-        createNewEvent($newEvent);
+    */
+    $event = new EventItem(
+        $eventImage,
+        "event",
+        checkValue("description"),
+        checkValue("name"),
+        checkValue("street"),
+        checkValue("city"),
+        checkValue("date"),
+        checkValue("startTime"),
+        checkValue("endTime"),
+        checkValue("requirements"),
+        (int)checkValue("houseNr"),
+        (int)checkValue("postalCode")
+    );
+    If (createNewEvent($event)){}
+    else{
+        // throw exception ?
     }
 }
-function createNewEvent($newEvent)
-{
-    global $items;
-    $items[] = (object) $newEvent;
-    file_put_contents("../resources/json/Events.json", json_encode($items));
-}
 
+/**
+ * @param EventItem $newEvent
+ * @return false|void
+ */
+function createNewEvent(EventItem $newEvent) : bool
+{
+    global $itemListManager;
+    $allEvents = $itemListManager->loadItems("events");
+    foreach ($allEvents as $event){ // checks if there is another event with same id
+        if($event->getId() == $newEvent->getId()){
+            return false;
+        }
+    }
+    return $itemListManager->storeItem($newEvent);
+}
 
 function checkValue($var): string
 {
     if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
         return htmlspecialchars($_POST["$var"]);
-    } elseif (isset($newEvent["$var"]) && is_string($newEvent["$var"])) {
+    } /*elseif (isset($newEvent["$var"]) && is_string($newEvent["$var"])) {
         return $newEvent["$var"];
-    } else {
+    } */ else {
         return "";
     }
 }
@@ -83,45 +117,46 @@ function getItems()
 
 function getBands(): void
 {
-    global $items, $selectedItem;
+    global $itemListManager;
+    $items = $itemListManager->loadItems("bands");
     echo ' <section id="item-list">';
     foreach ($items as $band) {
         $members = '';
-        foreach ($band->members as $member) {
+        foreach ($band->getMembers() as $member) {
             $members = $members . $member . '<br>';
         }
         $links = '';
-        foreach ($band->links as $link) {
+        foreach ($band->getLinks() as $link) {
             $links = $links . $link . '<br>';
         }
         echo '
          <div id="item">
             <label class="item-head">
-                <img id="item-image" src="' . $band ->image.'" alt="bandImage"/>
+                <img id="item-image" src="' . $band->getImage() . '" alt="bandImage"/>
                 <div id="item-description" class="text-line-pre">
-                    <span>Name: ' . $band->name . '</span>
+                    <span>Name: ' . $band->getName() . '</span>
                     <br>
-                    <span>Genre: ' . $band->genre . '</span>
+                    <span>Genre: ' . $band->getGenre() . '</span>
                     <br>
-                    <span>' . count($band->members) . ' Members</span>
+                    <span>' . count($band->getMembers()) . ' Members</span>
                     <br>
-                    <span>' . $band->costs . '</span>
+                    <span>' . $band->getCosts() . '</span>
                     <input type="checkbox" id="item-click">
                 </div>
             </label>
             <div id="item-m-details">
                 <div id="item-details-title">
-                    <img id="item-image" src="' . $band ->image.'" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $band->name . ' </h2>
+                    <img id="item-image" src="' . $band->getImage() . '" alt="bandImage"/>
+                    <h2 id="item-details-name"> ' . $band->getName() . ' </h2>
                 </div>
                 <div>
                     <p>
                         ' . $members . '
-                        ' . $band->email . ' <br>
+                        ' . $band->getEmail() . ' <br>
                         <br>
-                        ' . $band->costs . '<br>
+                        ' . $band->getCosts() . '<br>
                         <br>
-                        ' . $band->region . ' <br>
+                        ' . $band->getRegion() . ' <br>
                     </p>
                 </div>
                 <div id="item-details-foot">
@@ -133,21 +168,31 @@ function getBands(): void
             </div>
         </div> ';
     }
+
+    //todo: fix that...
+    $members = '';
+    foreach ($items[0]->getMembers() as $member) {
+        $members = $members . $member . '<br>';
+    }
+    $links = '';
+    foreach ($items[0]->getLinks() as $link) {
+        $links = $links . $link . '<br>';
+    }
     echo '</section>';
     echo '
     <section id="item-details">
         <div id="item-details-title">
-                    <img id="item-image" src="' . $band ->image.'" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $band->name . ' </h2>
+                    <img id="item-image" src="' . $items[0]->getImage() . '" alt="bandImage"/>
+                    <h2 id="item-details-name"> ' . $items[0]->getName() . ' </h2>
                 </div>
         <div class="item-details-description">
                     <p>
                         ' . $members . '
-                        ' . $band->email . ' <br>
+                        ' . $items[0]->getEmail() . ' <br>
                         <br>
-                        ' . $band->costs . '<br>
+                        ' . $items[0]->getCosts() . '<br>
                         <br>
-                        ' . $band->region . ' <br>
+                        ' . $items[0]->getRegion() . ' <br>
                     </p>
                 </div>
                 <div id="item-details-foot">
@@ -161,18 +206,19 @@ function getBands(): void
 
 function getEvents(): void
 {
-    global $items, $currentItem;
+    global $itemListManager;
+    $items = $itemListManager->loadItems("events");
     echo ' <section id="item-list">';
     foreach ($items as $event) {
-        $address = $event->street . " " . $event->houseNr . "\n" . $event->postalCode . " " . $event->city;
-        $time = $event->startTime . " - " . $event->endTime;
+        $address = $event->getStreet() . " " . $event->getHouseNr() . "\n" . $event->getPostalCode() . " " . $event->getCity();
+        $time = $event->getStartTime() . " - " . $event->getEndTime();
 
         echo '
          <div id="item">
             <label class="item-head">
-                <img id="item-image" src="' . $event ->image.'" alt="bandImage"/>
+                <img id="item-image" src="' . $event->getImage() . '" alt="bandImage"/>
                 <div id="item-description" class="text-line-pre">
-                    <span>' . $event->name . '</span>
+                    <span>' . $event->getName() . '</span>
                     <br>
                     <span>Address: ' . $address . '</span>
                     <br>
@@ -182,35 +228,37 @@ function getEvents(): void
             </label>
             <div id="item-m-details">
                 <div id="item-details-title">
-                    <img id="item-image" src="' . $event ->image.'" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $event->name . ' </h2>
+                    <img id="item-image" src="' . $event->getImage() . '" alt="bandImage"/>
+                    <h2 id="item-details-name"> ' . $event->getName() . ' </h2>
                 </div>
                 <div class="item-details-description">
-                    <p>' . $event->description . '</p>
+                    <p>' . $event->getDescription() . '</p>
                 </div>
                 <div id="item-details-foot">
                     <p class="text-line-pre">
                         Requirements <br>
-                        ' . $event->requirements . '
+                        ' . $event->getRequirements() . '
                     </p>
                 </div>
             </div>
          </div> ';
     }
+
+    //todo: fix this...
     echo '</section>';
     echo '
     <section id="item-details">
          <div id="item-details-title">
-                    <img id="item-image" src="' . $event ->image.'" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $event->name . ' </h2>
+                    <img id="item-image" src="' . $items[0]->getImage() . '" alt="bandImage"/>
+                    <h2 id="item-details-name"> ' . $items[0]->getName() . ' </h2>
                 </div>
                 <div class="item-details-description">
-                    <p>' . $event->description . '</p>
+                    <p>' . $items[0]->getDescription() . '</p>
                 </div>
                 <div id="item-details-foot">
                     <p class="text-line-pre" ">
                         Requirements <br>
-                        ' . $event->requirements . '
+                        ' . $items[0]->getRequirements() . '
                     </p>
                 </div>
     </section>';
