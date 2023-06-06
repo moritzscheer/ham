@@ -2,6 +2,11 @@
 
 interface ItemListDAO
 {
-    public function loadItems($file) : array;
+    /**
+     * @param $type
+     * @return Item[]
+     */
+    public function loadItems($type) : array;
+    public function storeItem(Item $item): bool;
 }
 ?>

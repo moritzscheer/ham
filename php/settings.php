@@ -50,7 +50,7 @@ if(str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER
 } else {
     $_SESSION["url1"] = "../resources/css/" . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . ".css";
 }
-                                                            
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                             initialize mysql connection                                            */
@@ -63,7 +63,7 @@ function connectToDatabase(): void {
     $user = "root";
     $pw = null;
     $dsn = "sqlite:sqlite-pdo.db";
-    
+
     $db = new PDO($dsn, $user, $pw);
 }
 
@@ -97,7 +97,7 @@ function initDatabase(): void {
             PRIMARY KEY (address_ID)
         );";
         $db->exec($sql);
-        
+
         // creates the types table and adds the two types in
         $sql = "CREATE TABLE type (
               type_ID tinyint(1) DEFAULT NULL AUTO_INCREMENT,
