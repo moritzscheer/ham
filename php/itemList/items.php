@@ -70,14 +70,16 @@ if (isset($_POST["submit"])) {
  */
 function createNewEvent(EventItem $newEvent) : bool
 {
-    global $itemListManager;
-    $allEvents = $itemListManager->loadItems("events");
+    //global $itemListManager;
+    //$allEvents = $itemListManager->loadItems("events");
+    $allEvents = array();
     foreach ($allEvents as $event){ // checks if there is another event with same id
         if($event->getId() == $newEvent->getId()){
             return false;
         }
     }
-    return $itemListManager->storeItem($newEvent);
+    return true;
+    //return $itemListManager->storeItem($newEvent);
 }
 
 function checkValue($var): string
@@ -115,6 +117,10 @@ function getBands(): void
 {
     global $itemListManager;
     $items = $itemListManager->loadItems("bands");
+    //$file = file_get_contents("../resources/json/Bands.json", true);
+    //$item = json_decode($file, false);
+    //$itemA = $item[0];
+
     echo ' <section id="item-list">';
     foreach ($items as $band) {
         $members = '';

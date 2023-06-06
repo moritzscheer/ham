@@ -21,8 +21,8 @@ class FileItemListDAO implements ItemListDAO
     {
         switch ($type) {
             case "bands":
-                $items = json_decode($this->bandFile, true);
-                var_dump($items);
+                $items = json_decode($this->bandFile, false);
+                //var_dump($items);
                 return $this->loadBands($items);
 
             case "events":
@@ -43,21 +43,8 @@ class FileItemListDAO implements ItemListDAO
     private function loadBands($items): array
     {
         $bands = array();
-
         foreach ($items as $item) {
-            echo gettype($item -> costs);
-            $band = new BandItem(
-                $item->image,
-                $item->id,
-                $item->name,
-                $item->type,
-                $item->genre,
-                $item->members,
-                $item->costs,
-                $item->region,
-                $item->email,
-                $item->links
-            );
+            $band = new BandItem($item);
             $bands[] = $band; // adds band to bands array
         }
         return $bands;
@@ -71,21 +58,7 @@ class FileItemListDAO implements ItemListDAO
     {
         $events = array();
         foreach ($items as $item) {
-            var_dump($item);
-            $event = new EventItem(
-                $item->image,
-                $item->type,
-                $item->description,
-                $item->name,
-                $item->street,
-                $item->city,
-                $item->Date,
-                $item->startTime,
-                $item->endTime,
-                $item->requirements,
-                $item->houseNr,
-                $item->postalCode,
-            );
+            $event = new EventItem($item);
             $events[] = $event;
         }
         return $events;

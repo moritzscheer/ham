@@ -18,7 +18,7 @@ class BandItem implements Item
      * @param $members
      * @param array $links
      */
-    public function __construct(string $image, string $id, string $name, string $type, string $genre, string $costs, string $region, string $email, $members, array $links)
+    /*public function __construct(string $image, string $id, string $name, string $type, string $genre, string $costs, string $region, string $email, $members, array $links)
     {
         $this->image = $image;
         $this->id = $id;
@@ -30,15 +30,27 @@ class BandItem implements Item
         $this->email = $email;
         $this->members = $members;
         $this->links = $links;
-    }
+    }*/
 
     //https://www.amitmerchant.com/multiple-constructors-php/
 
+    public function __construct(object $item){
+        $this->image = $item->image;
+        $this->id = $item->id;
+        $this->name = $item->name;
+        $this->type = $item->type;
+        $this->genre = $item->genre;
+        $this->costs = $item->costs;
+        $this->region = $item->region;
+        $this->email = $item->email;
+        $this->members = $item->members;
+        $this->links = $item->links;
+    }
 
     /**
      * @return object
      */
-    public function getImage(): object
+    public function getImage(): string
     {
         return $this->image;
     }

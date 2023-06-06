@@ -3,7 +3,7 @@
 class EventItem implements Item
 {
 
-    private ?object $image;
+    private string $image;
     private string $id, $type, $description, $name, $street, $city, $date, $startTime, $endTime, $requirements = "";
     private int $houseNr, $postalCode = -1;
 
@@ -12,7 +12,7 @@ class EventItem implements Item
         $image = new object();
     }*/
     /**
-     * @param object|null $image
+     * @param string $image
      * @param string $id
      * @param string $type
      * @param string $description
@@ -26,7 +26,7 @@ class EventItem implements Item
      * @param int $houseNr
      * @param int $postalCode
      */
-    public function __construct(string $image, string $type, string $description, string $name, string $street, string $city, string $date, string $startTime, string $endTime, string $requirements, int $houseNr, int $postalCode)
+    /*public function __construct(string $image, string $type, string $description, string $name, string $street, string $city, string $date, string $startTime, string $endTime, string $requirements, int $houseNr, int $postalCode)
     {
         if($image == null){
             $image = new object();
@@ -45,13 +45,30 @@ class EventItem implements Item
         $this->houseNr = $houseNr;
         $this->postalCode = $postalCode;
 
+    }*/
+
+    public function __construct(object $item)
+    {
+        (isset($item->id) && is_string($item->id)) ? $this->id = $item->id : $this->id = $this->createID();
+        $this->image = $item->image;
+        $this->type = $item->type;
+        $this->description = $item->description;
+        $this->name = $item->name;
+        $this->street = $item->street;
+        $this->city = $item->city;
+        $this->date = $item->Date;
+        $this->startTime = $item->startTime;
+        $this->endTime = $item->endTime;
+        $this->requirements = $item->requirements;
+        $this->houseNr = $item->houseNr;
+        $this->postalCode = $item->postalCode;
     }
 
 
     /**
-     * @return object
+     * @return string
      */
-    public function getImage(): object
+    public function getImage(): string
     {
         return $this->image;
     }
@@ -283,14 +300,13 @@ class EventItem implements Item
         );
     }
 
-    //todo: implement method
-
     /**
      * creates an id for an event
      * @return string ID of an event
      */
     private function createID(): string
     {
+        //todo: implement method
         return "";
     }
 
