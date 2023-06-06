@@ -72,8 +72,8 @@ if($_SESSION["type"] === "Musician") {
 }
 
 $error_message = "";
-$successful = (isset($_GET["successful"]) && is_string($_GET["successful"])) ? $_GET["successful"] : "false";
-
+$registrationSuccessful = (isset($_GET["registrationSuccessful"]) && is_string($_GET["registrationSuccessful"])) ? $_GET["registrationSuccessful"] : "false";
+$loginSuccessful = (isset($_GET["loginSuccessful"]) && is_string($_GET["loginSuccessful"])) ? $_GET["loginSuccessful"] : "false";
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -86,7 +86,7 @@ if(isset($_POST["register"])) {
     try {
         if($_SESSION["password"] === $_SESSION["repeatPassword"]) {
             connectToDatabase();
-            
+
             // checking if email already exist
             $sqlEmail = "SELECT * FROM user WHERE email = '".$_SESSION["email"]."';";
             $resultEmail = $db->query($sqlEmail);
@@ -109,7 +109,7 @@ if(isset($_POST["register"])) {
             $db->query($sql);
 
             closeDatabase();
-            header("Location: " . getNextUrl($step) . "&successful=true");
+            header("Location: " . getNextUrl($step) . "&registrationSuccessful=true");
             exit();
         } else {
             throw new Exception("Passwords must be the same.");
@@ -127,8 +127,26 @@ if(isset($_POST["register"])) {
 
 
 
-// todo: if database exists, ask database if email and password is correct
+if(isset($_POST["login"])) {
+    try {
+        connectToDatabase();
 
+        // checking if email and password already exist
+        $sqlLogin = "SELECT email, password FROM user WHERE email = '".$_SESSION["email"]."' AND password = '".$_SESSION["password"]."';";
+        $resultLogin = $db->query($sqlLogin);
+        $_SESSION["a"] = $sqlLogin;
+
+        if (mysqli_num_rows($resultLogin) == 0) {
+            throw new Exception("Email or Password are not correct!");
+        }
+
+        closeDatabase();
+        header("Location: index.php?loginSuccessful=true");
+        exit();
+    } catch (Exception $ex) {           
+        $error_message = $ex->getMessage();
+    }
+}
 
 
 
@@ -142,11 +160,12 @@ function deleteUser(): void {
     global $db, $error_message;
     try {
         connectToDatabase();
-        
+
         $sql = "DELETE FROM user WHERE email = '".$_SESSION["email"]."';";
         $db->query($sql);
 
         closeDatabase();
+        $LoginSuccessful = "true";
     } catch (Exception $ex) {
         $error_message = "Error: " . $ex->getMessage();
     }
@@ -166,13 +185,11 @@ $_SESSION["profileHeaderBox"] = "";
 
 
 // switches the logged in status
-if (isset($_POST["login"]) || $successful==="true") {
+if ($loginSuccessful==="true" || $registrationSuccessful==="true") {
     $_SESSION["loggedIn"] = true;
 } elseif (isset($_POST["logout"])) {
     $_SESSION["loggedIn"] = false;
 }
-
-$_SESSION["a"] = $successful;
 
 // switches the header
 if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
