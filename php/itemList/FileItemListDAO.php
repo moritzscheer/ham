@@ -15,7 +15,7 @@ class FileItemListDAO implements ItemListDAO
     /**
      * Converts a json-file into an array of items (bands or events)
      * @param $type : bands or events
-     * @return array|BandItem[]|EventItem[]|Item[] array of the specific items
+     * @return array|BandDOA[]|EventItem[]|Item[] array of the specific items
      */
     public function loadItems($type): array
     {
@@ -38,13 +38,13 @@ class FileItemListDAO implements ItemListDAO
 
     /**
      * @param $items decoded json array of bands
-     * @return BandItem[] returns an array of Banditem objects
+     * @return BandDOA[] returns an array of Banditem objects
      */
     private function loadBands($items): array
     {
         $bands = array();
         foreach ($items as $item) {
-            $band = new BandItem($item);
+            $band = new BandDOA($item);
             $bands[] = $band; // adds band to bands array
         }
         return $bands;
@@ -71,7 +71,7 @@ class FileItemListDAO implements ItemListDAO
      */
     public function storeItem(Item $item): bool
     {
-        if ($item instanceof BandItem) {
+        if ($item instanceof BandDOA) {
             // todo: implement ...
             return true;
         } elseif ($item instanceof EventItem) {
