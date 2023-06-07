@@ -2,7 +2,7 @@
 
 global $db;
 
-class EventStore
+class AddressStore
 {
 
     private PDO $db;
@@ -14,7 +14,7 @@ class EventStore
     }
 
 
-    public function create(EventItem $item): EventItem
+    public function create(Address $item): Address
     {
         //  create address
         $create = "INSERT INTO address (street_name, house_number, postal_code, city)
@@ -26,21 +26,10 @@ class EventStore
 
         $addressId = $this->db->exec($create);
 
-        $create = "INSERT INTO event (image ,description,name,address_ID,date,startTime ,endTime, requirements)
-                    VALUES (" . ibase_blob_create($item -> getImage()).
-            "," . $item->getDescription() .
-            "," . $item->getName() .
-            "," . $addressId .
-            "," . $item->getDate() .
-            "," . $item->getStartTime() .
-            "," . $item->getEndTime() .
-            "," . $item->getRequirements() .
-            ");";
-        $eventId = $this->db->exec($create);
-        return $this->findOne($eventId);
+        return $this->findOne($addressId);
     }
 
-    public function update(EventItem $item): EventItem
+    public function update(Address $item): Address
     {
         //  edit address
         $update = "UPDATE ADDRESS 
@@ -51,7 +40,7 @@ class EventStore
             WHERE address_ID = ". $item-> getId().";";
 
         $this->db->exec($update);
-
+        return  $this->findOne($item-> getId());
     }
 
     public function delete(string $id): void
@@ -60,7 +49,7 @@ class EventStore
         $this->db->exec($delete);
     }
 
-    public function findOne(string $id): EventItem
+    public function findOne(string $id): Address
     {
         $findOne ="SELECT * FROM event 
                      WHERE event_ID = " . $id."
@@ -68,7 +57,7 @@ class EventStore
         return $this->db->exec($findOne);
     }
 
-    public function findMany(array $ids)
+    public function findMany(array $ids): array
     {
         foreach ($ids as $id) {
             $id = "event_ID = " . $id;
@@ -79,7 +68,7 @@ class EventStore
 
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         $findAll = "SELECT * FROM event ";
         return $this->db->exec($findAll);
