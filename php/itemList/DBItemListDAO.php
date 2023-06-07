@@ -9,12 +9,16 @@ class DBItemListDAO implements ItemListDAO
 
     public function loadItems($type): array
     {
-        // TODO: Implement loadItems() method.
         switch ($type){
             case "bands":
+                return $this->loadBands();
 
+            case "events":
+                return $this->loadEvents();
+
+            default:
+                return array();
         }
-        return array();
     }
 
     /**

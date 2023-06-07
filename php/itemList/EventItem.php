@@ -4,7 +4,7 @@ class EventItem implements Item
 {
 
     private string $image;
-    private string $id, $type, $description, $name, $street, $city, $date, $startTime, $endTime, $requirements = "";
+    private string $id, $authorId ,$type, $description, $name, $street, $city, $date, $startTime, $endTime, $requirements = "";
     private int $houseNr, $postalCode = -1;
 
     /*public function __construct()
@@ -50,6 +50,7 @@ class EventItem implements Item
     public function __construct(object $item)
     {
         (isset($item->id) && is_string($item->id)) ? $this->id = $item->id : $this->id = $this->createID();
+        $this->authorId = $item->authorID;
         $this->image = $item->image;
         $this->type = $item->type;
         $this->description = $item->description;

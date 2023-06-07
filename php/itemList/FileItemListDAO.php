@@ -22,7 +22,6 @@ class FileItemListDAO implements ItemListDAO
         switch ($type) {
             case "bands":
                 $items = json_decode($this->bandFile, false);
-                //var_dump($items);
                 return $this->loadBands($items);
 
             case "events":
