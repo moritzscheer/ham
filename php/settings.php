@@ -1,7 +1,6 @@
 <?php
 include_once "../php/user/FileUserStore.php";
 include_once "../php/user/DBUserStore.php";
-global $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -67,79 +66,28 @@ function initDatabase(): void
     //$userStore = new DBUserStore();
     $userStore = new FileUserStore();
     $userStore->create("../resources/json/user.json");
-
-
 }
 
-try {
 
 
-    // creates the address table
-    $sql = "CREATE TABLE address (
-            address_ID int(11) AUTO_INCREMENT,
-            street_name int(30) DEFAULT NULL,
-            house_number int(5) DEFAULT NULL,
-            postal_code int(5) DEFAULT NULL,
-            city varchar(20) DEFAULT NULL,
-            PRIMARY KEY (address_ID)
-        );";
-    $db->exec($sql);
-
-    // creates the user table
-    $sql = "CREATE TABLE user (
-              user_ID bigint(20) DEFAULT NULL AUTO_INCREMENT,
-              type_ID tinyint(1) NOT NULL,
-              address_ID int(11) DEFAULT NULL,
-              name varchar(15) DEFAULT NULL,
-              surname varchar(15) DEFAULT NULL,
-              password varchar(20) NOT NULL,
-              phone_number varchar(20) DEFAULT NULL,
-              email varchar(30) NOT NULL,
-              PRIMARY KEY (user_ID),
-              FOREIGN KEY (type_ID) REFERENCES type(type_ID),
-              FOREIGN KEY (address_ID) REFERENCES address(address_ID)
-        );";
-    $db->exec($sql);
-
-    // creates the type user table
-    $sql = "CREATE TABLE type_user (
-              user_type_ID bigint(20) DEFAULT NULL AUTO_INCREMENT,
-              user_ID bigint(20) NOT NULL,
-              genre varchar(30) DEFAULT NULL,
-              members varchar(50) DEFAULT NULL,
-              other_remarks longtext DEFAULT NULL,
-              PRIMARY KEY (user_type_ID),
-              FOREIGN KEY (type_ID) REFERENCES type(type_ID),
-              FOREIGN KEY (user_ID) REFERENCES user(user_ID)
-
-        );";
-    $db->exec($sql);
-
-    // creates the event table
-    $sql = "CREATE TABLE event (
-              event_ID bigint(20) AUTO_INCREMENT,
-              image BLOB NOT NULL,
-              description varchar(255) DEFAULT NULL,
-              name varchar(50) NOT NULL,
-              address_ID bigint(20) NOT NULL,
-              date varchar(20) NOT NULL,
-              startTime varchar(20) NOT NULL,
-              endTime varchar(20) NOT NULL,
-              requirements varchar(255) DEFAULT Null,
-              PRIMARY KEY (event_ID),
-              foreign key (address_ID);
-        );";
-    $db->exec($sql);
-
-    closeDatabase();
-    $_SESSION["initDatabase"] = "Database successfully created";
-} catch (PDOException $ex) {
-    $error_message = $ex->getMessage();
-
-}
-//session_destroy();
 
 
+
+$sql = "CREATE TABLE address (
+    address_ID int(11) DEFAULT NULL,
+    street_name int(30) DEFAULT NULL,
+    house_number int(5) DEFAULT NULL,
+    postal_code int(5) DEFAULT NULL,
+    city varchar(20) DEFAULT NULL,
+    PRIMARY KEY (address_ID)
+);";
+
+// creates the types table and adds the two types in
+$sql = "CREATE TABLE type (
+    type_ID tinyint(1) DEFAULT NULL,
+    type_name varchar(10) NOT NULL,
+    PRIMARY KEY (type_ID)
+);";
 
 
 

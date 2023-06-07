@@ -6,7 +6,7 @@ global $userStore, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 // initialize session variables
-$_SESSION["user_ID"] = isset($_SESSION["user_ID"]) && is_string($_SESSION["user_ID"]) ? $_SESSION["user_ID"]: null;
+$_SESSION["user_ID"] = $_SESSION["user_ID"] ?? null;
 
 $_SESSION["email"] = check_variable("email");
 $_SESSION["password"] = check_variable("password");
@@ -28,17 +28,12 @@ $_SESSION["old_password"] = check_variable("old_password");
 $_SESSION["new_password"] = check_variable("new_password");
 $_SESSION["repeat_new_password"] = check_variable("repeat_new_password");
 
-
 // type
 $_SESSION["type"] = check_variable("type");
-$_SESSION["type_ID"] = ($_SESSION["type"] == "Musician") ? 1 : 2;
 $_SESSION["Musician"] = ($_SESSION["type"] === "Musician") ? "checked" : "";
 $_SESSION["Host"] = ($_SESSION["type"] === "Host") ? "checked" : "";
 
 $error_message = "";
-
-$_SESSION["registrationSuccessful"] = (isset($_SESSION["registrationSuccessful"])) ? $_SESSION["registrationSuccessful"] : false;
-$_SESSION["loginSuccessful"] = (isset($_SESSION["loginSuccessful"])) ? $_SESSION["loginSuccessful"] : false;
 
 // initialize session variables
 $profile_header_box = "<div id='name'>".$_SESSION["name"]." ".$_SESSION["surname"].'</div><div id="type">'.$_SESSION["type"]."</div>";
@@ -46,11 +41,14 @@ $_SESSION["normalHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn
 $_SESSION["profileHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "visible": "hidden";
 $_SESSION["profileHeaderBox"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? $profile_header_box : "";
 
+$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/default/defaultSmall.png";
+$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/default/defaultLarge.jpeg";
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               post methods                                                         */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 /**
@@ -61,14 +59,15 @@ if(isset($_POST["reset"])) {
 }
 
 
+
 /**
  * If a user clicks on register
  */
 if(isset($_POST["register"])) {
     try {
         if($_SESSION["password"] === $_SESSION["repeat_password"]) {
-            $_SESSION["user_ID"] = $userStore->register($_SESSION["type_ID"], $_SESSION["address"], $_SESSION["name"], $_SESSION["surname"], $_SESSION["password"], $_SESSION["phone_number"], $_SESSION["email"] );
-
+            $id = $userStore->register($_SESSION["type"], $_SESSION["address"], $_SESSION["name"], $_SESSION["surname"], $_SESSION["password"], $_SESSION["phone_number"], $_SESSION["email"] );
+            $_SESSION["user_ID"] = $id;
             $_SESSION["loggedIn"] = true;
 
             header("Location: " . getNextUrl($step));
@@ -82,6 +81,7 @@ if(isset($_POST["register"])) {
         $error_message = $ex->getMessage();
     }
 }
+
 
 
 /**
@@ -101,6 +101,8 @@ if(isset($_POST["login"])) {
     }
 }
 
+
+
 /**
  * If a user clicks on login
  */
@@ -118,12 +120,13 @@ if(isset($_POST["logout"])) {
 }
 
 
+
 /**
  * If a user clicks on delete account
  */
 if(isset($_POST["delete"])) {
     try {
-        $userStore->delete();
+        $userStore->delete($_SESSION["user_ID"]);
 
         $_SESSION["loggedIn"] = false;
 
@@ -135,6 +138,7 @@ if(isset($_POST["delete"])) {
 }
 
 
+
 /**
  * If a user wants to change passwords
  */
@@ -142,10 +146,13 @@ if(isset($_POST["change_password"])) {
     try {
         if($_SESSION["old_password"] === $_SESSION["password"]) {
             if($_SESSION["new_password"] === $_SESSION["repeat_new_password"]) {
-                $userStore->update($_SESSION["new_password"]);
-                
+                $userStore->update($_SESSION["user_ID"], array("password" => $_SESSION["new_password"]));
+
+                $_SESSION["password"] = $_SESSION["new_password"];
+
                 header("Location: profile.php");
                 exit();
+
             } else {
                 $_SESSION["old_password"] = "";
                 $_SESSION["new_password"] = "";
@@ -156,10 +163,79 @@ if(isset($_POST["change_password"])) {
             $_SESSION["old_password"] = "";
             $_SESSION["new_password"] = "";
             $_SESSION["repeat_new_password"] = "";
-            throw new Exception("Passwords must be the same.");
+            throw new Exception("Old Password is incorrect.");
         }
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
+    }
+}
+
+
+
+/**
+ *  If a user wants to change user data
+ */
+if(isset($_POST["update_profile"])) {
+    try {
+        $array = array(
+            "type" => $_SESSION["type"],
+            "name" => $_SESSION["name"],
+            "surname" => $_SESSION["surname"],
+            "password" => $_SESSION["password"],
+            "phone_number" => $_SESSION["phone_number"],
+            "email" => $_SESSION["email"]
+            );
+
+        $userStore->update($_SESSION["user_ID"], $array);
+
+        header("Location: profile.php");
+        exit();
+    } catch (Exception $ex) {
+        $error_message = $ex->getMessage();
+    }
+
+}
+
+
+
+/**
+ *  If a user wants to change the small profile picture
+ */
+if (isset($_POST["profile_picture_small"])) {
+    try {
+        $_SESSION["profile_picture_small"] = "../resources/images/profile/default/".verifyImage("profile_picture_small", "profile/default");
+        $userStore->update($_SESSION["user_ID"], $array);
+    } catch (RuntimeException $e) {
+        $_SESSION["error"] = $e->getMessage();
+    }
+}
+
+
+
+/**
+ *  If a user wants to change the large profile picture
+ */
+if (isset($_POST["profile_picture_large"])) {
+    try {
+        $_SESSION["profile_picture_large"] = "../resources/images/profile/default/" . verifyImage("profile_picture_large", "profile/default");
+        $userStore->update($_SESSION["user_ID"], array("profile_picture_large" => $_SESSION["profile_picture_large"]));
+    } catch (RuntimeException $e) {
+        $_SESSION["error"] = $e->getMessage();
+    }
+}
+
+
+
+/**
+ *  If a user wants to add an image to the profile gallery
+ */
+if (isset($_POST["newImage"])) {
+    try {
+        $fileName = verifyImage("newImage", "profile/custom");
+        $path = "../resources/images/profile/custom/".$fileName;
+        $userStore->update($_SESSION["user_ID"], array("profile_gallery" => $path));
+    } catch (RuntimeException $e) {
+        $_SESSION["error"] = $e->getMessage();
     }
 }
 
@@ -196,6 +272,8 @@ function reset_variables(): void {
  * sets all the session variables on login
  */
 function set_variables($user): void {
+    $_SESSION["user_ID"] = $user->user_ID;
+    $_SESSION["type"] = $user->type;
     $_SESSION["email"] = $user->email;
     $_SESSION["password"] = $user->password;
     $_SESSION["name"] = $user->name;
@@ -210,16 +288,6 @@ function set_variables($user): void {
     $_SESSION["postal_code"] = $user->postal_code;
     $_SESSION["city"] = $user->city;
 }
-
-
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                   change header elements on logged in status                                       */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-
-
 
 
 
@@ -255,31 +323,12 @@ $_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"]))
 
 $_SESSION["error"] = "";
 
-$images = [];
-$newImage["name"] = "";
-$newImage["path"] = "";
-
-$file = file_get_contents("../resources/json/images.json", true);
-$images = json_decode($file, false);
 
 
 
-if (isset($_POST["profile-Picture-Small"])) {
-    $_SESSION["profile-Picture-Small"] = "../resources/images/profile/default/".verifyImage("profile-Picture-Small", "profile/default");
 
-} elseif (isset($_POST["profile-Picture-Large"])) {
-    $_SESSION["profile-Picture-Large"] = "../resources/images/profile/default/".verifyImage("profile-Picture-Large", "profile/default");
 
-} elseif (isset($_POST["newImage"])) {
-    $fileName = verifyImage("newImage", "profile/custom");
-    $path = "../resources/images/profile/custom/".$fileName;
 
-    if(!empty($fileName)) {
-        $newImage["name"] = $fileName;
-        $newImage["path"] = $path;
-        addImageItems($newImage);
-    }
-}
 
 
 
@@ -305,33 +354,28 @@ function getImageItems($public): void {
 
 
 function verifyImage($name, $type): String {
-    try {
-        $file_name = $_FILES["$name"]["name"];
-        $file_size = $_FILES["$name"]["size"];
-        $file_tmp = $_FILES["$name"]["tmp_name"];
-        $file_format = strtolower(pathinfo($_FILES["$name"]["name"], PATHINFO_EXTENSION));
-        $expected_format = array("jpeg","jpg","png");
+    $file_name = $_FILES["$name"]["name"];
+    $file_size = $_FILES["$name"]["size"];
+    $file_tmp = $_FILES["$name"]["tmp_name"];
+    $file_format = strtolower(pathinfo($_FILES["$name"]["name"], PATHINFO_EXTENSION));
+    $expected_format = array("jpeg","jpg","png");
 
-        // checking file format
-        if (!in_array($file_format, $expected_format)) {
-            throw new RuntimeException("invalid format");
-        }
-
-        // checking image size
-        if ($file_size > 2000000) {
-            throw new RuntimeException("exceeds filesize limit");
-        }
-
-        // moving file to dictionary
-        if (!move_uploaded_file($file_tmp,"../resources/images/".$type."/".$file_name)) {
-            throw new RuntimeException("failed to upload image");
-        }
-
-        return $file_name;
-    } catch (RuntimeException $e) {
-        $_SESSION["error"] = $e->getMessage();
-        return "";
+    // checking file format
+    if (!in_array($file_format, $expected_format)) {
+        throw new RuntimeException("invalid format");
     }
+
+    // checking image size
+    if ($file_size > 2000000) {
+        throw new RuntimeException("exceeds filesize limit");
+    }
+
+    // moving file to dictionary
+    if (!move_uploaded_file($file_tmp,"../resources/images/".$type."/".$file_name)) {
+        throw new RuntimeException("failed to upload image");
+    }
+
+    return $file_name;
 }
 
 

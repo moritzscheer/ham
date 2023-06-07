@@ -80,7 +80,7 @@ class DBUserStore implements UserStore {
      * methode to save register data of a user in the database
      * @throws Exception
      */
-    public function register($type_ID, $address_ID, $name, $surname, $password, $phone_number, $email): void {
+    public function register($type, $address_ID, $name, $surname, $password, $phone_number, $email): void {
         try {
             $this->openConnection();
             $this->exec("SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE");
@@ -98,11 +98,11 @@ class DBUserStore implements UserStore {
                 // if any data is given for address put in data
                 $sql = "INSERT INTO address VALUES ('null', '".$_SESSION["street_name"]."', '".$_SESSION["house_number"]."', '".$_SESSION["postal_code"]."', '".$_SESSION["city"]."');";
                 $this->exec($sql);
-                $sql = "INSERT INTO user VALUES ('null', '".$type_ID."', '".LAST_INSERT_ID()."', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["password"]."', '".$_SESSION["phoneNumber"]."', '".$_SESSION["email"]."');";
+                $sql = "INSERT INTO user VALUES ('null', '".$type."', '".LAST_INSERT_ID()."', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["password"]."', '".$_SESSION["phoneNumber"]."', '".$_SESSION["email"]."');";
                 $this->exec($sql);
             } else {
                 // if no data is given set addressID to null
-                $sql = "INSERT INTO user VALUES ('null', '".$type_ID."', 'null', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["password"]."', '".$_SESSION["phoneNumber"]."', '".$_SESSION["email"]."');";
+                $sql = "INSERT INTO user VALUES ('null', '".$type."', 'null', '".$_SESSION["name"]."', '".$_SESSION["surname"]."', '".$_SESSION["password"]."', '".$_SESSION["phoneNumber"]."', '".$_SESSION["email"]."');";
                 $this->exec($sql);
             }
 
@@ -113,9 +113,10 @@ class DBUserStore implements UserStore {
         }
     }
 
-    
+
     /**
      * methode to check email and password of a user in the database
+     * @throws Exception
      */
     public function login($email, $password): void {
         try {
@@ -150,13 +151,11 @@ class DBUserStore implements UserStore {
         }
     }
 
-    public function update($user_ID, $list)
-    {
+    public function update($user_ID, $array): void {
         // TODO: Implement update() method.
     }
 
-    public function create($userFile)
-    {
+    public function create($userFile): void {
         // TODO: Implement create() method.
     }
 }

@@ -4,7 +4,6 @@ include_once "UserStore.php";
 class FileUserStore implements UserStore {
 
     private ?string $userFile;
-    private ?int $user_ID = null;
 
     /**
      * constructor:
@@ -18,7 +17,7 @@ class FileUserStore implements UserStore {
 
     /**
      * methode to save register data of a user in the file
-     * @param $type_ID
+     * @param $type
      * @param $address_ID
      * @param $name
      * @param $surname
@@ -28,16 +27,20 @@ class FileUserStore implements UserStore {
      * @return String
      * @throws Exception
      */
-    public function register($type_ID, $address_ID, $name, $surname, $password, $phone_number, $email): String {
+    public function register($type, $address_ID, $name, $surname, $password, $phone_number, $email): String {
         $users = json_decode($this->userFile, false);
+        $user_ID = random_int(2, 1000000);
 
         foreach ($users as $user) {
-            if($user->email === $email || $user->password === $password) {
+            if ($user->email === $email || $user->password === $password) {
                 throw new Exception("Email or Password already exist");
             }
+            if ($user->userID === $user_ID) {
+                $user_ID = random_int(2, 1000000);
+            }
         }
-        $newUser["user_ID"] = random_bytes(10);
-        $newUser["type_ID"] = $type_ID;
+        $newUser["user_ID"] = $user_ID;
+        $newUser["type"] = $type;
         $newUser["address_ID"] = $address_ID;
         $newUser["name"] = $name;
         $newUser["surname"] = $surname;
@@ -50,7 +53,7 @@ class FileUserStore implements UserStore {
 
         $users[] = (object) $newUser;
         file_put_contents("../resources/json/user.json", json_encode($users));
-        return $newUser["user_ID"];
+        return $user_ID;
     }                                                                               
 
 
@@ -73,48 +76,48 @@ class FileUserStore implements UserStore {
 
 
     /**
-     * methode to delete a user from the database
      * @param $user_ID
      * @return void
      * @throws Exception
      */
     public function delete($user_ID): void {
         $users = json_decode($this->userFile, false);
-        foreach ($users as $user) {
-            if($user->user_ID !== "1") {
-                throw new Exception("Can't delete user test.");
-            } elseif ($user->user_ID === $user_ID) {
-
-                //todo delete user
-
-            } else {
-                throw new Exception("No such User was found.");
+        foreach ($users as $user => $value) {
+            if($value->user_ID === $user_ID) {
+                if($value->user_ID === 1) {
+                    throw new Exception("Can't delete user test.");
+                } else {
+                    unset($users[$user]);
+                    file_put_contents("../resources/json/user.json", json_encode($users));
+                    return;
+                }
             }
         }
+        throw new Exception("No such User was found.");
     }
 
 
     /**
      * @param $user_ID
-     * @param $list
-     * @return string
+     * @param $array
+     * @return void
      * @throws Exception
      */
-    public function update($user_ID, $list) {
+    public function update($user_ID, $array): void {
         $users = json_decode($this->userFile, false);
         foreach ($users as $user) {
             if($user->user_ID === $user_ID) {
-                // user was found
-                foreach ($list as $set) {
-                    $var = $set->var;
-                    $value = $set->value;
-
-                    $user->$var = $value;
+                if($user->user_ID === 1) {
+                    throw new Exception("Can't change user test.");
+                } else {
+                    foreach ($array as $var => $value) {
+                        $user->$var = $value;
+                        file_put_contents("../resources/json/user.json", json_encode($users));
+                        return;
+                    }
                 }
-            } else {
-                throw new Exception('No such User was found.');
             }
         }
-        return "";
+        throw new Exception('No such User was found.');
     }
 }
