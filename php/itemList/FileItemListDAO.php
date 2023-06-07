@@ -21,13 +21,13 @@ class FileItemListDAO implements ItemListDAO
     {
         switch ($type) {
             case "bands":
-                $items = json_decode($this->bandFile, false);
-                return $this->loadBands($items);
 
+                     $items = json_decode($this->bandFile, false);
+                                    return $this->loadBands($items);
             case "events":
-                $items = json_decode($this->eventFile, false);
-                return $this->loadEvents($items);
 
+                    $items = json_decode($this->eventFile, false);
+                    return $this->loadEvents($items);
             default:
             {
                 return array();

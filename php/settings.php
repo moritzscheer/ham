@@ -90,21 +90,8 @@ function closeConnection(): void {
 
 
 
-$sql = "CREATE TABLE address (
-    address_ID int(11) DEFAULT NULL,
-    street_name int(30) DEFAULT NULL,
-    house_number int(5) DEFAULT NULL,
-    postal_code int(5) DEFAULT NULL,
-    city varchar(20) DEFAULT NULL,
-    PRIMARY KEY (address_ID)
-);";
 
-// creates the types table and adds the two types in
-$sql = "CREATE TABLE type (
-    type_ID tinyint(1) DEFAULT NULL,
-    type_name varchar(10) NOT NULL,
-    PRIMARY KEY (type_ID)
-);";
+
 
 
 

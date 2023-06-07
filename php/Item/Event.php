@@ -4,57 +4,17 @@ class Event implements Item
 {
 
     private string $image;
-    private string $id, $authorId ,$type, $description, $name, $street, $city, $date, $startTime, $endTime, $requirements = "";
+    private string $id, $authorId , $description, $name, $address_ID, $street, $city, $date, $startTime, $endTime, $requirements = "";
     private int $houseNr, $postalCode = -1;
-
-    /*public function __construct()
-    {
-        $image = new object();
-    }*/
-    /**
-     * @param string $image
-     * @param string $id
-     * @param string $type
-     * @param string $description
-     * @param string $name
-     * @param string $street
-     * @param string $city
-     * @param string $date
-     * @param string $startTime
-     * @param string $endTime
-     * @param string $requirements
-     * @param int $houseNr
-     * @param int $postalCode
-     */
-    /*public function __construct(string $image, string $type, string $description, string $name, string $street, string $city, string $date, string $startTime, string $endTime, string $requirements, int $houseNr, int $postalCode)
-    {
-        if($image == null){
-            $image = new object();
-        }
-        $this->image = $image;
-        $this->id = $this->createID();
-        $this->type = $type;
-        $this->description = $description;
-        $this->name = $name;
-        $this->street = $street;
-        $this->city = $city;
-        $this->date = $date;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
-        $this->requirements = $requirements;
-        $this->houseNr = $houseNr;
-        $this->postalCode = $postalCode;
-
-    }*/
 
     public function __construct(object $item)
     {
         $this->id = $item->id;
         $this->authorId = $item->authorID;
         $this->image = $item->image;
-        $this->type = $item->type;
         $this->description = $item->description;
         $this->name = $item->name;
+        $this->address_ID = $item->address_ID;
         $this->street = $item->street;
         $this->city = $item->city;
         $this->date = $item->Date;
@@ -94,27 +54,11 @@ class Event implements Item
     }
 
     /**
-     * @param string $id
-     */
-    public function setId(string $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
-    public function getType(): string
+    public function getAddressId(): string
     {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType(string $type): void
-    {
-        $this->type = $type;
+        return $this->address_ID;
     }
 
     /**

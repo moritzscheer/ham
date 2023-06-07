@@ -1,16 +1,24 @@
 <?php
-
-global $db;
+include_once "../stores/interface/AddressStore.php";
+include_once "../php/Item/Address.php";
 
 class DBAddressStore implements AddressStore
 {
 
     private PDO $db;
 
-    public function __construct()
+    public function __construct($db)
     {
-        global $db;
         $this->db = $db;
+
+        $sql = "CREATE TABLE address (
+            address_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            street_name varchar(30) DEFAULT NULL,
+            house_number int(5) DEFAULT NULL,
+            postal_code int(5) DEFAULT NULL,
+            city varchar(20) DEFAULT NULL
+            );";
+        $this->db->exec($sql);
     }
 
 
@@ -24,9 +32,9 @@ class DBAddressStore implements AddressStore
             "," . $item->getCity() .
             ")";
 
-        $addressId = $this->db->exec($create);
+        $this->db->exec($create);
 
-        return $this->findOne($addressId);
+        return $this->findOne($this->db->lastInsertId());
     }
 
     public function update(object $item): Address
@@ -40,7 +48,7 @@ class DBAddressStore implements AddressStore
             WHERE address_ID = ". $item-> getId().";";
 
         $this->db->exec($update);
-        return  $this->findOne($item-> getId());
+        return $this->findOne($item-> getId());
     }
 
     public function delete(string $id): void
@@ -54,7 +62,7 @@ class DBAddressStore implements AddressStore
         $findOne ="SELECT * FROM address 
                      WHERE address_ID = " . $id."
                     LIMIT 1";
-        return $this->db->exec($findOne);
+         return new Address($this->db->query($findOne)->fetch());
     }
 
     public function findMany(array $ids): array
@@ -64,8 +72,11 @@ class DBAddressStore implements AddressStore
         }
         $findMany ="SELECT * FROM address 
                      WHERE ". $ids.join(" OR ") ." LIMIT " .count($ids);
-        return $this->db->exec($findMany);
-
+        $addresses = $this->db->query($findMany)->fetchAll();
+        foreach ($addresses as $key => $address) {
+            $addresses[$key] = new Address($address);
+        }
+        return $addresses;
     }
 
     public function findAll(): array

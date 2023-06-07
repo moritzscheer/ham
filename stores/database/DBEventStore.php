@@ -1,57 +1,87 @@
 <?php
 include_once "../stores/interface/EventStore.php";
 
-global $db;
 
 class DBEventStore implements EventStore
 {
 
     private PDO $db;
+    private Store $addressStore;
 
-    public function __construct()
+    public function __construct(PDO $db, Store $addressStore)
     {
-        global $db;
         $this->db = $db;
+        $this->addressStore = $addressStore;
+
+        $tablesquery = $db->query("SELECT name FROM sqlite_master WHERE type='table';");
+        $tables = $tablesquery->fetchArray(SQLITE3_ASSOC);
+
+
+
+        $sql = "CREATE TABLE event (
+            event_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            image BLOB DEFAULT NULL,
+            name varchar(40) DEFAULT NULL,
+            address_ID int(11) DEFAULT NULL,
+            date varchar(20) DEFAULT NULL,
+            startTime varchar(20) DEFAULT NULL,
+            endTime varchar(20) DEFAULT NULL,
+            );";
+        $this->db->exec($sql);
     }
 
 
-    public function create(EventItem $item): EventItem
+    public function create(Event $item):Event
     {
         //  create address
-        $create = "INSERT INTO address (street_name, house_number, postal_code, city)
-                    VALUES (" . $item->getStreet() .
-            "," . $item->getHouseNr() .
-            "," . $item->getPostalCode() .
-            "," . $item->getCity() .
-            ")";
+        $address = new StdClass();
+        $address->street = $item->getStreet();
+        $address->houseNr = $item->getHouseNr();
+        $address->postalCode = $item->getPostalCode();
+        $address->city = $item->getCity();
 
-        $addressId = $this->db->exec($create);
+        $address = $this->addressStore->create($address);
 
         $create = "INSERT INTO event (image ,description,name,address_ID,date,startTime ,endTime, requirements)
                     VALUES (" . ibase_blob_create($item -> getImage()).
             "," . $item->getDescription() .
             "," . $item->getName() .
-            "," . $addressId .
+            "," . $address->id.
             "," . $item->getDate() .
             "," . $item->getStartTime() .
             "," . $item->getEndTime() .
             "," . $item->getRequirements() .
             ");";
-        $eventId = $this->db->exec($create);
-        return $this->findOne($eventId);
+        $this->db->exec($create);
+        return $this->findOne($this->db->lastInsertId());
     }
 
-    public function update(EventItem $item): EventItem
+    public function update(Event $item):Event
     {
-        //  edit address
-        $update = "UPDATE ADDRESS 
-            SET street_name = ".$item->getStreet() . ",
-            house_number = ".$item->getHouseNr() . ",
-            postal_code = ".$item->getPostalCode() . ",
-            city = ".$item->getCity() . "
-            WHERE address_ID = ". $item-> getId().";";
+
+        // update address
+        $address = new StdClass();
+        $address->street = $item->getStreet();
+        $address->houseNr = $item->getHouseNr();
+        $address->postalCode = $item->getPostalCode();
+        $address->city = $item->getCity();
+
+        $this->addressStore->update($address);
+
+
+        $update = "UPDATE event 
+            SET image = ".$item->getImage() . ",
+            description = ".$item->getDescription() . ",
+            name = ".$item->getName() . ",
+            date = ".$item->getDate() . ",
+            startTime = ".$item->getStartTime() . ",
+            endTime = ".$item->getEndTime() . ",
+            requirements = ".$item->getRequirements() . "
+            WHERE event_ID = ". $item-> getId().";";
 
         $this->db->exec($update);
+
+        return $this->findOne($item-> getId());
 
     }
 
@@ -61,30 +91,43 @@ class DBEventStore implements EventStore
         $this->db->exec($delete);
     }
 
-    public function findOne(string $id): EventItem
+    public function findOne(string $id): Event
     {
         $findOne ="SELECT * FROM event 
                      WHERE event_ID = " . $id."
-                    LIMIT 1";
-        return $this->db->exec($findOne);
+                     INNER JOIN address 
+                     ON address.address_ID = event.address_ID;
+                     LIMIT 1";
+        return new Event($this->db->query($findOne)->fetch());
     }
 
-    public function findMany(array $ids)
+    public function findMany(array $ids): array
     {
-        foreach ($ids as $id) {
-            $id = "event_ID = " . $id;
+        foreach ($ids as $key => $id) {
+            $ids[$key] = "event_ID = " . $id;
         }
         $findMany ="SELECT * FROM event 
-                     WHERE ". $ids.join(" OR ") ." LIMIT " .count($ids);
-        return $this->db->exec($findMany);
+                     WHERE ". $ids.join(" OR ") ."
+                     INNER JOIN address 
+                     ON address.address_ID = event.address_ID;
+                     LIMIT " .count($ids);
+        $events = $this->db->query($findMany)->fetchAll();
+        foreach ($events as $key => $event) {
+            $events[$key] = new Event($event);
+        }
+        return $events;
 
     }
 
-    public function findAll()
+    public function findAll(): array
     {
-        $findAll = "SELECT * FROM event ";
-        return $this->db->exec($findAll);
+        $findAll = "SELECT * FROM event
+                    INNER JOIN address 
+                    ON address.address_ID = event.address_ID;";
+        $events = $this->db->query($findAll)->fetchAll();
+        foreach ($events as $key => $event) {
+            $events[$key] = new Event($event);
+        }
+        return $events;
     }
-
-
 }
