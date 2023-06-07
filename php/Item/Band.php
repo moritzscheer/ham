@@ -1,6 +1,6 @@
 <?php
 
-class BandDOA implements Band
+class Band implements Item
 {
     private string $image;
     private string $id, $name, $type, $genre, $costs, $region, $email;

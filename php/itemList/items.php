@@ -1,10 +1,7 @@
 <?php
 include 'classes.php';
 
-global $type, $items, $decodedFile, $currentItem, $newEvent, $itemListManager;
-
-$itemListManager = new FileItemListDAO("../resources/json/Bands.json", "../resources/json/Events.json");
-
+global $decodedFile, $currentItem, $newEvent, $itemListManager, $eventStore;
 
 
 $newEvent["image"] = "";
@@ -44,9 +41,9 @@ if (isset($_POST["submit"])) {
     $newEvent["endTime"] = checkValue("endTime");
     $newEvent["requirements"] = checkValue("requirements");
     */
-    $event = new EventItem(
-        $eventImage,
-        "event",
+    $itemevent = array(
+
+        "id" => 
         checkValue("description"),
         checkValue("name"),
         checkValue("street"),
@@ -58,6 +55,9 @@ if (isset($_POST["submit"])) {
         (int)checkValue("houseNr"),
         (int)checkValue("postalCode")
     );
+    $event = new Event(
+
+    );
     If (createNewEvent($event)){}
     else{
         // throw exception ?
@@ -65,10 +65,10 @@ if (isset($_POST["submit"])) {
 }
 
 /**
- * @param EventItem $newEvent
+ * @param Event $newEvent
  * @return false|void
  */
-function createNewEvent(EventItem $newEvent) : bool
+function createNewEvent(Event $newEvent) : bool
 {
     //global $itemListManager;
     //$allEvents = $itemListManager->loadItems("events");

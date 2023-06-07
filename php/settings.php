@@ -1,6 +1,6 @@
 <?php
-include_once "../php/user/FileUserStore.php";
-include_once "../php/user/DBUserStore.php";
+include_once "../stores/includes.php";
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -62,14 +62,31 @@ $_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["init
 
 function initDatabase(): void
 {
-    global $userStore;
-    //$userStore = new DBUserStore();
-    $userStore = new FileUserStore();
-    $userStore->create("../resources/json/user.json");
+    global $db, $userStore, $addressStore;
+
+    try {
+        $user = "root";
+        $pw = null;
+        $dsn = "sqlite:sqlite-pdo.db";
+        $db = new PDO($dsn, $user, $pw);
+    } catch (PDOException $exc) {
+        $db = NULL;
+        throw $exc;
+    }
+
+
+    //$userStore = new FileDBUserStore();
+    $addressStore = new DBAddressStore($db);
+    $eventStore = new DBEventStore($db, $addressStore);
+    $userStore = new DBUserStore($db, $addressStore);
 }
 
-
-
+function closeConnection(): void {
+    global $db;
+    if ($db != NULL) {
+        $db->close();
+    }
+}
 
 
 

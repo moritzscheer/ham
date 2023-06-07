@@ -44,7 +44,6 @@ $_SESSION["profileHeaderBox"] = (isset($_SESSION["loggedIn"]) && $_SESSION["logg
 $_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/default/defaultSmall.png";
 $_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/default/defaultLarge.jpeg";
 
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               post methods                                                         */
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -66,8 +65,9 @@ if(isset($_POST["reset"])) {
 if(isset($_POST["register"])) {
     try {
         if($_SESSION["password"] === $_SESSION["repeat_password"]) {
-            $id = $userStore->register($_SESSION["type"], $_SESSION["address"], $_SESSION["name"], $_SESSION["surname"], $_SESSION["password"], $_SESSION["phone_number"], $_SESSION["email"] );
-            $_SESSION["user_ID"] = $id;
+            $user = new User($_SESSION["address"], $_SESSION["type"], $_SESSION["name"], $_SESSION["surname"], $_SESSION["phone_number"], $_SESSION["email"], $_SESSION["password"], $_SESSION["genre"], $_SESSION["members"], $_SESSION["other_remarks"]);
+            $user = $userStore->create($user);
+            set_variables($user);
             $_SESSION["loggedIn"] = true;
 
             header("Location: " . getNextUrl($step));
@@ -90,7 +90,6 @@ if(isset($_POST["register"])) {
 if(isset($_POST["login"])) {
     try {
         $user = $userStore->login($_SESSION["email"], $_SESSION["password"]);
-
         set_variables($user);
         $_SESSION["loggedIn"] = true;
 
@@ -109,7 +108,6 @@ if(isset($_POST["login"])) {
 if(isset($_POST["logout"])) {
     try {
         reset_variables();
-
         $_SESSION["loggedIn"] = false;
 
         header("Location: index.php");
@@ -127,7 +125,6 @@ if(isset($_POST["logout"])) {
 if(isset($_POST["delete"])) {
     try {
         $userStore->delete($_SESSION["user_ID"]);
-
         $_SESSION["loggedIn"] = false;
 
         header("Location: index.php");
@@ -272,21 +269,17 @@ function reset_variables(): void {
  * sets all the session variables on login
  */
 function set_variables($user): void {
-    $_SESSION["user_ID"] = $user->user_ID;
-    $_SESSION["type"] = $user->type;
-    $_SESSION["email"] = $user->email;
-    $_SESSION["password"] = $user->password;
-    $_SESSION["name"] = $user->name;
-    $_SESSION["surname"] = $user->surname;
-    $_SESSION["address"] = $user->address;
-    $_SESSION["phone_number"] = $user->phone_number;
-    $_SESSION["genre"] = $user->genre;
-    $_SESSION["members"] = $user->members;
-    $_SESSION["other_remarks"] = $user->other_remarks;
-    $_SESSION["street_name"] = $user->street_name;
-    $_SESSION["house_number"] = $user->house_number;
-    $_SESSION["postal_code"] = $user->postal_code;
-    $_SESSION["city"] = $user->city;
+    $_SESSION["user_ID"] = $user->getUser_ID();
+    $_SESSION["type"] = $user->getType();
+    $_SESSION["email"] = $user->getEmail();
+    $_SESSION["password"] = $user->getPassword();
+    $_SESSION["name"] = $user->getName();
+    $_SESSION["surname"] = $user->getSurname();
+    $_SESSION["address"] = $user->getAddress();
+    $_SESSION["phone_number"] = $user->getPhone_number();
+    $_SESSION["genre"] = $user->getGenre();
+    $_SESSION["members"] = $user->getMembers();
+    $_SESSION["other_remarks"] = $user->getOther_remarks();
 }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-class EventItem implements Item
+class Event implements Item
 {
 
     private string $image;
@@ -49,7 +49,7 @@ class EventItem implements Item
 
     public function __construct(object $item)
     {
-        (isset($item->id) && is_string($item->id)) ? $this->id = $item->id : $this->id = $this->createID();
+        $this->id = $item->id;
         $this->authorId = $item->authorID;
         $this->image = $item->image;
         $this->type = $item->type;

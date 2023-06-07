@@ -15,7 +15,7 @@ class FileItemListDAO implements ItemListDAO
     /**
      * Converts a json-file into an array of items (bands or events)
      * @param $type : bands or events
-     * @return array|BandDOA[]|EventItem[]|Item[] array of the specific items
+     * @return array|Band[]|Event[]|Item[] array of the specific items
      */
     public function loadItems($type): array
     {
@@ -37,13 +37,13 @@ class FileItemListDAO implements ItemListDAO
 
     /**
      * @param $items decoded json array of bands
-     * @return BandDOA[] returns an array of Banditem objects
+     * @return Band[] returns an array of Banditem objects
      */
     private function loadBands($items): array
     {
         $bands = array();
         foreach ($items as $item) {
-            $band = new BandDOA($item);
+            $band = new Band($item);
             $bands[] = $band; // adds band to bands array
         }
         return $bands;
@@ -51,13 +51,13 @@ class FileItemListDAO implements ItemListDAO
 
     /**
      * @param $items array of event items
-     * @return EventItem[] an array of Eventitem objects
+     * @return Event[] an array of Eventitem objects
      */
     private function loadEvents($items): array
     {
         $events = array();
         foreach ($items as $item) {
-            $event = new EventItem($item);
+            $event = new Event($item);
             $events[] = $event;
         }
         return $events;
@@ -70,20 +70,20 @@ class FileItemListDAO implements ItemListDAO
      */
     public function storeItem(Item $item): bool
     {
-        if ($item instanceof BandDOA) {
+        if ($item instanceof Band) {
             // todo: implement ...
             return true;
-        } elseif ($item instanceof EventItem) {
+        } elseif ($item instanceof Event) {
             return $this->storeEvent($item);  // type conversion ?
         } else return false;
     }
 
     /**
      * Writes an Eventitem object to json-file
-     * @param EventItem $event
+     * @param Event $event
      * @return bool
      */
-    private function storeEvent(EventItem $event): bool
+    private function storeEvent(Event $event): bool
     {
         $var = file_put_contents("../resources/json/Events.json", json_encode($event->toJsonArray()));
         if ($var !== false) {

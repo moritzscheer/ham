@@ -1,5 +1,5 @@
 <?php
-include_once "UserStore.php";
+include_once "../stores/interface/UserStore.php";
 
 class FileUserStore implements UserStore {
 
@@ -10,8 +10,9 @@ class FileUserStore implements UserStore {
      * creates user table and user_type table
      * @param $userFile
      */
-    public function create($userFile): void {
+    public function create($userFile): User {
         $this->userFile = file_get_contents($userFile, true);
+        return new User;
     }
 
 
@@ -103,21 +104,50 @@ class FileUserStore implements UserStore {
      * @return void
      * @throws Exception
      */
-    public function update($user_ID, $array): void {
+    public function update(object $user): User {
         $users = json_decode($this->userFile, false);
         foreach ($users as $user) {
-            if($user->user_ID === $user_ID) {
+            if($user->user_ID === $user->getUser_ID) {
                 if($user->user_ID === 1) {
                     throw new Exception("Can't change user test.");
                 } else {
+                    $array = null;
                     foreach ($array as $var => $value) {
                         $user->$var = $value;
                         file_put_contents("../resources/json/user.json", json_encode($users));
-                        return;
+                        return new User;
                     }
                 }
             }
         }
         throw new Exception('No such User was found.');
+    }
+
+    public function getImage($user_ID, $array)
+    {
+        // TODO: Implement getImage() method.
+    }
+
+    public function getImages($user_ID, $array)
+    {
+        // TODO: Implement getImages() method.
+    }
+
+    public function findOne(string $user_ID): User
+    {
+        // TODO: Implement findOne() method.
+        return new User;
+    }
+
+    public function findMany(array $user_IDs): array
+    {
+        // TODO: Implement findMany() method.
+        return new User;
+    }
+
+    public function findAll(): array
+    {
+        // TODO: Implement findAll() method.
+        return new User;
     }
 }

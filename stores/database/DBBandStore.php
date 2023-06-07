@@ -3,7 +3,7 @@
 
 global $db;
 
-class BandStore
+class DBBandStore
 {
 
     private PDO $db;

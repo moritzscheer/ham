@@ -2,7 +2,7 @@
 
 global $db;
 
-class AddressStore
+class DBAddressStore implements AddressStore
 {
 
     private PDO $db;
@@ -14,7 +14,7 @@ class AddressStore
     }
 
 
-    public function create(Address $item): Address
+    public function create(object $item): Address
     {
         //  create address
         $create = "INSERT INTO address (street_name, house_number, postal_code, city)
@@ -29,10 +29,10 @@ class AddressStore
         return $this->findOne($addressId);
     }
 
-    public function update(Address $item): Address
+    public function update(object $item): Address
     {
         //  edit address
-        $update = "UPDATE ADDRESS 
+        $update = "UPDATE address 
             SET street_name = ".$item->getStreet() . ",
             house_number = ".$item->getHouseNr() . ",
             postal_code = ".$item->getPostalCode() . ",
@@ -45,24 +45,24 @@ class AddressStore
 
     public function delete(string $id): void
     {
-        $delete = "DELETE FROM event WHERE event_ID = " . $id;
+        $delete = "DELETE FROM address WHERE address_ID = " . $id;
         $this->db->exec($delete);
     }
 
     public function findOne(string $id): Address
     {
-        $findOne ="SELECT * FROM event 
-                     WHERE event_ID = " . $id."
+        $findOne ="SELECT * FROM address 
+                     WHERE address_ID = " . $id."
                     LIMIT 1";
         return $this->db->exec($findOne);
     }
 
     public function findMany(array $ids): array
     {
-        foreach ($ids as $id) {
-            $id = "event_ID = " . $id;
+        foreach ($ids as $key => $id) {
+            $ids[$key] = "address_ID = " . $id;
         }
-        $findMany ="SELECT * FROM event 
+        $findMany ="SELECT * FROM address 
                      WHERE ". $ids.join(" OR ") ." LIMIT " .count($ids);
         return $this->db->exec($findMany);
 
@@ -70,8 +70,12 @@ class AddressStore
 
     public function findAll(): array
     {
-        $findAll = "SELECT * FROM event ";
-        return $this->db->exec($findAll);
+        $findAll = "SELECT * FROM address ";
+        $addresses =  $this->db->query($findAll)->fetchAll();
+        foreach ($addresses as $key => $address) {
+            $addresses[$key] = new Address($address);
+        }
+        return $addresses;
     }
 
 

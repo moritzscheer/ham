@@ -1,8 +1,9 @@
 <?php
+include_once "../stores/interface/EventStore.php";
 
 global $db;
 
-class EventStore
+class DBEventStore implements EventStore
 {
 
     private PDO $db;
