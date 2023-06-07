@@ -286,7 +286,7 @@ class Event implements Item
         return array(
             "image" => $this->image,
             "id" => $this->id,
-            "type" => $this->type,
+            "authorID" => $this->authorId,
             "description" => $this->description,
             "name" => $this->name,
             "street" => $this->street,
@@ -299,16 +299,6 @@ class Event implements Item
             "requirements" => $this->requirements
 
         );
-    }
-
-    /**
-     * creates an id for an event
-     * @return string ID of an event
-     */
-    private function createID(): string
-    {
-        //todo: implement method
-        return "";
     }
 
 }

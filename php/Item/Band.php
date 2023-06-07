@@ -3,14 +3,13 @@
 class Band implements Item
 {
     private string $image;
-    private string $id, $name, $type, $genre, $costs, $region, $email;
+    private string $id, $name, $genre, $costs, $region, $email;
     private $members, $links = array();
 
     /**
      * @param object $image
      * @param string $id
      * @param string $name
-     * @param string $type
      * @param string $genre
      * @param string $costs
      * @param string $region
@@ -18,12 +17,11 @@ class Band implements Item
      * @param $members
      * @param array $links
      */
-    /*public function __construct(string $image, string $id, string $name, string $type, string $genre, string $costs, string $region, string $email, $members, array $links)
+    /*public function __construct(string $image, string $id, string $name, string $genre, string $costs, string $region, string $email, $members, array $links)
     {
         $this->image = $image;
         $this->id = $id;
         $this->name = $name;
-        $this->type = $type;
         $this->genre = $genre;
         $this->costs = $costs;
         $this->region = $region;
@@ -32,13 +30,11 @@ class Band implements Item
         $this->links = $links;
     }*/
 
-    //https://www.amitmerchant.com/multiple-constructors-php/
 
     public function __construct(object $item){
         $this->image = $item->image;
         $this->id = $item->id;
         $this->name = $item->name;
-        $this->type = $item->type;
         $this->genre = $item->genre;
         $this->costs = $item->costs;
         $this->region = $item->region;
@@ -69,14 +65,6 @@ class Band implements Item
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
     }
 
     /**
@@ -127,5 +115,22 @@ class Band implements Item
         return $this->links;
     }
 
+    /**
+     * @return array for writing to a json file
+     */
+    public function toJsonArray(): array
+    {
+        return array(
+            "image" => $this->image,
+            "id" => $this->id,
+            "name" => $this->name,
+            "genre" => $this->genre,
+            "members" => $this->members,
+            "costs" => $this->costs,
+            "region" => $this->region,
+            "email" => $this->email,
+            "links" => $this->links
+        );
+    }
 
 }

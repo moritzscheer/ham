@@ -16,6 +16,9 @@
 
         <!-- List of Items (Bands or Events) -->
         <?php include_once "../php/itemList/itemList.php" ?>
+        <div id="item-list-view">
+            <?php getItems() ?>
+        </div>
 
     </div>
 

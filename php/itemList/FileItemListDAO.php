@@ -78,6 +78,7 @@ class FileItemListDAO implements ItemListDAO
         } else return false;
     }
 
+
     /**
      * Writes an Eventitem object to json-file
      * @param Event $event

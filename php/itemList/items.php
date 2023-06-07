@@ -3,6 +3,7 @@ include 'classes.php';
 
 global $decodedFile, $currentItem, $newEvent, $itemListManager, $eventStore;
 
+$eventStore = new FileEventsStore("../resources/json/Events.json");
 
 $newEvent["image"] = "";
 $newEvent["description"] = "";
@@ -17,9 +18,6 @@ $newEvent["startTime"] = "";
 $newEvent["endTime"] = "";
 $newEvent["requirements"] = "";
 
-
-
-$type = (isset($_GET["type"]) && is_string($_GET["type"])) ? $_GET["type"] : "";
 
 if (isset($_POST["submit"])) {
 
@@ -58,10 +56,7 @@ if (isset($_POST["submit"])) {
     $event = new Event(
 
     );
-    If (createNewEvent($event)){}
-    else{
-        // throw exception ?
-    }
+    createNewEvent($event);
 }
 
 /**
@@ -70,16 +65,13 @@ if (isset($_POST["submit"])) {
  */
 function createNewEvent(Event $newEvent) : bool
 {
-    //global $itemListManager;
-    //$allEvents = $itemListManager->loadItems("events");
-    $allEvents = array();
-    foreach ($allEvents as $event){ // checks if there is another event with same id
-        if($event->getId() == $newEvent->getId()){
-            return false;
-        }
+    global $eventStore;
+    try {
+        return $eventStore->store($newEvent);
     }
-    return true;
-    //return $itemListManager->storeItem($newEvent);
+    catch (Exception $e){
+        echo $e->getMessage();
+    }
 }
 
 function checkValue($var): string
@@ -92,182 +84,5 @@ function checkValue($var): string
         return "";
     }
 }
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                              getItems                                                              */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-function getItems()
-{
-    global $type;
-    switch ($type) {
-        case 'bands':
-        {
-            return getBands();
-        }
-        default:
-        {
-            return getEvents();
-        }
-    }
-}
-
-function getBands(): void
-{
-    global $itemListManager;
-    $items = $itemListManager->loadItems("bands");
-    //$file = file_get_contents("../resources/json/Bands.json", true);
-    //$item = json_decode($file, false);
-    //$itemA = $item[0];
-
-    echo ' <section id="item-list">';
-    foreach ($items as $band) {
-        $members = '';
-        foreach ($band->getMembers() as $member) {
-            $members = $members . $member . '<br>';
-        }
-        $links = '';
-        foreach ($band->getLinks() as $link) {
-            $links = $links . $link . '<br>';
-        }
-        echo '
-         <div id="item">
-            <label class="item-head">
-                <img id="item-image" src="' . $band->getImage() . '" alt="bandImage"/>
-                <div id="item-description" class="text-line-pre">
-                    <span>Name: ' . $band->getName() . '</span>
-                    <br>
-                    <span>Genre: ' . $band->getGenre() . '</span>
-                    <br>
-                    <span>' . count($band->getMembers()) . ' Members</span>
-                    <br>
-                    <span>' . $band->getCosts() . '</span>
-                    <input type="checkbox" id="item-click">
-                </div>
-            </label>
-            <div id="item-m-details">
-                <div id="item-details-title">
-                    <img id="item-image" src="' . $band->getImage() . '" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $band->getName() . ' </h2>
-                </div>
-                <div>
-                    <p>
-                        ' . $members . '
-                        ' . $band->getEmail() . ' <br>
-                        <br>
-                        ' . $band->getCosts() . '<br>
-                        <br>
-                        ' . $band->getRegion() . ' <br>
-                    </p>
-                </div>
-                <div id="item-details-foot">
-                    <p class="text-pre-line">
-                        Hits <br>
-                        ' . $links . '
-                    </p>
-                </div>
-            </div>
-        </div> ';
-    }
-
-    //todo: fix that...
-    $members = '';
-    foreach ($items[0]->getMembers() as $member) {
-        $members = $members . $member . '<br>';
-    }
-    $links = '';
-    foreach ($items[0]->getLinks() as $link) {
-        $links = $links . $link . '<br>';
-    }
-    echo '</section>';
-    echo '
-    <section id="item-details">
-        <div id="item-details-title">
-                    <img id="item-image" src="' . $items[0]->getImage() . '" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $items[0]->getName() . ' </h2>
-                </div>
-        <div class="item-details-description">
-                    <p>
-                        ' . $members . '
-                        ' . $items[0]->getEmail() . ' <br>
-                        <br>
-                        ' . $items[0]->getCosts() . '<br>
-                        <br>
-                        ' . $items[0]->getRegion() . ' <br>
-                    </p>
-                </div>
-                <div id="item-details-foot">
-                    <p class="text-pre-line">
-                        Hits <br>
-                        ' . $links . '
-                    </p>
-                </div>
-    </section>';
-}
-
-function getEvents(): void
-{
-    global $itemListManager;
-    $items = $itemListManager->loadItems("events");
-    echo ' <section id="item-list">';
-    foreach ($items as $event) {
-        $address = $event->getStreet() . " " . $event->getHouseNr() . "\n" . $event->getPostalCode() . " " . $event->getCity();
-        $time = $event->getStartTime() . " - " . $event->getEndTime();
-
-        echo '
-         <div id="item">
-            <label class="item-head">
-                <img id="item-image" src="' . $event->getImage() . '" alt="bandImage"/>
-                <div id="item-description" class="text-line-pre">
-                    <span>' . $event->getName() . '</span>
-                    <br>
-                    <span>Address: ' . $address . '</span>
-                    <br>
-                    <span> ' . $time . '</span>
-                    <input type="checkbox" id="item-click">
-                </div>
-            </label>
-            <div id="item-m-details">
-                <div id="item-details-title">
-                    <img id="item-image" src="' . $event->getImage() . '" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $event->getName() . ' </h2>
-                </div>
-                <div class="item-details-description">
-                    <p>' . $event->getDescription() . '</p>
-                </div>
-                <div id="item-details-foot">
-                    <p class="text-line-pre">
-                        Requirements <br>
-                        ' . $event->getRequirements() . '
-                    </p>
-                </div>
-            </div>
-         </div> ';
-    }
-
-    //todo: fix this...
-    echo '</section>';
-    echo '
-    <section id="item-details">
-         <div id="item-details-title">
-                    <img id="item-image" src="' . $items[0]->getImage() . '" alt="bandImage"/>
-                    <h2 id="item-details-name"> ' . $items[0]->getName() . ' </h2>
-                </div>
-                <div class="item-details-description">
-                    <p>' . $items[0]->getDescription() . '</p>
-                </div>
-                <div id="item-details-foot">
-                    <p class="text-line-pre" ">
-                        Requirements <br>
-                        ' . $items[0]->getRequirements() . '
-                    </p>
-                </div>
-    </section>';
-}
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                              getter                                                                */
-/* ------------------------------------------------------------------------------------------------------------------ */
 
 
