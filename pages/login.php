@@ -8,7 +8,7 @@
         <div class="loginElement">
             <label id="Hlogin">Login</label>
         </div>
-        <p id="loginError"><?php echo $error_message ?></p>
+        <?php echo $error_message ?>
         <div class="loginElement">
             <input type="email" id="lemail" name="email" placeholder="E-Mail adresse" required>
         </div>

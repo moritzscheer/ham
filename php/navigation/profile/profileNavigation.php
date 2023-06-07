@@ -7,11 +7,11 @@
         <input type="submit" value="Change Password">
     </form>
 
-    <form method="post" action="index.php">
+    <form method="post">
         <input type="submit" name="logout" value="Log-out">
     </form>
     
-    <form method="post" action="index.php">
-        <input type="submit" name="logout" onclick="<?php deleteUser(); ?>" value="Delete Account">
+    <form method="post">
+        <input type="submit" name="delete" value="Delete Account">
     </form>
 </div>

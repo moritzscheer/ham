@@ -18,7 +18,7 @@
         </form>
     </div>
 </section>
-         <?php echo var_dump($_SESSION["initDatabase"]) ?>
+
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
