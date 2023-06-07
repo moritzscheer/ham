@@ -13,24 +13,24 @@
         <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
     </div>
 
-    <form method="post" action="profile.php" id="change-Password-Content" class="profile-Content">
+    <form method="post" id="change-Password-Content" class="profile-Content">
         <div id="loginData">
             <label class="entry">Old Password:
-                <input type="password" id="password_actuell">
+                <input type="password" name="old_password" id="password_actuell">
             </label>
     
             <label class="entry">New Password:
-                <input type="password" id="password_new_1">
+                <input type="password" name="new_password" id="password_new_1">
             </label>
 
             <label class="entry">Repeat new Password:
-                <input type="password" id="password_new_2">
+                <input type="password" name="repeat_new_password" id="password_new_2">
             </label>
         </div>
 
         <div id="profile-Submit">
             <a href="profile.php">Cancel</a>
-            <input type="submit" value="Save Changes">
+            <input type="submit" name="change_password" value="Save Changes">
         </div>
     </form>
 

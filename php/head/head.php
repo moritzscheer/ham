@@ -1,5 +1,5 @@
-<?php include "../php/settings.php" ?>
-<?php include "../php/account.php" ?>
+<?php include_once "../php/settings.php" ?>
+<?php include_once "../php/account.php" ?>
 <!DOCTYPE html>
 <html lang="de">
 

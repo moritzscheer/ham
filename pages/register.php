@@ -33,23 +33,23 @@
             </label>
 
             <label class="entry">Street:
-                <input type="text" value="<?php echo $_SESSION["street_name"] ?>" name="address">
+                <input type="text" value="<?php echo $_SESSION["street_name"] ?>" name="street_name">
             </label>
 
             <label class="entry">House Number:
-                <input type="text" value="<?php echo $_SESSION["house_number"] ?>" name="address">
+                <input type="text" value="<?php echo $_SESSION["house_number"] ?>" name="house_number">
             </label>
 
             <label class="entry">Postal Code:
-                <input type="text" value="<?php echo $_SESSION["postal_code"] ?>" name="address">
+                <input type="text" value="<?php echo $_SESSION["postal_code"] ?>" name="postal_code">
             </label>
 
             <label class="entry">City:
-                <input type="text" value="<?php echo $_SESSION["city"] ?>" name="address">
+                <input type="text" value="<?php echo $_SESSION["city"] ?>" name="city">
             </label>
 
             <label class="entry">Phone Number:
-                <input type="tel" value="<?php echo $_SESSION["phoneNumber"] ?>" name="phoneNumber">
+                <input type="tel" value="<?php echo $_SESSION["phone_number"] ?>" name="phone_number">
             </label>
 
             <div class="submit">
@@ -72,15 +72,15 @@
             </label>
 
             <label class="entry">Genre:
-                <input type="text" name="genre">
+                <input type="text" value="<?php echo $_SESSION["genre"] ?>" name="genre">
             </label>
 
             <label class="entry">Members:
-                <input type="text" name="members">
+                <input type="text" value="<?php echo $_SESSION["members"] ?>" name="members">
             </label>
 
             <label class="entry">Other Remarks:
-                <textarea name="otherRemarks" rows="5"></textarea>
+                <textarea value="<?php echo $_SESSION["other_remarks"] ?>" name="other_remarks" rows="5"></textarea>
             </label>
 
             <div class="submit">
@@ -99,7 +99,7 @@
             </label>
 
             <label class="entry">* Repeat Password:
-                <input type="password" value="<?php echo $_SESSION["repeatPassword"] ?>" name="repeatPassword"required>
+                <input type="password" value="<?php echo $_SESSION["repeat_password"] ?>" name="repeat_password"required>
             </label>
 
             <div class="submit">
@@ -121,7 +121,7 @@
             </div>
         </form>
     </section>
-
+         <?php echo $_SESSION["a"]." <br>".$_SESSION["b"] ?>
 <?php include "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
