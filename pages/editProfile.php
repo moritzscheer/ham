@@ -26,7 +26,7 @@
     </div>
 
     <section class="profile-Grid">
-        <form method="post" action="profile.php" class="profile-Content">
+        <form method="post" class="profile-Content">
             <div id="contact-Information">
                 <h2>Contact Information</h2>
 
@@ -35,7 +35,7 @@
                 </label>
 
                 <label class="entry">Phone Number:
-                    <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["phoneNumber"] ?>">
+                    <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["phone_number"] ?>">
                 </label>
             </div>
 
@@ -74,13 +74,13 @@
                 </label>
 
                 <label class="entry">Other Remarks:
-                    <textarea name="otherRemarks" rows="5"><?php echo $_SESSION["otherRemarks"] ?></textarea>
+                    <textarea name="otherRemarks" rows="5"><?php echo $_SESSION["other_remarks"] ?></textarea>
                 </label>
             </div>
 
             <div id="profile-Submit">
                 <a href="profile.php">Cancel</a>
-                <input type="submit" value="Save Changes">
+                <input type="submit" name="update_profile" value="Save Changes">
             </div>
         </form>
 

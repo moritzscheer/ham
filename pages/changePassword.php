@@ -1,4 +1,5 @@
-<?php include_once "../php/head/head.php" ?>
+<?php global $error_message;
+include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
@@ -15,6 +16,8 @@
 
     <form method="post" id="change-Password-Content" class="profile-Content">
         <div id="loginData">
+            <p id="error-message"><?php echo $error_message ?></p>
+
             <label class="entry">Old Password:
                 <input type="password" name="old_password" id="password_actuell">
             </label>

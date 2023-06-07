@@ -1,4 +1,5 @@
-<?php include_once "../php/head/head.php" ?>
+<?php global $error_message;
+include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
@@ -23,7 +24,7 @@
                 </label>
 
                 <label class="entry">Phone Number:
-                    <label><?php echo $_SESSION["phoneNumber"]; ?></label>
+                    <label><?php echo $_SESSION["phone_number"]; ?></label>
                 </label>
             </div>
 
@@ -47,7 +48,7 @@
                 </label>
 
                 <label class="entry">Other Remarks:
-                    <label><?php echo $_SESSION["otherRemarks"]; ?></label><br>
+                    <label><?php echo $_SESSION["other_remarks"]; ?></label><br>
                 </label>
             </div>
         </div>
@@ -56,6 +57,8 @@
             <?php echo getImageItems(true) ?>
         </div>
     </section>
+<?php echo $_SESSION["user_ID"] ?><br>
+<?php echo var_dump($_SESSION["phone_number"]) ?><br>
 
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
