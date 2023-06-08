@@ -13,19 +13,14 @@ class DBEventStore implements EventStore
         $this->db = $db;
         $this->addressStore = $addressStore;
 
-        $tablesquery = $db->query("SELECT name FROM sqlite_master WHERE type='table';");
-        $tables = $tablesquery->fetchArray(SQLITE3_ASSOC);
-
-
-
-        $sql = "CREATE TABLE event (
+        $sql = "CREATE TABLE IF NOT EXISTS event (
             event_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             image BLOB DEFAULT NULL,
             name varchar(40) DEFAULT NULL,
             address_ID int(11) DEFAULT NULL,
             date varchar(20) DEFAULT NULL,
             startTime varchar(20) DEFAULT NULL,
-            endTime varchar(20) DEFAULT NULL,
+            endTime varchar(20) DEFAULT NULL
             );";
         $this->db->exec($sql);
     }

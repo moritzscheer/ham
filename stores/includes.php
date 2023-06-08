@@ -1,7 +1,7 @@
 <?php
 include_once "../stores/memory/FileUserStore.php";
-include_once "../stores/memory/FileEventsStore.php";
-include_once "../stores/memory/FileBandsStore.php";
+include_once "../stores/memory/FileEventStore.php";
+include_once "../stores/memory/FileBandStore.php";
 
 include_once "../stores/database/DBUserStore.php";
 include_once "../stores/database/DBAddressStore.php";
@@ -15,3 +15,6 @@ include_once "../stores/interface/EventStore.php";
 include_once "../stores/interface/BandStore.php";
 
 include_once "../stores/Store.php";
+
+include_once "../php/Item/User.php";
+include_once "../php/Item/Address.php";

@@ -31,11 +31,11 @@
                 <h2>Contact Information</h2>
 
                 <label class="entry">E-Mail:
-                    <label><?php echo $_SESSION["email"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getEmail() ?></label>
                 </label>
 
                 <label class="entry">Phone Number:
-                    <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["phone_number"] ?>">
+                    <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["user"]->getPhoneNumber() ?>">
                 </label>
             </div>
 
@@ -43,11 +43,19 @@
                 <h2>About Me</h2>
 
                 <label class="entry">Name:
-                    <input type="text" name="name" value="<?php echo $_SESSION["name"] ?>" required>
+                    <input type="text" name="name" value="<?php echo $_SESSION["user"]->getName() ?>" required>
                 </label>
 
                 <label class="entry">Surname:
-                    <input type="text" name="surname" value="<?php echo $_SESSION["surname"] ?>" required>
+                    <input type="text" name="surname" value="<?php echo $_SESSION["user"]->getSurname() ?>" required>
+                </label>
+
+                <label class="entry">Address:
+                    <input type="text" name="address" value="<?php echo $_SESSION["address"] ?>">
+                </label>
+
+                <label class="entry">Address:
+                    <input type="text" name="address" value="<?php echo $_SESSION["address"] ?>">
                 </label>
 
                 <label class="entry">Address:

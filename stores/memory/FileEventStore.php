@@ -1,7 +1,7 @@
 <?php
 include_once "../stores/interface/ItemStore.php";
 
-class FileEventsStore implements ItemStore
+class FileEventStore implements ItemStore
 {
     private string $eventFile;
 

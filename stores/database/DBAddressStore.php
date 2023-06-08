@@ -11,7 +11,7 @@ class DBAddressStore implements AddressStore
     {
         $this->db = $db;
 
-        $sql = "CREATE TABLE address (
+        $sql = "CREATE TABLE IF NOT EXISTS address (
             address_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             street_name varchar(30) DEFAULT NULL,
             house_number int(5) DEFAULT NULL,
@@ -19,21 +19,15 @@ class DBAddressStore implements AddressStore
             city varchar(20) DEFAULT NULL
             );";
         $this->db->exec($sql);
+
     }
 
 
     public function create(object $item): Address
     {
         //  create address
-        $create = "INSERT INTO address (street_name, house_number, postal_code, city)
-                    VALUES (" . $item->getStreet() .
-            "," . $item->getHouseNr() .
-            "," . $item->getPostalCode() .
-            "," . $item->getCity() .
-            ")";
-
+        $create = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES ('".$item->getStreetName()."', '".$item->getHouseNumber()."', '".$item->getPostalCode()."', '".$item->getCity()."')";
         $this->db->exec($create);
-
         return $this->findOne($this->db->lastInsertId());
     }
 
@@ -41,9 +35,9 @@ class DBAddressStore implements AddressStore
     public function update(object $item): Address
     {
         //  edit address
-        $update = "UPDATE address 
-            SET street_name = ".$item->getStreet() . ",
-            house_number = ".$item->getHouseNr() . ",
+        $update = "UPDATE address SET 
+            street_name = ".$item->getStreetName() . ",
+            house_number = ".$item->getHouseNumber() . ",
             postal_code = ".$item->getPostalCode() . ",
             city = ".$item->getCity() . "
             WHERE address_ID = ". $item-> getId().";";
@@ -63,7 +57,8 @@ class DBAddressStore implements AddressStore
         $findOne ="SELECT * FROM address 
                      WHERE address_ID = " . $id."
                     LIMIT 1";
-         return new Address($this->db->query($findOne)->fetch());
+        $_SESSION["findArray"] = $this->db->query($findOne)->fetch();
+        return new Address();
     }
 
     public function findMany(array $ids): array
@@ -75,7 +70,7 @@ class DBAddressStore implements AddressStore
                      WHERE ". $ids.join(" OR ") ." LIMIT " .count($ids);
         $addresses = $this->db->query($findMany)->fetchAll();
         foreach ($addresses as $key => $address) {
-            $addresses[$key] = new Address($address);
+            $addresses[$key] = Address::withAddressID($address);
         }
         return $addresses;
     }
@@ -85,7 +80,7 @@ class DBAddressStore implements AddressStore
         $findAll = "SELECT * FROM address ";
         $addresses =  $this->db->query($findAll)->fetchAll();
         foreach ($addresses as $key => $address) {
-            $addresses[$key] = new Address($address);
+            $addresses[$key] = Address::withAddressID($address);
         }
         return $addresses;
     }

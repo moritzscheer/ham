@@ -3,7 +3,7 @@ include 'classes.php';
 
 global $decodedFile, $currentItem, $newEvent, $itemListManager, $eventStore;
 
-$eventStore = new FileEventsStore("../resources/json/Events.json");
+$eventStore = new FileEventStore("../resources/json/Events.json");
 
 $newEvent["image"] = "";
 $newEvent["description"] = "";
@@ -41,7 +41,7 @@ if (isset($_POST["submit"])) {
     */
     $itemevent = array(
 
-        "id" => 
+        "id" =>
         checkValue("description"),
         checkValue("name"),
         checkValue("street"),

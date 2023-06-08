@@ -75,10 +75,18 @@ function initDatabase(): void
     }
 
 
-    //$userStore = new FileDBUserStore();
+    // database
     $addressStore = new DBAddressStore($db);
     $eventStore = new DBEventStore($db, $addressStore);
+    $bandStore = new DBBandStore($db, $addressStore);
     $userStore = new DBUserStore($db, $addressStore);
+
+    // memory
+    //$addressStore = new FileAddressStore($db);
+    //$eventStore = new FileEventStore($db, $addressStore);
+    //$bandStore = new FileBandStore($db, $addressStore);
+    //$userStore = new FileUserStore($db, $addressStore);
+
 }
 
 function closeConnection(): void {
@@ -87,7 +95,6 @@ function closeConnection(): void {
         $db->close();
     }
 }
-
 
 
 

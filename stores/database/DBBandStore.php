@@ -13,15 +13,14 @@ class DBBandStore
         $this->db = $db;
         $this->addressStore = $addressStore;
 
-        $sql = "CREATE TABLE band (
-            band_ID int(11) AUTOINCREMENT UNIQUE,
+        $sql = "CREATE TABLE IF NOT EXISTS band (
+            band_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             image BLOB DEFAULT NULL,
             name varchar(40) DEFAULT NULL,
             address_ID int(11) DEFAULT NULL,
             date varchar(20) DEFAULT NULL,
             startTime varchar(20) DEFAULT NULL,
-            endTime varchar(20) DEFAULT NULL,
-            PRIMARY KEY (event_ID)
+            endTime varchar(20) DEFAULT NULL
             );";
         $this->db->exec($sql);
     }

@@ -25,31 +25,31 @@
 
         <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_1 ?>" class="progressBar-Content">
             <label class="entry">* Name:
-                <input type="text" value="<?php echo $_SESSION["name"] ?>" name="name"required>
+                <input type="text" value="<?php echo $_SESSION["user"]->getName() ?>" name="name" required>
             </label>
 
             <label class="entry">* Surname:
-                <input type="text" value="<?php echo $_SESSION["surname"] ?>" name="surname" required>
+                <input type="text" value="<?php echo $_SESSION["user"]->getSurname() ?>" name="surname" required>
             </label>
 
             <label class="entry">Street:
-                <input type="text" value="<?php echo $_SESSION["street_name"] ?>" name="street_name">
+                <input type="text" value="<?php echo $_SESSION["address"]->getStreetName() ?>" name="street_name">
             </label>
 
             <label class="entry">House Number:
-                <input type="text" value="<?php echo $_SESSION["house_number"] ?>" name="house_number">
+                <input type="text" value="<?php echo $_SESSION["address"]->getHouseNumber() ?>" name="house_number">
             </label>
 
             <label class="entry">Postal Code:
-                <input type="text" value="<?php echo $_SESSION["postal_code"] ?>" name="postal_code">
+                <input type="text" value="<?php echo $_SESSION["address"]->getPostalCode() ?>" name="postal_code">
             </label>
 
             <label class="entry">City:
-                <input type="text" value="<?php echo $_SESSION["city"] ?>" name="city">
+                <input type="text" value="<?php echo $_SESSION["address"]->getCity() ?>" name="city">
             </label>
 
             <label class="entry">Phone Number:
-                <input type="tel" value="<?php echo $_SESSION["phone_number"] ?>" name="phone_number">
+                <input type="tel" value="<?php echo $_SESSION["user"]->getPhoneNumber() ?>" name="phone_number">
             </label>
 
             <div class="submit">
@@ -72,15 +72,15 @@
             </label>
 
             <label class="entry">Genre:
-                <input type="text" value="<?php echo $_SESSION["genre"] ?>" name="genre">
+                <input type="text" value="<?php echo $_SESSION["user"]->getGenre() ?>" name="genre">
             </label>
 
             <label class="entry">Members:
-                <input type="text" value="<?php echo $_SESSION["members"] ?>" name="members">
+                <input type="text" value="<?php echo $_SESSION["user"]->getMembers() ?>" name="members">
             </label>
 
             <label class="entry">Other Remarks:
-                <textarea value="<?php echo $_SESSION["other_remarks"] ?>" name="other_remarks" rows="5"></textarea>
+                <textarea value="<?php echo $_SESSION["user"]->getOtherRemarks() ?>" name="other_remarks" rows="5"></textarea>
             </label>
 
             <div class="submit">
@@ -91,15 +91,15 @@
 
         <form method="post" id="<?php echo $step_3 ?>" class="progressBar-Content">
             <label class="entry">* E-Mail address:
-                <input type="email" value="<?php echo $_SESSION["email"] ?>" name="email">
+                <input type="email" name="email">
             </label>
 
             <label class="entry">* Enter Password:
-                <input type="password" value="<?php echo $_SESSION["password"] ?>" name="password">
+                <input type="password" name="password">
             </label>
 
             <label class="entry">* Repeat Password:
-                <input type="password" value="<?php echo $_SESSION["repeat_password"] ?>" name="repeat_password"required>
+                <input type="password" name="repeat_password"required>
             </label>
 
             <div class="submit">
@@ -110,8 +110,8 @@
 
         <form method="post" action="index.php" id="<?php echo $step_4 ?>" class="progressBar-Content lastStep">
             <div>
-                <p><?php echo $_SESSION["name"] . " " . $_SESSION["surname"] ?></p>
-                <p><?php echo $_SESSION["email"] ?></p>
+                <p><?php echo $_SESSION["user"]->getName() . " " . $_SESSION["user"]->getSurname() ?></p>
+                <p><?php echo $_SESSION["user"]->getEmail() ?></p>
             </div>
             <label>Stay Logged In?
                 <input type="checkbox" id="stayLoggedIn" name="stayLoggedIn">
@@ -121,7 +121,11 @@
             </div>
         </form>
     </section>
-         <?php echo $_SESSION["a"]." <br>".$_SESSION["b"] ?>
+<?php echo var_dump($_SESSION["user"]) ?><br><br>
+<?php echo var_dump($_SESSION["address"]) ?><br><br>
+<?php echo var_dump($_SESSION["findArray"]) ?><br><br>
+
+
 <?php include "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

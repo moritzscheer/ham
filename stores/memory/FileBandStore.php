@@ -1,6 +1,6 @@
 <?php
 
-class FileBandsStore implements ItemStore {
+class FileBandStore implements ItemStore {
 
     private string $bandfile;
     

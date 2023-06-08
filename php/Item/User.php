@@ -1,213 +1,200 @@
 <?php
 
-class User implements Item{
+class User {
 
     private string $user_ID;
-    private string $address_ID;
-    private string $type;
-    private string $name;
-    private string $surname;
-    private string $password;
-    private string $phone_number;
-    private string $email;
-    private string $genre;
-    private string $members;
-    private string $other_remarks;
+    private ?string $address_ID = null;
+    private ?string $type = null;
+    private ?string $name = null;
+    private ?string $surname = null;
+    private ?string $password = null;
+    private ?string $phone_number = null;
+    private ?string $email = null;
+    private ?string $genre = null;
+    private ?string $members = null;
+    private ?string $other_remarks = null;
 
-    public function __construct($address_ID, $type, $name, $surname, $password, $phone_number, $email, $genre, $members, $other_remarks) {
-        $this->address_ID = $address_ID;
-        $this->type = $type;
-        $this->name = $name;
-        $this->surname = $surname;
-        $this->password = $password;
-        $this->phone_number = $phone_number;
-        $this->email = $email;
-        $this->genre = $genre;
-        $this->members = $members;
-        $this->other_remarks = $other_remarks;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUserID(): int
-    {
-        return $this->user_ID;
-    }
-
-    /**
-     * @param int $user_ID
-     */
-    public function setUserID(int $user_ID): void
-    {
-        $this->user_ID = $user_ID;
+    public static function withUserID($user): User {
+        $instance = new self();
+        $instance->user_ID = $user->userID;
+        $instance->address_ID = $user->address_ID;
+        $instance->type = $user->type;
+        $instance->name = $user->name;
+        $instance->surname = $user->surname;
+        $instance->password = $user->password;
+        $instance->phone_number = $user->phone_number;
+        $instance->email = $user->email;
+        $instance->genre = $user->genre;
+        $instance->members = $user->members;
+        $instance->other_remarks = $user->other_remarks;
+        return $instance;
     }
 
     /**
      * @return string
      */
-    public function getAddressID(): string
+    public function getUserID(): string
+    {
+        return $this->user_ID;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAddressID(): ?string
     {
         return $this->address_ID;
     }
 
     /**
-     * @param string $address_ID
+     * @param string|null $address_ID
      */
-    public function setAddressID(string $address_ID): void
+    public function setAddressID(?string $address_ID): void
     {
         $this->address_ID = $address_ID;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
-     * @param string $type
+     * @param string|null $type
      */
-    public function setType(string $type): void
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName(string $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSurname(): string
+    public function getSurname(): ?string
     {
         return $this->surname;
     }
 
     /**
-     * @param string $surname
+     * @param string|null $surname
      */
-    public function setSurname(string $surname): void
+    public function setSurname(?string $surname): void
     {
         $this->surname = $surname;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
     /**
-     * @param string $password
+     * @param string|null $password
      */
-    public function setPassword(string $password): void
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhoneNumber(): string
+    public function getPhoneNumber(): ?string
     {
         return $this->phone_number;
     }
 
     /**
-     * @param string $phone_number
+     * @param string|null $phone_number
      */
-    public function setPhoneNumber(string $phone_number): void
+    public function setPhoneNumber(?string $phone_number): void
     {
         $this->phone_number = $phone_number;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
-     * @param string $email
+     * @param string|null $email
      */
-    public function setEmail(string $email): void
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getGenre(): string
+    public function getGenre(): ?string
     {
         return $this->genre;
     }
 
     /**
-     * @param string $genre
+     * @param string|null $genre
      */
-    public function setGenre(string $genre): void
+    public function setGenre(?string $genre): void
     {
         $this->genre = $genre;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMembers(): string
+    public function getMembers(): ?string
     {
         return $this->members;
     }
 
     /**
-     * @param string $members
+     * @param string|null $members
      */
-    public function setMembers(string $members): void
+    public function setMembers(?string $members): void
     {
         $this->members = $members;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOtherRemarks(): string
+    public function getOtherRemarks(): ?string
     {
         return $this->other_remarks;
     }
 
     /**
-     * @param string $other_remarks
+     * @param string|null $other_remarks
      */
-    public function setOtherRemarks(string $other_remarks): void
+    public function setOtherRemarks(?string $other_remarks): void
     {
         $this->other_remarks = $other_remarks;
-    }
-
-    /**
-     * @return string
-     */
-    public function getID(): string
-    {
-        return $this->user_ID;
     }
 }

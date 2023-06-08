@@ -1,48 +1,52 @@
 <?php
-global $userStore, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db;
+global $userStore, $addressStore, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-// initialize session variables
-$_SESSION["user_ID"] = $_SESSION["user_ID"] ?? null;
 
-$_SESSION["email"] = check_variable("email");
-$_SESSION["password"] = check_variable("password");
-$_SESSION["repeat_password"] = check_variable("repeat_password");
-$_SESSION["name"] = check_variable("name");
-$_SESSION["surname"] = check_variable("surname");
-$_SESSION["address"] = check_variable("address");
-$_SESSION["phone_number"] = check_variable("phone_number");
-$_SESSION["genre"] = check_variable("genre");
-$_SESSION["members"] = check_variable("members");
-$_SESSION["other_remarks"] = check_variable("other_remarks");
-$_SESSION["street_name"] = check_variable("street_name");
-$_SESSION["house_number"] = check_variable("house_number");
-$_SESSION["postal_code"] = check_variable("postal_code");
-$_SESSION["city"] = check_variable("city");
+// init user and address session variable
+$_SESSION["user"] = $_SESSION["user"] ?? new User();
+$_SESSION["address"] = $_SESSION["address"] ?? new Address();
 
-// change password
-$_SESSION["old_password"] = check_variable("old_password");
-$_SESSION["new_password"] = check_variable("new_password");
-$_SESSION["repeat_new_password"] = check_variable("repeat_new_password");
+// if post request were send the input is put in the object
+isset($_POST["type"]) && is_string($_POST["type"])   ?   $_SESSION["user"]->setType(htmlspecialchars($_POST["type"]))   :   "";
+isset($_POST["name"]) && is_string($_POST["name"])   ?   $_SESSION["user"]->setName(htmlspecialchars($_POST["name"]))   :   "";
+isset($_POST["surname"]) && is_string($_POST["surname"])   ?   $_SESSION["user"]->setSurname(htmlspecialchars($_POST["surname"]))   :   "";
+isset($_POST["phone_number"]) && is_string($_POST["phone_number"])   ?   $_SESSION["user"]->setPhoneNumber(htmlspecialchars($_POST["phone_number"]))   :   "";
+isset($_POST["email"]) && is_string($_POST["email"])   ?   $_SESSION["user"]->setEmail(htmlspecialchars($_POST["email"]))   :   "";
+isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $_SESSION["user"]->setGenre(htmlspecialchars($_POST["genre"]))   :   "";
+isset($_POST["members"]) && is_string($_POST["members"])   ?   $_SESSION["user"]->setMembers(htmlspecialchars($_POST["members"]))   :   "";
+isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $_SESSION["user"]->setOtherRemarks(htmlspecialchars($_POST["other_remarks"]))   :   "";
+isset($_POST["street_name"]) && is_string($_POST["street_name"])   ?   $_SESSION["address"]->setStreetName(htmlspecialchars($_POST["street_name"]))   :   "";
+isset($_POST["house_number"]) && is_string($_POST["house_number"])   ?   $_SESSION["address"]->setHouseNumber(htmlspecialchars($_POST["house_number"]))  :   "";
+isset($_POST["postal_code"]) && is_string($_POST["postal_code"])   ?   $_SESSION["address"]->setPostalCode(htmlspecialchars($_POST["postal_code"]))   :   "";
+isset($_POST["city"]) && is_string($_POST["city"])   ?   $_SESSION["address"]->setCity(htmlspecialchars($_POST["city"]))   :   "";
 
-// type
-$_SESSION["type"] = check_variable("type");
-$_SESSION["Musician"] = ($_SESSION["type"] === "Musician") ? "checked" : "";
-$_SESSION["Host"] = ($_SESSION["type"] === "Host") ? "checked" : "";
+// password variables
+$password = isset($_POST["password"]) && is_string($_POST["password"])   ?   htmlspecialchars($_POST["password"])   :   "";
+$repeat_password = isset($_POST["repeat_password"]) && is_string($_POST["repeat_password"])   ?   htmlspecialchars($_POST["repeat_password"])   :   "";
+$old_password = isset($_POST["old_password"]) && is_string($_POST["old_password"])   ?   htmlspecialchars($_POST["old_password"])   :   "";
+$new_password = isset($_POST["new_password"]) && is_string($_POST["new_password"])   ?   htmlspecialchars($_POST["new_password"])   :   "";
+$repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST["repeat_new_password"])   ?   htmlspecialchars($_POST["repeat_new_password"])   :   "";
+
+// for the checkbox
+$_SESSION["Musician"] = ($_SESSION["user"]->getType() === "Musician") ? "checked" : "";
+$_SESSION["Host"] = ($_SESSION["user"]->getType() === "Host") ? "checked" : "";
 
 $error_message = "";
 
 // initialize session variables
-$profile_header_box = "<div id='name'>".$_SESSION["name"]." ".$_SESSION["surname"].'</div><div id="type">'.$_SESSION["type"]."</div>";
+$profile_header_box = "<div id='name'>".$_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname().'</div><div id="type">'.$_SESSION["user"]->getType()."</div>";
 $_SESSION["normalHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "hidden": "visible";
 $_SESSION["profileHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "visible": "hidden";
 $_SESSION["profileHeaderBox"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? $profile_header_box : "";
 
 $_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/default/defaultSmall.png";
 $_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/default/defaultLarge.jpeg";
+
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               post methods                                                         */
@@ -64,10 +68,11 @@ if(isset($_POST["reset"])) {
  */
 if(isset($_POST["register"])) {
     try {
-        if($_SESSION["password"] === $_SESSION["repeat_password"]) {
-            $user = new User($_SESSION["address"], $_SESSION["type"], $_SESSION["name"], $_SESSION["surname"], $_SESSION["phone_number"], $_SESSION["email"], $_SESSION["password"], $_SESSION["genre"], $_SESSION["members"], $_SESSION["other_remarks"]);
-            $user = $userStore->create($user);
-            set_variables($user);
+        if($password === $repeat_password) {
+            $_SESSION["address"] = $addressStore->create($_SESSION["address"]);
+
+            $_SESSION["user"]->setPassword($password);
+            $_SESSION["user"] = $userStore->create($_SESSION["user"]);
             $_SESSION["loggedIn"] = true;
 
             header("Location: " . getNextUrl($step));
@@ -89,8 +94,7 @@ if(isset($_POST["register"])) {
  */
 if(isset($_POST["login"])) {
     try {
-        $user = $userStore->login($_SESSION["email"], $_SESSION["password"]);
-        set_variables($user);
+        $_SESSION["user"] = $_SESSION["userStore"]->login($_SESSION["user"]->getEmail(), $password);
         $_SESSION["loggedIn"] = true;
 
         header("Location: index.php");
@@ -124,7 +128,7 @@ if(isset($_POST["logout"])) {
  */
 if(isset($_POST["delete"])) {
     try {
-        $userStore->delete($_SESSION["user_ID"]);
+        $userStore->delete($_SESSION["user"]->getUserID());
         $_SESSION["loggedIn"] = false;
 
         header("Location: index.php");
@@ -250,7 +254,7 @@ function check_variable($var): String {
     if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
         return htmlspecialchars($_POST["$var"]);
     } elseif (isset($_SESSION["$var"]) && is_string($_SESSION["$var"])) {
-        return $_SESSION["$var"];
+            return $_SESSION["$var"];
     } else {
         return "";
     }
