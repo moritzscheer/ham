@@ -94,7 +94,7 @@ if(isset($_POST["register"])) {
  */
 if(isset($_POST["login"])) {
     try {
-        $_SESSION["user"] = $_SESSION["userStore"]->login($_SESSION["user"]->getEmail(), $password);
+        $_SESSION["user"] = $userStore->login($_SESSION["user"]->getEmail(), $password);
         $_SESSION["loggedIn"] = true;
 
         header("Location: index.php");

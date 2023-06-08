@@ -102,8 +102,8 @@ class DBUserStore implements UserStore
      */
     public function login($email, $password): void {
         $sql = "SELECT COUNT(*) FROM user WHERE email = '" . $email . "' AND password = '" . $password . "';";
-        $result = $this->exec($sql);
-        if ($result == 0) {
+        $result = $this->db->query($sql);
+        if ($result->rowCount() == 0) {
             throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
         }
     }
