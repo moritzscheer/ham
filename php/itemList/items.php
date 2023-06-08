@@ -39,23 +39,24 @@ if (isset($_POST["submit"])) {
     $newEvent["endTime"] = checkValue("endTime");
     $newEvent["requirements"] = checkValue("requirements");
     */
-    $itemevent = array(
+    $itemEvent = array(
 
-        "id" =>
-        checkValue("description"),
-        checkValue("name"),
-        checkValue("street"),
-        checkValue("city"),
-        checkValue("date"),
-        checkValue("startTime"),
-        checkValue("endTime"),
-        checkValue("requirements"),
-        (int)checkValue("houseNr"),
-        (int)checkValue("postalCode")
+        "id" => "kjsadflkjdsa",
+        "authorId" => "asdadsjf",
+        "image" => $eventImage,
+        "description" => checkValue("description"),
+        "name" =>checkValue("name"),
+        "adress_ID" => "asjdshf",
+        "street" => checkValue("street"),
+        "city" => checkValue("city"),
+        "Date" => checkValue("date"),
+        "startTime" => checkValue("startTime"),
+        "endTime" => checkValue("endTime"),
+        "requirements" => checkValue("requirements"),
+        "houseNr" => (int)checkValue("houseNr"),
+        "postalCode" => (int)checkValue("postalCode")
     );
-    $event = new Event(
-
-    );
+    $event = new Event($itemEvent);
     createNewEvent($event);
 }
 
