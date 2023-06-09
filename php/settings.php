@@ -1,5 +1,5 @@
 <?php
-include_once "../stores/includes.php";
+    include_once "../stores/includes.php";
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -95,9 +95,6 @@ function closeConnection(): void {
         $db->close();
     }
 }
-
-
-
 
 
 

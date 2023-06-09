@@ -38,7 +38,7 @@ $_SESSION["Host"] = ($_SESSION["user"]->getType() === "Host") ? "checked" : "";
 $error_message = "";
 
 // initialize session variables
-$profile_header_box = "<div id='name'>".$_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname().'</div><div id="type">'.$_SESSION["user"]->getType()."</div>";
+$profile_header_box = '<div id="name">'.$_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname().'</div><div id="type">'.$_SESSION["user"]->getType()."</div>";
 $_SESSION["normalHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "hidden": "visible";
 $_SESSION["profileHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "visible": "hidden";
 $_SESSION["profileHeaderBox"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? $profile_header_box : "";
@@ -69,8 +69,12 @@ if(isset($_POST["reset"])) {
 if(isset($_POST["register"])) {
     try {
         if($password === $repeat_password) {
-            $_SESSION["address"] = $addressStore->create($_SESSION["address"]);
-
+            // if any address attribute is typed in an entry in the address table is created
+            if($_SESSION["address"]->getStreetName() !== "" || $_SESSION["address"]->getHouseNumber() !== "" || $_SESSION["address"]->getPostalCode() !== "" || $_SESSION["address"]->getCity() !== "") {
+                $_SESSION["address"] = $addressStore->create($_SESSION["address"]);
+                $_SESSION["user"]->setAddressID($_SESSION["address"]->getAddressID());
+            }
+            
             $_SESSION["user"]->setPassword($password);
             $_SESSION["user"] = $userStore->create($_SESSION["user"]);
             $_SESSION["loggedIn"] = true;
@@ -129,6 +133,7 @@ if(isset($_POST["logout"])) {
 if(isset($_POST["delete"])) {
     try {
         $userStore->delete($_SESSION["user"]->getUserID());
+        reset_variables();
         $_SESSION["loggedIn"] = false;
 
         header("Location: index.php");
@@ -145,28 +150,19 @@ if(isset($_POST["delete"])) {
  */
 if(isset($_POST["change_password"])) {
     try {
-        if($_SESSION["old_password"] === $_SESSION["password"]) {
-            if($_SESSION["new_password"] === $_SESSION["repeat_new_password"]) {
-                $userStore->update($_SESSION["user_ID"], array("password" => $_SESSION["new_password"]));
+        if($new_password === $repeat_new_password) {
+            $_SESSION["user"] = $userStore->changePassword($_SESSION["user"], $old_password, $new_password);
 
-                $_SESSION["password"] = $_SESSION["new_password"];
+            header("Location: profile.php");
+            exit();
 
-                header("Location: profile.php");
-                exit();
-
-            } else {
-                $_SESSION["old_password"] = "";
-                $_SESSION["new_password"] = "";
-                $_SESSION["repeat_new_password"] = "";
-                throw new Exception("Passwords must be the same.");
-            }
         } else {
-            $_SESSION["old_password"] = "";
-            $_SESSION["new_password"] = "";
-            $_SESSION["repeat_new_password"] = "";
-            throw new Exception("Old Password is incorrect.");
+            throw new Exception("Passwords must be the same.");
         }
     } catch (Exception $ex) {
+        $old_password = "";
+        $new_password = "";
+        $repeat_new_password = "";
         $error_message = $ex->getMessage();
     }
 }
@@ -178,16 +174,7 @@ if(isset($_POST["change_password"])) {
  */
 if(isset($_POST["update_profile"])) {
     try {
-        $array = array(
-            "type" => $_SESSION["type"],
-            "name" => $_SESSION["name"],
-            "surname" => $_SESSION["surname"],
-            "password" => $_SESSION["password"],
-            "phone_number" => $_SESSION["phone_number"],
-            "email" => $_SESSION["email"]
-            );
-
-        $userStore->update($_SESSION["user_ID"], $array);
+        $userStore->update($_SESSION["user"]);
 
         header("Location: profile.php");
         exit();
@@ -205,7 +192,7 @@ if(isset($_POST["update_profile"])) {
 if (isset($_POST["profile_picture_small"])) {
     try {
         $_SESSION["profile_picture_small"] = "../resources/images/profile/default/".verifyImage("profile_picture_small", "profile/default");
-        $userStore->update($_SESSION["user_ID"], $array);
+        $userStore->update($_SESSION["user_ID"]);
     } catch (RuntimeException $e) {
         $_SESSION["error"] = $e->getMessage();
     }

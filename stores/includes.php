@@ -1,4 +1,7 @@
 <?php
+include_once "../php/Item/Address.php";
+include_once "../php/Item/User.php";
+
 include_once "../stores/memory/FileUserStore.php";
 include_once "../stores/memory/FileEventStore.php";
 include_once "../stores/memory/FileBandStore.php";
@@ -16,5 +19,3 @@ include_once "../stores/interface/BandStore.php";
 
 include_once "../stores/Store.php";
 
-include_once "../php/Item/User.php";
-include_once "../php/Item/Address.php";

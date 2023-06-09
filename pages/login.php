@@ -32,6 +32,7 @@
             <a href="register.php" id="registerSubmit">Register</a>
         </div>
     </form>
+
 </section>
 </body>
 </html>

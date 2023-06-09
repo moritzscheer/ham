@@ -1,7 +1,7 @@
 <?php
 
 class Address {
-    private string $address_ID;
+    private int $address_ID;
     private ?string $street_name;
     private ?string $house_number;
     private ?string $postal_code;
@@ -14,18 +14,18 @@ class Address {
         $this->city = "";
     }
 
-
-        /**
-     * constructor
+    /**
+     * 2nd constructor
      * @param $address
+     * @return Address
      */
     public static function withAddressID($address): Address {
         $instance = new self();
-        $instance->address_ID = $address->address_ID;
-        $instance->street_name = $address->street_name;
-        $instance->house_number = $address->house_number;
-        $instance->postal_code = $address->postal_code;
-        $instance->city = $address->city;
+        $instance->address_ID = $address[0];
+        $instance->street_name = $address[1];
+        $instance->house_number = $address[2];
+        $instance->postal_code = $address[3];
+        $instance->city = $address[4];
         return $instance;
     }
 

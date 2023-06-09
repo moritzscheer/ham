@@ -50,18 +50,25 @@
                     <input type="text" name="surname" value="<?php echo $_SESSION["user"]->getSurname() ?>" required>
                 </label>
 
-                <label class="entry">Address:
-                    <input type="text" name="address" value="<?php echo $_SESSION["address"] ?>">
-                </label>
+                <div id="address-box">
+                    <label class="entry">Street:
+                        <input type="text" name="street_name" value="<?php echo $_SESSION["address"]->getStreetName() ?>">
+                    </label>
 
-                <label class="entry">Address:
-                    <input type="text" name="address" value="<?php echo $_SESSION["address"] ?>">
-                </label>
+                    <label id="address-box-right" class="entry">House Number:
+                        <input type="text" name="house_number" value="<?php echo $_SESSION["address"]->getHouseNumber() ?>">
+                    </label>
+                </div>
+                <div id="address-box">
+                    <label class="entry">City:
+                        <input type="text" name="city" value="<?php echo $_SESSION["address"]->getCity() ?>">
+                    </label>
 
-                <label class="entry">Address:
-                    <input type="text" name="address" value="<?php echo $_SESSION["address"] ?>">
-                </label>
-
+                    <label id="address-box-right" class="entry">Postal Code:
+                        <input type="text" name="postal_code" value="<?php echo $_SESSION["address"]->getPostalCode() ?>">
+                    </label>
+                </div>
+                
                 <label class="entry">Type:
                     <div id="type">
                         <label>Musician
@@ -74,15 +81,15 @@
                 </label>
 
                 <label class="entry">Genre:
-                    <input type="text" name="genre" value="<?php echo $_SESSION["genre"] ?>">
+                    <input type="text" name="genre" value="<?php echo $_SESSION["user"]->getGenre() ?>">
                 </label>
 
                 <label class="entry">Members:
-                    <input type="text" name="members" value="<?php echo $_SESSION["members"] ?>">
+                    <input type="text" name="members" value="<?php echo $_SESSION["user"]->getMembers() ?>">
                 </label>
 
                 <label class="entry">Other Remarks:
-                    <textarea name="otherRemarks" rows="5"><?php echo $_SESSION["other_remarks"] ?></textarea>
+                    <textarea name="otherRemarks" rows="5"><?php echo $_SESSION["user"]->getOtherRemarks() ?></textarea>
                 </label>
             </div>
 

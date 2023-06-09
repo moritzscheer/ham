@@ -17,9 +17,9 @@ class DBUserStore implements UserStore
                 type varchar(15) NOT NULL,
                 name varchar(15) DEFAULT NULL,
                 surname varchar(15) DEFAULT NULL,
-                password varchar(20) NOT NULL,
+                password varchar(20) NOT NULL UNIQUE,
                 phone_number varchar(20) DEFAULT NULL,
-                email varchar(30) NOT NULL,
+                email varchar(30) NOT NULL UNIQUE,
                 genre varchar(30) DEFAULT NULL,
                 members varchar(50) DEFAULT NULL,
                 other_remarks longtext DEFAULT NULL,
@@ -30,17 +30,22 @@ class DBUserStore implements UserStore
 
 
     /**
+     * methode to register a user into the database. First it searches the database, if the email or password
+     * already exist, then the data set is inserted and returned as a User object. Else an exception is thrown.
+     * @param object $user the user object given in 
+     * @return User the returned user object with the user_ID in it
      * @throws Exception
      */
     public function create(object $user): User {
         // checking if email or password already exist
-        $sql = "SELECT * FROM user WHERE email = '" . $user->getEmail() . "' OR password = '" . $user->getPassword() . "';";
+        $sql = "SELECT * FROM user WHERE email = '".$user->getEmail()."' OR password = '".$user->getPassword()."';";
         $result = $this->db->query($sql);
-        if ($result->rowCount() > 0) {
+        $row = $result->fetch();
+        if($row !== false) {
             throw new Exception("Email or Password already exist");
         }
-
-        $create = "INSERT INTO user VALUES ('".$user->getAddressID()."', '".$user->getType()."', '" . $user->getName()."', '".$user->getSurname()."', '".$user->getPassword()."', '".$user->getPhoneNumber()."', '".$user->getEmail()."', '".$user->getGenre()."', '".$user->getMembers()."', '".$user->getOtherRemarks()."');";
+        
+        $create = "INSERT INTO user (address_ID, type, name, surname, password, phone_number, email, genre, members, other_remarks) VALUES ('".$user->getAddressID()."', '".$user->getType()."', '" . $user->getName()."', '".$user->getSurname()."', '".$user->getPassword()."', '".$user->getPhoneNumber()."', '".$user->getEmail()."', '".$user->getGenre()."', '".$user->getMembers()."', '".$user->getOtherRemarks()."');";
         $this->db->exec($create);
 
         return $this->findOne($this->db->lastInsertId());
@@ -48,40 +53,41 @@ class DBUserStore implements UserStore
 
     public function update(object $user): User {
         $update = "UPDATE user SET 
-            address_ID = " . $user->getAddress_ID() . ",
-            type = " . $user->getType() . ",
-            name = " . $user->getName() . ",
-            surname = " . $user->getSurname() . "
-            phone_number = " . $user->getPhone_number() . "
-            email = " . $user->getEmail() . "
-            genre = " . $user->getGenre() . "
-            members = " . $user->getMembers() . "
-            other_remarks = " . $user->getOther_remarks() . "
-            WHERE user_ID = " . $user->getUser_ID() . ";";
-
+            address_ID = '".$user->getAddressID()."', 
+            type = '".$user->getType()."', 
+            name = '".$user->getName()."', 
+            surname = '".$user->getSurname()."',
+            password = '".$user->getPassword()."',
+            phone_number = '".$user->getPhoneNumber()."',
+            email = '".$user->getEmail()."',
+            genre = '".$user->getGenre()."',
+            members = '".$user->getMembers()."',
+            other_remarks = '".$user->getOtherRemarks()."'
+            WHERE user_ID = ".$user->getUserID().";";
         $this->db->exec($update);
-        return $this->findOne($user->getUser_ID());
+        return $this->findOne($user->getUserID());
     }
 
     public function delete(string $user_ID): void {
-        $delete = "DELETE FROM event WHERE event_ID = " . $user_ID;
+        $delete = "DELETE FROM user WHERE user_ID = '".$user_ID."';";
         $this->db->exec($delete);
     }
 
-    public function findOne(string $user_ID): false|int {
-        $findOne ="SELECT * FROM user 
-                     WHERE user_ID = " . $user_ID."
-                     INNER JOIN address 
-                     ON address.address_ID = user.address_ID;
-                     LIMIT 1";
-        return User::withUserID($this->db->query($findOne)->fetch());
+    public function findOne(string $user_ID): User|null {
+        $findOne ="SELECT * FROM user WHERE user_ID = ".$user_ID;
+        $result = $this->db->query($findOne)->fetch();
+        if(!$result) {
+            return null;
+        } else {
+            return User::withUserID($result);
+        }
     }
 
     public function findMany(array $user_IDs) {
         foreach ($user_IDs as $user_ID) {
-            $id = "event_ID = " . $id;
+            $id = "user_ID = " . $id;
         }
-        $findMany ="SELECT * FROM event 
+        $findMany ="SELECT * FROM user
                      WHERE ". $user_IDs.join(" OR ") ."
                      INNER JOIN address 
                      ON address.address_ID = user.address_ID;
@@ -98,13 +104,43 @@ class DBUserStore implements UserStore
     }
 
     /**
+     * @param $email
+     * @param $password
+     * @return User
      * @throws Exception
      */
-    public function login($email, $password): void {
-        $sql = "SELECT COUNT(*) FROM user WHERE email = '" . $email . "' AND password = '" . $password . "';";
+    public function login($email, $password): User {
+        $sql = "SELECT * FROM user WHERE email = '".$email."' AND password = '".$password."';";
         $result = $this->db->query($sql);
-        if ($result->rowCount() == 0) {
+        $row = $result->fetch();
+        if($row === false) {
             throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
         }
+        return $this->findOne($row[0]);
     }
+
+    /**
+     * @throws Exception
+     */
+    public function changePassword(object $user, $old_password, $new_password): User {
+        // checking if new password already exist
+        $sql = "SELECT * FROM user WHERE password = '".$new_password."';";
+        $result = $this->db->query($sql);
+        $row = $result->fetch();
+        if($row !== false) {
+            throw new Exception("Something went wrong! try again.");
+        }
+
+        // checking if user password is equal to typed in old password
+        $sql = "SELECT password FROM user WHERE user_ID = '".$user->getUserID()."';";
+        $password = $this->db->query($sql)->fetch();
+        
+        if($password[0] != $old_password) {
+            throw new Exception("Old Password is incorrect.");
+        }
+        
+        $user->setPassword($new_password);
+        return $this->update($user);
+    }
+
 }

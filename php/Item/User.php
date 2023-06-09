@@ -2,31 +2,49 @@
 
 class User {
 
-    private string $user_ID;
-    private ?string $address_ID = null;
-    private ?string $type = null;
-    private ?string $name = null;
-    private ?string $surname = null;
-    private ?string $password = null;
-    private ?string $phone_number = null;
-    private ?string $email = null;
-    private ?string $genre = null;
-    private ?string $members = null;
-    private ?string $other_remarks = null;
+    private int $user_ID;
+    private ?string $address_ID;
+    private ?string $type;
+    private ?string $name;
+    private ?string $surname;
+    private ?string $password;
+    private ?string $phone_number;
+    private ?string $email;
+    private ?string $genre;
+    private ?string $members;
+    private ?string $other_remarks;
 
+    public function __construct() {
+        $this->address_ID = "";
+        $this->type = "";
+        $this->name = "";
+        $this->surname = "";
+        $this->password = "";
+        $this->phone_number = "";
+        $this->email = "";
+        $this->genre = "";
+        $this->members = "";
+        $this->other_remarks = "";
+    }
+
+    /**
+     * 2nd constructor
+     * @param $user
+     * @return User
+     */
     public static function withUserID($user): User {
         $instance = new self();
-        $instance->user_ID = $user->userID;
-        $instance->address_ID = $user->address_ID;
-        $instance->type = $user->type;
-        $instance->name = $user->name;
-        $instance->surname = $user->surname;
-        $instance->password = $user->password;
-        $instance->phone_number = $user->phone_number;
-        $instance->email = $user->email;
-        $instance->genre = $user->genre;
-        $instance->members = $user->members;
-        $instance->other_remarks = $user->other_remarks;
+        $instance->user_ID = $user[0];
+        $instance->address_ID = $user[1];
+        $instance->type = $user[2];
+        $instance->name = $user[3];
+        $instance->surname = $user[4];
+        $instance->password = $user[5];
+        $instance->phone_number = $user[6];
+        $instance->email = $user[7];
+        $instance->genre = $user[8];
+        $instance->members = $user[9];
+        $instance->other_remarks = $user[10];
         return $instance;
     }
 

@@ -20,11 +20,11 @@ include_once "../php/head/head.php" ?>
                 <h2>Contact Information</h2>
 
                 <label class="entry">E-Mail:
-                    <label><?php echo $_SESSION["email"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getEmail() ?></label>
                 </label>
 
                 <label class="entry">Phone Number:
-                    <label><?php echo $_SESSION["phone_number"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getPhoneNumber() ?></label>
                 </label>
             </div>
 
@@ -32,23 +32,47 @@ include_once "../php/head/head.php" ?>
                 <h2>About Me</h2>
 
                 <label class="entry">Name:
-                    <label><?php echo $_SESSION["name"] . " " . $_SESSION["surname"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getName() ?></label>
                 </label>
 
+                <label class="entry">Surname:
+                    <label><?php echo $_SESSION["user"]->getSurname() ?></label>
+                </label>
+
+                <div id="address-box">
+                    <label class="entry">Street:
+                        <label><?php echo $_SESSION["address"]->getStreetName() ?></label>
+                    </label>
+
+                    <label id="address-box-right" class="entry">House Number:
+                        <label><?php echo $_SESSION["address"]->getHouseNumber() ?></label>
+                    </label>
+                </div>
+                <div id="address-box">
+                    <label class="entry">City:
+                        <label><?php echo $_SESSION["address"]->getCity() ?></label>
+                    </label>
+
+                    <label id="address-box-right" class="entry">Postal Code:
+                        <label><?php echo $_SESSION["address"]->getPostalCode() ?></label>
+                    </label>
+                </div>
+
+
                 <label class="entry">Type:
-                    <label><?php echo $_SESSION["type"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getType() ?></label>
                 </label>
 
                 <label class="entry">Genre:
-                    <label><?php echo $_SESSION["genre"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getGenre(); ?></label>
                 </label>
 
                 <label class="entry">Members:
-                    <label><?php echo $_SESSION["members"]; ?></label>
+                    <label><?php echo $_SESSION["user"]->getMembers(); ?></label>
                 </label>
 
                 <label class="entry">Other Remarks:
-                    <label><?php echo $_SESSION["other_remarks"]; ?></label><br>
+                    <label><?php echo $_SESSION["user"]->getOtherRemarks(); ?></label><br>
                 </label>
             </div>
         </div>
@@ -57,9 +81,6 @@ include_once "../php/head/head.php" ?>
             <?php echo getImageItems(true) ?>
         </div>
     </section>
-<?php echo $_SESSION["user_ID"] ?><br>
-<?php echo var_dump($_SESSION["phone_number"]) ?><br>
-
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

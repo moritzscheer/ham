@@ -32,21 +32,24 @@
                 <input type="text" value="<?php echo $_SESSION["user"]->getSurname() ?>" name="surname" required>
             </label>
 
-            <label class="entry">Street:
-                <input type="text" value="<?php echo $_SESSION["address"]->getStreetName() ?>" name="street_name">
-            </label>
+            <div id="address-box">
+                <label class="entry">Street:
+                    <input type="text" name="street_name" value="<?php echo $_SESSION["address"]->getStreetName() ?>">
+                </label>
 
-            <label class="entry">House Number:
-                <input type="text" value="<?php echo $_SESSION["address"]->getHouseNumber() ?>" name="house_number">
-            </label>
+                <label id="address-box-right" class="entry">House Number:
+                    <input type="text" name="house_number" value="<?php echo $_SESSION["address"]->getHouseNumber() ?>">
+                </label>
+            </div>
+            <div id="address-box">
+                <label class="entry">City:
+                    <input type="text" name="city" value="<?php echo $_SESSION["address"]->getCity() ?>">
+                </label>
 
-            <label class="entry">Postal Code:
-                <input type="text" value="<?php echo $_SESSION["address"]->getPostalCode() ?>" name="postal_code">
-            </label>
-
-            <label class="entry">City:
-                <input type="text" value="<?php echo $_SESSION["address"]->getCity() ?>" name="city">
-            </label>
+                <label id="address-box-right" class="entry">Postal Code:
+                    <input type="text" name="postal_code" value="<?php echo $_SESSION["address"]->getPostalCode() ?>">
+                </label>
+            </div>
 
             <label class="entry">Phone Number:
                 <input type="tel" value="<?php echo $_SESSION["user"]->getPhoneNumber() ?>" name="phone_number">
@@ -121,10 +124,6 @@
             </div>
         </form>
     </section>
-<?php echo var_dump($_SESSION["user"]) ?><br><br>
-<?php echo var_dump($_SESSION["address"]) ?><br><br>
-<?php echo var_dump($_SESSION["findArray"]) ?><br><br>
-
 
 <?php include "../php/navigation/footer/footer.php" ?>
 </body>

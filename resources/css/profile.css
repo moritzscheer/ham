@@ -121,9 +121,8 @@
 }
 .entry {
     display: grid;
-    grid-template-columns: 180px auto;
+    grid-template-columns: 140px auto;
     grid-template-rows: auto;
-    width: 90%;
     margin: 10px 0 10px 0;
 }
 .entry > label, .entry > div {

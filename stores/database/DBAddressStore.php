@@ -23,10 +23,10 @@ class DBAddressStore implements AddressStore
     }
 
 
-    public function create(object $item): Address
+    public function create(object $address): Address
     {
         //  create address
-        $create = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES ('".$item->getStreetName()."', '".$item->getHouseNumber()."', '".$item->getPostalCode()."', '".$item->getCity()."')";
+        $create = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES ('".$address->getStreetName()."', '".$address->getHouseNumber()."', '".$address->getPostalCode()."', '".$address->getCity()."')";
         $this->db->exec($create);
         return $this->findOne($this->db->lastInsertId());
     }
@@ -52,13 +52,12 @@ class DBAddressStore implements AddressStore
         $this->db->exec($delete);
     }
 
-    public function findOne(string $id): Address
+    public function findOne(string $address_ID): Address
     {
         $findOne ="SELECT * FROM address 
-                     WHERE address_ID = " . $id."
+                     WHERE address_ID = ".$address_ID."
                     LIMIT 1";
-        $_SESSION["findArray"] = $this->db->query($findOne)->fetch();
-        return new Address();
+        return Address::withAddressID($this->db->query($findOne)->fetch());
     }
 
     public function findMany(array $ids): array
