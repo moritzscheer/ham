@@ -36,17 +36,14 @@ body {
     margin: 0;
 }
 
-input, textarea {
-    color: black;
-}
-
 h1 {
     text-align: center;
-    padding: 30px;
+    padding: 20px;
 }
 
 textarea {
-    resize: vertical;
+    resize: none;
+    height: 100px;
 }
 
 
@@ -81,31 +78,62 @@ textarea {
 
 
 
-.profile-Grid #address-box input, .profile-Grid #street-box input {
-    background: transparent;
-    color: white;
-    border: 1px rgba(255, 255, 255, 0.1) solid;
-    padding: 5px;
-    border-radius: 5px;
+input[type=text], input[type=password], input[type=tel], input[type=email], textarea {
+    background-color: var(--bluegrey);
+    padding-left: 10px;
+    border-radius: 4px;
+    position: relative;
+    color: var(--white);
+    border: 1px grey solid;
+    border: transparent;
+    outline: none;
+}
+
+input[type=text], input[type=password], input[type=tel], input[type=email] {
+    height: 30px;
+}
+
+input:-webkit-autofill {
+    -webkit-text-fill-color: white;
+    -webkit-font-feature-settings: unset;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 
 
-#address-box {
+
+
+/* formatting for entry sets (attribute and value) */
+.entry {
     display: grid;
-    grid-template-columns: auto 190px;
+    margin: 10px 0 10px 0;
+    align-items: center;
+    width: 100%;
+}
+#input-entry {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    gap: 5px;
+}
+#output-entry {
+    grid-template-columns: 140px auto;
     grid-template-rows: auto;
-    gap: 10px;
+
 }
-#address-box label {
+#type-entry {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+}
+#type-entry > div{
+    margin-right: auto;
+}
+#split {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
-#address-box-right {
-    grid-template-columns: auto min-content;
-}
-#address-box-right input {
-    width: 60px;
-}
+
 
 
 

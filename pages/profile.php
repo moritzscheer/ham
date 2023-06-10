@@ -8,10 +8,12 @@ include_once "../php/head/head.php" ?>
     </section>
 
     <div class="profile-Navigation">
-        <div class="profile-Picture-Box">
-            <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
+        <div>
+            <div class="profile-Picture-Box">
+                <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
+            </div>
+            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
         </div>
-        <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
     </div>
 
     <section class="profile-Grid">
@@ -19,61 +21,41 @@ include_once "../php/head/head.php" ?>
             <div id="contact-Information">
                 <h2>Contact Information</h2>
 
-                <label class="entry">E-Mail:
-                    <label><?php echo $_SESSION["user"]->getEmail() ?></label>
-                </label>
+                <div id="output-entry" class="entry">E-Mail:
+                    <div><?php echo $_SESSION["user"]->getEmail() ?></div>
+                </div>
 
-                <label class="entry">Phone Number:
-                    <label><?php echo $_SESSION["user"]->getPhoneNumber() ?></label>
-                </label>
+                <div id="output-entry" class="entry">Phone Number:
+                    <div><?php echo $_SESSION["user"]->getPhoneNumber() ?></div>
+                </div>
             </div>
 
             <div id="about-me">
                 <h2>About Me</h2>
 
-                <label class="entry">Name:
-                    <label><?php echo $_SESSION["user"]->getName() ?></label>
-                </label>
-
-                <label class="entry">Surname:
-                    <label><?php echo $_SESSION["user"]->getSurname() ?></label>
-                </label>
-
-                <div id="address-box">
-                    <label class="entry">Street:
-                        <label><?php echo $_SESSION["address"]->getStreetName() ?></label>
-                    </label>
-
-                    <label id="address-box-right" class="entry">House Number:
-                        <label><?php echo $_SESSION["address"]->getHouseNumber() ?></label>
-                    </label>
-                </div>
-                <div id="address-box">
-                    <label class="entry">City:
-                        <label><?php echo $_SESSION["address"]->getCity() ?></label>
-                    </label>
-
-                    <label id="address-box-right" class="entry">Postal Code:
-                        <label><?php echo $_SESSION["address"]->getPostalCode() ?></label>
-                    </label>
+                <div id="output-entry" class="entry">Name:
+                    <div><?php echo $_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname() ?></div>
                 </div>
 
+                <div id="output-entry" class="entry">Address:
+                    <div><?php echo $_SESSION["address"]->printAddress() ?></div>
+                </div>
 
-                <label class="entry">Type:
-                    <label><?php echo $_SESSION["user"]->getType() ?></label>
-                </label>
+                <div id="output-entry" class="entry">Type:
+                    <div><?php echo $_SESSION["user"]->getType() ?></div>
+                </div>
 
-                <label class="entry">Genre:
-                    <label><?php echo $_SESSION["user"]->getGenre(); ?></label>
-                </label>
+                <div id="output-entry" class="entry">Genre:
+                    <div><?php echo $_SESSION["user"]->getGenre(); ?></div>
+                </div>
 
-                <label class="entry">Members:
-                    <label><?php echo $_SESSION["user"]->getMembers(); ?></label>
-                </label>
+                <div id="output-entry" class="entry">Members:
+                    <div><?php echo $_SESSION["user"]->getMembers(); ?></div>
+                </div>
 
-                <label class="entry">Other Remarks:
-                    <label><?php echo $_SESSION["user"]->getOtherRemarks(); ?></label><br>
-                </label>
+                <div id="output-entry" class="entry">Other Remarks:
+                    <div><?php echo $_SESSION["user"]->getOtherRemarks(); ?></div><br>
+                </div>
             </div>
         </div>
                                             

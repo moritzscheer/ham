@@ -34,5 +34,6 @@
     </form>
 
 </section>
+<?php include "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

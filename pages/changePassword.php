@@ -8,14 +8,16 @@ include_once "../php/head/head.php" ?>
     </section>
 
     <div class="profile-Navigation">
-        <div class="profile-Picture-Box">
-            <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
+        <div>
+            <div class="profile-Picture-Box">
+                <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
+            </div>
+            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
         </div>
-        <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
     </div>
 
     <form method="post" id="change-Password-Content" class="profile-Content">
-        <div id="loginData">
+        <div id="password-Data">
             <p id="error-message"><?php echo $error_message ?></p>
 
             <label class="entry">Old Password:

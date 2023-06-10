@@ -42,7 +42,7 @@ input {
 }
 
 /*email and password input for login and register*/
-input[type=email], input[type=password], input[type=text], input[type=submit] {
+.login-view input[type=email], .login-view input[type=password], .login-view input[type=text], .login-view input[type=submit] {
     background-color: var(--bluegrey);
     padding-left: 10px;
     margin: 10px 20px 10px 20px;
