@@ -1,6 +1,6 @@
 <?php
     include_once "../stores/includes.php";
-
+    global $blobObj;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -62,12 +62,13 @@ $_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["init
 
 function initDatabase(): void
 {
-    global $db, $userStore, $addressStore;
+    global $db, $userStore, $addressStore, $blobObj;
 
     try {
         $user = "root";
         $pw = null;
         $dsn = "sqlite:sqlite-pdo.db";
+        $blobObj = new Blob();
         $db = new PDO($dsn, $user, $pw);
     } catch (PDOException $exc) {
         $db = NULL;
@@ -76,10 +77,10 @@ function initDatabase(): void
 
 
     // database
-    $addressStore = new DBAddressStore($db);
-    $eventStore = new DBEventStore($db, $addressStore);
-    $bandStore = new DBBandStore($db, $addressStore);
-    $userStore = new DBUserStore($db, $addressStore);
+    $addressStore = new DBAddressStore($db, $blobObj);
+    $eventStore = new DBEventStore($db, $blobObj, $addressStore);
+    $bandStore = new DBBandStore($db, $blobObj, $addressStore);
+    $userStore = new DBUserStore($db, $blobObj, $addressStore);
 
     // memory
     //$addressStore = new FileAddressStore($db);

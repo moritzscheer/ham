@@ -19,3 +19,4 @@ include_once "../stores/interface/BandStore.php";
 
 include_once "../stores/Store.php";
 
+include_once "../stores/Blob.php";

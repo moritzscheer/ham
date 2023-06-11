@@ -1,9 +1,10 @@
 <?php
-global $userStore, $addressStore, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db;
+global $userStore, $addressStore, $blobObj, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 
 
 // init user and address session variable
@@ -35,16 +36,17 @@ $repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST[
 $_SESSION["Musician"] = ($_SESSION["user"]->getType() === "Musician") ? "checked" : "";
 $_SESSION["Host"] = ($_SESSION["user"]->getType() === "Host") ? "checked" : "";
 
-$error_message = "";
-
-// initialize session variables
+// initialize header session variables
 $profile_header_box = '<div id="name">'.$_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname().'</div><div id="type">'.$_SESSION["user"]->getType()."</div>";
 $_SESSION["normalHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "hidden": "visible";
 $_SESSION["profileHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "visible": "hidden";
 $_SESSION["profileHeaderBox"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? $profile_header_box : "";
 
-$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/default/defaultSmall.png";
-$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/default/defaultLarge.jpeg";
+// initialize image session variable
+$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "";
+$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "";
+
+$error_message = "";
 
 
 
@@ -191,10 +193,11 @@ if(isset($_POST["update_profile"])) {
  */
 if (isset($_POST["profile_picture_small"])) {
     try {
-        $_SESSION["profile_picture_small"] = "../resources/images/profile/default/".verifyImage("profile_picture_small", "profile/default");
-        $userStore->update($_SESSION["user_ID"]);
+        $path = "../resources/images/profile/custom/".verifyImage("profile_picture_small", "profile/custom");
+
+        $blobObj->insertBlob($_SESSION["user"]->getUserID(), "profile_picture_small", $path, "image/gif");
     } catch (RuntimeException $e) {
-        $_SESSION["error"] = $e->getMessage();
+        $error_message = $e->getMessage();
     }
 }
 
@@ -205,27 +208,27 @@ if (isset($_POST["profile_picture_small"])) {
  */
 if (isset($_POST["profile_picture_large"])) {
     try {
-        $_SESSION["profile_picture_large"] = "../resources/images/profile/default/" . verifyImage("profile_picture_large", "profile/default");
-        $userStore->update($_SESSION["user_ID"], array("profile_picture_large" => $_SESSION["profile_picture_large"]));
+        $path = "../resources/images/profile/custom/".verifyImage("profile_picture_large", "profile/custom");
+
+        $blobObj->insertBlob($_SESSION["user"]->getUserID(), "profile_picture_large", $path, "image/gif");
     } catch (RuntimeException $e) {
-        $_SESSION["error"] = $e->getMessage();
+        $error_message = $e->getMessage();
     }
 }
-
-
 
 /**
  *  If a user wants to add an image to the profile gallery
  */
 if (isset($_POST["newImage"])) {
     try {
-        $fileName = verifyImage("newImage", "profile/custom");
-        $path = "../resources/images/profile/custom/".$fileName;
-        $userStore->update($_SESSION["user_ID"], array("profile_gallery" => $path));
+        $path = "../resources/images/profile/custom/".verifyImage("newImage", "profile/custom");
+
+        $blobObj->insertBlob($_SESSION["user"]->getUserID(), "image_gallery", $path, "image/gif");
     } catch (RuntimeException $e) {
-        $_SESSION["error"] = $e->getMessage();
+        $error_message = $e->getMessage();
     }
 }
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -236,6 +239,8 @@ if (isset($_POST["newImage"])) {
 /**
  * checks if a post variable was set then if a session
  * variable is set, else the variable is set to an empty string
+ * @param $var
+ * @return String
  */
 function check_variable($var): String {
     if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
@@ -248,6 +253,7 @@ function check_variable($var): String {
 }
 
 
+
 /**
  * unsets all the session variables
  */
@@ -256,38 +262,30 @@ function reset_variables(): void {
 }
 
 
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                       functions to switch urls in register                                         */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
 /**
- * sets all the session variables on login
+ * gets the url for the next step in the register progressbar
+ * @param $var
+ * @return String
  */
-function set_variables($user): void {
-    $_SESSION["user_ID"] = $user->getUser_ID();
-    $_SESSION["type"] = $user->getType();
-    $_SESSION["email"] = $user->getEmail();
-    $_SESSION["password"] = $user->getPassword();
-    $_SESSION["name"] = $user->getName();
-    $_SESSION["surname"] = $user->getSurname();
-    $_SESSION["address"] = $user->getAddress();
-    $_SESSION["phone_number"] = $user->getPhone_number();
-    $_SESSION["genre"] = $user->getGenre();
-    $_SESSION["members"] = $user->getMembers();
-    $_SESSION["other_remarks"] = $user->getOther_remarks();
-}
-
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                          functions to switch urls in register                                      */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-
-
-// gets the url for the next step in the register progressbar
 function getNextUrl($var): String {
     $var++;
     return "register.php?step=" . $var;
 }
 
-// gets the url for the last step in the register progressbar
+
+
+/**
+ * gets the url for the last step in the register progressbar
+ * @param $var
+ * @return String
+ */
 function getLastUrl($var): String {
     $var--;
     return "register.php?step=" . $var;
@@ -296,47 +294,64 @@ function getLastUrl($var): String {
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                 initialize upload and verification                                                 */
+/*                                               image functions                                                      */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-
-// initialize session variable
-$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "../resources/images/profile/default/defaultSmall.png";
-$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "../resources/images/profile/default/defaultLarge.jpeg";
-
-$_SESSION["error"] = "";
-
-
-
-
-
-
-
-
-
-
-function addImageItems($newImage): void {
-    global $images;
-    $images[] = (object) $newImage;
-    file_put_contents("../resources/json/images.json", json_encode($images));
-}
-
-
-
-function getImageItems($public): void {
-    global $images;
-    if($public && empty($images)) {
-        echo "No Images were Uploaded.";
-    } else {
-        foreach ($images as $image) {
-            echo "<img src=".$image -> path.' alt="could not load Image">';
-        }
+/**
+ * @return void
+ */
+function getProfilePictureSmall(): void {
+    global $blobObj;
+    try {
+        $a = $blobObj->selectBlob($_SESSION["user"]->getUserID(), "profile_picture_small");
+        echo "data:" . $a['mime'] . ";base64," . base64_encode($a['data']);
+    } catch (RuntimeException $e) {
+        echo "../resources/images/profile/default/defaultSmall.png";
     }
 }
 
 
+/**
+ * @return void
+ */
+function getProfilePictureLarge(): void {
+    global $blobObj;
 
+    try {
+        $a = $blobObj->selectBlob($_SESSION["user"]->getUserID(), "profile_picture_large");
+        echo var_dump($a);
+        echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
+    } catch (RuntimeException $e) {
+        echo '<img src="../resources/images/profile/default/defaultLarge.jpeg" alt="could not load image" class="profile-Picture-Large">';
+    }
+}
+
+
+/**
+ * @return void
+ */
+function getImageGallery(): void {
+    global $blobObj;
+
+    try {
+        $a = $blobObj->selectBlob($_SESSION["user"]->getUserID(), "image_gallery");
+/*
+        foreach ($a as $image) {
+            echo '<img src="data:' . $image['mime'] . ';base64,' . base64_encode($image['data']) . '" />';
+        }
+*/
+    } catch (RuntimeException $e) {
+        echo "No Images were Uploaded.";
+    }
+}
+
+
+/**
+ * @param $name
+ * @param $type
+ * @return String
+ */
 function verifyImage($name, $type): String {
     $file_name = $_FILES["$name"]["name"];
     $file_size = $_FILES["$name"]["size"];

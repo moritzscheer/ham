@@ -1,26 +1,27 @@
-<?php include_once "../php/head/head.php" ?>
+<?php global $error_message;
+include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
-
+<?php echo var_dump($_SESSION["a"]) ?>
     <form method="post" class="profile-Picture-Large-Box" enctype="multipart/form-data">
-        <img src="<?php echo $_SESSION["profile-Picture-Large"]; ?>" alt="could not load image" class="profile-Picture-Large">
+        <?php getProfilePictureLarge() ?>
         <div id="image-Select">
             <label>Select Image
-                <input type="file" accept=".jpg, .png, .jpeg" name="profile-Picture-Large">
+                <input type="file" accept=".jpg, .png, .jpeg" name="profile_picture_large">
             </label>
-            <input type="submit" value="Add" name="profile-Picture-Large">
+            <input type="submit" value="Add" name="profile_picture_large">
         </div>
     </form>
 
     <div class="profile-Navigation">
         <div>
             <form method="post" class="profile-Picture-Box" enctype="multipart/form-data">
-                <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="Profile could not load" height="120" width="120" class="profile-Picture" id="editProfilePicture">
+                <img src="<?php getProfilePictureSmall() ?>" alt="profile picture" height="120" width="120" id="editProfilePicture" class="profile-Picture">
                 <div id="profile-Picture-Link">
                     <label >Select Image
-                        <input type="file" name="profile-Picture-Small" accept=".jpg, .png, .jpeg">
+                        <input type="file" name="profile_picture_small" accept=".jpg, .png, .jpeg">
                     </label>
-                    <input type="submit" value="Add" name="profile-Picture-Small" class="profile-Picture-Submit">
+                    <input type="submit" value="Add" name="profile_picture_small" class="profile-Picture-Submit">
                 </div>
             </form>
             <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
@@ -98,8 +99,8 @@
         </form>
 
         <form method="post" enctype="multipart/form-data" id="uploaded-Images">
-            <?php echo getImageItems(false) ?>
-            <?php echo $_SESSION["error"] ?>
+            <?php echo getImageGallery() ?>
+            <?php echo $error_message ?>
             <div class="newImage-Link">
                 <label>Select Image
                     <input type="file" accept=".jpg, .png, .jpeg" name="newImage">
@@ -108,7 +109,6 @@
             </div>
         </form>
     </section>
-
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>

@@ -3,7 +3,7 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /* ------------------------ Image on top ------------------- */
-.profile-Picture-Large {
+.profile-Picture-Large, .profile-Picture-Large-Box {
     height: 400px;
     width: 100%;
     object-fit: cover;
@@ -13,11 +13,14 @@
 }
 .profile-Picture-Large-Box:hover > #image-Select, #image-Select:hover {
     display: block;
-    position: absolute;
-    right: 16px;
-    top: 480px;
+    position: relative;
+    left: 90%;
+    top: -40px;
     color: black;
     z-index: 1;
+}
+.profile-Picture-Large-Box input[type=submit] {
+    color: black;
 }
 
 
@@ -31,8 +34,8 @@
     display: grid;
     grid-template-columns: min-content auto;
     gap: 50px;
-    position: absolute;
-    top: 480px;
+    position: relative;
+    top: -40px;
     width: 70%;
     padding: 0 0 10px 50px;
     overflow: visible;
@@ -133,7 +136,6 @@ input[type=file] {
     display: flex;
     justify-content: space-evenly;
     text-align: center;
-    
 }
 #profile-Submit a, #profile-Submit input{
     background-color: white;
@@ -254,7 +256,7 @@ input[type=file] {
         align-items: center;
         padding: 0;
         width: 100%;
-        top: 350px;
+        top: -40px;
     }
     .profile-Links {
         grid-row: 2;

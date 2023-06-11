@@ -5,10 +5,14 @@ class DBUserStore implements UserStore
 {
     private PDO $db;
     private Store $addressStore;
+    private Blob $blobObj;
 
-    public function __construct(PDO $db, Store $addressStore) {
+
+    public function __construct(PDO $db, $blobObj, Store $addressStore) {
         $this->db = $db;
         $this->addressStore = $addressStore;
+        $this->blobObj = $blobObj;
+
 
         // creates the user table
         $sql = "CREATE TABLE IF NOT EXISTS user (
@@ -32,7 +36,7 @@ class DBUserStore implements UserStore
     /**
      * methode to register a user into the database. First it searches the database, if the email or password
      * already exist, then the data set is inserted and returned as a User object. Else an exception is thrown.
-     * @param object $user the user object given in 
+     * @param object $user the user object given in
      * @return User the returned user object with the user_ID in it
      * @throws Exception
      */
@@ -44,8 +48,18 @@ class DBUserStore implements UserStore
         if($row !== false) {
             throw new Exception("Email or Password already exist");
         }
-        
-        $create = "INSERT INTO user (address_ID, type, name, surname, password, phone_number, email, genre, members, other_remarks) VALUES ('".$user->getAddressID()."', '".$user->getType()."', '" . $user->getName()."', '".$user->getSurname()."', '".$user->getPassword()."', '".$user->getPhoneNumber()."', '".$user->getEmail()."', '".$user->getGenre()."', '".$user->getMembers()."', '".$user->getOtherRemarks()."');";
+
+        $create = "INSERT INTO user VALUES (
+            '".$user->getAddressID()."',
+            '".$user->getType()."',
+            '".$user->getName()."',
+            '".$user->getSurname()."',
+            '".$user->getPassword()."',
+            '".$user->getPhoneNumber()."',
+            '".$user->getEmail()."',
+            '".$user->getGenre()."',
+            '".$user->getMembers()."',
+            '".$user->getOtherRemarks()."');";
         $this->db->exec($create);
 
         return $this->findOne($this->db->lastInsertId());
@@ -93,7 +107,6 @@ class DBUserStore implements UserStore
                      ON address.address_ID = user.address_ID;
                      LIMIT " .count($user_IDs);
         return $this->db->exec($findMany);
-
     }
 
     public function findAll() {
@@ -134,11 +147,11 @@ class DBUserStore implements UserStore
         // checking if user password is equal to typed in old password
         $sql = "SELECT password FROM user WHERE user_ID = '".$user->getUserID()."';";
         $password = $this->db->query($sql)->fetch();
-        
+
         if($password[0] != $old_password) {
             throw new Exception("Old Password is incorrect.");
         }
-        
+
         $user->setPassword($new_password);
         return $this->update($user);
     }
