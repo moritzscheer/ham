@@ -2,7 +2,7 @@
 include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
-<?php echo var_dump($_SESSION["a"]) ?>
+
     <form method="post" class="profile-Picture-Large-Box" enctype="multipart/form-data">
         <?php getProfilePictureLarge() ?>
         <div id="image-Select">
@@ -15,8 +15,8 @@ include_once "../php/head/head.php" ?>
 
     <div class="profile-Navigation">
         <div>
-            <form method="post" class="profile-Picture-Box" enctype="multipart/form-data">
-                <img src="<?php getProfilePictureSmall() ?>" alt="profile picture" height="120" width="120" id="editProfilePicture" class="profile-Picture">
+            <form method="post" class="profile-Picture-Box" id="edit" enctype="multipart/form-data">
+                <?php getProfilePictureSmall() ?>
                 <div id="profile-Picture-Link">
                     <label >Select Image
                         <input type="file" name="profile_picture_small" accept=".jpg, .png, .jpeg">

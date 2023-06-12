@@ -176,6 +176,10 @@ if(isset($_POST["change_password"])) {
  */
 if(isset($_POST["update_profile"])) {
     try {
+        if($_SESSION["address"]->getStreetName() !== "" || $_SESSION["address"]->getHouseNumber() !== "" || $_SESSION["address"]->getPostalCode() !== "" || $_SESSION["address"]->getCity() !== "") {
+            $_SESSION["address"] = $addressStore->create($_SESSION["address"]);
+            $_SESSION["user"]->setAddressID($_SESSION["address"]->getAddressID());
+        }
         $userStore->update($_SESSION["user"]);
 
         header("Location: profile.php");
@@ -304,10 +308,15 @@ function getLastUrl($var): String {
 function getProfilePictureSmall(): void {
     global $blobObj;
     try {
-        $a = $blobObj->selectBlob($_SESSION["user"]->getUserID(), "profile_picture_small");
-        echo "data:" . $a['mime'] . ";base64," . base64_encode($a['data']);
+        if($_SESSION["loggedIn"] === "false" || !isset($_SESSION["loggedIn"])) {
+                  throw new RuntimeException();
+        }
+        $ids = $blobObj->queryID($_SESSION["user"]->getUserID(), "profile_picture_small");
+        $a = $blobObj->selectBlob($ids[0][0]);
+
+        echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode( $a['data'] ).'" alt="profilePicture" class="profile-Picture"/>';
     } catch (RuntimeException $e) {
-        echo "../resources/images/profile/default/defaultSmall.png";
+        echo '<img src="../resources/images/profile/default/defaultSmall.png" alt="profilePicture" class="profile-Picture"/>';
     }
 }
 
@@ -319,8 +328,9 @@ function getProfilePictureLarge(): void {
     global $blobObj;
 
     try {
-        $a = $blobObj->selectBlob($_SESSION["user"]->getUserID(), "profile_picture_large");
-        echo var_dump($a);
+        $ids = $blobObj->queryID($_SESSION["user"]->getUserID(), "profile_picture_large");
+        $a = $blobObj->selectBlob($ids[0][0]);
+
         echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
     } catch (RuntimeException $e) {
         echo '<img src="../resources/images/profile/default/defaultLarge.jpeg" alt="could not load image" class="profile-Picture-Large">';
@@ -335,12 +345,12 @@ function getImageGallery(): void {
     global $blobObj;
 
     try {
-        $a = $blobObj->selectBlob($_SESSION["user"]->getUserID(), "image_gallery");
-/*
-        foreach ($a as $image) {
-            echo '<img src="data:' . $image['mime'] . ';base64,' . base64_encode($image['data']) . '" />';
+        $ids = $blobObj->queryID($_SESSION["user"]->getUserID(), "image_gallery");
+
+        foreach ($ids as $image) {
+            $a = $blobObj->selectBlob($image[0]);
+            echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
         }
-*/
     } catch (RuntimeException $e) {
         echo "No Images were Uploaded.";
     }
@@ -376,6 +386,5 @@ function verifyImage($name, $type): String {
 
     return $file_name;
 }
-
 
 

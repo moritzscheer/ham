@@ -72,6 +72,7 @@ function initDatabase(): void
         $db = new PDO($dsn, $user, $pw);
     } catch (PDOException $exc) {
         $db = NULL;
+        $blobObj = NULL;
         throw $exc;
     }
 

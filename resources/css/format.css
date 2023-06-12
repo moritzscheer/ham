@@ -68,6 +68,8 @@ textarea {
 .profile-Picture {
     border-radius: 50%;
     object-fit: cover;
+    height: 50px;
+    width: 50px;
 }
 .text-line-pre {
     white-space: pre-line;

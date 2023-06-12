@@ -27,13 +27,13 @@ class blob {
     public function insertBlob($assigned_ID, $category, $filePath, $mime): bool
     {
         if($category === "profile_picture_small" || $category === "profile_picture_large") {
-            $a = $this->selectBlob($assigned_ID, $category);
-            /*
-            if($a['mime'] != null) {
+            $sql = "SELECT * FROM files WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
+            $result = $this->pdo->query($sql)->fetch();
+            if($result !== false) {
                 return $this->updateBlob($assigned_ID, $category, $filePath, $mime);
             }
-            */
         }
+
         $blob = fopen($filePath, 'rb');
 
         $sql = "INSERT INTO files(assigned_ID, category, mime, data) VALUES(:assigned_ID ,:category ,:mime, :data)";
@@ -68,32 +68,40 @@ class blob {
         return $stmt->execute();
     }
 
-    public function selectBlob($assigned_ID, $category): array
-    {
-        $sql = "SELECT mime, data
-                FROM files
-                WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
+    /**
+     * @throws Exception
+     */
+    public function selectBlob($id) {
+
+        $sql = "SELECT mime,
+                        data
+                   FROM files
+                  WHERE id = :id;";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(array(":assigned_ID" => $assigned_ID, ":category" => $category));
-        $stmt->bindColumn(2, $mime);
-        $stmt->bindColumn(3, $data);
+        $stmt->execute(array(":id" => $id));
+        $stmt->bindColumn(1, $mime);
+        //$stmt->bindColumn(2, $data, PDO::PARAM_LOB); bis 2021
+        $stmt->bindColumn(2, $data);
 
         $stmt->fetch(PDO::FETCH_BOUND);
 
-        return array(
-            "mime" => $mime,
+        return array("mime" => $mime,
             "data" => $data);
-
     }
 
-    public function selectMultipleBlobs($assigned_ID, $category) : array
+
+    /**
+     * @throws Exception
+     */
+    public function queryID($assigned_ID, $category) : array
     {
-        $sql = "SELECT mime, data
+        $sql = "SELECT id
                 FROM files
                 WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
-        $result = $this->pdo->query($sql);
-        return $result->fetch();
+        $stmt = $this->pdo->query($sql)->fetchAll();
+
+        return ($stmt === false) ? throw new RuntimeException("could not find any"): $stmt;
     }
 
     public function __destruct()

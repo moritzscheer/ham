@@ -10,8 +10,7 @@ include_once "../php/head/head.php" ?>
     <div class="profile-Navigation">
         <div>
             <div class="profile-Picture-Box">
-                <img src="<?php getProfilePictureSmall() ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
-
+                <?php getProfilePictureSmall() ?>
             </div>
             <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
         </div>

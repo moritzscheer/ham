@@ -2,7 +2,7 @@
     <div id="navbar">
         <div class="logo">
             <a href="index.php">
-                <img src="../../../resources/images/logo/ham_white_small.png" alt="logo" height="50">
+                <img src="../resources/images/logo/ham_white_small.png" alt="logo" height="50">
             </a>
         </div>
 
@@ -24,33 +24,33 @@
             </form>
         </div>
 
-        <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> create">
+        <div id="mobile" class="<?php echo $_SESSION["profileHeader"]; ?> create">
             <form action="createEvent.php">
                 <input type="submit" value="create" id="navbar-button">
             </form>
         </div>
 
-        <div id="desktop" class="<?php echo $_SESSION["normalHeader"]?> login">
+        <div id="desktop" class="<?php echo $_SESSION["normalHeader"]; ?> login">
             <form action="register.php" method="post">
                 <input type="submit" value="Sign Up" id="navbar-button" name="reset">
             </form>
         </div>
 
-        <div id="desktop" class="<?php echo $_SESSION["normalHeader"]?> login">
+        <div id="desktop" class="<?php echo $_SESSION["normalHeader"]; ?> login">
             <form action="login.php">
                 <input type="submit" value="Log-In" id="navbar-button" name="reset">
             </form>
         </div>
 
-        <div id="mobile" class="<?php echo $_SESSION["profileHeader"]?> dropdown dropdownProfile">
+        <div id="mobile" class="<?php echo $_SESSION["profileHeader"]; ?> dropdown dropdownProfile">
             <div id="navbar-Profile">
                 <?php echo $_SESSION["profileHeaderBox"]; ?>
             </div>
-            <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" height="50" width="50" alt="profilePicture" class="profile-Picture">
+            <?php getProfilePictureSmall(); ?>
         </div>
 
         <div id="mobile" class="dropdown dropdownGeneral">
-            <img src="../../../resources/images/header/menu.png" alt="profile" height="50">
+            <img src="../resources/images/header/menu.png" alt="profile" height="50">
         </div>
     </div>
 
