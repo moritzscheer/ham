@@ -7,3 +7,6 @@ Namen der Studierenden:
 Aufgabe zu Aufgabenblatt 5
 
 Hinweise:
+
+Dateinamen für die Abgabe:
+DI-12-F-Dirks-Scheer-Scheling.zip
