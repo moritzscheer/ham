@@ -62,7 +62,7 @@ $_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["init
 
 function initDatabase(): void
 {
-    global $db, $userStore, $addressStore, $blobObj;
+    global $db, $userStore, $addressStore, $bandStore, $eventStore, $blobObj;
 
     try {
         $user = "root";
@@ -83,12 +83,13 @@ function initDatabase(): void
     $bandStore = new DBBandStore($db, $blobObj, $addressStore);
     $userStore = new DBUserStore($db, $blobObj, $addressStore);
 
-    // memory
-    //$addressStore = new FileAddressStore($db);
-    //$eventStore = new FileEventStore($db, $addressStore);
-    //$bandStore = new FileBandStore($db, $addressStore);
-    //$userStore = new FileUserStore($db, $addressStore);
 
+    // memory
+    /*$addressStore = new FileAddressStore($db);
+    $bandStore = new FileBandStore("../resources/json/Bands.json");
+    $eventStore = new FileEventStore("../resources/json/Events.json");
+    $userStore = new FileUserStore($db, $addressStore);
+    */
 }
 
 function closeConnection(): void {

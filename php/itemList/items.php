@@ -1,9 +1,9 @@
 <?php
-include 'classes.php';
 
 global $decodedFile, $currentItem, $newEvent, $itemListManager, $eventStore;
 
-$eventStore = new FileEventStore("../resources/json/Events.json");
+//$eventStore = new FileEventStore("../resources/json/Events.json");
+
 
 $newEvent["image"] = "";
 $newEvent["description"] = "";
@@ -24,25 +24,9 @@ if (isset($_POST["submit"])) {
     if (isset($_FILES["image"])) {
         $eventImage = "../resources/images/events/" . verifyImage("image", "events");
     }
-    /*
-    $newEvent["description"] = checkValue("description");
-    $newEvent["name"] = checkValue("name");
-
-    $newEvent["street"] = checkValue("street");
-    $newEvent["city"] = checkValue("city");
-    $newEvent["houseNr"] = checkValue("houseNr");
-    $newEvent["postalCode"] = checkValue("postalCode");
-
-
-    $newEvent["date"] = checkValue("date");
-    $newEvent["startTime"] = checkValue("startTime");
-    $newEvent["endTime"] = checkValue("endTime");
-    $newEvent["requirements"] = checkValue("requirements");
-    */
     $itemEvent = array(
-
-        "id" => "kjsadflkjdsa",
-        "authorId" => "asdadsjf",
+        "id" => "",
+        "authorId" => "",
         "image" => $eventImage,
         "description" => checkValue("description"),
         "name" =>checkValue("name"),

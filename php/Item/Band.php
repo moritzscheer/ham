@@ -1,5 +1,5 @@
 <?php
-
+include_once "Item.php";
 class Band implements Item
 {
     private string $image;

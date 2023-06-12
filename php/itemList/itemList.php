@@ -2,8 +2,6 @@
 
 global $type, $bandStore, $eventStore;
 
-$bandStore = new FileBandStore("../resources/json/Bands.json");
-$eventStore = new FileEventStore("../resources/json/Events.json");
 
 $type = (isset($_GET["type"]) && is_string($_GET["type"])) ? $_GET["type"] : "";
 
