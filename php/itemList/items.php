@@ -29,7 +29,7 @@ if (isset($_POST["submit"])) {
         "image" => $eventImage,
         "description" => checkValue("description"),
         "name" =>checkValue("name"),
-        "adress_ID" => "asjdshf",
+        "address_ID" => "asjdshf",
         "street" => checkValue("street"),
         "city" => checkValue("city"),
         "Date" => checkValue("date"),
