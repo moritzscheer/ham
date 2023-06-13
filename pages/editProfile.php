@@ -34,7 +34,7 @@ include_once "../php/head/head.php" ?>
                 <h2>Contact Information</h2>
 
                 <label id="input-entry" class="entry">Phone Number:
-                    <input type="tel" name="phoneNumber" value="<?php echo $_SESSION["user"]->getPhoneNumber() ?>">
+                    <input type="tel" name="phone_number" value="<?php echo $_SESSION["user"]->getPhoneNumber() ?>">
                 </label>
             </div>
 

@@ -101,6 +101,7 @@ if(isset($_POST["register"])) {
 if(isset($_POST["login"])) {
     try {
         $_SESSION["user"] = $userStore->login($_SESSION["user"]->getEmail(), $password);
+        $_SESSION["address"] = $addressStore->findOne($_SESSION["user"]->getAddressID());
         $_SESSION["loggedIn"] = true;
 
         header("Location: index.php");
