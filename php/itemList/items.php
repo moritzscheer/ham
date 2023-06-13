@@ -2,7 +2,6 @@
 
 global $decodedFile, $currentItem, $newEvent, $itemListManager, $eventStore;
 
-//$eventStore = new FileEventStore("../resources/json/Events.json");
 
 
 $newEvent["image"] = "";

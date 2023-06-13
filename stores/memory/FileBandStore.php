@@ -20,9 +20,9 @@ class FileBandStore implements ItemStore {
         $bandItems = array();
         foreach ($bands as $band){
             $item = new Band($band);
-            $bands[] = $item;
+            $bandItems[] = $item;
         }
-        return $bands;
+        return $bandItems;
     }
 
     /**
