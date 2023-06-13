@@ -7,14 +7,12 @@ class DBEventStore implements EventStore
 
     private PDO $db;
     private Store $addressStore;
-    private Blob $blobObj;
 
 
-    public function __construct(PDO $db, $blobObj, Store $addressStore)
+    public function __construct(PDO $db, Store $addressStore)
     {
         $this->db = $db;
         $this->addressStore = $addressStore;
-        $this->blobObj = $blobObj;
 
         $sql = "CREATE TABLE IF NOT EXISTS event (
             event_ID INTEGER PRIMARY KEY AUTOINCREMENT,

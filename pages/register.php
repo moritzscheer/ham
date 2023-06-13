@@ -122,7 +122,7 @@
                     <input type="checkbox" id="stayLoggedIn" name="stayLoggedIn">
                 </label>
 
-                <div id="buttons">
+                <div class="submit">
                     <input type="submit" value="Ok">
                 </div>
             </form>

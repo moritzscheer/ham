@@ -9,11 +9,10 @@ class DBBandStore
     private PDO $db;
     private Blob $blobObj;
 
-    public function __construct(PDO $db, $blobObj, Store $addressStore)
+    public function __construct(PDO $db, Store $addressStore)
     {
         $this->db = $db;
         $this->addressStore = $addressStore;
-        $this->blobObj = $blobObj;
 
         $sql = "CREATE TABLE IF NOT EXISTS band (
             band_ID INTEGER PRIMARY KEY AUTOINCREMENT,

@@ -101,7 +101,7 @@ class blob {
                 WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
         $stmt = $this->pdo->query($sql)->fetchAll();
 
-        return ($stmt === false) ? throw new RuntimeException("could not find any"): $stmt;
+        return ($stmt == null) ? throw new RuntimeException("could not find any"): $stmt;
     }
 
     public function __destruct()

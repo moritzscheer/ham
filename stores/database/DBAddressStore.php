@@ -6,18 +6,16 @@ class DBAddressStore implements AddressStore
 {
 
     private PDO $db;
-    private Blob $blobObj;
 
 
-    public function __construct($db, $blobObj)
+    public function __construct($db)
     {
         $this->db = $db;
-        $this->blobObj = $blobObj;
 
         $sql = "CREATE TABLE IF NOT EXISTS address (
             address_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             street_name varchar(30) DEFAULT NULL,
-            house_number int(5) DEFAULT NULL,
+            house_number int(5) DEFAULT NULL UNIQUE,
             postal_code int(5) DEFAULT NULL,
             city varchar(20) DEFAULT NULL
             );";

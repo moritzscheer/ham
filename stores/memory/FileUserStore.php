@@ -7,65 +7,135 @@ class FileUserStore implements UserStore {
 
     /**
      * constructor:
-     * creates user table and user_type table
+     * creates user table
      * @param $userFile
      */
-    public function create($userFile): User {
+    public function __construct($userFile)
+    {
         $this->userFile = file_get_contents($userFile, true);
-        return new User;
     }
-
 
     /**
      * methode to save register data of a user in the file
-     * @param $type
-     * @param $address_ID
-     * @param $name
-     * @param $surname
-     * @param $password
-     * @param $phone_number
-     * @param $email
-     * @return String
+     * @param object $user
+     * @return User
      * @throws Exception
      */
-    public function register($type, $address_ID, $name, $surname, $password, $phone_number, $email): String {
-        $users = json_decode($this->userFile, false);
+    public function create(object $user): User
+    {
+        $json = json_decode($this->userFile, false);
         $user_ID = random_int(2, 1000000);
 
-        foreach ($users as $user) {
-            if ($user->email === $email || $user->password === $password) {
+        foreach ($json as $userJSON) {
+            if ($userJSON->email === $user->getEmail() || $userJSON->password === $user->getEmail()) {
                 throw new Exception("Email or Password already exist");
             }
-            if ($user->userID === $user_ID) {
+            while ($userJSON->userID === $user_ID) {
                 $user_ID = random_int(2, 1000000);
             }
         }
-        $newUser["user_ID"] = $user_ID;
-        $newUser["type"] = $type;
-        $newUser["address_ID"] = $address_ID;
-        $newUser["name"] = $name;
-        $newUser["surname"] = $surname;
-        $newUser["password"] = $password;
-        $newUser["phone_number"] = $phone_number;
-        $newUser["email"] = $email;
-        $newUser["profile_picture_small"] = "";
-        $newUser["profile_picture_large"] = "";
-        $newUser["profile_gallery"] = array();
+        $userJSON["user_ID"] = $user_ID;
+        $userJSON["type"] = $user->getType();
+        $userJSON["address_ID"] = $user->getType();
+        $userJSON["name"] = $user->getType();
+        $userJSON["surname"] = $user->getType();
+        $userJSON["password"] = $user->getType();
+        $userJSON["phone_number"] = $user->getType();
+        $userJSON["email"] = $user->getType();
+        $userJSON["genre"] = $user->getGenre();
+        $userJSON["members"] = $user->getMembers();
+        $userJSON["other_remarks"] = $user->getOtherRemarks();
 
-        $users[] = (object) $newUser;
+        $users[] = (object) $userJSON;
         file_put_contents("../resources/json/user.json", json_encode($users));
-        return $user_ID;
-    }                                                                               
+        return $this->findOne($user_ID);
+    }
 
+    /**
+     * methode to update user information.
+     * @param object $user
+     * @return User
+     * @throws Exception
+     */
+    public function update(object $user): User
+    {
+        $json = json_decode($this->userFile, false);
+        foreach ($json as $userJSON) {
+            if($userJSON->user_ID === $user->getUserID()) {
+                $userJSON["user_ID"] = $user->getUserID();
+                $userJSON["type"] = $user->getType();
+                $userJSON["address_ID"] = $user->getType();
+                $userJSON["name"] = $user->getType();
+                $userJSON["surname"] = $user->getType();
+                $userJSON["password"] = $user->getType();
+                $userJSON["phone_number"] = $user->getType();
+                $userJSON["email"] = $user->getType();
+                $userJSON["genre"] = $user->getGenre();
+                $userJSON["members"] = $user->getMembers();
+                $userJSON["other_remarks"] = $user->getOtherRemarks();                file_put_contents("../resources/json/user.json", json_encode($json));
+
+                $users[] = (object) $userJSON;
+                file_put_contents("../resources/json/user.json", json_encode($users));
+                return $this->findOne($user->getUserID());            }
+        }
+        throw new Exception('No such User was found.');
+    }
+
+    /**
+     * methode to delete a user
+     * @param string $user_ID
+     * @return void
+     * @throws Exception
+     */
+    public function delete(string $user_ID): void {
+        $json = json_decode($this->userFile, false);
+        foreach ($json as $userJSON) {
+            if($userJSON->user_ID === $user_ID) {
+                unset($json[$userJSON]);
+                file_put_contents("../resources/json/user.json", json_encode($json));
+                return;
+            }
+        }
+        throw new Exception("No such User was found.");
+    }
+
+    /**
+     * methode to find a user
+     * @param string $user_ID
+     * @return User
+     * @throws Exception
+     */
+    public function findOne(string $user_ID): User
+    {
+        $json = json_decode($this->userFile, false);
+        foreach ($json as $userJSON) {
+            if ($userJSON->user_ID === $user_ID) {
+                $user[0] = $userJSON->user_ID;
+                $user[1] = $userJSON->address_ID;
+                $user[2] = $userJSON->type;
+                $user[3] = $userJSON->name;
+                $user[4] = $userJSON->surname;
+                $user[5] = $userJSON->password;
+                $user[6] = $userJSON->phone_number;
+                $user[7] = $userJSON->email;
+                $user[8] = $userJSON->genre;
+                $user[9] = $userJSON->members;
+                $user[10] = $userJSON->other_remarks;
+                return User::withUserID($user);
+            }
+        }
+        throw new Exception("No such User was found.");
+    }
 
     /**
      * methode to check email and password of a user in the database
      * @param $email
      * @param $password
-     * @return stdClass
+     * @return User
      * @throws Exception
      */
-    public function login($email, $password): stdClass {
+    public function login($email, $password): User
+    {
         $users = json_decode($this->userFile, false);
         foreach ($users as $user) {
             if($user->email === $email && $user->password === $password) {
@@ -75,79 +145,14 @@ class FileUserStore implements UserStore {
         throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
     }
 
-
-    /**
-     * @param $user_ID
-     * @return void
-     * @throws Exception
-     */
-    public function delete($user_ID): void {
-        $users = json_decode($this->userFile, false);
-        foreach ($users as $user => $value) {
-            if($value->user_ID === $user_ID) {
-                if($value->user_ID === 1) {
-                    throw new Exception("Can't delete user test.");
-                } else {
-                    unset($users[$user]);
-                    file_put_contents("../resources/json/user.json", json_encode($users));
-                    return;
-                }
-            }
-        }
-        throw new Exception("No such User was found.");
-    }
-
-
-    /**
-     * @param $user_ID
-     * @param $array
-     * @return void
-     * @throws Exception
-     */
-    public function update(object $user): User {
-        $users = json_decode($this->userFile, false);
-        foreach ($users as $user) {
-            if($user->user_ID === $user->getUser_ID) {
-                if($user->user_ID === 1) {
-                    throw new Exception("Can't change user test.");
-                } else {
-                    $array = null;
-                    foreach ($array as $var => $value) {
-                        $user->$var = $value;
-                        file_put_contents("../resources/json/user.json", json_encode($users));
-                        return new User;
-                    }
-                }
-            }
-        }
-        throw new Exception('No such User was found.');
-    }
-
-    public function getImage($user_ID, $array)
-    {
-        // TODO: Implement getImage() method.
-    }
-
-    public function getImages($user_ID, $array)
-    {
-        // TODO: Implement getImages() method.
-    }
-
-    public function findOne(string $user_ID): User
-    {
-        // TODO: Implement findOne() method.
-        return new User;
-    }
-
-    public function findMany(array $user_IDs): array
+    public function findMany(array $ids)
     {
         // TODO: Implement findMany() method.
-        return new User;
     }
 
-    public function findAll(): array
+    public function findAll()
     {
         // TODO: Implement findAll() method.
-        return new User;
     }
+    
 }

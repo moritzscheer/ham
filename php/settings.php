@@ -78,10 +78,10 @@ function initDatabase(): void
 
 
     // database
-    $addressStore = new DBAddressStore($db, $blobObj);
-    $eventStore = new DBEventStore($db, $blobObj, $addressStore);
-    $bandStore = new DBBandStore($db, $blobObj, $addressStore);
-    $userStore = new DBUserStore($db, $blobObj, $addressStore);
+    $addressStore = new DBAddressStore($db);
+    $eventStore = new DBEventStore($db, $addressStore);
+    $bandStore = new DBBandStore($db, $addressStore);
+    $userStore = new DBUserStore($db);
 
 
     // memory
