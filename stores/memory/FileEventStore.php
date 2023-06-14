@@ -1,7 +1,7 @@
 <?php
-include_once "../stores/interface/ItemStore.php";
+include_once "../stores/interface/EventStore.php";
 
-class FileEventStore implements ItemStore
+class FileEventStore implements EventStore
 {
     private string $eventFile;
 
@@ -14,12 +14,12 @@ class FileEventStore implements ItemStore
      * Loads all Events from json file
      * @return Event[]
      */
-    public function loadAll(): array
+    public function findAll(): array
     {
         $items = json_decode($this->eventFile, false);
         $events = array();
         foreach ($items as $item) {
-            $event = new Event($item);
+            $event = new Event();
             $events[] = $event;
         }
         return $events;
@@ -31,14 +31,29 @@ class FileEventStore implements ItemStore
      * @return bool return true if event was successfully written
      * @throws Exception will be thrown if item is not an event object
      */
-    public function store(Item $item) : bool
+    public function create(Event $item): Event
     {
-        if (!($item instanceof Event)){
-            throw new Exception("FileEventsStore:store(item): Item is not an Event ");
-        }
-        $var = file_put_contents($this->eventFile, json_encode($item->toJsonArray()));
+        $jsonEvent = array(
+            "image" => $item->getImageSource(),
+            "id" => $item->getID(),
+            "authorID" => $item->getAuthorID(),
+            "type" => "event",
+            "description" => $item->getDescription(),
+            "name" => $item->getName(),
+            "address_ID" => $item->getAddressID(),
+            "street" => $item->getStreetName(),
+            "houseNr" => $item->getHouseNumber(),
+            "postalCode" => $item->getPostalCode(),
+            "city" => $item->getCity(),
+            "Date" => $item->getDate(),
+            "startTime" => $item->getStartTime(),
+            "endTime" => $item->getEndTime(),
+            "requirements" => $item->getRequirements()
+        );
+
+        $var = file_put_contents($this->eventFile, json_encode($jsonEvent));
         if ($var !== false) {
-            return true;
-        } else return false;
+            return $item;
+        } else return new Event();
     }
 }

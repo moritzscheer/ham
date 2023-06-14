@@ -5,6 +5,7 @@ class Event
     // event attributes
     private int $event_ID;
     private ?string $address_ID;
+    private ?string $authorID;
     private ?string $name;
     private ?string $description;
     private ?string $requirements;
@@ -31,6 +32,7 @@ class Event
      */
     public function __construct()
     {
+        $this->authorID = "";
         $this->address_ID = "";
         $this->name = "";
         $this->description = "";
@@ -132,6 +134,22 @@ class Event
 
         }
 
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAuthorID(): ?string
+    {
+        return $this->authorID;
+    }
+
+    /**
+     * @param string|null $authorID
+     */
+    public function setAuthorID(?string $authorID): void
+    {
+        $this->authorID = $authorID;
     }
 
     /**

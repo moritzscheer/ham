@@ -1,5 +1,5 @@
 <?php
-
+include_once "../stores/interface/BandStore.php";
 
 global $db;
 
