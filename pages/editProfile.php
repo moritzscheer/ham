@@ -52,19 +52,19 @@ include_once "../php/head/head.php" ?>
 
                 <div id="split">
                     <label id="input-entry" class="entry">Street:
-                        <input type="text" name="street_name" value="<?php echo $_SESSION["address"]->getStreetName() ?>">
+                        <input type="text" name="street_name" value="<?php echo $_SESSION["user_address"]->getStreetName() ?>">
                     </label>
                     <label id="input-entry" class="entry">House Number:
-                        <input type="text" name="house_number" value="<?php echo $_SESSION["address"]->getHouseNumber() ?>">
+                        <input type="text" name="house_number" value="<?php echo $_SESSION["user_address"]->getHouseNumber() ?>">
                     </label>
                 </div>
 
                 <div id="split">
                     <label id="input-entry" class="entry">City:
-                        <input type="text" name="city" value="<?php echo $_SESSION["address"]->getCity() ?>">
+                        <input type="text" name="city" value="<?php echo $_SESSION["user_address"]->getCity() ?>">
                     </label>
                     <label id="input-entry" class="entry">Postal Code:
-                        <input type="text" name="postal_code" value="<?php echo $_SESSION["address"]->getPostalCode() ?>">
+                        <input type="text" name="postal_code" value="<?php echo $_SESSION["user_address"]->getPostalCode() ?>">
                     </label>
                 </div>
                 

@@ -43,6 +43,48 @@ class Band implements Item
         $this->links = $item->links;
     }
 
+    public function getBandHTML(Object $event): array
+    {
+        $string =
+            '<div id="item">                                                                                   '.
+            '    <label class="item-head">                                                                     '.
+            '        <img id="item-image" src="' . $band->getImage() . '" alt="bandImage"/>                    '.
+            '        <div id="item-description" class="text-line-pre">                                         '.
+            '            <span>Name: ' . $band->getName() . '</span>                                           '.
+            '            <br>                                                                                  '.
+            '            <span>Genre: ' . $band->getGenre() . '</span>                                         '.
+            '            <br>                                                                                  '.
+            '            <span>' . count($band->getMembers()) . ' Members</span>                               '.
+            '            <br>                                                                                  '.
+            '            <span>' . $band->getCosts() . '</span>                                                '.
+            '            <input type="checkbox" id="item-click">                                               '.
+            '        </div>                                                                                    '.
+            '    </label>                                                                                      '.
+            '    <div id="item-m-details">                                                                     '.
+            '        <div id="item-details-title">                                                             '.
+            '            <img id="item-image" src="' . $band->getImage() . '" alt="bandImage"/>                '.
+            '            <h2 id="item-details-name"> ' . $band->getName() . ' </h2>                            '.
+            '        </div>                                                                                    '.
+            '        <div>                                                                                     '.
+            '            <p>                                                                                   '.
+            '                ' . $members . '                                                                  '.
+            '                ' . $band->getEmail() . ' <br>                                                    '.
+            '                <br>                                                                              '.
+            '                ' . $band->getCosts() . '<br>                                                     '.
+            '                <br>                                                                              '.
+            '                ' . $band->getRegion() . ' <br>                                                   '.
+            '            </p>                                                                                  '.
+            '        </div>                                                                                    '.
+            '        <div id="item-details-foot">                                                              '.
+            '            <p class="text-pre-line">                                                             '.
+            '                Hits <br>                                                                         '.
+            '                ' . $links . '                                                                    '.
+            '            </p>                                                                                  '.
+            '        </div>                                                                                    '.
+            '    </div>                                                                                        '.
+            '</div>                                                                                            ';
+    }
+
     /**
      * @return object
      */

@@ -87,7 +87,7 @@ class DBBandStore
         $this->db->exec($delete);
     }
 
-    public function findOne(string $id)
+    public function findOne(string $id) : Band
     {
         $findOne ="SELECT * FROM event 
                      WHERE event_ID = " . $id."
@@ -111,11 +111,11 @@ class DBBandStore
 
     }
 
-    public function findAll()
+    public function findAll() : array
     {
         $findAll = "SELECT * FROM event
                     INNER JOIN address 
                     ON address.address_ID = event.address_ID;";
-        return $this->db->exec($findAll);
+        return $this->db->query($findAll)->fetchAll();
     }
 }

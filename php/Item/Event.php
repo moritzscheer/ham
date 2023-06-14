@@ -1,248 +1,338 @@
 <?php
 include_once "Item.php";
-class Event implements Item
+class Event
 {
+    // event attributes
+    private int $event_ID;
+    private ?string $address_ID;
+    private ?string $name;
+    private ?string $description;
+    private ?string $requirements;
+    private ?string $date;
+    private ?string $startTime;
+    private ?string $endTime;
 
-    private string $image;
-    private string $id, $authorId , $description, $name, $address_ID, $street, $city, $date, $startTime, $endTime, $requirements = "";
-    private int $houseNr, $postalCode = -1;
+    // address attributes
+    private ?string $street_name;
+    private ?string $house_number;
+    private ?string $postal_code;
+    private ?string $city;
 
-    public function __construct(object $item)
+    // image attributes
+    private ?array $blobData;
+
+
+
+
+
+
+    /**
+     * constructor
+     */
+    public function __construct()
     {
-        $this->id = $item->id;
-        $this->authorId = $item->authorID;
-        $this->image = $item->image;
-        $this->description = $item->description;
-        $this->name = $item->name;
-        $this->address_ID = $item->address_ID;
-        $this->street = $item->street;
-        $this->city = $item->city;
-        $this->date = $item->Date;
-        $this->startTime = $item->startTime;
-        $this->endTime = $item->endTime;
-        $this->requirements = $item->requirements;
-        $this->houseNr = $item->houseNr;
-        $this->postalCode = $item->postalCode;
+        $this->address_ID = "";
+        $this->name = "";
+        $this->description = "";
+        $this->requirements = "";
+        $this->date = "";
+        $this->startTime = "";
+        $this->endTime = "";
+        $this->street_name = "";
+        $this->house_number = "";
+        $this->postal_code = "";
+        $this->city = "";
+        $this->blobData = null;
     }
 
+
+
+    /**
+     * @param object $item
+     * @return void
+     */
+    public static function withoutAddress(array $item) : Event
+    {
+        $instance = new self();
+        $instance->event_ID = $item[0];
+        $instance->address_ID = $item[1];
+        $instance->name = $item[2];
+        $instance->description = $item[3];
+        $instance->requirements = $item[4];
+        $instance->date = $item[5];
+        $instance->startTime = $item[6];
+        $instance->endTime = $item[7];
+        return $instance;
+    }
+
+    public static function withAddress(array $item) : Event
+    {
+        $instance = new self();
+        $instance->event_ID = $item[0];
+        $instance->address_ID = $item[1];
+        $instance->name = $item[2];
+        $instance->description = $item[3];
+        $instance->requirements = $item[4];
+        $instance->date = $item[5];
+        $instance->startTime = $item[6];
+        $instance->endTime = $item[7];
+        $instance->street_name = $item[8];
+        $instance->house_number = $item[9];
+        $instance->postal_code = $item[10];
+        $instance->city = $item[11];
+        return $instance;
+    }
+
+    public function getEventHTML(): string
+    {                                   
+        $address = $this->street_name." ".$this->house_number."\n".$this->postal_code." ".$this->city;
+        $time = $this->startTime." - ".$this->endTime;
+
+        return $string =
+       '<section id="item-list">                                                                              '.
+       '    <div id="item">                                                                                   '.
+       '        <label class="item-head">                                                                     '.
+       '            <img id="item-image" src="' . $this->getImageSource() . '" alt="bandImage"/>              '.
+       '            <div id="item-description" class="text-line-pre">                                         '.
+       '                <span>' . $this->name . '</span>                                                      '.
+       '                <br>                                                                                  '.
+       '                <span>Address: ' . $address . '</span>                                                '.
+       '                <br>                                                                                  '.
+       '                <span> ' . $time . '</span>                                                           '.
+       '                <input type="checkbox" id="item-click">                                               '.
+       '            </div>                                                                                    '.
+       '        </label>                                                                                      '.
+       '        <div id="item-m-details">                                                                     '.
+       '            <div id="item-details-title">                                                             '.
+       '                <img id="item-image" src="' . $this->getImageSource() . '" alt="bandImage"/>          '.
+       '                <h2 id="item-details-name"> ' . $this->name . ' </h2>                                 '.
+       '            </div>                                                                                    '.
+       '            <div class="item-details-description">                                                    '.
+       '                <p>' . $this->description . '</p>                                                     '.
+       '            </div>                                                                                    '.
+       '            <div id="item-details-foot">                                                              '.
+       '                <p class="text-line-pre">                                                             '.
+       '                    Requirements <br>                                                                 '.
+       '                    ' . $this->requirements . '                                                       '.
+       '                </p>                                                                                  '.
+       '            </div>                                                                                    '.
+       '        </div>                                                                                        '.
+       '    </div>                                                                                            '.
+       '</section>                                                                                            ';
+    }
 
     /**
      * @return string
      */
-    public function getImage(): string
-    {
-        return $this->image;
-    }
+    public function getImageSource(): string {
+        if($this->blobData == null) {
+            return "../resources/images/events/event.jpg";
+        } else {
+            return "data:".$this->blobData[0].";base64,".base64_encode($this->blobData[1]);
 
-    /**
-     * @param object $image_data
-     */
-    public function setImage($image_data): void
-    {
-        if (is_string($image_data)) {
-            empty($this->image);
-            $this->image = (string)$image_data;
         }
+
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getId(): string
+    public function getStreetName(): ?string
     {
-        return $this->id;
+        return $this->street_name;
     }
 
     /**
-     * @return string
+     * @param string|null $street_name
      */
-    public function getAddressId(): string
+    public function setStreetName(?string $street_name): void
+    {
+        $this->street_name = $street_name;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getBlobData(): ?array
+    {
+        return $this->blobData;
+    }
+
+    /**
+     * @param array|null $blobData
+     */
+    public function setBlobData(?array $blobData): void
+    {
+        $this->blobData = $blobData;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAddressID(): ?string
     {
         return $this->address_ID;
     }
 
     /**
-     * @return string
+     * @param string|null $address_ID
      */
-    public function getDescription(): string
+    public function setAddressID(?string $address_ID): void
     {
-        return $this->description;
+        $this->address_ID = $address_ID;
     }
 
     /**
-     * @param string $description
+     * @return string|null
      */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param string|null $name
      */
-    public function setName(string $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getStreet(): string
+    public function getDescription(): ?string
     {
-        return $this->street;
+        return $this->description;
     }
 
     /**
-     * @param string $street
+     * @param string|null $description
      */
-    public function setStreet(string $street): void
+    public function setDescription(?string $description): void
     {
-        $this->street = $street;
+        $this->description = $description;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param string $city
-     */
-    public function setCity(string $city): void
-    {
-        $this->city = $city;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDate(): string
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param string $date
-     */
-    public function setDate(string $date): void
-    {
-        $this->date = $date;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStartTime(): string
-    {
-        return $this->startTime;
-    }
-
-    /**
-     * @param string $startTime
-     */
-    public function setStartTime(string $startTime): void
-    {
-        $this->startTime = $startTime;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndTime(): string
-    {
-        return $this->endTime;
-    }
-
-    /**
-     * @param string $endTime
-     */
-    public function setEndTime(string $endTime): void
-    {
-        $this->endTime = $endTime;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequirements(): string
+    public function getRequirements(): ?string
     {
         return $this->requirements;
     }
 
     /**
-     * @param string $requirements
+     * @param string|null $requirements
      */
-    public function setRequirements(string $requirements): void
+    public function setRequirements(?string $requirements): void
     {
         $this->requirements = $requirements;
     }
 
     /**
+     * @return string|null
+     */
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string|null $date
+     */
+    public function setDate(?string $date): void
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStartTime(): ?string
+    {
+        return $this->startTime;
+    }
+
+    /**
+     * @param string|null $startTime
+     */
+    public function setStartTime(?string $startTime): void
+    {
+        $this->startTime = $startTime;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEndTime(): ?string
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @param string|null $endTime
+     */
+    public function setEndTime(?string $endTime): void
+    {
+        $this->endTime = $endTime;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHouseNumber(): ?string
+    {
+        return $this->house_number;
+    }
+
+    /**
+     * @param string|null $house_number
+     */
+    public function setHouseNumber(?string $house_number): void
+    {
+        $this->house_number = $house_number;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostalCode(): ?string
+    {
+        return $this->postal_code;
+    }
+
+    /**
+     * @param string|null $postal_code
+     */
+    public function setPostalCode(?string $postal_code): void
+    {
+        $this->postal_code = $postal_code;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string|null $city
+     */
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
      * @return int
      */
-    public function getHouseNr(): int
+    public function getEventID(): int
     {
-        return $this->houseNr;
+        return $this->event_ID;
     }
 
-    /**
-     * @param int $houseNr
-     */
-    public function setHouseNr(int $houseNr): void
-    {
-        $this->houseNr = $houseNr;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPostalCode(): int
-    {
-        return $this->postalCode;
-    }
-
-    /**
-     * @param int $postalCode
-     */
-    public function setPostalCode(int $postalCode): void
-    {
-        $this->postalCode = $postalCode;
-    }
-
-    /**
-     * Converts an Eventitem object to an array for writing to a json-file
-     * @return array
-     */
-    public function toJsonArray(): array
-    {
-        return array(
-            "image" => $this->image,
-            "id" => $this->id,
-            "authorID" => $this->authorId,
-            "description" => $this->description,
-            "name" => $this->name,
-            "street" => $this->street,
-            "houseNr" => $this->houseNr,
-            "postalCode" => $this->postalCode,
-            "city" => $this->city,
-            "Date" => $this->date,
-            "startTime" => $this->startTime,
-            "endTime" => $this->endTime,
-            "requirements" => $this->requirements
-
-        );
-    }
 
 }

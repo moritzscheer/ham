@@ -1,4 +1,5 @@
-<?php include_once "../php/head/head.php" ?>
+<?php global $itemList;
+include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
@@ -15,9 +16,8 @@
         </div>
 
         <!-- List of Items (Bands or Events) -->
-        <?php include_once "../php/itemList/itemList.php" ?>
         <div id="item-list-view">
-            <?php getItems() ?>
+            <?php echo $itemList ?>
         </div>
 
     </div>

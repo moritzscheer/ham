@@ -24,8 +24,7 @@ class blob {
         }
     }
 
-    public function insertBlob($assigned_ID, $category, $filePath, $mime): bool
-    {
+    public function insertBlob($assigned_ID, $category, $filePath, $mime): bool {
         if($category === "profile_picture_small" || $category === "profile_picture_large") {
             $sql = "SELECT * FROM files WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
             $result = $this->pdo->query($sql)->fetch();
@@ -47,8 +46,7 @@ class blob {
         return $stmt->execute();
     }
 
-    function updateBlob($assigned_ID, $category, $filePath, $mime): bool
-    {
+    function updateBlob($assigned_ID, $category, $filePath, $mime): bool {
 
         $blob = fopen($filePath, 'rb');
 
@@ -89,13 +87,16 @@ class blob {
         return array("mime" => $mime,
             "data" => $data);
     }
-
+    
+    public function delete($assigned_ID) {
+        $sql = "DELETE FROM files WHERE assigned_ID = '".$assigned_ID."';";
+        $this->pdo->exec();
+    }
 
     /**
      * @throws Exception
      */
-    public function queryID($assigned_ID, $category) : array
-    {
+    public function queryID($assigned_ID, $category) : array {
         $sql = "SELECT id
                 FROM files
                 WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
@@ -104,8 +105,7 @@ class blob {
         return ($stmt == null) ? throw new RuntimeException("could not find any"): $stmt;
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         // close the database connection
         $this->pdo = null;
     }

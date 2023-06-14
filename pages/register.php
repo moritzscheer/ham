@@ -1,5 +1,5 @@
 <?php
-    global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message, $progressBar;
+    global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message, $progressBar, $success_message;
     include_once "../php/register/progressBar.php";
     include_once "../php/head/head.php";
 ?>
@@ -21,11 +21,12 @@
         </ul>
 
         <div class="progressBar-Content">
-            <h1>Register</h1>
-            
+
             <p class="<?php echo $progressBar ?>"><?php echo $error_message ?></p>
 
             <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_1 ?>">
+                <h1>Personal Data</h1>
+
                 <label id="input-entry" class="entry">* Name:
                     <input type="text" value="<?php echo $_SESSION["user"]->getName() ?>" name="name" required>
                 </label>
@@ -40,19 +41,19 @@
 
                 <div id="split">
                     <label id="input-entry" class="entry">Street:
-                        <input type="text" name="street_name" value="<?php echo $_SESSION["address"]->getStreetName() ?>">
+                        <input type="text" name="user_street_name" value="<?php echo $_SESSION["user_address"]->getStreetName() ?>">
                     </label>
                     <label id="input-entry" class="entry">House Number:
-                        <input type="text" name="house_number" value="<?php echo $_SESSION["address"]->getHouseNumber() ?>">
+                        <input type="text" name="user_house_number" value="<?php echo $_SESSION["user_address"]->getHouseNumber() ?>">
                     </label>
                 </div>
 
                 <div id="split">
                     <label id="input-entry" class="entry">City:
-                        <input type="text" name="city" value="<?php echo $_SESSION["address"]->getCity() ?>">
+                        <input type="text" name="user_city" value="<?php echo $_SESSION["user_address"]->getCity() ?>">
                     </label>
                     <label id="input-entry" class="entry">Postal Code:
-                        <input type="text" name="postal_code" value="<?php echo $_SESSION["address"]->getPostalCode() ?>">
+                        <input type="text" name="user_postal_code" value="<?php echo $_SESSION["user_address"]->getPostalCode() ?>">
                     </label>
                 </div>
 
@@ -64,6 +65,8 @@
 
 
             <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_2 ?>">
+                <h1>More Information</h1>
+
                 <div id="type-entry" class="entry">* Type:
                     <div class="type">
                         <label>Musician
@@ -94,6 +97,8 @@
             </form>
 
             <form method="post" id="<?php echo $step_3 ?>">
+                <h1>Email and Password</h1>
+
                 <label id="input-entry" class="entry">* E-Mail address:
                     <input type="email" name="email">
                 </label>
@@ -113,6 +118,8 @@
             </form>
 
             <form method="post" action="index.php" id="<?php echo $step_4 ?>" class="lastStep">
+                <h1 id="success_message"><?php echo $_SESSION["success_message"] ?></h1>
+
                 <div>
                     <p><?php echo $_SESSION["user"]->getName() . " " . $_SESSION["user"]->getSurname() ?></p>
                     <p><?php echo $_SESSION["user"]->getEmail() ?></p>

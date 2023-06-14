@@ -77,19 +77,23 @@ function initDatabase(): void
     }
 
 
-    // database
-    /*$addressStore = new DBAddressStore($db);
-    $eventStore = new DBEventStore($db, $addressStore);
+    /**
+     * database
+     */
+    $addressStore = new DBAddressStore($db);
+    $eventStore = new DBEventStore($db, $addressStore, $blobObj);
     $bandStore = new DBBandStore($db, $addressStore);
-    $userStore = new DBUserStore($db);*/
+    $userStore = new DBUserStore($db);
 
-
-    // memory
-    //$addressStore = new FileAddressStore($db);
+    /**
+     * memory
+     */
+    /*
+    $addressStore = new FileAddressStore($db);
     $bandStore = new FileBandStore("../resources/json/Bands.json");
     $eventStore = new FileEventStore("../resources/json/Events.json");
-    //$userStore = new FileUserStore($db, $addressStore);
-
+    $userStore = new FileUserStore($db, $addressStore);
+    */
 }
 
 function closeConnection(): void {

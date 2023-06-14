@@ -1,15 +1,13 @@
 <?php
-global $userStore, $addressStore, $blobObj, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db;
+global $userStore, $addressStore, $blobObj, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db, $success_message;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
-
 // init user and address session variable
 $_SESSION["user"] = $_SESSION["user"] ?? new User();
-$_SESSION["address"] = $_SESSION["address"] ?? new Address();
+$_SESSION["user_address"] = $_SESSION["user_address"] ?? new Address();
 
 // if post request were send the input is put in the object
 isset($_POST["type"]) && is_string($_POST["type"])   ?   $_SESSION["user"]->setType(htmlspecialchars($_POST["type"]))   :   "";
@@ -20,10 +18,11 @@ isset($_POST["email"]) && is_string($_POST["email"])   ?   $_SESSION["user"]->se
 isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $_SESSION["user"]->setGenre(htmlspecialchars($_POST["genre"]))   :   "";
 isset($_POST["members"]) && is_string($_POST["members"])   ?   $_SESSION["user"]->setMembers(htmlspecialchars($_POST["members"]))   :   "";
 isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $_SESSION["user"]->setOtherRemarks(htmlspecialchars($_POST["other_remarks"]))   :   "";
-isset($_POST["street_name"]) && is_string($_POST["street_name"])   ?   $_SESSION["address"]->setStreetName(htmlspecialchars($_POST["street_name"]))   :   "";
-isset($_POST["house_number"]) && is_string($_POST["house_number"])   ?   $_SESSION["address"]->setHouseNumber(htmlspecialchars($_POST["house_number"]))  :   "";
-isset($_POST["postal_code"]) && is_string($_POST["postal_code"])   ?   $_SESSION["address"]->setPostalCode(htmlspecialchars($_POST["postal_code"]))   :   "";
-isset($_POST["city"]) && is_string($_POST["city"])   ?   $_SESSION["address"]->setCity(htmlspecialchars($_POST["city"]))   :   "";
+isset($_POST["user_street_name"]) && is_string($_POST["user_street_name"])   ?   $_SESSION["user_address"]->setStreetName(htmlspecialchars($_POST["user_street_name"]))   :   "";
+isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $_SESSION["user_address"]->setHouseNumber(htmlspecialchars($_POST["user_house_number"]))  :   "";
+isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $_SESSION["user_address"]->setPostalCode(htmlspecialchars($_POST["user_postal_code"]))   :   "";
+isset($_POST["user_city"]) && is_string($_POST["user_city"])   ?   $_SESSION["user_address"]->setCity(htmlspecialchars($_POST["user_city"]))   :   "";
+
 
 // password variables
 $password = isset($_POST["password"]) && is_string($_POST["password"])   ?   htmlspecialchars($_POST["password"])   :   "";
@@ -47,7 +46,7 @@ $_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"]))
 $_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "";
 
 $error_message = "";
-
+$_SESSION["success_message"] = $_SESSION["success_message"] ?? "";
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -72,14 +71,16 @@ if(isset($_POST["register"])) {
     try {
         if($password === $repeat_password) {
             // if any address attribute is typed in an entry in the address table is created
-            if($_SESSION["address"]->getStreetName() !== "" || $_SESSION["address"]->getHouseNumber() !== "" || $_SESSION["address"]->getPostalCode() !== "" || $_SESSION["address"]->getCity() !== "") {
-                $_SESSION["address"] = $addressStore->create($_SESSION["address"]);
-                $_SESSION["user"]->setAddressID($_SESSION["address"]->getAddressID());
+            if($_SESSION["user_address"]->getStreetName() !== "" || $_SESSION["user_address"]->getHouseNumber() !== "" || $_SESSION["user_address"]->getPostalCode() !== "" || $_SESSION["user_address"]->getCity() !== "") {
+                $_SESSION["user_address"] = $addressStore->create($_SESSION["user_address"]);
+                $_SESSION["user"]->setAddressID($_SESSION["user_address"]->getAddressID());
             }
             
             $_SESSION["user"]->setPassword($password);
             $_SESSION["user"] = $userStore->create($_SESSION["user"]);
+            
             $_SESSION["loggedIn"] = true;
+            $_SESSION["success_message"] = "Success! Welcome to our Team.";
 
             header("Location: " . getNextUrl($step));
             exit();
@@ -101,7 +102,7 @@ if(isset($_POST["register"])) {
 if(isset($_POST["login"])) {
     try {
         $_SESSION["user"] = $userStore->login($_SESSION["user"]->getEmail(), $password);
-        $_SESSION["address"] = $addressStore->findOne($_SESSION["user"]->getAddressID());
+        $_SESSION["user_address"] = $addressStore->findOne($_SESSION["user"]->getAddressID());
         $_SESSION["loggedIn"] = true;
 
         header("Location: index.php");
@@ -136,6 +137,8 @@ if(isset($_POST["logout"])) {
 if(isset($_POST["delete"])) {
     try {
         $userStore->delete($_SESSION["user"]->getUserID());
+        $blobObj->delete($_SESSION["user"]->getUserID());
+        
         reset_variables();
         $_SESSION["loggedIn"] = false;
 
@@ -177,9 +180,9 @@ if(isset($_POST["change_password"])) {
  */
 if(isset($_POST["update_profile"])) {
     try {
-        if($_SESSION["address"]->getStreetName() !== "" || $_SESSION["address"]->getHouseNumber() !== "" || $_SESSION["address"]->getPostalCode() !== "" || $_SESSION["address"]->getCity() !== "") {
-            $_SESSION["address"] = $addressStore->create($_SESSION["address"]);
-            $_SESSION["user"]->setAddressID($_SESSION["address"]->getAddressID());
+        if($_SESSION["user_address"]->getStreetName() !== "" || $_SESSION["user_address"]->getHouseNumber() !== "" || $_SESSION["user_address"]->getPostalCode() !== "" || $_SESSION["user_address"]->getCity() !== "") {
+            $_SESSION["user_address"] = $addressStore->create($_SESSION["user_address"]);
+            $_SESSION["user"]->setAddressID($_SESSION["user_address"]->getAddressID());
         }
         $userStore->update($_SESSION["user"]);
 
