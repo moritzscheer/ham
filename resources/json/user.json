@@ -1,1 +1,31 @@
-[{"user_ID":1,"type":"Musician","address_ID":1,"name":"test","surname":"test","password":"1234","phone_number":"0176123456789","email":"test@uni.de","profile_picture_small":"","profile_picture_large":"","profile_gallery":["..\/resources\/images\/bands\/band.jpg","..\/resources\/images\/bands\/band.jpg"]},{"user_ID":933443,"type":"Host","address_ID":"","name":"Moritz","surname":"Scheer","password":"2","phone_number":"","email":"moritz@uni.de","profile_picture_small":"","profile_picture_large":"","profile_gallery":[]}]
+[
+  {
+    "user_ID": 1,
+    "type": "Musician",
+    "address_ID": 1,
+    "name": "test",
+    "surname": "test",
+    "password": "1234",
+    "phone_number": "0176123456789",
+    "email": "test@uni.de",
+    "profile_picture_small": "",
+    "profile_picture_large": "",
+    "profile_gallery": [
+      "..\/resources\/images\/bands\/band.jpg",
+      "..\/resources\/images\/bands\/band.jpg"
+    ]
+  },
+  {
+    "user_ID": 933443,
+    "type": "Host",
+    "address_ID": "",
+    "name": "Moritz",
+    "surname": "Scheer",
+    "password": "2",
+    "phone_number": "",
+    "email": "moritz@uni.de",
+    "profile_picture_small": "",
+    "profile_picture_large": "",
+    "profile_gallery": []
+  }
+]
