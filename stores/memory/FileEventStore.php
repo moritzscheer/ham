@@ -10,16 +10,31 @@ class FileEventStore implements EventStore
         $this->eventFile = file_get_contents($eventFile, true);
     }
 
+    private function getJsonItems(): mixed
+    {
+        return json_decode($this->eventFile, false);
+    }
+
+
+    private function addItemToJsonFile(array $item): bool
+    {
+        $var = file_put_contents($this->eventFile, json_encode($item));
+        if ($var !== false) {
+            return true;
+        } else return false;
+    }
+
     /**
      * Loads all Events from json file
      * @return Event[]
      */
     public function findAll(): array
     {
-        $items = json_decode($this->eventFile, false);
+        //todo: fix this
+        $items = $this->getJsonItems();
         $events = array();
         foreach ($items as $item) {
-            $event = new Event();
+            $event = Event::getJsonEvent($item);
             $events[] = $event;
         }
         return $events;
@@ -51,8 +66,8 @@ class FileEventStore implements EventStore
             "requirements" => $item->getRequirements()
         );
 
-        $var = file_put_contents($this->eventFile, json_encode($jsonEvent));
-        if ($var !== false) {
+        $var = $this->addItemToJsonFile($jsonEvent);
+        if ($var) {
             return $item;
         } else return new Event();
     }
@@ -60,20 +75,43 @@ class FileEventStore implements EventStore
     public function update(Event $item): Event
     {
         // TODO: Implement update() method.
+        return new Event();
     }
 
     public function findOne(string $id): Event
     {
         // TODO: Implement findOne() method.
+        $items = $this->getJsonItems();
+
+        return new Event();
     }
 
+    /**
+     * Deletes Event form json file by given id
+     * @param string $id
+     * @return void
+     */
     public function delete(string $id)
     {
-        // TODO: Implement delete() method.
+        $i = 0;
+        $items = $this->getJsonItems();
+        foreach ($items as $item) {
+            if ($id == $item->id) {
+                unset($items[$i]);
+            }
+            $i++;
+        }
+        $toJsonString = json_encode($items, JSON_PRETTY_PRINT);
+        $openFile = fopen($this->eventFile, 'w');
+        fwrite($openFile, $toJsonString);
+        fclose($openFile);
     }
 
-    public function findMany(array $ids)
+    public function findMany(array $ids) : Event
     {
         // TODO: Implement findMany() method.
+        return new Event();
     }
+
+
 }

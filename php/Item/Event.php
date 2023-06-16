@@ -1,6 +1,8 @@
 <?php
 include_once "Item.php";
-class Event {
+
+class Event
+{
 
     // event attributes
     private int $event_ID;
@@ -26,7 +28,8 @@ class Event {
      * @param array $item
      * @return Event
      */
-    public static function withAddress(array $item) : Event {
+    public static function withAddress(array $item): Event
+    {
         $instance = new self();
         $instance->event_ID = $item[0];
         $instance->address_ID = $item[1];
@@ -44,51 +47,74 @@ class Event {
         return $instance;
     }
 
-    public function getEventHTML(): string {
+    public static function getJsonEvent(array $item) : Event
+    {
+        $instance = new self();
+        $instance->event_ID = $item->id;
+        $instance->address_ID = $item->address_ID;
+        $instance->user_ID = $item->authorID;
+        $instance->name = $item->name;
+        $instance->description = $item->description;
+        $instance->requirements = $item->requirements;
+        $instance->date = $item->Date;
+        $instance->startTime = $item->startTime;
+        $instance->endTime = $item->endTime;
+        $instance->street_name = $item->street;
+        $instance->house_number = $item->houseNr;
+        $instance->postal_code = $item->postalCode;
+        $instance->city = $item->city;
+        return $instance;
+    }
+
+    public function getEventHTML(): string
+    {
         return $string =
-       '    <form method="post" name="event_ID" id="item">                                                    '.
-       '        <div id="item_image">                                                                                         '.
-       '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              '.
-       '        </div>                                                                                        '.
-       '        <div id="item_short_description" class="text-line-pre">                                             '.
-       '            <span>' . $this->name . '</span>                                                          '.
-       '            <br>                                                                                      '.
-       '            <span>Address: ' . $this->printAddress() . '</span>                                         '.
-       '            <br>                                                                                      '.
-       '            <span> ' . $this->getTime() . '</span>                                                    '.
-       '        </div>                                                                                        '.
-       '        <label>click to display more / less                                                           '.
-       '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 '.
-       '        </label>                                                                                      '.
-       '    </form>                                                                                           ';
+            '    <form method="post" name="event_ID" id="item">                                                    ' .
+            '        <div id="item_image">                                                                                         ' .
+            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              ' .
+            '        </div>                                                                                        ' .
+            '        <div id="item_short_description" class="text-line-pre">                                             ' .
+            '            <span>' . $this->name . '</span>                                                          ' .
+            '            <br>                                                                                      ' .
+            '            <span>Address: ' . $this->printAddress() . '</span>                                         ' .
+            '            <br>                                                                                      ' .
+            '            <span> ' . $this->getTime() . '</span>                                                    ' .
+            '        </div>                                                                                        ' .
+            '        <label>click to display more / less                                                           ' .
+            '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
+            '        </label>                                                                                      ' .
+            '    </form>                                                                                           ';
     }
 
     /**
      * @return string
      */
-    public function getImageSource(): string {
-        if(empty($this->blobData)) {
+    public function getImageSource(): string
+    {
+        if (empty($this->blobData)) {
             return "../resources/images/events/event.jpg";
         } else {
-            return "data:".$this->blobData["mime"].";base64,".base64_encode($this->blobData["data"]);
+            return "data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]);
         }
     }
 
     /**
      * @return string
      */
-    public function getTime() : string {
-        return $this->startTime." - ".$this->endTime;
+    public function getTime(): string
+    {
+        return $this->startTime . " - " . $this->endTime;
     }
 
     /**
      * @return string
      */
-    public function printAddress(): string {
-        if($this->street_name === "" && $this->house_number === "") {
-            return $this->postal_code." ".$this->city;
+    public function printAddress(): string
+    {
+        if ($this->street_name === "" && $this->house_number === "") {
+            return $this->postal_code . " " . $this->city;
         } else {
-            return $this->street_name." ".$this->house_number.", ".$this->postal_code." ".$this->city;
+            return $this->street_name . " " . $this->house_number . ", " . $this->postal_code . " " . $this->city;
 
         }
     }
