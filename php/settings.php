@@ -85,19 +85,21 @@ function initDatabase(): void {
     /**
      * database
      */
+
+
     $addressStore = new DBAddressStore($db);
-    $eventStore = new DBEventStore($db, $addressStore, $blobObj);
-    $userStore = new DBUserStore($db, $addressStore, $blobObj);
+    //$eventStore = new DBEventStore($db, $addressStore, $blobObj);
+    //$userStore = new DBUserStore($db, $addressStore, $blobObj);
 
     /**
      * memory
      */
-    /*
-    $addressStore = new FileAddressStore($db);
+
+    //$addressStore = new FileAddressStore($db);
     $bandStore = new FileBandStore("../resources/json/Bands.json");
     $eventStore = new FileEventStore("../resources/json/Events.json");
-    $userStore = new FileUserStore($db, $addressStore);
-    */
+    $userStore = new FileUserStore("../resources/json/Events.json");
+
 }
 
 function closeConnection(): void {

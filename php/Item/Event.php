@@ -7,7 +7,7 @@ class Event
     // event attributes
     private int $event_ID;
     private ?string $address_ID = "";
-    private ?string $user_ID = "";
+    private int $user_ID = -1;
     private ?string $name = "";
     private ?string $description = "";
     private ?string $requirements = "";
@@ -47,12 +47,12 @@ class Event
         return $instance;
     }
 
-    public static function getJsonEvent(array $item): Event
+    public static function getJsonEvent($item): Event
     {
         $instance = new self();
-        $instance->event_ID = $item->id;
+        $instance->event_ID = (int) $item->id;
         $instance->address_ID = $item->address_ID;
-        $instance->user_ID = $item->authorID;
+        $instance->user_ID = (int) $item->authorID;
         $instance->name = $item->name;
         $instance->description = $item->description;
         $instance->requirements = $item->requirements;
@@ -70,7 +70,7 @@ class Event
     {
         $jsonEvent = array(
             "image" => $item->getImageSource(),
-            "id" => $item->getEventID(),
+            "id" => uniqid('ev_'),
             "authorID" => $item->getUserID(),
             "type" => "event",
             "description" => $item->getDescription(),

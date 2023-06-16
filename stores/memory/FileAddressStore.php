@@ -1,19 +1,38 @@
 <?php
 
-include_once "../stores/interface/ItemStore.php";
+include_once "../stores/interface/AddressStore.php";
 
-class FileAddressStore implements ItemStore
+class FileAddressStore implements AddressStore
 {
-    public function loadAll(): array
+    public function create(Address $item): Address
     {
-        // TODO: Implement loadAll() method.
-        return array();
+        // TODO: Implement create() method.
     }
 
-    public function store(Item $item): bool
+    public function update(Address $item): Address
     {
-        // TODO: Implement store() method.
-        return true;
+        // TODO: Implement update() method.
     }
+
+    public function findOne(string $id): Address
+    {
+        // TODO: Implement findOne() method.
+    }
+
+    public function delete(string $id)
+    {
+        // TODO: Implement delete() method.
+    }
+
+    public function findMany(array $ids)
+    {
+        // TODO: Implement findMany() method.
+    }
+
+    public function findAll()
+    {
+        // TODO: Implement findAll() method.
+    }
+
 
 }

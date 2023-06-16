@@ -29,9 +29,9 @@ class FileEventStore implements EventStore
      * @param array $item
      * @return bool
      */
-    private function addItemToJsonFile(array $item): bool
+    private function addItemsToJsonFile(): bool
     {
-        $var = file_put_contents($this->eventFile, json_encode($item));
+        $var = file_put_contents($this->eventFile, json_encode($this->itemsOfJsonfile));
         if ($var !== false) {
             return true;
         } else return false;
@@ -61,7 +61,8 @@ class FileEventStore implements EventStore
     public function create(Event $item): Event
     {
         $jsonEvent = Event::toArrayForJsonEntry($item);
-        $var = $this->addItemToJsonFile($jsonEvent);
+        $this->itemsOfJsonfile[] = $jsonEvent;
+        $var = $this->addItemsToJsonFile();
         if ($var) {
             $this->reloadItemsFromJsonFile();
             return $item;
@@ -102,11 +103,7 @@ class FileEventStore implements EventStore
             }
             $i++;
         }
-        $toJsonString = json_encode($this->itemsOfJsonfile, JSON_PRETTY_PRINT);
-        $openFile = fopen($this->eventFile, 'w');
-        fwrite($openFile, $toJsonString);
-        fclose($openFile);
-        $this->reloadItemsFromJsonFile();
+        $this->addItemsToJsonFile();
     }
 
     public function findMany(array $ids)
