@@ -1,155 +1,116 @@
 <?php
 include_once "Item.php";
-class Event
-{
+class Event {
+
     // event attributes
     private int $event_ID;
-    private ?string $address_ID;
-    private ?string $authorID;
-    private ?string $name;
-    private ?string $description;
-    private ?string $requirements;
-    private ?string $date;
-    private ?string $startTime;
-    private ?string $endTime;
+    private ?string $address_ID = "";
+    private ?string $user_ID = "";
+    private ?string $name = "";
+    private ?string $description = "";
+    private ?string $requirements = "";
+    private ?string $date = "";
+    private ?string $startTime = "";
+    private ?string $endTime = "";
 
     // address attributes
-    private ?string $street_name;
-    private ?string $house_number;
-    private ?string $postal_code;
-    private ?string $city;
+    private ?string $street_name = "";
+    private ?string $house_number = "";
+    private ?string $postal_code = "";
+    private ?string $city = "";
 
     // image attributes
-    private ?array $blobData;
-
-
-
-
-
+    private ?array $blobData = null;
 
     /**
-     * constructor
+     * @param array $item
+     * @return Event
      */
-    public function __construct()
-    {
-        $this->authorID = "";
-        $this->address_ID = "";
-        $this->name = "";
-        $this->description = "";
-        $this->requirements = "";
-        $this->date = "";
-        $this->startTime = "";
-        $this->endTime = "";
-        $this->street_name = "";
-        $this->house_number = "";
-        $this->postal_code = "";
-        $this->city = "";
-        $this->blobData = null;
-    }
-
-
-
-    /**
-     * @param object $item
-     * @return void
-     */
-    public static function withoutAddress(array $item) : Event
-    {
+    public static function withAddress(array $item) : Event {
         $instance = new self();
         $instance->event_ID = $item[0];
         $instance->address_ID = $item[1];
-        $instance->name = $item[2];
-        $instance->description = $item[3];
-        $instance->requirements = $item[4];
-        $instance->date = $item[5];
-        $instance->startTime = $item[6];
-        $instance->endTime = $item[7];
+        $instance->user_ID = $item[2];
+        $instance->name = $item[3];
+        $instance->description = $item[4];
+        $instance->requirements = $item[5];
+        $instance->date = $item[6];
+        $instance->startTime = $item[7];
+        $instance->endTime = $item[8];
+        $instance->street_name = $item[9];
+        $instance->house_number = $item[10];
+        $instance->postal_code = $item[11];
+        $instance->city = $item[12];
         return $instance;
     }
 
-    public static function withAddress(array $item) : Event
-    {
-        $instance = new self();
-        $instance->event_ID = $item[0];
-        $instance->address_ID = $item[1];
-        $instance->name = $item[2];
-        $instance->description = $item[3];
-        $instance->requirements = $item[4];
-        $instance->date = $item[5];
-        $instance->startTime = $item[6];
-        $instance->endTime = $item[7];
-        $instance->street_name = $item[8];
-        $instance->house_number = $item[9];
-        $instance->postal_code = $item[10];
-        $instance->city = $item[11];
-        return $instance;
-    }
-
-    public function getEventHTML(): string
-    {                                   
-        $address = $this->street_name." ".$this->house_number."\n".$this->postal_code." ".$this->city;
-        $time = $this->startTime." - ".$this->endTime;
-
+    public function getEventHTML(): string {
         return $string =
-       '<section id="item-list">                                                                              '.
-       '    <div id="item">                                                                                   '.
-       '        <label class="item-head">                                                                     '.
-       '            <img id="item-image" src="' . $this->getImageSource() . '" alt="bandImage"/>              '.
-       '            <div id="item-description" class="text-line-pre">                                         '.
-       '                <span>' . $this->name . '</span>                                                      '.
-       '                <br>                                                                                  '.
-       '                <span>Address: ' . $address . '</span>                                                '.
-       '                <br>                                                                                  '.
-       '                <span> ' . $time . '</span>                                                           '.
-       '                <input type="checkbox" id="item-click">                                               '.
-       '            </div>                                                                                    '.
-       '        </label>                                                                                      '.
-       '        <div id="item-m-details">                                                                     '.
-       '            <div id="item-details-title">                                                             '.
-       '                <img id="item-image" src="' . $this->getImageSource() . '" alt="bandImage"/>          '.
-       '                <h2 id="item-details-name"> ' . $this->name . ' </h2>                                 '.
-       '            </div>                                                                                    '.
-       '            <div class="item-details-description">                                                    '.
-       '                <p>' . $this->description . '</p>                                                     '.
-       '            </div>                                                                                    '.
-       '            <div id="item-details-foot">                                                              '.
-       '                <p class="text-line-pre">                                                             '.
-       '                    Requirements <br>                                                                 '.
-       '                    ' . $this->requirements . '                                                       '.
-       '                </p>                                                                                  '.
-       '            </div>                                                                                    '.
+       '    <form method="post" name="event_ID" id="item">                                                    '.
+       '        <div id="item_image">                                                                                         '.
+       '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              '.
        '        </div>                                                                                        '.
-       '    </div>                                                                                            '.
-       '</section>                                                                                            ';
+       '        <div id="item_short_description" class="text-line-pre">                                             '.
+       '            <span>' . $this->name . '</span>                                                          '.
+       '            <br>                                                                                      '.
+       '            <span>Address: ' . $this->printAddress() . '</span>                                         '.
+       '            <br>                                                                                      '.
+       '            <span> ' . $this->getTime() . '</span>                                                    '.
+       '        </div>                                                                                        '.
+       '        <label>click to display more / less                                                           '.
+       '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 '.
+       '        </label>                                                                                      '.
+       '    </form>                                                                                           ';
     }
 
     /**
      * @return string
      */
     public function getImageSource(): string {
-        if($this->blobData == null) {
+        if(empty($this->blobData)) {
             return "../resources/images/events/event.jpg";
         } else {
-            return "data:".$this->blobData[0].";base64,".base64_encode($this->blobData[1]);
+            return "data:".$this->blobData["mime"].";base64,".base64_encode($this->blobData["data"]);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getTime() : string {
+        return $this->startTime." - ".$this->endTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function printAddress(): string {
+        if($this->street_name === "" && $this->house_number === "") {
+            return $this->postal_code." ".$this->city;
+        } else {
+            return $this->street_name." ".$this->house_number.", ".$this->postal_code." ".$this->city;
 
         }
+    }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               getter and setter                                                */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * @param int $user_ID
+     */
+    public function setUserID(int $user_ID): void
+    {
+        $this->user_ID = $user_ID;
     }
 
     /**
-     * @return string|null
+     * @return int
      */
-    public function getAuthorID(): ?string
+    public function getUserID(): int
     {
-        return $this->authorID;
-    }
-
-    /**
-     * @param string|null $authorID
-     */
-    public function setAuthorID(?string $authorID): void
-    {
-        $this->authorID = $authorID;
+        return $this->user_ID;
     }
 
     /**

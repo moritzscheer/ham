@@ -179,7 +179,23 @@ input[type=file] {
     color: black;
     font-size: 14px;
 }
-
+#profile-navbar-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
+    font: bold 18px sans-serif;
+    color: white;
+    font-size: large;
+}
+#profile-navbar-button:hover {
+    border-bottom: 2px solid gray;
+}
+#profile-navbar-button input {
+    display: none;
+}
 
 
 /* ---- styling for changePassword-Grid (the main grid) ---- */
@@ -188,9 +204,7 @@ input[type=file] {
     margin-left: 20px;
     margin-right: 20px;
 }
-#error-message {
-    text-align: center;
-}
+
 
 
 

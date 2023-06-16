@@ -1,6 +1,6 @@
 <?php
-    include_once "../stores/includes.php";
-    global $blobObj;
+    include_once "../php/includes/includes.php";
+    global $blobObj, $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -37,7 +37,6 @@ session_start();
 /*                                                  assign urls to stylesheets                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
 $_SESSION["url2"] = "";
 
 // sets the link to the stylesheet depending on which page is currently displayed
@@ -46,11 +45,12 @@ if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVE
 } elseif (str_contains($_SERVER["PHP_SELF"], "bands") || str_contains($_SERVER["PHP_SELF"], "events")) {
     $_SESSION["url1"] = "../resources/css/posts.css";
 } elseif (str_contains($_SERVER["PHP_SELF"], "closeToMe")) {
-    $_SESSION["url1"] = "../resources/css/" . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . ".css";
+    $_SESSION["url1"] = "../resources/css/closeToMe.css";
     $_SESSION["url2"] = "../resources/css/posts.css";
 } else {
     $_SESSION["url1"] = "../resources/css/" . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . ".css";
 }
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -60,30 +60,34 @@ if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVE
 
 $_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["initDatabase"] : initDatabase();
 
-function initDatabase(): void
-{
+function initDatabase(): void {
+
     global $db, $userStore, $addressStore, $bandStore, $eventStore, $blobObj;
 
     try {
         $user = "root";
         $pw = null;
         $dsn = "sqlite:sqlite-pdo.db";
-        $blobObj = new Blob();
         $db = new PDO($dsn, $user, $pw);
+        $dsnBlob = "sqlite:sqlite-pdo-blob.db";
+        $dbBlob = new PDO($dsnBlob, $user, $pw);
     } catch (PDOException $exc) {
         $db = NULL;
-        $blobObj = NULL;
+        $dbBlob = NULL;
         throw $exc;
     }
 
+    /**
+     * Blob object
+     */
+    $blobObj = new Blob($dbBlob);
 
     /**
      * database
      */
     $addressStore = new DBAddressStore($db);
     $eventStore = new DBEventStore($db, $addressStore, $blobObj);
-    $bandStore = new DBBandStore($db, $addressStore);
-    $userStore = new DBUserStore($db);
+    $userStore = new DBUserStore($db, $addressStore, $blobObj);
 
     /**
      * memory

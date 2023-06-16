@@ -75,7 +75,9 @@ textarea {
 .text-line-pre {
     white-space: pre-line;
 }
-
+#error-message {
+    text-align: center;
+}
 
 
 

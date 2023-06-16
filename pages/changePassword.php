@@ -12,7 +12,7 @@ include_once "../php/head/head.php" ?>
             <div class="profile-Picture-Box">
                 <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
             </div>
-            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
+            <?php include_once "../php/navigation/profile/public.php" ?>
         </div>
     </div>
 

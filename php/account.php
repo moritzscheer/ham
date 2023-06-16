@@ -5,23 +5,32 @@ global $userStore, $addressStore, $blobObj, $images, $step, $step_1, $step_2, $s
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-// init user and address session variable
-$_SESSION["user"] = $_SESSION["user"] ?? new User();
-$_SESSION["user_address"] = $_SESSION["user_address"] ?? new Address();
+// init loggedIn session variable
+$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false);
 
-// if post request were send the input is put in the object
-isset($_POST["type"]) && is_string($_POST["type"])   ?   $_SESSION["user"]->setType(htmlspecialchars($_POST["type"]))   :   "";
-isset($_POST["name"]) && is_string($_POST["name"])   ?   $_SESSION["user"]->setName(htmlspecialchars($_POST["name"]))   :   "";
-isset($_POST["surname"]) && is_string($_POST["surname"])   ?   $_SESSION["user"]->setSurname(htmlspecialchars($_POST["surname"]))   :   "";
-isset($_POST["phone_number"]) && is_string($_POST["phone_number"])   ?   $_SESSION["user"]->setPhoneNumber(htmlspecialchars($_POST["phone_number"]))   :   "";
-isset($_POST["email"]) && is_string($_POST["email"])   ?   $_SESSION["user"]->setEmail(htmlspecialchars($_POST["email"]))   :   "";
-isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $_SESSION["user"]->setGenre(htmlspecialchars($_POST["genre"]))   :   "";
-isset($_POST["members"]) && is_string($_POST["members"])   ?   $_SESSION["user"]->setMembers(htmlspecialchars($_POST["members"]))   :   "";
-isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $_SESSION["user"]->setOtherRemarks(htmlspecialchars($_POST["other_remarks"]))   :   "";
-isset($_POST["user_street_name"]) && is_string($_POST["user_street_name"])   ?   $_SESSION["user_address"]->setStreetName(htmlspecialchars($_POST["user_street_name"]))   :   "";
-isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $_SESSION["user_address"]->setHouseNumber(htmlspecialchars($_POST["user_house_number"]))  :   "";
-isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $_SESSION["user_address"]->setPostalCode(htmlspecialchars($_POST["user_postal_code"]))   :   "";
-isset($_POST["user_city"]) && is_string($_POST["user_city"])   ?   $_SESSION["user_address"]->setCity(htmlspecialchars($_POST["user_city"]))   :   "";
+// init tmp session variable (important for register)
+$_SESSION["user"] = update_user_variable($_SESSION["user"] ?? new User());
+
+
+
+if($_SESSION["loggedIn"]["status"] === true) {
+    $_SESSION["viewProfileID"] = $_SESSION["loggedIn"]["user"]->getUserID();
+
+    $profile_header_box =
+        '<div id="name">                                   '.
+            $_SESSION["loggedIn"]["user"]->getName().' '.
+            $_SESSION["loggedIn"]["user"]->getSurname().
+        '</div>                                            '.
+        '<div id="type">                                   '.
+            $_SESSION["loggedIn"]["user"]->getType().
+        '</div>                                            ';
+
+    $_SESSION["Musician"] = ($_SESSION["loggedIn"]["user"]->getType() === "Musician") ? "checked" : "";
+    $_SESSION["Host"] = ($_SESSION["loggedIn"]["user"]->getType() === "Host") ? "checked" : "";
+} else {
+    $_SESSION["viewProfileID"] = "";
+}
+
 
 
 // password variables
@@ -31,22 +40,22 @@ $old_password = isset($_POST["old_password"]) && is_string($_POST["old_password"
 $new_password = isset($_POST["new_password"]) && is_string($_POST["new_password"])   ?   htmlspecialchars($_POST["new_password"])   :   "";
 $repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST["repeat_new_password"])   ?   htmlspecialchars($_POST["repeat_new_password"])   :   "";
 
-// for the checkbox
+// for the checkbox in profile
 $_SESSION["Musician"] = ($_SESSION["user"]->getType() === "Musician") ? "checked" : "";
 $_SESSION["Host"] = ($_SESSION["user"]->getType() === "Host") ? "checked" : "";
 
-// initialize header session variables
-$profile_header_box = '<div id="name">'.$_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname().'</div><div id="type">'.$_SESSION["user"]->getType()."</div>";
-$_SESSION["normalHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "hidden": "visible";
-$_SESSION["profileHeader"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? "visible": "hidden";
-$_SESSION["profileHeaderBox"] = (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) ? $profile_header_box : "";
+
+
+$_SESSION["normalHeader"] = $_SESSION["loggedIn"]["status"] === true ? "hidden" : "visible";
+$_SESSION["profileHeader"] = $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
+$_SESSION["profileHeaderBox"] = $_SESSION["loggedIn"]["status"] === true ? $profile_header_box : "";
 
 // initialize image session variable
 $_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "";
 $_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "";
 
 $error_message = "";
-$_SESSION["success_message"] = $_SESSION["success_message"] ?? "";
+
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -70,23 +79,19 @@ if(isset($_POST["reset"])) {
 if(isset($_POST["register"])) {
     try {
         if($password === $repeat_password) {
-            // if any address attribute is typed in an entry in the address table is created
-            if($_SESSION["user_address"]->getStreetName() !== "" || $_SESSION["user_address"]->getHouseNumber() !== "" || $_SESSION["user_address"]->getPostalCode() !== "" || $_SESSION["user_address"]->getCity() !== "") {
-                $_SESSION["user_address"] = $addressStore->create($_SESSION["user_address"]);
-                $_SESSION["user"]->setAddressID($_SESSION["user_address"]->getAddressID());
-            }
-            
-            $_SESSION["user"]->setPassword($password);
-            $_SESSION["user"] = $userStore->create($_SESSION["user"]);
-            
-            $_SESSION["loggedIn"] = true;
+            $user = $_SESSION["user"];
+            $user->setPassword($password);
+
+            $user = $userStore->create($user);
+            $image = getProfilePictureSmall($user->getUserID());
+            $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
             $_SESSION["success_message"] = "Success! Welcome to our Team.";
 
             header("Location: " . getNextUrl($step));
             exit();
         } else {
-            $_SESSION["password"] = "";
-            $_SESSION["repeat_password"] = "";
+            $password = "";
+            $repeat_password = "";
             throw new Exception("Passwords must be the same.");
         }
     } catch (Exception $ex) {
@@ -101,11 +106,36 @@ if(isset($_POST["register"])) {
  */
 if(isset($_POST["login"])) {
     try {
-        $_SESSION["user"] = $userStore->login($_SESSION["user"]->getEmail(), $password);
-        $_SESSION["user_address"] = $addressStore->findOne($_SESSION["user"]->getAddressID());
-        $_SESSION["loggedIn"] = true;
+        $user = $_SESSION["user"];
+
+        $user = $userStore->login($user->getEmail(), $password);
+        $image = getProfilePictureSmall($user->getUserID());
+        $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
 
         header("Location: index.php");
+        exit();
+    } catch (Exception $ex) {
+        $error_message = $ex->getMessage();
+    }
+}
+
+
+
+/**
+ * If a user wants to view a profile page
+ */
+if(isset($_POST["viewProfile"])) {
+    try {
+        if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
+            $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
+            $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+        } else {
+            $_SESSION["user"] = $userStore->findOne($_POST["viewProfile"]);
+
+            $_SESSION["navigation"] = "../php/navigation/profile/public.php";
+        }
+        setImages($_POST["viewProfile"]);
+        header("Location: profile.php");
         exit();
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
@@ -120,7 +150,6 @@ if(isset($_POST["login"])) {
 if(isset($_POST["logout"])) {
     try {
         reset_variables();
-        $_SESSION["loggedIn"] = false;
 
         header("Location: index.php");
         exit();
@@ -136,11 +165,10 @@ if(isset($_POST["logout"])) {
  */
 if(isset($_POST["delete"])) {
     try {
-        $userStore->delete($_SESSION["user"]->getUserID());
-        $blobObj->delete($_SESSION["user"]->getUserID());
+        $userStore->delete($_SESSION["loggedIn"]["user"]->getUserID());
+        $blobObj->delete($_SESSION["loggedIn"]["user"]->getUserID());
         
         reset_variables();
-        $_SESSION["loggedIn"] = false;
 
         header("Location: index.php");
         exit();
@@ -157,11 +185,10 @@ if(isset($_POST["delete"])) {
 if(isset($_POST["change_password"])) {
     try {
         if($new_password === $repeat_new_password) {
-            $_SESSION["user"] = $userStore->changePassword($_SESSION["user"], $old_password, $new_password);
+            $_SESSION["loggedIn"]["user"] = $userStore->changePassword($_SESSION["loggedIn"]["user"], $old_password, $new_password);
 
             header("Location: profile.php");
             exit();
-
         } else {
             throw new Exception("Passwords must be the same.");
         }
@@ -180,11 +207,9 @@ if(isset($_POST["change_password"])) {
  */
 if(isset($_POST["update_profile"])) {
     try {
-        if($_SESSION["user_address"]->getStreetName() !== "" || $_SESSION["user_address"]->getHouseNumber() !== "" || $_SESSION["user_address"]->getPostalCode() !== "" || $_SESSION["user_address"]->getCity() !== "") {
-            $_SESSION["user_address"] = $addressStore->create($_SESSION["user_address"]);
-            $_SESSION["user"]->setAddressID($_SESSION["user_address"]->getAddressID());
-        }
-        $userStore->update($_SESSION["user"]);
+        $user = update_user_variable($_SESSION["loggedIn"]["user"]);
+
+        $_SESSION["loggedIn"]["user"] = $userStore->update($user);
 
         header("Location: profile.php");
         exit();
@@ -203,7 +228,9 @@ if (isset($_POST["profile_picture_small"])) {
     try {
         $path = "../resources/images/profile/custom/".verifyImage("profile_picture_small", "profile/custom");
 
-        $blobObj->insertBlob($_SESSION["user"]->getUserID(), "profile_picture_small", $path, "image/gif");
+        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "profile_picture_small", $path, "image/gif");
+        $_SESSION["profile_picture_small"] = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID());
+        $_SESSION["loggedIn"]["profile_picture_small"] = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID());
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }
@@ -218,7 +245,8 @@ if (isset($_POST["profile_picture_large"])) {
     try {
         $path = "../resources/images/profile/custom/".verifyImage("profile_picture_large", "profile/custom");
 
-        $blobObj->insertBlob($_SESSION["user"]->getUserID(), "profile_picture_large", $path, "image/gif");
+        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "profile_picture_large", $path, "image/gif");
+        $_SESSION["profile_picture_large"] = getProfilePictureLarge($_SESSION["loggedIn"]["user"]->getUserID());
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }
@@ -231,7 +259,8 @@ if (isset($_POST["newImage"])) {
     try {
         $path = "../resources/images/profile/custom/".verifyImage("newImage", "profile/custom");
 
-        $blobObj->insertBlob($_SESSION["user"]->getUserID(), "image_gallery", $path, "image/gif");
+        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "image_gallery", $path, "image/gif");
+        $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID());
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }
@@ -244,20 +273,26 @@ if (isset($_POST["newImage"])) {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
+
 /**
- * checks if a post variable was set then if a session
- * variable is set, else the variable is set to an empty string
- * @param $var
- * @return String
+ * checks the variables for the user
+ * @param $user
+ * @return User
  */
-function check_variable($var): String {
-    if (isset($_POST["$var"]) && is_string($_POST["$var"])) {
-        return htmlspecialchars($_POST["$var"]);
-    } elseif (isset($_SESSION["$var"]) && is_string($_SESSION["$var"])) {
-            return $_SESSION["$var"];
-    } else {
-        return "";
-    }
+function update_user_variable($user): User {
+    isset($_POST["type"]) && is_string($_POST["type"])   ?   $user->setType(htmlspecialchars($_POST["type"]))   :   "";
+    isset($_POST["name"]) && is_string($_POST["name"])   ?   $user->setName(htmlspecialchars($_POST["name"]))   :   "";
+    isset($_POST["surname"]) && is_string($_POST["surname"])   ?   $user->setSurname(htmlspecialchars($_POST["surname"]))   :   "";
+    isset($_POST["phone_number"]) && is_string($_POST["phone_number"])   ?   $user->setPhoneNumber(htmlspecialchars($_POST["phone_number"]))   :   "";
+    isset($_POST["email"]) && is_string($_POST["email"])   ?   $user->setEmail(htmlspecialchars($_POST["email"]))   :   "";
+    isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $user->setGenre(htmlspecialchars($_POST["genre"]))   :   "";
+    isset($_POST["members"]) && is_string($_POST["members"])   ?   $user->setMembers(htmlspecialchars($_POST["members"]))   :   "";
+    isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $user->setOtherRemarks(htmlspecialchars($_POST["other_remarks"]))   :   "";
+    isset($_POST["user_street_name"])&& is_string($_POST["user_street_name"])   ?   $user->setStreetName(htmlspecialchars($_POST["user_street_name"]))   :   "";
+    isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $user->setHouseNumber(htmlspecialchars($_POST["user_house_number"]))  :   "";
+    isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $user->setPostalCode(htmlspecialchars($_POST["user_postal_code"]))   :   "";
+    isset($_POST["user_city"]) && is_string($_POST["user_city"])   ?   $user->setCity(htmlspecialchars($_POST["user_city"]))   :   "";
+    return $user;
 }
 
 
@@ -306,57 +341,72 @@ function getLastUrl($var): String {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
+
 /**
+ * @param $id
  * @return void
  */
-function getProfilePictureSmall(): void {
+function setImages($id) : void {
+    $_SESSION["profile_picture_small"] = getProfilePictureSmall($id);
+    $_SESSION["profile_picture_large"] = getProfilePictureLarge($id);
+    $_SESSION["image_gallery"] = getImageGallery($id);
+}
+
+
+
+/**
+ * @param $id
+ * @return string
+ */
+function getProfilePictureSmall($id): string {
     global $blobObj;
     try {
-        if($_SESSION["loggedIn"] === "false" || !isset($_SESSION["loggedIn"])) {
-                  throw new RuntimeException();
-        }
-        $ids = $blobObj->queryID($_SESSION["user"]->getUserID(), "profile_picture_small");
+        $ids = $blobObj->queryID($id, "profile_picture_small");
         $a = $blobObj->selectBlob($ids[0][0]);
 
-        echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode( $a['data'] ).'" alt="profilePicture" class="profile-Picture"/>';
+        return "data:" . $a['mime'] . ";base64," . base64_encode( $a['data'] );
     } catch (RuntimeException $e) {
-        echo '<img src="../resources/images/profile/default/defaultSmall.png" alt="profilePicture" class="profile-Picture"/>';
+        return "../resources/images/profile/default/defaultSmall.png";
     }
 }
 
 
 /**
- * @return void
+ * @param $id
+ * @return string
  */
-function getProfilePictureLarge(): void {
+function getProfilePictureLarge($id): string {
     global $blobObj;
 
     try {
-        $ids = $blobObj->queryID($_SESSION["user"]->getUserID(), "profile_picture_large");
+        $ids = $blobObj->queryID($id, "profile_picture_large");
         $a = $blobObj->selectBlob($ids[0][0]);
 
-        echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
+        return "data:" . $a['mime'] . ";base64," . base64_encode( $a['data'] );
     } catch (RuntimeException $e) {
-        echo '<img src="../resources/images/profile/default/defaultLarge.jpeg" alt="could not load image" class="profile-Picture-Large">';
+        return "../resources/images/profile/default/defaultLarge.jpeg";
     }
 }
 
 
 /**
- * @return void
+ * @param $id
+ * @return string
  */
-function getImageGallery(): void {
+function getImageGallery($id): string {
     global $blobObj;
 
     try {
-        $ids = $blobObj->queryID($_SESSION["user"]->getUserID(), "image_gallery");
+        $ids = $blobObj->queryID($id, "image_gallery");
 
+        $string = "";
         foreach ($ids as $image) {
             $a = $blobObj->selectBlob($image[0]);
-            echo '<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
+            $string = $string.'<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
         }
+        return $string;
     } catch (RuntimeException $e) {
-        echo "No Images were Uploaded.";
+        return "No Images were Uploaded.";
     }
 }
 
@@ -390,5 +440,4 @@ function verifyImage($name, $type): String {
 
     return $file_name;
 }
-
 

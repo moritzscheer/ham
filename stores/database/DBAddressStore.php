@@ -18,7 +18,7 @@ class DBAddressStore implements AddressStore {
             house_number int(5) DEFAULT NULL,
             postal_code int(5) DEFAULT NULL,
             city varchar(20) DEFAULT NULL,
-            UNIQUE(street_name, house_number, postal_code, city) ON CONFLICT IGNORE
+            UNIQUE(street_name, house_number, postal_code, city)
             );";
         $this->db->exec($sql);
     }
@@ -28,14 +28,27 @@ class DBAddressStore implements AddressStore {
      * @return Address
      */
     public function create(object $address): Address {
-        //  create address
+        // checking if an entry already exist
+        $sql = "SELECT address_ID FROM address WHERE ".
+            "street_name = '".$address->getStreetName()."' OR ".
+            "house_number = '".$address->getHouseNumber()."' OR ".
+            "postal_code = '".$address->getPostalCode()."' OR ".
+            "city = '".$address->getCity()."'
+        ;";
+        $stmt = $this->db->query($sql)->fetch();
+        if ($stmt !== false) {
+            return $this->findOne($stmt[0]);
+        }
+        // inserting an entry
         $sql = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES (
             '".$address->getStreetName()."',
             '".$address->getHouseNumber()."',
             '".$address->getPostalCode()."',
             '".$address->getCity()."');";
+
         $this->db->exec($sql);
-        return $this->findOne($this->db->lastInsertId());
+        $address = $this->findOne($this->db->lastInsertId());
+        return $address;
     }
 
     /**
@@ -70,7 +83,7 @@ class DBAddressStore implements AddressStore {
      */
     public function findOne(string $address_ID): Address {
         $sql = "SELECT * FROM address WHERE ".
-            "address_ID = ".$address_ID." LIMIT 1";
+            "address_ID = '".$address_ID."';";
         return Address::withAddressID($this->db->query($sql)->fetch());
     }
 

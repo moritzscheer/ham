@@ -56,4 +56,24 @@ class FileEventStore implements EventStore
             return $item;
         } else return new Event();
     }
+
+    public function update(Event $item): Event
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function findOne(string $id): Event
+    {
+        // TODO: Implement findOne() method.
+    }
+
+    public function delete(string $id)
+    {
+        // TODO: Implement delete() method.
+    }
+
+    public function findMany(array $ids)
+    {
+        // TODO: Implement findMany() method.
+    }
 }

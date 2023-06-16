@@ -4,7 +4,7 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/navigation/header/header.php" ?>
 
     <form method="post" class="profile-Picture-Large-Box" enctype="multipart/form-data">
-        <?php getProfilePictureLarge() ?>
+        <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image" class="profile-Picture-Large">
         <div id="image-Select">
             <label>Select Image
                 <input type="file" accept=".jpg, .png, .jpeg" name="profile_picture_large">
@@ -16,7 +16,7 @@ include_once "../php/head/head.php" ?>
     <div class="profile-Navigation">
         <div>
             <form method="post" class="profile-Picture-Box" id="edit" enctype="multipart/form-data">
-                <?php getProfilePictureSmall() ?>
+                <img src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
                 <div id="profile-Picture-Link">
                     <label >Select Image
                         <input type="file" name="profile_picture_small" accept=".jpg, .png, .jpeg">
@@ -24,7 +24,7 @@ include_once "../php/head/head.php" ?>
                     <input type="submit" value="Add" name="profile_picture_small" class="profile-Picture-Submit">
                 </div>
             </form>
-            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
+            <?php include_once $_SESSION["navigation"] ?>
         </div>
     </div>
 
@@ -52,19 +52,19 @@ include_once "../php/head/head.php" ?>
 
                 <div id="split">
                     <label id="input-entry" class="entry">Street:
-                        <input type="text" name="street_name" value="<?php echo $_SESSION["user_address"]->getStreetName() ?>">
+                        <input type="text" name="street_name" value="<?php echo $_SESSION["user"]->getStreetName() ?>">
                     </label>
                     <label id="input-entry" class="entry">House Number:
-                        <input type="text" name="house_number" value="<?php echo $_SESSION["user_address"]->getHouseNumber() ?>">
+                        <input type="text" name="house_number" value="<?php echo $_SESSION["user"]->getHouseNumber() ?>">
                     </label>
                 </div>
 
                 <div id="split">
                     <label id="input-entry" class="entry">City:
-                        <input type="text" name="city" value="<?php echo $_SESSION["user_address"]->getCity() ?>">
+                        <input type="text" name="city" value="<?php echo $_SESSION["user"]->getCity() ?>">
                     </label>
                     <label id="input-entry" class="entry">Postal Code:
-                        <input type="text" name="postal_code" value="<?php echo $_SESSION["user_address"]->getPostalCode() ?>">
+                        <input type="text" name="postal_code" value="<?php echo $_SESSION["user"]->getPostalCode() ?>">
                     </label>
                 </div>
                 
@@ -99,7 +99,7 @@ include_once "../php/head/head.php" ?>
         </form>
 
         <form method="post" enctype="multipart/form-data" id="uploaded-Images">
-            <?php echo getImageGallery() ?>
+            <?php echo $_SESSION["image_gallery"] ?>
             <?php echo $error_message ?>
             <div class="newImage-Link">
                 <label>Select Image

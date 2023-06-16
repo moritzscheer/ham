@@ -3,7 +3,6 @@
 <?php include_once "../php/navigation/header/header.php";
 global $newEvent;
 ?>
-<?php echo var_dump($_SESSION["aa"]) ?><br><br><br><br>
 
 <div>
     <h1> Create Event </h1>

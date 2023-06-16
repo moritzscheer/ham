@@ -4,10 +4,14 @@ include_once "../stores/interface/UserStore.php";
 class DBUserStore implements UserStore
 {
     private PDO $db;
+    private Store $addressStore;
+    private Blob $blobObj;
 
-    public function __construct(PDO $db) {
+
+    public function __construct(PDO $db, Store $addressStore, Blob $blobObj) {
         $this->db = $db;
-
+        $this->addressStore = $addressStore;
+        $this->blobObj = $blobObj;
 
         // creates the user table
         $sql = "CREATE TABLE IF NOT EXISTS user (
@@ -35,15 +39,29 @@ class DBUserStore implements UserStore
      * @throws Exception
      */
     public function create(object $user): User {
-        // checking if email or password already exist
-        $sql = "SELECT * FROM user WHERE email = '".$user->getEmail()."' OR password = '".$user->getPassword()."';";
-        $stmt = $this->db->query($sql)->fetch();
-        if($stmt !== false) {
-            throw new Exception("Email or Password already exist");
-        }
+        try {
+            $this->db->beginTransaction();
 
-        $create = "INSERT INTO user (address_ID, type, name, surname, password, phone_number, email, genre, members, other_remarks ) VALUES (
-            '".$user->getAddressID()."',
+            // checking if an entry already exist with the password an email
+            $sql = "SELECT * FROM user WHERE email = '".$user->getEmail()."' OR password = '".$user->getPassword()."';";
+            $stmt = $this->db->query($sql)->fetch();
+            if($stmt !== false) {
+                throw new Exception("Email or Password already exist");
+            }
+
+            //  create address
+            $address = new Address();
+            $address->setStreetName($user->getStreetName());
+            $address->setHouseNumber($user->getHouseNumber());
+            $address->setPostalCode($user->getPostalCode());
+            $address->setCity($user->getCity());
+
+            $address = $this->addressStore->create($address);
+
+
+            // inserting an entry
+            $sql = "INSERT INTO user (address_ID, type, name, surname, password, phone_number, email, genre, members, other_remarks ) VALUES (
+            '".$address->getAddressID()."',
             '".$user->getType()."',
             '".$user->getName()."',
             '".$user->getSurname()."',
@@ -53,9 +71,15 @@ class DBUserStore implements UserStore
             '".$user->getGenre()."',
             '".$user->getMembers()."',
             '".$user->getOtherRemarks()."');";
-        $this->db->exec($create);
+            $this->db->exec($sql);
 
-        return $this->findOne($this->db->lastInsertId());
+            $user = $this->findOne($this->db->lastInsertId());
+            $this->db->commit();
+            return $user;
+        } catch (Exception $ex) {
+            $this->db->rollBack();
+            throw new Exception("could not create User");
+        }
     }
 
     /**
@@ -86,8 +110,29 @@ class DBUserStore implements UserStore
      * @return void
      */
     public function delete(string $user_ID): void {
-        $sql = "DELETE FROM user WHERE user_ID = '".$user_ID."';";
-        $this->db->exec($sql);
+        try {
+            $this->db->beginTransaction();
+
+            $sql = "SELECT COUNT(*) FROM user WHERE address_ID = (SELECT address_ID FROM user WHERE user_ID = '".$user_ID."');";
+            $stmt = $this->db->query($sql)->fetch();
+
+            if($stmt[0] == 1) {
+                $sql = "SELECT address_ID FROM user WHERE user_ID = '".$user_ID."';";
+                $address_ID = $this->db->query($sql)->fetch();
+
+                $sql = "DELETE FROM user WHERE user_ID = '".$user_ID."';";
+                $this->db->exec($sql);
+
+                $this->addressStore->delete($address_ID[0]);
+            } else {
+                $sql = "DELETE FROM user WHERE user_ID = '".$user_ID."';";
+                $this->db->exec($sql);
+            }
+
+            $this->db->commit();
+        } catch (Exception $ex) {
+            $this->db->rollBack();
+        }
     }
 
     /**
@@ -96,12 +141,16 @@ class DBUserStore implements UserStore
      * @return User|null
      */
     public function findOne(string $user_ID): User|null {
-        $sql ="SELECT * FROM user WHERE user_ID = ".$user_ID;
+        $sql = "SELECT * FROM user 
+            JOIN address
+            ON address.address_ID = user.address_ID 
+            WHERE user_ID = '".$user_ID."';";
         $stmt = $this->db->query($sql)->fetch();
+
         if(!$stmt) {
             return null;
         } else {
-            return User::withUserID($stmt);
+            return User::withAddress($stmt);
         }
     }
 
@@ -129,8 +178,26 @@ class DBUserStore implements UserStore
     public function findAll() : array {
         $sql = "SELECT * FROM user
                     INNER JOIN address 
-                    ON address.address_ID = user.address_ID;";
-        return $this->db->query($sql)->fetchAll();
+                    ON address.address_ID = user.address_ID
+                    WHERE type = 'Musician';";
+        $stmt = $this->db->query($sql)->fetchAll();
+
+        $return = array();
+        foreach ($stmt as $band) {
+            $newUser = User::withAddress($band);
+
+            try {
+                $imageID = $this->blobObj->queryID($band["user_ID"], "profile_picture_small");
+                if($imageID[0]["id"] !== null) {
+                    $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
+                    $newUser->setBlobData($blobArray);
+                }
+                $return[] = $newUser;
+            } catch (RuntimeException $ex) {
+                $return[] = $newUser;
+            }
+        }
+        return $return;
     }
 
     /**

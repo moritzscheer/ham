@@ -2,48 +2,47 @@
 
 class blob {
 
-    private $pdo = null;
+    private PDO $db;
 
-    public function __construct()
-    {
-        $user = "root";
-        $pw = null;
-        $dsn = "sqlite:sqlite-pdo-blob.db";
-        $id = "id INTEGER PRIMARY KEY AUTOINCREMENT,"; // SQLite-Syntax
+    public function __construct(PDO $db) {
+        $this->db = $db;
 
-        try {
-            $this->pdo = new PDO($dsn, $user, $pw);
-            $sql = "CREATE TABLE IF NOT EXISTS files (". $id .
-                "    assigned_ID int(11) NOT NULL," .
-                "    category VARCHAR(255) NOT NULL," .
-                "    mime VARCHAR(255) NOT NULL," .
-                "    data BLOB NOT NULL);";
-            $this->pdo->exec($sql);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+        $sql = "CREATE TABLE IF NOT EXISTS files (".
+            "    id INTEGER PRIMARY KEY AUTOINCREMENT," .
+            "    assigned_ID int(11) NOT NULL," .
+            "    category VARCHAR(255) NOT NULL," .
+            "    mime VARCHAR(255) NOT NULL," .
+            "    data BLOB NOT NULL
+        );";
+        $db->exec($sql);
     }
 
     public function insertBlob($assigned_ID, $category, $filePath, $mime): bool {
+        $this->db->beginTransaction();
+
         if($category === "profile_picture_small" || $category === "profile_picture_large") {
             $sql = "SELECT * FROM files WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
-            $result = $this->pdo->query($sql)->fetch();
+            $result = $this->db->query($sql)->fetch();
             if($result !== false) {
-                return $this->updateBlob($assigned_ID, $category, $filePath, $mime);
+                $result = $this->updateBlob($assigned_ID, $category, $filePath, $mime);
+                $this->db->commit();
+                return $result;
             }
         }
 
         $blob = fopen($filePath, 'rb');
 
         $sql = "INSERT INTO files(assigned_ID, category, mime, data) VALUES(:assigned_ID ,:category ,:mime, :data)";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindParam(':assigned_ID', $assigned_ID);
         $stmt->bindParam(':category', $category);
         $stmt->bindParam(':mime', $mime);
         $stmt->bindParam(':data', $blob, PDO::PARAM_LOB);
 
-        return $stmt->execute();
+        $result = $stmt->execute();
+        $this->db->commit();
+        return $result;
     }
 
     function updateBlob($assigned_ID, $category, $filePath, $mime): bool {
@@ -55,7 +54,7 @@ class blob {
                     data = :data
                 WHERE assigned_ID = :assigned_ID AND category = :category;";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->db->prepare($sql);
 
         $stmt->bindParam(':assigned_ID', $assigned_ID);
         $stmt->bindParam(':category', $category);
@@ -76,10 +75,9 @@ class blob {
                    FROM files
                   WHERE id = :id;";
 
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->db->prepare($sql);
         $stmt->execute(array(":id" => $id));
         $stmt->bindColumn(1, $mime);
-        //$stmt->bindColumn(2, $data, PDO::PARAM_LOB); bis 2021
         $stmt->bindColumn(2, $data);
 
         $stmt->fetch(PDO::FETCH_BOUND);
@@ -90,7 +88,7 @@ class blob {
     
     public function delete($assigned_ID) {
         $sql = "DELETE FROM files WHERE assigned_ID = '".$assigned_ID."';";
-        $this->pdo->exec();
+        $this->db->exec($sql);
     }
 
     /**
@@ -100,17 +98,10 @@ class blob {
         $sql = "SELECT id
                 FROM files
                 WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
-        $stmt = $this->pdo->query($sql)->fetchAll();
+        $stmt = $this->db->query($sql)->fetchAll();
 
         return ($stmt == null) ? throw new RuntimeException("could not find any"): $stmt;
     }
-
-    public function __destruct() {
-        // close the database connection
-        $this->pdo = null;
-    }
-
-
 }
 
 

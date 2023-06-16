@@ -101,16 +101,6 @@ class Address {
         $this->city = $city;
     }
 
-    /**
-     * @return string
-     */
-    public function printAddress(): string {
-        if($this->street_name === "" && $this->house_number === "") {
-            return $this->postal_code." ".$this->city;
-        } else {
-            return $this->street_name." ".$this->house_number.", ".$this->postal_code." ".$this->city;
 
-        }
-    }
 
 }

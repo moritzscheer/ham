@@ -7,7 +7,7 @@ class DBEventStore implements EventStore
 
     private PDO $db;
     private Store $addressStore;
-private Blob $blobObj;
+    private Blob $blobObj;
 
     public function __construct(PDO $db, Store $addressStore, Blob $blobObj) {
         $this->db = $db;
@@ -17,45 +17,60 @@ private Blob $blobObj;
         $sql = "CREATE TABLE IF NOT EXISTS event (
             event_ID INTEGER PRIMARY KEY AUTOINCREMENT,
             address_ID int(11) DEFAULT NULL,
+            user_ID int(11) NOT NULL,
             name varchar(40) DEFAULT NULL,
             description varchar(20) DEFAULT NULL,
             requirements varchar(20) DEFAULT NULL,
             date varchar(20) DEFAULT NULL,
             startTime varchar(20) DEFAULT NULL,
             endTime varchar(20) DEFAULT NULL,
+            FOREIGN KEY (user_ID) REFERENCES user(user_ID),
             FOREIGN KEY (address_ID) REFERENCES address(address_ID)
         );";
         $db->exec($sql);
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function create(Event $item):Event {
-        $sql = "INSERT INTO event (address_ID, name, description, requirements, date, startTime , endTime) VALUES (
-            '".$item->getAddressID()."',
-            '".$item->getName()."',
-            '".$item->getDescription()."',
-            '".$item->getRequirements()."',
-            '".$item->getDate()."',             
-            '".$item->getStartTime()."',
-            '".$item->getEndTime()."'
-        );";
+        try {
+            $this->db->beginTransaction();
+            //  create address
+            $address = new Address();
+            $address->setStreetName($item->getStreetName());
+            $address->setHouseNumber($item->getHouseNumber());
+            $address->setPostalCode($item->getPostalCode());
+            $address->setCity($item->getCity());
 
-          $this->db->exec($sql);
-        return $this->findOne($this->db->lastInsertId());
+            $address = $this->addressStore->create($address);
+
+            // inserting an entry
+            $sql = "INSERT INTO event (address_ID, user_ID, name, description, requirements, date, startTime , endTime) VALUES (
+                '".$address->getAddressID()."',
+                '".$item->getUserID()."',
+                '".$item->getName()."',
+                '".$item->getDescription()."',
+                '".$item->getRequirements()."',
+                '".$item->getDate()."',             
+                '".$item->getStartTime()."',
+                '".$item->getEndTime()."');";
+            $this->db->exec($sql);
+
+            $event = $this->findOne($this->db->lastInsertId());
+            $this->db->commit();
+            return $event;
+        } catch (Exception $ex) {
+            $this->db->rollBack();
+            throw new Exception("could not create Event");
+        }
     }
 
     public function update(Event $item):Event {
-        // update address
-        $address = new StdClass();
-        $address->street = $item->getStreet();
-        $address->houseNr = $item->getHouseNr();
-        $address->postalCode = $item->getPostalCode();
-        $address->city = $item->getCity();
+        $this->db->beginTransaction();
 
-        $this->addressStore->update($address);
-
-
-        $update = "UPDATE event 
+        $sql = "UPDATE event 
             SET image = ".$item->getImage() . ",
             description = ".$item->getDescription() . ",
             name = ".$item->getName() . ",
@@ -65,9 +80,11 @@ private Blob $blobObj;
             requirements = ".$item->getRequirements() . "
             WHERE event_ID = ". $item-> getId().";";
 
-        $this->db->exec($update);
+        $this->db->exec($sql);
 
-        return $this->findOne($item-> getId());
+        $event = $this->findOne($this->db->lastInsertId());
+        $this->db->commit();
+        return $event;
     }
 
 
@@ -83,7 +100,7 @@ private Blob $blobObj;
     public function findOne(string $id): Event {
         $findOne ="SELECT * FROM event 
                      WHERE event_ID = '".$id."';";
-        return Event::withoutAddress($this->db->query($findOne)->fetch());
+        return Event::withAddress($this->db->query($findOne)->fetch());
     }
 
 
@@ -95,7 +112,7 @@ private Blob $blobObj;
         }
         $findMany ="SELECT * FROM event 
                      WHERE ". $ids.join(" OR ") ."
-                     INNER JOIN address 
+                     INNER JOIN address
                      ON address.address_ID = event.address_ID;
                      LIMIT " .count($ids);
         $events = $this->db->query($findMany)->fetchAll();
@@ -111,19 +128,20 @@ private Blob $blobObj;
 
     public function findAll(): array {
         $sql = "SELECT * FROM event
-                    INNER JOIN address 
+                    INNER JOIN address
                     ON address.address_ID = event.address_ID;";
         $stmt = $this->db->query($sql)->fetchAll();
      
 
         $return = array();
-        foreach ($stmt as $key) {
-            $newEvent = Event::withAddress($key);
+        foreach ($stmt as $event) {
+            $newEvent = Event::withAddress($event);
 
             try {
-                $imageID = $this->blobObj->queryID($key["event_ID"], "event");
-                $blobArray = $this->blobObj->selectBlob($imageID);
-                $newEvent->setDate($blobArray);
+                $imageID = $this->blobObj->queryID($event["event_ID"], "event");
+                $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
+                $newEvent->setBlobData($blobArray);
+                $return[] = $newEvent;
             } catch (RuntimeException $ex) {
                 $return[] = $newEvent;
             }

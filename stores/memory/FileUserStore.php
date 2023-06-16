@@ -121,7 +121,7 @@ class FileUserStore implements UserStore {
                 $user[8] = $userJSON->genre;
                 $user[9] = $userJSON->members;
                 $user[10] = $userJSON->other_remarks;
-                return User::withUserID($user);
+                return User::withAddress($user);
             }
         }
         throw new Exception("No such User was found.");

@@ -4,15 +4,15 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/navigation/header/header.php" ?>
 
     <section class="profile-Picture-Large-Box">
-        <?php getProfilePictureLarge() ?>
+        <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image" class="profile-Picture-Large">
     </section>
 
     <div class="profile-Navigation">
         <div>
             <div class="profile-Picture-Box">
-                <?php getProfilePictureSmall() ?>
+                <img src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
             </div>
-            <?php include_once "../php/navigation/profile/profileNavigation.php" ?>
+            <?php include_once $_SESSION["navigation"] ?>
         </div>
     </div>
 
@@ -38,7 +38,7 @@ include_once "../php/head/head.php" ?>
                 </div>
 
                 <div id="output-entry" class="entry">Address:
-                    <div><?php echo $_SESSION["address"]->printAddress() ?></div>
+                    <div><?php echo $_SESSION["user"]->printAddress() ?></div>
                 </div>
 
                 <div id="output-entry" class="entry">Type:
@@ -60,10 +60,9 @@ include_once "../php/head/head.php" ?>
         </div>
                                             
         <div id="uploaded-Images">
-            <?php echo getImageGallery() ?>
+            <?php echo $_SESSION["image_gallery"] ?>
         </div>
     </section>
-
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
