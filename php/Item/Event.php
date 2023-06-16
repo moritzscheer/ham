@@ -47,7 +47,7 @@ class Event
         return $instance;
     }
 
-    public static function getJsonEvent(array $item) : Event
+    public static function getJsonEvent(array $item): Event
     {
         $instance = new self();
         $instance->event_ID = $item->id;
@@ -64,6 +64,28 @@ class Event
         $instance->postal_code = $item->postalCode;
         $instance->city = $item->city;
         return $instance;
+    }
+
+    public static function toArrayForJsonEntry(Event $item) : array
+    {
+        $jsonEvent = array(
+            "image" => $item->getImageSource(),
+            "id" => $item->getEventID(),
+            "authorID" => $item->getUserID(),
+            "type" => "event",
+            "description" => $item->getDescription(),
+            "name" => $item->getName(),
+            "address_ID" => $item->getAddressID(),
+            "street" => $item->getStreetName(),
+            "houseNr" => $item->getHouseNumber(),
+            "postalCode" => $item->getPostalCode(),
+            "city" => $item->getCity(),
+            "Date" => $item->getDate(),
+            "startTime" => $item->getStartTime(),
+            "endTime" => $item->getEndTime(),
+            "requirements" => $item->getRequirements()
+        );
+        return $jsonEvent;
     }
 
     public function getEventHTML(): string

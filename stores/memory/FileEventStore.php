@@ -4,18 +4,31 @@ include_once "../stores/interface/EventStore.php";
 class FileEventStore implements EventStore
 {
     private string $eventFile;
+    private mixed $itemsOfJsonfile;
 
     public function __construct($eventFile)
     {
-        $this->eventFile = file_get_contents($eventFile, true);
+        $this->eventFile = $eventFile;
+        $this->reloadItemsFromJsonFile();
     }
 
-    private function getJsonItems(): mixed
+
+    /**
+     * Loads content of jsonfile into a variable
+     * @return void
+     */
+    private function reloadItemsFromJsonFile()
     {
-        return json_decode($this->eventFile, false);
+        $content = file_get_contents($this->eventFile, true);
+        $this->itemsOfJsonfile = json_decode($content, false);
     }
 
 
+    /**
+     * Adds an Event to json file
+     * @param array $item
+     * @return bool
+     */
     private function addItemToJsonFile(array $item): bool
     {
         $var = file_put_contents($this->eventFile, json_encode($item));
@@ -24,16 +37,15 @@ class FileEventStore implements EventStore
         } else return false;
     }
 
+
     /**
      * Loads all Events from json file
      * @return Event[]
      */
     public function findAll(): array
     {
-        //todo: fix this
-        $items = $this->getJsonItems();
         $events = array();
-        foreach ($items as $item) {
+        foreach ($this->itemsOfJsonfile as $item) {
             $event = Event::getJsonEvent($item);
             $events[] = $event;
         }
@@ -48,69 +60,64 @@ class FileEventStore implements EventStore
      */
     public function create(Event $item): Event
     {
-        $jsonEvent = array(
-            "image" => $item->getImageSource(),
-            "id" => $item->getID(),
-            "authorID" => $item->getAuthorID(),
-            "type" => "event",
-            "description" => $item->getDescription(),
-            "name" => $item->getName(),
-            "address_ID" => $item->getAddressID(),
-            "street" => $item->getStreetName(),
-            "houseNr" => $item->getHouseNumber(),
-            "postalCode" => $item->getPostalCode(),
-            "city" => $item->getCity(),
-            "Date" => $item->getDate(),
-            "startTime" => $item->getStartTime(),
-            "endTime" => $item->getEndTime(),
-            "requirements" => $item->getRequirements()
-        );
-
+        $jsonEvent = Event::toArrayForJsonEntry($item);
         $var = $this->addItemToJsonFile($jsonEvent);
         if ($var) {
+            $this->reloadItemsFromJsonFile();
             return $item;
         } else return new Event();
     }
 
     public function update(Event $item): Event
     {
-        // TODO: Implement update() method.
-        return new Event();
+        // maybe other solution ?
+        $this->delete($item->getEventID());
+        return $this->create($item);
     }
 
     public function findOne(string $id): Event
     {
-        // TODO: Implement findOne() method.
-        $items = $this->getJsonItems();
-
-        return new Event();
+        foreach ($this->itemsOfJsonfile as $item) {
+            if ($item->id == $id) {
+                return Event::getJsonEvent($item);
+            }
+        }
+        return new Event(); // object or exception ?
     }
 
     /**
      * Deletes Event form json file by given id
+     *
+     * Loads all the content form the json file into a variable,
+     * deletes an entry in the array and overwrites the json file
      * @param string $id
      * @return void
      */
     public function delete(string $id)
     {
         $i = 0;
-        $items = $this->getJsonItems();
-        foreach ($items as $item) {
+        foreach ($this->itemsOfJsonfile as $item) {
             if ($id == $item->id) {
-                unset($items[$i]);
+                unset($this->itemsOfJsonfile[$i]);
             }
             $i++;
         }
-        $toJsonString = json_encode($items, JSON_PRETTY_PRINT);
+        $toJsonString = json_encode($this->itemsOfJsonfile, JSON_PRETTY_PRINT);
         $openFile = fopen($this->eventFile, 'w');
         fwrite($openFile, $toJsonString);
         fclose($openFile);
+        $this->reloadItemsFromJsonFile();
     }
 
-    public function findMany(array $ids) : Event
+    public function findMany(array $ids)
     {
-        // TODO: Implement findMany() method.
-        return new Event();
+        $events = array();
+        foreach($ids as $id){
+            $event = $this->findOne($id);
+            if ($event->getEventID() == "") continue;
+            $events[] = $event;
+        }
+        return $events;
     }
 
 
