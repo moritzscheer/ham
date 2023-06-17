@@ -71,14 +71,14 @@ class DBEventStore implements EventStore
         $this->db->beginTransaction();
 
         $sql = "UPDATE event 
-            SET image = ".$item->getImage() . ",
+            SET image = ".$item->getImageSource() . ",
             description = ".$item->getDescription() . ",
             name = ".$item->getName() . ",
             date = ".$item->getDate() . ",
             startTime = ".$item->getStartTime() . ",
             endTime = ".$item->getEndTime() . ",
             requirements = ".$item->getRequirements() . "
-            WHERE event_ID = ". $item-> getId().";";
+            WHERE event_ID = ". $item-> getEventID().";";
 
         $this->db->exec($sql);
 

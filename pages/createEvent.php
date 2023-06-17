@@ -90,7 +90,8 @@ global $newEvent;
                                   rows="5"><?php echo $_SESSION["event"]->getRequirements() ?></textarea>
                     </label>
                 </section>
-                <input type="submit" name="submit" value="Create Event">
+                <!--Maybe put an link for directing to the events.php page ? -->
+                <input type="submit" name="submit" value="<?php echo $_SESSION["CreateOrUpdateWord"]?> Event">
             </div>
         </div>
     </form>

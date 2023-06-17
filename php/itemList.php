@@ -10,6 +10,10 @@ global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db;
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
+if ($_SESSION["event"]->getEventID() == -1){
+    $_SESSION["CreateOrUpdateWord"] = "Create";
+} else $_SESSION["CreateOrUpdateWord"] = "Update";
+
 $_SESSION["events"] = $_SESSION["events"] ?? null;
 $_SESSION["bands"] = $_SESSION["bands"] ?? null;
 $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? "";
@@ -32,11 +36,18 @@ $_SESSION["itemList"] = (isset($_GET["type"]) && is_string($_GET["type"])) ? get
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
+/**
+ * Creates a new Event in the Eventstore
+ */
 if (isset($_POST["submit"])) {
     try {
-        $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
-        $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
+        if ($_SESSION["CreateOrUpdateWord"] == "Create"){
+            $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
+            $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
+        }
+        else {
+            $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
+        }
 
         // if an image was uploaded insert it in the files table
             $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
@@ -46,7 +57,9 @@ if (isset($_POST["submit"])) {
     }
 }
 
-
+/**
+ * Shows the Details of an Event at the top of the page
+ */
 if (isset($_POST["onItemClick"])) {
     foreach ($_SESSION["events"] as $event) {
         if ($_POST["onItemClick"] == $event->getEventID()) {
@@ -58,6 +71,26 @@ if (isset($_POST["onItemClick"])) {
         }
     }
 }
+
+
+/**
+ * Deletes an Event from the Eventstore
+ */
+if (isset($_POST["onDelete"])) {
+    $eventStore->delete($_POST["onDelete"]);
+    unset($_POST["onDelete"]);
+}
+
+/**
+ * Sets the current session event to the event the user wants to edit.
+ * That means all fields in createEvent are filled with the data of the specific event
+ */
+if (isset($_POST["onEdit"])){
+    $_SESSION["event"] = $eventStore->findOne($_POST["onEdit"]);
+    unset($_POST["onEdit"]);
+}
+
+
 
 /**
  *
@@ -97,13 +130,23 @@ function getEvents(): string
 {
     global $eventStore, $error_message;
 
+    // check if loggedIn: If yes add "edit" and "delete" buttons to created event of loggedIn user
+    $loggedIn = false;
+    if ($_SESSION["loggedIn"]["status"] === true) {
+        $loggedIn = true;
+    }
+
     try {
         $_SESSION["events"] = $eventStore->findAll();
 
         if (!empty($_SESSION["events"])) {
             $return = "";
             foreach ($_SESSION["events"] as $event) {
-                $return = $return . $event->getEventHTML();
+                if ($loggedIn && ($_SESSION["loggedIn"]["user"]->getUserID() == $event->getUserID())) {
+                    $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button
+                } else {
+                    $return = $return . $event->getEventHTML();
+                }
             }
             return $return;
         } else {

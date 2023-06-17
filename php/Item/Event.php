@@ -5,7 +5,7 @@ class Event
 {
 
     // event attributes
-    private int $event_ID;
+    private int $event_ID = -1;
     private ?string $address_ID = "";
     private int $user_ID = -1;
     private ?string $name = "";
@@ -106,6 +106,38 @@ class Event
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
             '    </form>                                                                                           ';
+    }
+
+    //todo: fix line 120 to 127 with ajax ?
+    public function getEditableEventHTML() : string
+    {
+        return $string =
+            '    <form method="post" name="event_ID" id="item">                                                    ' .
+            '        <div id="item_image">                                                                                         ' .
+            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              ' .
+            '        </div>                                                                                        ' .
+            '        <div >                                                                                         ' .
+            '             <div>                                                           ' .
+            '                   <a href="createEvent.php"  name="onEdit" ></a>                 ' .
+            '                    <input type="submit" name="onEdit" value="' . $this->event_ID . '">                                                            ' .
+            '             </div>' .
+            '             <div>Delete                                                           ' .
+            '                   <a href="events.php"  name="onDelete" ></a>                                    ' .
+            '                   <input type="submit" name="onDelete" value="' . $this->event_ID . '">                 ' .
+            '              </div>                                                                     ' .
+            '        </div>                                                                             ' .
+            '        <div id="item_short_description" class="text-line-pre">                                             ' .
+            '            <span>' . $this->name . '</span>                                                          ' .
+            '            <br>                                                                                      ' .
+            '            <span>Address: ' . $this->printAddress() . '</span>                                         ' .
+            '            <br>                                                                                      ' .
+            '            <span> ' . $this->getTime() . '</span>                                                    ' .
+            '        </div>                                                                                        ' .
+            '        <label>click to display more / less                                                           ' .
+            '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
+            '        </label>                                                                                      ' .
+            '    </form>                                                                                           ';
+
     }
 
     /**
