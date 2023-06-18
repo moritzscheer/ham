@@ -1,4 +1,4 @@
-<?php global $itemList, $itemDetail, $error_message;
+<?php global $itemList, $itemDetail, $error_message, $showEventOptions;
 include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
@@ -20,6 +20,16 @@ include_once "../php/head/head.php" ?>
 
     <h1 id="header">Events</h1>
 
+    <form method="post" id="<?php echo $_SESSION["showEventOptions"] ?>">
+        <label>All Events
+            <input type="submit" name="onGetAllEvents">
+        </label>
+        
+        <label>My Events
+            <input type="submit" name="onGetMyEvents" value="<?php echo $_SESSION["user_ID"] ?>">
+        </label>
+    </form>
+    
     <p id="error-message"><?php echo $error_message ?></p>
     <?php echo $_SESSION["itemDetail"] ?>
     <section id="item_list">

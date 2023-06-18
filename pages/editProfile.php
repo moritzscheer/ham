@@ -93,8 +93,12 @@ include_once "../php/head/head.php" ?>
             </div>
 
             <div id="profile-Submit">
-                <a href="profile.php">Cancel</a>
-                <input type="submit" name="update_profile" value="Save Changes">
+                <label>Cancel
+                    <input type="submit" name="viewProfile" value="<?php echo $_SESSION["viewProfileID"] ?>">
+                </label>
+                <label>Save Change
+                    <input type="submit" name="update_profile">
+                </label>
             </div>
         </form>
 

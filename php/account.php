@@ -14,7 +14,7 @@ $_SESSION["user"] = update_user_variable($_SESSION["user"] ?? new User());
 
 
 if($_SESSION["loggedIn"]["status"] === true) {
-    $_SESSION["viewProfileID"] = $_SESSION["loggedIn"]["user"]->getUserID();
+    $_SESSION["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
 
     $profile_header_box =
         '<div id="name">                                   '.
@@ -28,7 +28,7 @@ if($_SESSION["loggedIn"]["status"] === true) {
     $_SESSION["Musician"] = ($_SESSION["loggedIn"]["user"]->getType() === "Musician") ? "checked" : "";
     $_SESSION["Host"] = ($_SESSION["loggedIn"]["user"]->getType() === "Host") ? "checked" : "";
 } else {
-    $_SESSION["viewProfileID"] = "";
+    $_SESSION["user_ID"] = "";
 }
 
 
@@ -83,7 +83,7 @@ if(isset($_POST["register"])) {
             $user->setPassword($password);
 
             $user = $userStore->create($user);
-            $image = getProfilePictureSmall($user->getUserID());
+            $image = getProfilePictureSmall($user->getUserID(), false);
             $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
             $_SESSION["success_message"] = "Success! Welcome to our Team.";
 
@@ -109,33 +109,10 @@ if(isset($_POST["login"])) {
         $user = $_SESSION["user"];
 
         $user = $userStore->login($user->getEmail(), $password);
-        $image = getProfilePictureSmall($user->getUserID());
+        $image = getProfilePictureSmall($user->getUserID(), false);
         $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
 
         header("Location: index.php");
-        exit();
-    } catch (Exception $ex) {
-        $error_message = $ex->getMessage();
-    }
-}
-
-
-
-/**
- * If a user wants to view a profile page
- */
-if(isset($_POST["viewProfile"])) {
-    try {
-        if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
-            $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
-            $_SESSION["navigation"] = "../php/navigation/profile/private.php";
-        } else {
-            $_SESSION["user"] = $userStore->findOne($_POST["viewProfile"]);
-
-            $_SESSION["navigation"] = "../php/navigation/profile/public.php";
-        }
-        setImages($_POST["viewProfile"]);
-        header("Location: profile.php");
         exit();
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
@@ -221,6 +198,72 @@ if(isset($_POST["update_profile"])) {
 
 
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                                                                                    */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+/**
+ * If a user wants to view a profile page
+ * $_POST["viewProfile"] contains the user_ID of the profile
+
+ */
+if(isset($_POST["viewProfile"])) {
+    try {
+        if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
+            $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
+            $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+        } else {
+            $_SESSION["user"] = $userStore->findOne($_POST["viewProfile"]);
+            $_SESSION["navigation"] = "../php/navigation/profile/public.php";
+        }
+        setImages($_POST["viewProfile"], false);
+        header("Location: profile.php");
+        exit();
+    } catch (Exception $ex) {
+        $error_message = $ex->getMessage();
+    }
+}
+
+
+/**
+ * If a user wants to view an edit profile page
+ * $_POST["viewEditProfile"] contains the user_ID of the profile
+ */
+if(isset($_POST["viewEditProfile"])) {
+    if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewEditProfile"]) {
+        $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+        setImages($_POST["viewEditProfile"], true);
+        header("Location: editProfile.php");
+        exit();
+    }
+}
+
+
+
+/**
+ * If a user wants to view the change password page
+ * $_POST["viewChangePassword"] contains the user_ID of the profile
+ */
+if(isset($_POST["viewChangePassword"])) {
+    if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewChangePassword"]) {
+        $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+        setImages($_POST["viewChangePassword"], true);
+        header("Location: changePassword.php");
+        exit();
+    }
+}
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                                                                                    */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+
+
+
 /**
  *  If a user wants to change the small profile picture
  */
@@ -229,8 +272,9 @@ if (isset($_POST["profile_picture_small"])) {
         $path = "../resources/images/profile/custom/".verifyImage("profile_picture_small", "profile/custom");
 
         $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "profile_picture_small", $path, "image/gif");
-        $_SESSION["profile_picture_small"] = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID());
-        $_SESSION["loggedIn"]["profile_picture_small"] = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID());
+        $image = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID(), true);
+        $_SESSION["profile_picture_small"] = $image;
+        $_SESSION["loggedIn"]["profile_picture_small"] = $image;
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }
@@ -246,7 +290,7 @@ if (isset($_POST["profile_picture_large"])) {
         $path = "../resources/images/profile/custom/".verifyImage("profile_picture_large", "profile/custom");
 
         $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "profile_picture_large", $path, "image/gif");
-        $_SESSION["profile_picture_large"] = getProfilePictureLarge($_SESSION["loggedIn"]["user"]->getUserID());
+        $_SESSION["profile_picture_large"] = getProfilePictureLarge($_SESSION["loggedIn"]["user"]->getUserID(), true);
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }
@@ -260,13 +304,28 @@ if (isset($_POST["newImage"])) {
         $path = "../resources/images/profile/custom/".verifyImage("newImage", "profile/custom");
 
         $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "image_gallery", $path, "image/gif");
-        $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID());
+        $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }
 }
 
 
+
+if (isset($_POST["onImageGalleryClick"])) {
+    try {
+        $blobObj->delete($_POST["onImageGalleryClick"]);
+        $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
+        header("Location: editProfile.php");
+        exit();
+    } catch (RuntimeException $e) {
+        $error_message = $e->getMessage();
+        echo var_dump($error_message);
+    }
+}
+
+
+    
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                   functions                                                                        */
@@ -341,24 +400,24 @@ function getLastUrl($var): String {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-
 /**
  * @param $id
+ * @param $isEdit
  * @return void
  */
-function setImages($id) : void {
-    $_SESSION["profile_picture_small"] = getProfilePictureSmall($id);
-    $_SESSION["profile_picture_large"] = getProfilePictureLarge($id);
-    $_SESSION["image_gallery"] = getImageGallery($id);
+function setImages($id, $isEdit) : void {
+    $_SESSION["profile_picture_small"] = getProfilePictureSmall($id, $isEdit);
+    $_SESSION["profile_picture_large"] = getProfilePictureLarge($id, $isEdit);
+    $_SESSION["image_gallery"] = getImageGallery($id, $isEdit);
 }
 
 
-
 /**
  * @param $id
+ * @param $isEdit
  * @return string
  */
-function getProfilePictureSmall($id): string {
+function getProfilePictureSmall($id, $isEdit): string {
     global $blobObj;
     try {
         $ids = $blobObj->queryID($id, "profile_picture_small");
@@ -373,9 +432,10 @@ function getProfilePictureSmall($id): string {
 
 /**
  * @param $id
+ * @param $isEdit
  * @return string
  */
-function getProfilePictureLarge($id): string {
+function getProfilePictureLarge($id, $isEdit): string {
     global $blobObj;
 
     try {
@@ -391,9 +451,10 @@ function getProfilePictureLarge($id): string {
 
 /**
  * @param $id
+ * @param $isEdit
  * @return string
  */
-function getImageGallery($id): string {
+function getImageGallery($id, $isEdit): string {
     global $blobObj;
 
     try {
@@ -402,11 +463,22 @@ function getImageGallery($id): string {
         $string = "";
         foreach ($ids as $image) {
             $a = $blobObj->selectBlob($image[0]);
-            $string = $string.'<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" class="profile-Picture-Large"/>';
+            if($isEdit) {
+                $string = $string.
+                    '<div id="imageGallery" class="imageGalleryEdit">                                                                               '.
+                    '    <img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image"/>                                  '.
+                    '    <label id="exit">X                                                                                                                        '.
+                    '         <input type="submit" name="onImageGalleryClick" value="' . $image[0] . '">                                                              '.
+                    '    </label>                                                                                                                                  '.
+                    '</div>                                                                                                                                       ';
+            } else {
+                $string = $string.'<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image" id="imageGallery" />';
+            }
+
         }
         return $string;
     } catch (RuntimeException $e) {
-        return "No Images were Uploaded.";
+        return "No Images were Uploaded.".$e;
     }
 }
 

@@ -161,7 +161,7 @@ class DBUserStore implements UserStore
      */
     public function findMany(array $user_IDs) {
         foreach ($user_IDs as $user_ID) {
-            $id = "user_ID = " . $id;
+            $id = "user_ID = " . $user_ID;
         }
         $sql ="SELECT * FROM user
                      WHERE ". $user_IDs.join(" OR ") ."
@@ -187,7 +187,7 @@ class DBUserStore implements UserStore
             $newUser = User::withAddress($band);
 
             try {
-                $imageID = $this->blobObj->queryID($band["user_ID"], "profile_picture_small");
+                $imageID = $this->blobObj->queryID($band["user_ID"], "profile_picture_large");
                 if($imageID[0]["id"] !== null) {
                     $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
                     $newUser->setBlobData($blobArray);

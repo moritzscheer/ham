@@ -86,8 +86,8 @@ class blob {
             "data" => $data);
     }
     
-    public function delete($assigned_ID) {
-        $sql = "DELETE FROM files WHERE assigned_ID = '".$assigned_ID."';";
+    public function delete($id) {
+        $sql = "DELETE FROM files WHERE id = '".$id."';";
         $this->db->exec($sql);
     }
 

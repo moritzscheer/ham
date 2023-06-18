@@ -6,15 +6,15 @@
             </a>
         </div>
 
-        <form action="bands.php?type=bands" method="post" id="desktop">
-            <label id="navbar-button">Bands
-                <input type="submit" id="navbar-button">
-            </label>
-        </form>
-
         <form action="events.php?type=events" method="post" id="desktop">
             <label id="navbar-button">Events
                 <input type="submit">
+            </label>
+        </form>
+
+        <form action="bands.php?type=bands" method="post" id="desktop">
+            <label id="navbar-button">Bands
+                <input type="submit" id="navbar-button">
             </label>
         </form>
 
@@ -97,7 +97,7 @@
 
         <form action="profile.php" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <label id="navbar-button">profile
-                <input type="submit" name="viewProfile" value="<?php echo $_SESSION["viewProfileID"] ?>">
+                <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
             </label>
         </form>
 

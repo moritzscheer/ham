@@ -88,6 +88,7 @@
 
 
 
+
 /* ------- styling for profile-Grid (the main grid) -------- */
 .profile-Grid {
     display: grid;
@@ -119,6 +120,8 @@
 #password-Data {
     grid-row: 1 / span 2;
     padding: 20px 5vw 20px 5vw;
+    width: 50vw;
+    margin: auto;
 }
 #contact-Information {
     grid-row: 1;
@@ -138,7 +141,7 @@ input[type=file] {
     justify-content: space-evenly;
     text-align: center;
 }
-#profile-Submit a, #profile-Submit input{
+#profile-Submit label {
     background-color: white;
     width: 150px;
     height: 30px;
@@ -149,6 +152,9 @@ input[type=file] {
     display: flex;
     place-items: center;
     justify-content: center;
+}
+#profile-Submit input {
+    display: none;
 }
 
 
@@ -189,6 +195,7 @@ input[type=file] {
     font: bold 18px sans-serif;
     color: white;
     font-size: large;
+    width: max-content;
 }
 #profile-navbar-button:hover {
     border-bottom: 2px solid gray;
@@ -196,6 +203,26 @@ input[type=file] {
 #profile-navbar-button input {
     display: none;
 }
+#imageGallery {
+    position: relative;
+}
+.imageGalleryEdit label {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    top: 1px; 
+    right: 1px;
+    border: 1px solid white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.imageGalleryEdit input {
+    display: none;
+}
+
+
 
 
 /* ---- styling for changePassword-Grid (the main grid) ---- */

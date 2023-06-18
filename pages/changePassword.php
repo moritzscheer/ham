@@ -4,15 +4,15 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/navigation/header/header.php" ?>
 
     <section class="profile-Picture-Large-Box">
-        <img src="<?php echo $_SESSION["profile-Picture-Large"]; ?>" alt="could not load image" class="profile-Picture-Large">
+        <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image" class="profile-Picture-Large">
     </section>
 
     <div class="profile-Navigation">
         <div>
             <div class="profile-Picture-Box">
-                <img src="<?php echo $_SESSION["profile-Picture-Small"]; ?>" alt="profile picture" height="120" width="120" class="profile-Picture">
+                <img src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
             </div>
-            <?php include_once "../php/navigation/profile/public.php" ?>
+            <?php include_once $_SESSION["navigation"] ?>
         </div>
     </div>
 
@@ -34,8 +34,12 @@ include_once "../php/head/head.php" ?>
         </div>
 
         <div id="profile-Submit">
-            <a href="profile.php">Cancel</a>
-            <input type="submit" name="change_password" value="Save Changes">
+            <label>Cancel
+                <input type="submit" name="viewProfile" value="<?php echo $_SESSION["viewProfileID"] ?>">
+            </label>
+            <label>Save Change
+                <input type="submit" name="change_password">
+            </label>
         </div>
     </form>
 
