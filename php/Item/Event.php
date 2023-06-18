@@ -116,15 +116,15 @@ class Event
             '        <div id="item_image">                                                                                         ' .
             '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              ' .
             '        </div>                                                                                        ' .
-            '        <div >                                                                                         ' .
-            '             <div>                                                           ' .
+            '        <div id="item_editable">                                                                                         ' .
+            '             <label>Edit                                                          ' .
             '                   <a href="createEvent.php"  name="onEdit" ></a>                 ' .
-            '                    <input type="submit" name="onEdit" value="' . $this->event_ID . '">                                                            ' .
-            '             </div>' .
-            '             <div>Delete                                                           ' .
+            '                   <input type="submit" name="onEdit" value="' . $this->event_ID . '">                                                            ' .
+            '             </label>                                                                    ' .
+            '             <label>Delete                                                           ' .
             '                   <a href="events.php"  name="onDelete" ></a>                                    ' .
             '                   <input type="submit" name="onDelete" value="' . $this->event_ID . '">                 ' .
-            '              </div>                                                                     ' .
+            '              </label>                                                                     ' .
             '        </div>                                                                             ' .
             '        <div id="item_short_description" class="text-line-pre">                                             ' .
             '            <span>' . $this->name . '</span>                                                          ' .
