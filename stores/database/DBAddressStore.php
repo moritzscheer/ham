@@ -43,7 +43,7 @@ class DBAddressStore implements AddressStore {
                 $item->getStreetName() ."', ".
                 $item->getHouseNumber()."', ".
                 $item->getPostalCode() ."', ".
-                $item->getCity()       ."');".
+                $item->getCity()       ."');";
 
         $this->db->exec($sql);
         return $this->findOne($this->db->lastInsertId());

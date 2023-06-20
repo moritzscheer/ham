@@ -9,6 +9,11 @@ global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventO
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
+if ($_SESSION["event"]->getEventID() == -1){
+    $_SESSION["CreateOrUpdateWord"] = "Create";
+} else $_SESSION["CreateOrUpdateWord"] = "Update";
+
+
 $_SESSION["events"] = $_SESSION["events"] ?? null;
 $_SESSION["bands"] = $_SESSION["bands"] ?? null;
 
@@ -35,15 +40,20 @@ $_SESSION["showEventOptions"] = $_SESSION["loggedIn"]["status"] === false ? "hid
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
- *  If a user submits an event
+ * Creates a new Event in the Eventstore
  */
 if (isset($_POST["submit"])) {
     try {
-        $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
-        $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
-        
+        if ($_SESSION["CreateOrUpdateWord"] == "Create"){
+            $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
+            $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
+        }
+        else {
+            $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
+        }
+
         // if an image was uploaded insert it in the files table
-        $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
+            $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
         $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
     } catch (Exception $e) {
         echo $e->getMessage();
@@ -188,7 +198,6 @@ function getItems($type): string {
 function getAllEvents(): string {
     global $eventStore, $error_message;
 
-    // check if loggedIn: if yes add "edit" and "delete" buttons to created event of loggedIn user
     $loggedIn = false;
     if ($_SESSION["loggedIn"]["status"] === true) {
         $loggedIn = true;
