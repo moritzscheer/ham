@@ -5,4 +5,4 @@
         <a href="../pages/datenschutz.php">Datenschutz</a>
     </div>
 </footer>
-<?php echo var_dump($_SESSION["a"]) ?>
+<?php //echo var_dump($_SESSION["a"]) ?>

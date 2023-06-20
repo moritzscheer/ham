@@ -1,9 +1,11 @@
 <?php
 include_once "../stores/interface/UserStore.php";
 
-class FileUserStore implements UserStore {
+class FileUserStore implements UserStore
+{
 
-    private ?string $userFile;
+    private ?string $userJsonFile;
+    private ?string $usersOfJsonFile;
 
     /**
      * constructor:
@@ -12,7 +14,20 @@ class FileUserStore implements UserStore {
      */
     public function __construct($userFile)
     {
-        $this->userFile = file_get_contents($userFile, true);
+        $this->userJsonFile = $userFile;
+        $this->reloadUserFromJsonFile();
+    }
+
+
+    private function reloadUserFromJsonFile()
+    {
+        $content = file_get_contents($this->userJsonFile, true);
+        $this->userJsonFile = json_decode($content, false);
+    }
+
+    private function addUsersToJsonFile()
+    {
+        //todo: implement this: writes all User to json file (overwrites json file)
     }
 
     /**
@@ -23,20 +38,19 @@ class FileUserStore implements UserStore {
      */
     public function create(object $user): User
     {
-        $json = json_decode($this->userFile, false);
-        $user_ID = random_int(2, 1000000);
+        $user_ID = uniqid("user_", false);
 
-        foreach ($json as $userJSON) {
-            if ($userJSON->email === $user->getEmail() || $userJSON->password === $user->getEmail()) {
+        foreach ($this->userJsonFile as $userJSON) {
+            if ($userJSON->email === $user->getEmail() || $userJSON->password === $user->getPassword()) {
                 throw new Exception("Email or Password already exist");
             }
             while ($userJSON->userID === $user_ID) {
-                $user_ID = random_int(2, 1000000);
+                $user_ID = uniqid("user_", false);
             }
         }
         $userJSON["user_ID"] = $user_ID;
         $userJSON["type"] = $user->getType();
-        $userJSON["address_ID"] = $user->getType();
+        $userJSON["address_ID"] = $user->getType(); //todo: fix this
         $userJSON["name"] = $user->getType();
         $userJSON["surname"] = $user->getType();
         $userJSON["password"] = $user->getType();
@@ -46,7 +60,7 @@ class FileUserStore implements UserStore {
         $userJSON["members"] = $user->getMembers();
         $userJSON["other_remarks"] = $user->getOtherRemarks();
 
-        $users[] = (object) $userJSON;
+        $users[] = (object)$userJSON; //todo: fix this
         file_put_contents("../resources/json/user.json", json_encode($users));
         return $this->findOne($user_ID);
     }
@@ -57,11 +71,12 @@ class FileUserStore implements UserStore {
      * @return User
      * @throws Exception
      */
+    //todo: fix this
     public function update(object $user): User
     {
-        $json = json_decode($this->userFile, false);
+        $json = json_decode($this->userJsonFile, false);
         foreach ($json as $userJSON) {
-            if($userJSON->user_ID === $user->getUserID()) {
+            if ($userJSON->user_ID === $user->getUserID()) {
                 $userJSON["user_ID"] = $user->getUserID();
                 $userJSON["type"] = $user->getType();
                 $userJSON["address_ID"] = $user->getType();
@@ -72,11 +87,13 @@ class FileUserStore implements UserStore {
                 $userJSON["email"] = $user->getType();
                 $userJSON["genre"] = $user->getGenre();
                 $userJSON["members"] = $user->getMembers();
-                $userJSON["other_remarks"] = $user->getOtherRemarks();                file_put_contents("../resources/json/user.json", json_encode($json));
+                $userJSON["other_remarks"] = $user->getOtherRemarks();
+                file_put_contents("../resources/json/user.json", json_encode($json));
 
-                $users[] = (object) $userJSON;
+                $users[] = (object)$userJSON;
                 file_put_contents("../resources/json/user.json", json_encode($users));
-                return $this->findOne($user->getUserID());            }
+                return $this->findOne($user->getUserID());
+            }
         }
         throw new Exception('No such User was found.');
     }
@@ -87,10 +104,11 @@ class FileUserStore implements UserStore {
      * @return void
      * @throws Exception
      */
-    public function delete(string $user_ID): void {
-        $json = json_decode($this->userFile, false);
+    public function delete(string $user_ID): void
+    {
+        $json = json_decode($this->userJsonFile, false); //todo: fix this
         foreach ($json as $userJSON) {
-            if($userJSON->user_ID === $user_ID) {
+            if ($userJSON->user_ID === $user_ID) {
                 unset($json[$userJSON]);
                 file_put_contents("../resources/json/user.json", json_encode($json));
                 return;
@@ -105,9 +123,10 @@ class FileUserStore implements UserStore {
      * @return User
      * @throws Exception
      */
+    //todo: fix this
     public function findOne(string $user_ID): User
     {
-        $json = json_decode($this->userFile, false);
+        $json = json_decode($this->userJsonFile, false);
         foreach ($json as $userJSON) {
             if ($userJSON->user_ID === $user_ID) {
                 $user[0] = $userJSON->user_ID;
@@ -136,9 +155,9 @@ class FileUserStore implements UserStore {
      */
     public function login($email, $password): User
     {
-        $users = json_decode($this->userFile, false);
+        $users = json_decode($this->userJsonFile, false);
         foreach ($users as $user) {
-            if($user->email === $email && $user->password === $password) {
+            if ($user->email === $email && $user->password === $password) {
                 return $user;
             }
         }
@@ -154,5 +173,5 @@ class FileUserStore implements UserStore {
     {
         // TODO: Implement findAll() method.
     }
-    
+
 }
