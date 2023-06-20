@@ -4,28 +4,27 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/navigation/header/header.php" ?>
 
 <section id="events">
+
     <div id="filter">
         <form method="post" id="search">
-            <input type="search" name="search" placeholder="search" >
-            <input type="date" name="searchDate" placeholder="Date">
+            <input type="search" name="search" value="<?php echo $_SESSION["search"] ?>" placeholder="search" >
+            <input type="date" name="searchDate" value="<?php echo $_SESSION["searchDate"] ?>" placeholder="Date">
             <input type="submit" name="submitSearch">
         </form>
         <form method="post" id="sort">
             <label>Sort by:
-                <input type="submit" name="sortName" value="name">
-                <input type="submit" name="sortDate" value="date">
+                <input type="submit" name="sort" value="Name">
+                <input type="submit" name="sort" value="Date">
             </label>
         </form>
     </div>
 
-    <h1 id="header">Events</h1>
-
-    <form method="post" id="<?php echo $_SESSION["showEventOptions"] ?>">
-        <label>All Events
+    <form method="post" id="event_options" class="<?php echo $_SESSION["showEventOptions"] ?>">
+        <label id="option1">All Events
             <input type="submit" name="onGetAllEvents">
         </label>
         
-        <label>My Events
+        <label id="option2">My Events
             <input type="submit" name="onGetMyEvents" value="<?php echo $_SESSION["user_ID"] ?>">
         </label>
     </form>

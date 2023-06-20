@@ -14,20 +14,19 @@ class DBUserStore implements UserStore
         $this->blobObj = $blobObj;
 
         // creates the user table
-        $sql = "CREATE TABLE IF NOT EXISTS user (
-                user_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                address_ID int(11) DEFAULT NULL,
-                type varchar(15) NOT NULL,
-                name varchar(15) DEFAULT NULL,
-                surname varchar(15) DEFAULT NULL,
-                password varchar(20) NOT NULL UNIQUE,
-                phone_number varchar(20) DEFAULT NULL,
-                email varchar(30) NOT NULL UNIQUE,
-                genre varchar(30) DEFAULT NULL,
-                members varchar(50) DEFAULT NULL,
-                other_remarks longtext DEFAULT NULL,
-                FOREIGN KEY (address_ID) REFERENCES address(address_ID)
-            );";
+        $sql = "CREATE TABLE IF NOT EXISTS user (".
+               "user_ID INTEGER PRIMARY KEY AUTOINCREMENT, ".
+               "address_ID int(11) DEFAULT NULL, ".
+               "type varchar(15) NOT NULL, ".
+               "name varchar(15) DEFAULT NULL, ".
+               " surname varchar(15) DEFAULT NULL, ".
+               "password varchar(20) NOT NULL UNIQUE, ".
+               "phone_number varchar(20) DEFAULT NULL, ".
+               "email varchar(30) NOT NULL UNIQUE, ".
+               "genre varchar(30) DEFAULT NULL, ".
+               "members varchar(50) DEFAULT NULL, ".
+               "other_remarks longtext DEFAULT NULL, ".
+               "FOREIGN KEY (address_ID) REFERENCES address(address_ID));";
         $db->exec($sql);
     }
 
@@ -50,28 +49,28 @@ class DBUserStore implements UserStore
             }
 
             //  create address
-            $address = new Address();
-            $address->setStreetName($user->getStreetName());
-            $address->setHouseNumber($user->getHouseNumber());
-            $address->setPostalCode($user->getPostalCode());
-            $address->setCity($user->getCity());
-
-            $address = $this->addressStore->create($address);
-
+            $address = $this->addressStore->create($user);
 
             // inserting an entry
-            $sql = "INSERT INTO user (address_ID, type, name, surname, password, phone_number, email, genre, members, other_remarks ) VALUES (
-            '".$address->getAddressID()."',
-            '".$user->getType()."',
-            '".$user->getName()."',
-            '".$user->getSurname()."',
-            '".$user->getPassword()."',
-            '".$user->getPhoneNumber()."',
-            '".$user->getEmail()."',
-            '".$user->getGenre()."',
-            '".$user->getMembers()."',
-            '".$user->getOtherRemarks()."');";
-            $this->db->exec($sql);
+            $sql = "INSERT INTO user ".
+                   "(address_ID, type, name, surname, ".
+                   "password, phone_number, email, genre, ".
+                   "members, other_remarks) VALUES ".
+                   "(:address_ID, :type, :name, :surname, :password, :phone_number, :email, :genre, :members, :other_remarks);".
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindParam(':address_ID', $address->getAddressID());
+            $stmt->bindParam(':type', $user->getType());
+            $stmt->bindParam(':name', $user->getName());
+            $stmt->bindParam(':surname', $user->getSurname());
+            $stmt->bindParam(':password', $user->getPassword());
+            $stmt->bindParam(':phone_number', $user->getPhoneNumber());
+            $stmt->bindParam(':email', $user->getEmail());
+            $stmt->bindParam(':genre', $user->getGenre());
+            $stmt->bindParam(':members', $user->getMembers());
+            $stmt->bindParam(':other_remarks', $user->getOtherRemarks());
+
+            $stmt->execute();
 
             $user = $this->findOne($this->db->lastInsertId());
             $this->db->commit();
@@ -88,18 +87,18 @@ class DBUserStore implements UserStore
      * @return User
      */
     public function update(object $user): User {
-        $sql = "UPDATE user SET 
-            address_ID = '".$user->getAddressID()."', 
-            type = '".$user->getType()."', 
-            name = '".$user->getName()."', 
-            surname = '".$user->getSurname()."',
-            password = '".$user->getPassword()."',
-            phone_number = '".$user->getPhoneNumber()."',
-            email = '".$user->getEmail()."',
-            genre = '".$user->getGenre()."',
-            members = '".$user->getMembers()."',
-            other_remarks = '".$user->getOtherRemarks()."'
-            WHERE user_ID = ".$user->getUserID().";";
+        $sql = "UPDATE user SET ".
+               "address_ID = '".$user->getAddressID()      ."', ".
+               "type = '".$user->getType()                 ."', ".
+               "name = '".$user->getName()                 ."', ".
+               "surname = '".$user->getSurname()           ."', ".
+               "password = '".$user->getPassword()         ."', ".
+               "phone_number = '".$user->getPhoneNumber()  ."', ".
+               "email = '".$user->getEmail()               ."', ".
+               "genre = '".$user->getGenre()               ."', ".
+               "members = '".$user->getMembers()           ."', ".
+               "other_remarks = '".$user->getOtherRemarks()."', ".
+               "WHERE user_ID = '".$user->getUserID()      ."';";
         $this->db->exec($sql);
         return $this->findOne($user->getUserID());
     }
@@ -141,10 +140,9 @@ class DBUserStore implements UserStore
      * @return User|null
      */
     public function findOne(string $user_ID): User|null {
-        $sql = "SELECT * FROM user 
-            JOIN address
-            ON address.address_ID = user.address_ID 
-            WHERE user_ID = '".$user_ID."';";
+        $sql = "SELECT * FROM user JOIN address ".
+               "ON address.address_ID = user.address_ID ".
+               "WHERE user_ID = '".$user_ID."';";
         $stmt = $this->db->query($sql)->fetch();
 
         if(!$stmt) {
@@ -163,11 +161,11 @@ class DBUserStore implements UserStore
         foreach ($user_IDs as $user_ID) {
             $id = "user_ID = " . $user_ID;
         }
-        $sql ="SELECT * FROM user
-                     WHERE ". $user_IDs.join(" OR ") ."
-                     INNER JOIN address 
-                     ON address.address_ID = user.address_ID;
-                     LIMIT " .count($user_IDs);
+        $sql = "SELECT * FROM user ".
+               "WHERE ". $user_IDs.join(" OR ").
+               "INNER JOIN address ".
+               "ON address.address_ID = user.address_ID ".
+               "LIMIT " .count($user_IDs);
         return $this->db->query($sql)->fetchAll();
     }
 
@@ -176,10 +174,9 @@ class DBUserStore implements UserStore
      * @return array
      */
     public function findAll() : array {
-        $sql = "SELECT * FROM user
-                    INNER JOIN address 
-                    ON address.address_ID = user.address_ID
-                    WHERE type = 'Musician';";
+        $sql = "SELECT * FROM user INNER JOIN address ".
+               "ON address.address_ID = user.address_ID ".
+               "WHERE type = 'Musician';";
         $stmt = $this->db->query($sql)->fetchAll();
 
         $return = array();

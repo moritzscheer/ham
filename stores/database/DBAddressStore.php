@@ -12,43 +12,41 @@ class DBAddressStore implements AddressStore {
     public function __construct($db) {
         $this->db = $db;
 
-        $sql = "CREATE TABLE IF NOT EXISTS address (
-            address_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            street_name varchar(30) DEFAULT NULL,
-            house_number int(5) DEFAULT NULL,
-            postal_code int(5) DEFAULT NULL,
-            city varchar(20) DEFAULT NULL,
-            UNIQUE(street_name, house_number, postal_code, city)
-            );";
+        // creates the address table
+        $sql = "CREATE TABLE IF NOT EXISTS address ( ".
+               "address_ID INTEGER PRIMARY KEY AUTOINCREMENT, ".
+               "street_name varchar(30) DEFAULT NULL, ".
+               "house_number int(5) DEFAULT NULL, ".
+               "postal_code int(5) DEFAULT NULL, ".
+               "city varchar(20) DEFAULT NULL, ".
+               "UNIQUE(street_name, house_number, postal_code, city));";
         $this->db->exec($sql);
     }
 
     /**
-     * @param object $address
+     * @param object $item
      * @return Address
      */
-    public function create(object $address): Address {
+    public function create(object $item): Address {
         // checking if an entry already exist
         $sql = "SELECT address_ID FROM address WHERE ".
-            "street_name = '".$address->getStreetName()."' OR ".
-            "house_number = '".$address->getHouseNumber()."' OR ".
-            "postal_code = '".$address->getPostalCode()."' OR ".
-            "city = '".$address->getCity()."'
-        ;";
+               "street_name = '".$item->getStreetName()."' OR ".
+               "house_number = '".$item->getHouseNumber()."' OR ".
+               "postal_code = '".$item->getPostalCode()."' OR ".
+               "city = '".$item->getCity()."';";
         $stmt = $this->db->query($sql)->fetch();
         if ($stmt !== false) {
             return $this->findOne($stmt[0]);
         }
         // inserting an entry
-        $sql = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES (
-            '".$address->getStreetName()."',
-            '".$address->getHouseNumber()."',
-            '".$address->getPostalCode()."',
-            '".$address->getCity()."');";
+        $sql = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES (".
+                $item->getStreetName() ."', ".
+                $item->getHouseNumber()."', ".
+                $item->getPostalCode() ."', ".
+                $item->getCity()       ."');".
 
         $this->db->exec($sql);
-        $address = $this->findOne($this->db->lastInsertId());
-        return $address;
+        return $this->findOne($this->db->lastInsertId());
     }
 
     /**

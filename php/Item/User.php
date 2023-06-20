@@ -42,10 +42,10 @@ class User {
         $instance->genre = $user[8];
         $instance->members = $user[9];
         $instance->other_remarks = $user[10];
-        $instance->street_name = $user[11];
-        $instance->house_number = $user[12];
-        $instance->postal_code = $user[13];
-        $instance->city = $user[14];
+        $instance->street_name = $user[12];
+        $instance->house_number = $user[13];
+        $instance->postal_code = $user[14];
+        $instance->city = $user[15];
         return $instance;
     }
 
@@ -89,7 +89,7 @@ class User {
      */
     public function getImageSource(): string {
         if(empty($this->blobData)) {
-            return "../resources/images/profile/default/defaultSmall.png";
+            return "../resources/images/profile/default/defaultLarge.jpeg";
         } else {
             return "data:".$this->blobData["mime"].";base64,".base64_encode($this->blobData["data"]);
         }

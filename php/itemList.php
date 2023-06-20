@@ -12,6 +12,9 @@ $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 $_SESSION["events"] = $_SESSION["events"] ?? null;
 $_SESSION["bands"] = $_SESSION["bands"] ?? null;
 
+$_SESSION["search"] = $_POST["search"] ?? "";
+$_SESSION["searchDate"] = $_POST["searchDate"] ?? "";
+
 isset($_POST["event_name"]) && is_string($_POST["event_name"])   ?   $_SESSION["event"]->setName(htmlspecialchars($_POST["event_name"]))   :   "";
 isset($_POST["description"]) && is_string($_POST["description"])   ?   $_SESSION["event"]->setDescription(htmlspecialchars($_POST["description"]))   :   "";
 isset($_POST["requirements"]) && is_string($_POST["requirements"])   ?   $_SESSION["event"]->setRequirements(htmlspecialchars($_POST["requirements"]))   :   "";
@@ -31,7 +34,6 @@ $_SESSION["showEventOptions"] = $_SESSION["loggedIn"]["status"] === false ? "hid
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
 /**
  *  If a user submits an event
  */
@@ -48,8 +50,6 @@ if (isset($_POST["submit"])) {
     }
 }
 
-
-
 /**
  *  If a user clicks on an event item a larger version is displayed at the top of the page
  */
@@ -64,7 +64,6 @@ if (isset($_POST["onItemClick"])) {
         }
     }
 }
-
 
 /**
  * Deletes an Event from the Eventstore
@@ -83,25 +82,78 @@ if (isset($_POST["onEdit"])){
     unset($_POST["onEdit"]);
 }
 
-
-
+/**
+ * if a user clicks on get all events, all events are displayed
+ */
 if (isset($_POST["onGetAllEvents"])) {
     $_SESSION["itemList"] = getAllEvents();
 }
 
-
-
+/**
+ * if a user clicks on get all events, all events created by the loggedIn user are displayed
+ */
 if (isset($_POST["onGetMyEvents"])) {
     $_SESSION["itemList"] = getMyEvents($_SESSION["user_ID"]);
 }
 
+/**
+ * if a user submits a search, all events with the statement are displayed
+ */
+if (isset($_POST["submitSearch"])) {
+    if(isset($_POST["searchDate"]) && $_POST["search"] === "") {
+        $_SESSION["itemList"] = getAnyEvents($_POST["searchDate"]);
+    } elseif (isset($_POST["search"]) && $_POST["searchDate"] === "") {
+        $_SESSION["itemList"] = getAnyEvents($_POST["search"]);
+    } else {
+        $itemDate = getAnyEvents($_POST["searchDate"]);
+        $itemSearch = getAnyEvents($_POST["search"]);
+        $_SESSION["itemList"] = $itemDate.$itemSearch;
+    }
+}
+
+/**
+ * switches from ascending sort to descending sort.
+ */
+if (isset($_POST["sort"])) {
+    try {
+        if(!isset($_SESSION["sort"]) || $_SESSION["sort"] === "desc") {
+            $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_ASC);
+        } elseif ($_SESSION["sort"] === "asc") {
+            $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_DESC);
+        }
+
+        $_SESSION["itemList"] = buildItemList($_SESSION["events"], "could not sort");
+    } catch (Exception $e) {
+        
+    }
+}
+
+/**
+ * search algorithm
+ * @param array $array
+ * @param $attribute
+ * @param $dir
+ * @return array
+ */
+function sortArray(array $array, $attribute, $dir) : array {
+    $_SESSION["sort"] = ($dir === SORT_ASC) ? "asc" : "desc";
+
+    foreach ($array as $key => $value) {
+        if($attribute === "Name") {
+            $column[] = $value->getName();
+        } elseif ($attribute === "Date") {
+            $column[] = $value->getDate();
+        }
+    }
+    array_multisort($column, $dir, $array);
+    return $array;
+}
 
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                              get Event and get Bands method                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 
 
@@ -136,7 +188,7 @@ function getItems($type): string {
 function getAllEvents(): string {
     global $eventStore, $error_message;
 
-    // check if loggedIn: If yes add "edit" and "delete" buttons to created event of loggedIn user
+    // check if loggedIn: if yes add "edit" and "delete" buttons to created event of loggedIn user
     $loggedIn = false;
     if ($_SESSION["loggedIn"]["status"] === true) {
         $loggedIn = true;
@@ -145,19 +197,7 @@ function getAllEvents(): string {
     try {
         $_SESSION["events"] = $eventStore->findAll();
 
-        if (!empty($_SESSION["events"])) {
-            $return = "";
-            foreach ($_SESSION["events"] as $event) {
-                if ($loggedIn && ($_SESSION["loggedIn"]["user"]->getUserID() == $event->getUserID())) {
-                    $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button
-                } else {
-                    $return = $return . $event->getEventHTML();
-                }
-            }
-            return $return;
-        } else {
-            throw new Exception("there are no Events uploaded currently!");
-        }
+        return buildItemList($_SESSION["events"], "there are no Events uploaded currently!");
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -170,26 +210,28 @@ function getMyEvents($user_ID): string {
 
     try {
         $_SESSION["events"] = $eventStore->findMy($user_ID);
-
-        if (!empty($_SESSION["events"])) {
-            $return = "";
-            foreach ($_SESSION["events"] as $event) {
-                if (($_SESSION["loggedIn"]["user"]->getUserID() == $event->getUserID())) {
-                    $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button
-                } else {
-                    $return = $return . $event->getEventHTML();
-                }
-            }
-            return $return;
-        } else {
-            throw new Exception("You have not created an Event!");
-        }
+        
+        return buildItemList($_SESSION["events"], "You have not created an Event!");
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
     }
 }
 
+
+
+function getAnyEvents($stmt): string {
+    global $eventStore, $error_message;
+
+    try {
+        $_SESSION["events"] = $eventStore->findAny($stmt);
+
+        return buildItemList($_SESSION["events"], 'There are no Events with: "'.$stmt.'".');
+    } catch (Exception $e) {
+        $error_message = $e->getMessage();
+        return "";
+    }
+}
 
 
 
@@ -218,6 +260,25 @@ function getBands(): string {
     }
 }
 
+
+/**
+ * @throws Exception
+ */
+function buildItemList($events, $msg) : string {
+    if (!empty($events)) {
+        $return = "";
+        foreach ($events as $event) {
+            if (($_SESSION["user_ID"] == $event->getUserID())) {
+                $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button
+            } else {
+                $return = $return . $event->getEventHTML();
+            }
+        }
+        return $return;
+    } else {
+        throw new Exception($msg);
+    }
+}
 
 /**
  * The larger box which will be displayed if a user clicks on an event item in events

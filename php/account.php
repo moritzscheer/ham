@@ -2,27 +2,22 @@
 global $userStore, $addressStore, $blobObj, $images, $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $db, $success_message;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                               account variables                                                    */
+/*                                               loggedIn changes                                                     */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 // init loggedIn session variable
 $_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false);
-
-// init tmp session variable (important for register)
-$_SESSION["user"] = update_user_variable($_SESSION["user"] ?? new User());
-
-
 
 if($_SESSION["loggedIn"]["status"] === true) {
     $_SESSION["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
 
     $profile_header_box =
         '<div id="name">                                   '.
-            $_SESSION["loggedIn"]["user"]->getName().' '.
-            $_SESSION["loggedIn"]["user"]->getSurname().
+        $_SESSION["loggedIn"]["user"]->getName().' '.
+        $_SESSION["loggedIn"]["user"]->getSurname().
         '</div>                                            '.
         '<div id="type">                                   '.
-            $_SESSION["loggedIn"]["user"]->getType().
+        $_SESSION["loggedIn"]["user"]->getType().
         '</div>                                            ';
 
     $_SESSION["Musician"] = ($_SESSION["loggedIn"]["user"]->getType() === "Musician") ? "checked" : "";
@@ -31,7 +26,12 @@ if($_SESSION["loggedIn"]["status"] === true) {
     $_SESSION["user_ID"] = "";
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                               account variables                                                    */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
+// init tmp session variable (important for register)
+$_SESSION["user"] = update_user_variable($_SESSION["user"] ?? new User());
 
 // password variables
 $password = isset($_POST["password"]) && is_string($_POST["password"])   ?   htmlspecialchars($_POST["password"])   :   "";
@@ -44,25 +44,16 @@ $repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST[
 $_SESSION["Musician"] = ($_SESSION["user"]->getType() === "Musician") ? "checked" : "";
 $_SESSION["Host"] = ($_SESSION["user"]->getType() === "Host") ? "checked" : "";
 
-
-
+// Which header should be shown
 $_SESSION["normalHeader"] = $_SESSION["loggedIn"]["status"] === true ? "hidden" : "visible";
 $_SESSION["profileHeader"] = $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
 $_SESSION["profileHeaderBox"] = $_SESSION["loggedIn"]["status"] === true ? $profile_header_box : "";
 
-// initialize image session variable
-$_SESSION["profile-Picture-Small"] = (isset($_SESSION["profile-Picture-Small"])) ? $_SESSION["profile-Picture-Small"] : "";
-$_SESSION["profile-Picture-Large"] = (isset($_SESSION["profile-Picture-Large"])) ? $_SESSION["profile-Picture-Large"] : "";
-
 $error_message = "";
-
-
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               post methods                                                         */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 /**
  * If a user clicks on logout or on Sign up
@@ -71,8 +62,6 @@ if(isset($_POST["reset"])) {
     reset_variables();
 }
 
-
-
 /**
  * If a user clicks on register
  */
@@ -80,11 +69,12 @@ if(isset($_POST["register"])) {
     try {
         if($password === $repeat_password) {
             $user = $_SESSION["user"];
-            $user->setPassword($password);
+            $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
             $user = $userStore->create($user);
             $image = getProfilePictureSmall($user->getUserID(), false);
             $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
+            
             $_SESSION["success_message"] = "Success! Welcome to our Team.";
 
             header("Location: " . getNextUrl($step));
@@ -98,8 +88,6 @@ if(isset($_POST["register"])) {
         $error_message = $ex->getMessage();
     }
 }
-
-
 
 /**
  * If a user clicks on login
@@ -119,8 +107,6 @@ if(isset($_POST["login"])) {
     }
 }
 
-
-
 /**
  * If a user clicks on login
  */
@@ -134,8 +120,6 @@ if(isset($_POST["logout"])) {
         $error_message = $ex->getMessage();
     }
 }
-
-
 
 /**
  * If a user clicks on delete account
@@ -153,8 +137,6 @@ if(isset($_POST["delete"])) {
         $error_message = $ex->getMessage();
     }
 }
-
-
 
 /**
  * If a user wants to change passwords
@@ -177,8 +159,6 @@ if(isset($_POST["change_password"])) {
     }
 }
 
-
-
 /**
  *  If a user wants to change user data
  */
@@ -196,13 +176,9 @@ if(isset($_POST["update_profile"])) {
 
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                                                                                                    */
+/*                                              view posts                                                            */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 /**
  * If a user wants to view a profile page
@@ -226,7 +202,6 @@ if(isset($_POST["viewProfile"])) {
     }
 }
 
-
 /**
  * If a user wants to view an edit profile page
  * $_POST["viewEditProfile"] contains the user_ID of the profile
@@ -240,8 +215,6 @@ if(isset($_POST["viewEditProfile"])) {
     }
 }
 
-
-
 /**
  * If a user wants to view the change password page
  * $_POST["viewChangePassword"] contains the user_ID of the profile
@@ -249,20 +222,15 @@ if(isset($_POST["viewEditProfile"])) {
 if(isset($_POST["viewChangePassword"])) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewChangePassword"]) {
         $_SESSION["navigation"] = "../php/navigation/profile/private.php";
-        setImages($_POST["viewChangePassword"], true);
+        setImages($_POST["viewChangePassword"], false);
         header("Location: changePassword.php");
         exit();
     }
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                                                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
-
 
 /**
  *  If a user wants to change the small profile picture
@@ -279,8 +247,6 @@ if (isset($_POST["profile_picture_small"])) {
         $error_message = $e->getMessage();
     }
 }
-
-
 
 /**
  *  If a user wants to change the large profile picture
@@ -310,8 +276,6 @@ if (isset($_POST["newImage"])) {
     }
 }
 
-
-
 if (isset($_POST["onImageGalleryClick"])) {
     try {
         $blobObj->delete($_POST["onImageGalleryClick"]);
@@ -324,14 +288,9 @@ if (isset($_POST["onImageGalleryClick"])) {
     }
 }
 
-
-    
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                   functions                                                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 /**
  * checks the variables for the user
@@ -354,8 +313,6 @@ function update_user_variable($user): User {
     return $user;
 }
 
-
-
 /**
  * unsets all the session variables
  */
@@ -363,13 +320,9 @@ function reset_variables(): void {
     session_destroy();
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                       functions to switch urls in register                                         */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 /**
  * gets the url for the next step in the register progressbar
@@ -381,8 +334,6 @@ function getNextUrl($var): String {
     return "register.php?step=" . $var;
 }
 
-
-
 /**
  * gets the url for the last step in the register progressbar
  * @param $var
@@ -393,12 +344,9 @@ function getLastUrl($var): String {
     return "register.php?step=" . $var;
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               image functions                                                      */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 /**
  * @param $id
@@ -410,7 +358,6 @@ function setImages($id, $isEdit) : void {
     $_SESSION["profile_picture_large"] = getProfilePictureLarge($id, $isEdit);
     $_SESSION["image_gallery"] = getImageGallery($id, $isEdit);
 }
-
 
 /**
  * @param $id
@@ -428,7 +375,6 @@ function getProfilePictureSmall($id, $isEdit): string {
         return "../resources/images/profile/default/defaultSmall.png";
     }
 }
-
 
 /**
  * @param $id
@@ -448,7 +394,6 @@ function getProfilePictureLarge($id, $isEdit): string {
     }
 }
 
-
 /**
  * @param $id
  * @param $isEdit
@@ -463,6 +408,7 @@ function getImageGallery($id, $isEdit): string {
         $string = "";
         foreach ($ids as $image) {
             $a = $blobObj->selectBlob($image[0]);
+            $_SESSION["a"] = $isEdit;
             if($isEdit) {
                 $string = $string.
                     '<div id="imageGallery" class="imageGalleryEdit">                                                                               '.
@@ -478,10 +424,9 @@ function getImageGallery($id, $isEdit): string {
         }
         return $string;
     } catch (RuntimeException $e) {
-        return "No Images were Uploaded.".$e;
+        return "No Images were Uploaded.";
     }
 }
-
 
 /**
  * @param $name
@@ -509,7 +454,6 @@ function verifyImage($name, $type): String {
     if (!move_uploaded_file($file_tmp,"../resources/images/".$type."/".$file_name)) {
         throw new RuntimeException("failed to upload image");
     }
-
     return $file_name;
 }
 

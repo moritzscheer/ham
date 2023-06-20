@@ -94,7 +94,7 @@ include_once "../php/head/head.php" ?>
 
             <div id="profile-Submit">
                 <label>Cancel
-                    <input type="submit" name="viewProfile" value="<?php echo $_SESSION["viewProfileID"] ?>">
+                    <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
                 </label>
                 <label>Save Change
                     <input type="submit" name="update_profile">

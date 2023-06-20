@@ -14,21 +14,21 @@ class DBEventStore implements EventStore
         $this->addressStore = $addressStore;
         $this->blobObj = $blobObj;
 
-        $sql = "CREATE TABLE IF NOT EXISTS event (                       ".
-               "event_ID INTEGER PRIMARY KEY AUTOINCREMENT,              ".
-               "address_ID int(11) DEFAULT NULL,                         ".
-               "user_ID int(11) NOT NULL,                                ".
-               "name varchar(40) DEFAULT NULL,                           ".
-               "description varchar(20) DEFAULT NULL,                    ".
-               "requirements varchar(20) DEFAULT NULL,                   ".
-               "date varchar(20) DEFAULT NULL,                           ".
-               "startTime varchar(20) DEFAULT NULL,                      ".
-               "endTime varchar(20) DEFAULT NULL,                        ".
-               "FOREIGN KEY (user_ID) REFERENCES user(user_ID),          ".
+        // creates the event table
+        $sql = "CREATE TABLE IF NOT EXISTS event (".
+               "event_ID INTEGER PRIMARY KEY AUTOINCREMENT, ".
+               "address_ID int(11) DEFAULT NULL, ".
+               "user_ID int(11) NOT NULL, ".
+               "name varchar(40) DEFAULT NULL, ".
+               "description varchar(20) DEFAULT NULL, ".
+               "requirements varchar(20) DEFAULT NULL, ".
+               "date varchar(20) DEFAULT NULL, ".
+               "startTime varchar(20) DEFAULT NULL, ".
+               "endTime varchar(20) DEFAULT NULL, ".
+               "FOREIGN KEY (user_ID) REFERENCES user(user_ID), ".
                "FOREIGN KEY (address_ID) REFERENCES address(address_ID));";
         $db->exec($sql);
     }
-
 
     /**
      * @throws Exception
@@ -36,14 +36,9 @@ class DBEventStore implements EventStore
     public function create(Event $item):Event {
         try {
             $this->db->beginTransaction();
+            
             //  create address
-            $address = new Address();
-            $address->setStreetName($item->getStreetName());
-            $address->setHouseNumber($item->getHouseNumber());
-            $address->setPostalCode($item->getPostalCode());
-            $address->setCity($item->getCity());
-
-            $address = $this->addressStore->create($address);
+            $address = $this->addressStore->create($item);
 
             // inserting an entry
             $sql = "INSERT INTO event (           ".
@@ -93,20 +88,14 @@ class DBEventStore implements EventStore
 
 
     public function delete(string $id): void {
-        $delete = "DELETE FROM event WHERE event_ID = '".$id."';";
+        $delete = "DELETE FROM event WHERE event_ID = '" . $id . "';";
         $this->db->exec($delete);
     }
-
-
-
 
     public function findOne(string $id): Event {
         $sql ="SELECT * FROM event WHERE event_ID = '".$id."';";
         return Event::withAddress($this->db->query($sql)->fetch());
     }
-
-
-
 
     public function findMany(array $ids): array {
         foreach ($ids as $key => $id) {
@@ -122,10 +111,20 @@ class DBEventStore implements EventStore
             $events[$key] = new Event($event);
         }
         return $events;
-
     }
 
-
+    public function findAny(string $stmt): array {
+        $sql = "SELECT * FROM event                         ".
+            "    INNER JOIN address                      ".
+            "    ON address.address_ID = event.address_ID".
+            "    WHERE name LIKE '%".$stmt."%' OR          ".
+            "    description LIKE '%".$stmt."%' OR          ".
+            "    requirements LIKE '%".$stmt."%' OR          ".
+            "    date LIKE '%".$stmt."%' OR          ".
+            "    startTime LIKE '%".$stmt."%' OR          ".
+            "    endTime LIKE '%".$stmt."%'           ";
+        return $this->createEventArray($sql);
+    }
 
     public function findMy($user_ID): array {
         $sql = "SELECT * FROM event                         ".
@@ -134,9 +133,6 @@ class DBEventStore implements EventStore
                "    WHERE user_ID = '".$user_ID."';         ";
         return $this->createEventArray($sql);
     }
-
-
-
 
     public function findAll(): array {
         $sql = "SELECT * FROM event                          ".

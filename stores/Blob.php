@@ -46,7 +46,6 @@ class blob {
     }
 
     function updateBlob($assigned_ID, $category, $filePath, $mime): bool {
-
         $blob = fopen($filePath, 'rb');
 
         $sql = "UPDATE files
@@ -60,7 +59,6 @@ class blob {
         $stmt->bindParam(':category', $category);
         $stmt->bindParam(':mime', $mime);
         $stmt->bindParam(':data', $blob, PDO::PARAM_LOB);
-
 
         return $stmt->execute();
     }
