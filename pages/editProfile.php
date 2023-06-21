@@ -88,7 +88,7 @@ include_once "../php/head/head.php" ?>
                 </label>
 
                 <label id="input-entry" class="entry">Other Remarks:
-                    <textarea name="otherRemarks" rows="5"><?php echo $_SESSION["user"]->getOtherRemarks() ?></textarea>
+                    <textarea name="other_remarks" rows="5"><?php echo $_SESSION["user"]->getOtherRemarks() ?></textarea>
                 </label>
             </div>
 

@@ -3,7 +3,7 @@
 class User {
 
     // user attributes
-    private int $user_ID;
+    private ?int $user_ID = null;
     private ?string $address_ID = "";
     private ?string $type = "";
     private ?string $name = "";
@@ -31,21 +31,21 @@ class User {
      */
     public static function withAddress($user): User {
         $instance = new self();
-        $instance->user_ID = $user[0];
-        $instance->address_ID = $user[1];
-        $instance->type = $user[2];
-        $instance->name = $user[3];
-        $instance->surname = $user[4];
-        $instance->password = $user[5];
-        $instance->phone_number = $user[6];
-        $instance->email = $user[7];
-        $instance->genre = $user[8];
-        $instance->members = $user[9];
-        $instance->other_remarks = $user[10];
-        $instance->street_name = $user[12];
-        $instance->house_number = $user[13];
-        $instance->postal_code = $user[14];
-        $instance->city = $user[15];
+        $instance->user_ID = $user["user_ID"];
+        $instance->address_ID = $user["address_ID"];
+        $instance->type = $user["type"];
+        $instance->name = $user["name"];
+        $instance->surname = $user["surname"];
+        $instance->password = $user["password"];
+        $instance->phone_number = $user["phone_number"];
+        $instance->email = $user["email"];
+        $instance->genre = $user["genre"];
+        $instance->members = $user["members"];
+        $instance->other_remarks = $user["other_remarks"];
+        $instance->street_name = $user["street_name"];
+        $instance->house_number = $user["house_number"];
+        $instance->postal_code = $user["postal_code"];
+        $instance->city = $user["city"];
         return $instance;
     }
 
@@ -77,22 +77,97 @@ class User {
      * @return string
      */
     public function printAddress(): string {
-        if($this->street_name === "" && $this->house_number === "") {
-            return $this->postal_code." ".$this->city;
-        } else {
-            return $this->street_name." ".$this->house_number.", ".$this->postal_code." ".$this->city;
+        $result = "";
+        foreach ($this as $key => $value) {
+            if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                if ($value !== null && $value !== "") {
+                    if ($result === "") {
+                        $result = $value;
+                    } else {
+                        if ($key === "house_number") {
+                            $result = $result . ", " . $value;
+                        } else {
+                            $result = $result . " " . $value;
+                        }
+                    }
+                }
+            }
         }
+        return $result;
     }
 
     /**
      * @return string
      */
-    public function getImageSource(): string {
+    public function getImageSource() : string {
         if(empty($this->blobData)) {
             return "../resources/images/profile/default/defaultLarge.jpeg";
         } else {
             return "data:".$this->blobData["mime"].";base64,".base64_encode($this->blobData["data"]);
         }
+    }
+
+    /**
+     * returns a String containing all attributes of the user class defined in user Table that are not null.
+     * The String is formatted according to the $schema variable
+     * @param $keyOrValue
+     * @param $schema
+     * @return String
+     */
+    public function getAttributes($keyOrValue, $schema) : String {
+        $result = "";
+        foreach ($this as $key => $value) {
+            $keyOrValue = $keyOrValue === "value" ? $value : $key;
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * returns a String containing all attributes of the user class defined in address Table that are not null.
+     * The String is formatted according to the $schema variable
+     * @param $keyOrValue
+     * @param $schema
+     * @return String
+     */
+    public function getAddressAttributes($keyOrValue, $schema) : String {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param $result
+     * @param $value
+     * @param $keyOrValue
+     * @param $schema
+     * @return string
+     */
+    private function concatString($result, $key, $value, $keyOrValue, $schema) : string {
+        $attr = $keyOrValue === "value" ? "'".$value."'" : $key;
+        if ($schema === "list") {
+            if ($value !== null && $value !== "") {
+                if ($result === "") {
+                    $result = $attr;
+                } else {
+                    $result = $result . ", " . $attr;
+                }
+            }
+        } elseif ($schema === "set") {
+            if ($result === "") {
+                $result = $attr . " = '" . $this->$attr . "' ";
+            } else {
+                $result = $result .  ", " . $attr . " = '" . $this->$attr . "' " ;
+            }
+        }
+
+        return $result;
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */

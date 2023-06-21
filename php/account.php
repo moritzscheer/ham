@@ -70,8 +70,9 @@ if(isset($_POST["register"])) {
         if($password === $repeat_password) {
             $user = $_SESSION["user"];
             $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
-
+            $_SESSION["a"] = $user;
             $user = $userStore->create($user);
+            $_SESSION["b"] = $user;
             $image = getProfilePictureSmall($user->getUserID(), false);
             $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
             
@@ -165,7 +166,6 @@ if(isset($_POST["change_password"])) {
 if(isset($_POST["update_profile"])) {
     try {
         $user = update_user_variable($_SESSION["loggedIn"]["user"]);
-
         $_SESSION["loggedIn"]["user"] = $userStore->update($user);
 
         header("Location: profile.php");
@@ -284,7 +284,7 @@ if (isset($_POST["onImageGalleryClick"])) {
         exit();
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
-        echo var_dump($error_message);
+
     }
 }
 

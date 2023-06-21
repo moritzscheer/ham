@@ -15,8 +15,8 @@ class DBAddressStore implements AddressStore {
         // creates the address table
         $sql = "CREATE TABLE IF NOT EXISTS address ( ".
                "address_ID INTEGER PRIMARY KEY AUTOINCREMENT, ".
-               "street_name varchar(30) DEFAULT NULL, ".
-               "house_number int(5) DEFAULT NULL, ".
+               "street_name varchar(100) DEFAULT NULL, ".
+               "house_number int(10) DEFAULT NULL, ".
                "postal_code int(5) DEFAULT NULL, ".
                "city varchar(20) DEFAULT NULL, ".
                "UNIQUE(street_name, house_number, postal_code, city));";
@@ -25,64 +25,70 @@ class DBAddressStore implements AddressStore {
 
     /**
      * @param object $item
-     * @return Address
+     * @return string
      */
-    public function create(object $item): Address {
+    public function create(object $item): string {
         // checking if an entry already exist
         $sql = "SELECT address_ID FROM address WHERE ".
-               "street_name = '".$item->getStreetName()."' OR ".
-               "house_number = '".$item->getHouseNumber()."' OR ".
-               "postal_code = '".$item->getPostalCode()."' OR ".
+               "street_name = '".$item->getStreetName()."' AND ".
+               "house_number = '".$item->getHouseNumber()."' AND ".
+               "postal_code = '".$item->getPostalCode()."' AND ".
                "city = '".$item->getCity()."';";
         $stmt = $this->db->query($sql)->fetch();
-        if ($stmt !== false) {
-            return $this->findOne($stmt[0]);
-        }
-        // inserting an entry
-        $sql = "INSERT INTO address (street_name, house_number, postal_code, city) VALUES (".
-                $item->getStreetName() ."', ".
-                $item->getHouseNumber()."', ".
-                $item->getPostalCode() ."', ".
-                $item->getCity()       ."');";
 
-        $this->db->exec($sql);
-        return $this->findOne($this->db->lastInsertId());
+        if ($stmt !== false) { // if an entry exist
+            return $stmt["address_ID"];
+        }
+
+        // inserting an entry
+        $sql = "INSERT INTO address (".$item->getKeys(true).") VALUES (".$item->getValues(true).") RETURNING address_ID;";
+        return $this->db->exec($sql);
     }
 
     /**
      * @param object $item
-     * @return Address
+     * @return string
      */
-    public function update(object $item): Address {
-        //  edit address
-        $sql = "UPDATE address SET ".
-            "street_name = ".$item->getStreetName().", ".
-            "house_number = ".$item->getHouseNumber().", ".
-            "postal_code = ".$item->getPostalCode().", ".
-            "city = ".$item->getCity().", ".
-            "WHERE address_ID = ". $item-> getId().";";
+    public function update(object $item): string {
+        // checking if address_ID is saved in any entry
+        $sql = "SELECT COUNT(*) FROM (".
+               "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
+               "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
+        $stmt = $this->db->query($sql)->fetch();
 
-        $this->db->exec($sql);
-        return $this->findOne($item-> getId());
+        if ($stmt["COUNT(*)"] > 1) {  // if address_ID is used somewhere else
+            $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("value", "list").");";
+        } else {  // else edit address
+            $sql = "UPDATE address SET ".$item->getAddressAttributes("key", "set")." WHERE address_ID = ". $item-> getAddressID()." RETURNING address_ID";
+        }
+        return $this->db->exec($sql);
     }
 
     /**
-     * @param string $id
+     * @param string $address_ID
      * @return void
      */
-    public function delete(string $id): void {
-        $sql = "DELETE FROM address WHERE address_ID = " . $id;
+    public function delete(string $address_ID): void {
+        $sql = "DELETE FROM address WHERE address_ID = " . $address_ID;
         $this->db->exec($sql);
     }
 
     /**
      * @param string $address_ID
-     * @return Address
+     * @return array
      */
-    public function findOne(string $address_ID): Address {
-        $sql = "SELECT * FROM address WHERE ".
-            "address_ID = '".$address_ID."';";
-        return Address::withAddressID($this->db->query($sql)->fetch());
+    public function findOne(string $address_ID): array {
+        $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(array(":address_ID" => $address_ID));
+        $stmt->bindColumn(2, $street_name);
+        $stmt->bindColumn(3, $house_number);
+        $stmt->bindColumn(4, $postal_code);
+        $stmt->bindColumn(5, $city);
+        $stmt->fetch(PDO::FETCH_BOUND);
+        return array("address_ID" => $address_ID
+        , "street_name" => $street_name, "house_number" => $house_number
+        , "postal_code" => $postal_code, "city" => $city);
     }
 
     /**

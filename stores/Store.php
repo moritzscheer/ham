@@ -7,4 +7,3 @@ interface Store
     public function findMany(array $ids);
     public function findAll();
 }
-?>

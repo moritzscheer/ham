@@ -2,8 +2,7 @@
 include_once "../stores/interface/EventStore.php";
 
 
-class DBEventStore implements EventStore
-{
+class DBEventStore implements EventStore {
 
     private PDO $db;
     private Store $addressStore;
@@ -36,67 +35,101 @@ class DBEventStore implements EventStore
     public function create(Event $item):Event {
         try {
             $this->db->beginTransaction();
-            
-            //  create address
-            $address = $this->addressStore->create($item);
+
+            // checking if an entry already exist with the name
+            $sql = "SELECT * FROM event WHERE name = '".$item->getName()."';";
+            $stmt = $this->db->query($sql)->fetch();
+            if($stmt !== false) {
+                throw new Exception("There is already an Event called ".$item->getName()."!");
+            }
+
+            //  creates address if user has put anything in any address field
+            if($item->getStreetName() !== "" || $item->getHouseNumber() !== "" || $item->getPostalCode() !== "" || $item->getCity() !== "") {
+                $address = $this->addressStore->create($item);
+                $item->setAddressID($address->getAddressID());
+            }
 
             // inserting an entry
-            $sql = "INSERT INTO event (           ".
-                   "address_ID, user_ID, name,    ".
-                   "description, requirements,    ".
-                   "date, startTime , endTime)    ".
-                   "VALUES (                      ".
-                    $address->getAddressID() ."', ".
-                    $item->getUserID()       ."', ".
-                    $item->getName()         ."', ".
-                    $item->getDescription()  ."', ".
-                    $item->getRequirements() ."', ".
-                    $item->getDate()         ."', ".
-                    $item->getStartTime()    ."', ".
-                    $item->getEndTime()      ."');";
+            $sql = "INSERT INTO event (".$item->getKeys(false).") VALUES (".$item->getValues(false).");";
             $this->db->exec($sql);
-
-            $event = $this->findOne($this->db->lastInsertId());
+            $item = $this->findOne($this->db->lastInsertId());
             $this->db->commit();
-            return $event;
+            return $item;
         } catch (Exception $ex) {
             $this->db->rollBack();
-            throw new Exception("could not create Event");
+            throw new Exception(" ");
         }
     }
 
+    /**
+     * @param Event $item
+     * @return Event
+     */
     public function update(Event $item):Event {
         $this->db->beginTransaction();
 
-        $sql = "UPDATE event SET                             ".
-               "image = '".$item->getImageSource()."'        ".
-               "description = '".$item->getDescription()."'  ".
-               "name = '".$item->getName()."'                ".
-               "date = '".$item->getDate()."'                ".
-               "startTime = '".$item->getStartTime()."'      ".
-               "endTime = '".$item->getEndTime()."'          ".
-               "requirements = '".$item->getRequirements()."'".
+        $sql = "UPDATE event SET ".
+               "image = '".$item->getImageSource()."' ".
+               "description = '".$item->getDescription()."' ".
+               "name = '".$item->getName()."' ".
+               "date = '".$item->getDate()."' ".
+               "startTime = '".$item->getStartTime()."' ".
+               "endTime = '".$item->getEndTime()."' ".
+               "requirements = '".$item->getRequirements()."' ".
                "WHERE event_ID = '". $item-> getEventID()."';";
 
         $this->db->exec($sql);
-
         $event = $this->findOne($this->db->lastInsertId());
+        
         $this->db->commit();
         return $event;
     }
 
-
-
-    public function delete(string $id): void {
-        $delete = "DELETE FROM event WHERE event_ID = '" . $id . "';";
+    /**
+     * @param string $event_ID
+     * @return void
+     */
+    public function delete(string $event_ID): void {
+        $delete = "DELETE FROM event WHERE event_ID = '" . $event_ID . "' RETURNING address_ID;";
         $this->db->exec($delete);
+        $this->addressStore->delete($delete);
     }
 
-    public function findOne(string $id): Event {
-        $sql ="SELECT * FROM event WHERE event_ID = '".$id."';";
-        return Event::withAddress($this->db->query($sql)->fetch());
+    /**
+     * @param string $event_ID
+     * @return Event
+     */
+    public function findOne(string $event_ID): Event {
+        $sql ="SELECT * FROM event WHERE event_ID = '".$event_ID."';";
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute(array(":user_ID" => $event_ID));
+
+        $stmt->bindColumn(1, $address_ID);
+        $stmt->bindColumn(2, $user_ID);
+        $stmt->bindColumn(3, $name);
+        $stmt->bindColumn(4, $description);
+        $stmt->bindColumn(5, $requirements);
+        $stmt->bindColumn(6, $date);
+        $stmt->bindColumn(7, $startTime);
+        $stmt->bindColumn(8, $endTime);
+        $stmt->bindColumn(10, $street_name);
+        $stmt->bindColumn(11, $house_number);
+        $stmt->bindColumn(12, $postal_code);
+        $stmt->bindColumn(13, $city);
+
+        $stmt->fetch(PDO::FETCH_BOUND);
+        
+        return Event::withAddress(array("event_ID" => $event_ID, "address_ID" => $address_ID, "user_ID" => $user_ID
+        , "name" => $name, "description" => $description, "requirements" => $requirements, "date" => $date, "startTime" => $startTime
+        , "endTime" => $endTime, "street_name" => $street_name, "house_number" => $house_number
+        , "postal_code" => $postal_code, "city" => $city));
     }
 
+    /**
+     * @param array $ids
+     * @return array
+     */
     public function findMany(array $ids): array {
         foreach ($ids as $key => $id) {
             $ids[$key] = "event_ID = " . $id;
@@ -113,6 +146,11 @@ class DBEventStore implements EventStore
         return $events;
     }
 
+    /**
+     * @param string $stmt
+     * @return array
+     * @throws Exception
+     */
     public function findAny(string $stmt): array {
         $sql = "SELECT * FROM event                         ".
             "    INNER JOIN address                      ".

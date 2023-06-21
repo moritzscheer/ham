@@ -5,9 +5,6 @@ include_once "../php/Item/Event.php";
 
 include_once "../stores/memory/FileUserStore.php";
 include_once "../stores/memory/FileEventStore.php";
-include_once "../stores/memory/FileBandStore.php";
-include_once "../stores/memory/FileAddressStore.php";
-
 
 include_once "../stores/database/DBUserStore.php";
 include_once "../stores/database/DBAddressStore.php";

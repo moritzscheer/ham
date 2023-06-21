@@ -5,9 +5,9 @@ class Event
 {
 
     // event attributes
-    private int $event_ID = -1;
+    private ?int $event_ID = null;
     private ?string $address_ID = "";
-    private int $user_ID = -1;
+    private ?int $user_ID = null;
     private ?string $name = "";
     private ?string $description = "";
     private ?string $requirements = "";
@@ -31,19 +31,19 @@ class Event
     public static function withAddress(array $item): Event
     {
         $instance = new self();
-        $instance->event_ID = $item[0];
-        $instance->address_ID = $item[1];
-        $instance->user_ID = $item[2];
-        $instance->name = $item[3];
-        $instance->description = $item[4];
-        $instance->requirements = $item[5];
-        $instance->date = $item[6];
-        $instance->startTime = $item[7];
-        $instance->endTime = $item[8];
-        $instance->street_name = $item[9];
-        $instance->house_number = $item[10];
-        $instance->postal_code = $item[11];
-        $instance->city = $item[12];
+        $instance->event_ID = $item["event_ID"];
+        $instance->address_ID = $item["address_ID"];
+        $instance->user_ID = $item["user_ID"];
+        $instance->name = $item["name"];
+        $instance->description = $item["description"];
+        $instance->requirements = $item["requirements"];
+        $instance->date = $item["date"];
+        $instance->startTime = $item["startTime"];
+        $instance->endTime = $item["endTime"];
+        $instance->street_name = $item["street_name"];
+        $instance->house_number = $item["house_number"];
+        $instance->postal_code = $item["postal_code"];
+        $instance->city = $item["city"];
         return $instance;
     }
 
@@ -171,6 +171,75 @@ class Event
             return $this->street_name . " " . $this->house_number . ", " . $this->postal_code . " " . $this->city;
 
         }
+    }
+
+    /**
+     * gets attributes of the event class. If $getAddressOnly is true the address attributes defined
+     * in address Table are returned else only the user attributes defined in user Table are returned
+     * @param $getAddressOnly
+     * @return String
+     */
+    public function getKeys($getAddressOnly) : String {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if($getAddressOnly) {
+                if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                    if ($value !== null && $value !== "") {
+                        if ($result === "") {
+                            $result = $key;
+                        } else {
+                            $result = $result . ", " . $key;
+                        }
+                    }
+                }
+            } else {
+                if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                    if($value !== null && $value !== "") {
+                        if ($result === "") {
+                            $result = $key;
+                        } else {
+                            $result = $result . ", " . $key;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * gets the values for the attributes of the user class. If $getAddressOnly is true the address values
+     * defined in address Table are returned else only the user values defined in user Table are returned
+     * @param $getAddressOnly
+     * @return String
+     */
+    public function getValues($getAddressOnly) : String {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if($getAddressOnly) {
+                if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                    if ($value !== null && $value !== "") {
+                        if ($result === "") {
+                            $result = "'" . $value . "'";
+                        } else {
+                            $result = $result . ", '" . $value . "'";
+                        }
+                    }
+                }
+            } else {
+                if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                    if($value !== null && $value !== "") {
+                        if ($result === "") {
+                            $result = "'" . $value . "'";
+                        } else {
+                            $result = $result . ", '" . $value . "'";
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
@@ -386,9 +455,9 @@ class Event
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getEventID(): int
+    public function getEventID(): ?int
     {
         return $this->event_ID;
     }
