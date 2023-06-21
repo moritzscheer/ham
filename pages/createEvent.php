@@ -12,7 +12,7 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
     <form method="post" enctype="multipart/form-data">
         <div id="create-event">
             <section class="left-column">
-                <label id="imagFe" class="big-text">Image:
+                <label id="image" class="big-text">Image:
                     <input type="File" onchange="onImageAdd(event)" id="image" accept=".jpg, .png, .jpeg" name="image">
                 </label>
                 <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImageSource() ?>" alt="preview">
