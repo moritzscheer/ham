@@ -111,6 +111,5 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
         preview.onload = function (){
             URL.revokeObjectURL(preview.src);
         }
-
     }
 </script>
