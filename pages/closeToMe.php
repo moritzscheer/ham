@@ -3,7 +3,7 @@ include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
 
-    <h1> In meiner Nähe</h1>
+    <h1> Close to Me </h1>
 
     <?php
 
