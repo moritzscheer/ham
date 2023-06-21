@@ -7,7 +7,7 @@ include_once "../php/head/head.php" ?>
 
     <div id="filter">
         <form method="post" id="search">
-            <input type="search" name="search" value="<?php echo $_SESSION["search"] ?>" placeholder="search" >
+            <input type="search" name="search" oninput="sendRequest(search)" value="<?php echo $_SESSION["search"] ?>" placeholder="search" >
             <input type="date" name="searchDate" value="<?php echo $_SESSION["searchDate"] ?>" placeholder="Date">
             <input type="submit" name="submitSearch">
         </form>
@@ -40,3 +40,19 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
+<script>
+    function sendRequest(search) {
+        var xmlhttp = new XMLHttpRequest();
+        search = search.value;
+
+        xmlhttp.open("GET", "../php/itemList.php?submitSearchJavaScript="+search, true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-formurlencoded");
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("item_list").innerHTML = this.responseText;
+                console.log(this);
+            }
+        }
+        xmlhttp.send();
+    }
+</script>

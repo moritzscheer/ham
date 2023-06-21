@@ -1,7 +1,6 @@
 <?php
 include_once "../stores/interface/EventStore.php";
 
-
 class DBEventStore implements EventStore {
 
     private PDO $db;
@@ -146,14 +145,14 @@ class DBEventStore implements EventStore {
      */
     public function findAny(string $stmt): array {
         $sql = "SELECT * FROM event                         ".
-            "    INNER JOIN address                      ".
-            "    ON address.address_ID = event.address_ID".
-            "    WHERE name LIKE '%".$stmt."%' OR          ".
-            "    description LIKE '%".$stmt."%' OR          ".
-            "    requirements LIKE '%".$stmt."%' OR          ".
-            "    date LIKE '%".$stmt."%' OR          ".
-            "    startTime LIKE '%".$stmt."%' OR          ".
-            "    endTime LIKE '%".$stmt."%'           ";
+               "    INNER JOIN address                      ".
+               "    ON address.address_ID = event.address_ID".
+               "    WHERE name LIKE '%".$stmt."%' OR          ".
+               "    description LIKE '%".$stmt."%' OR          ".
+               "    requirements LIKE '%".$stmt."%' OR          ".
+               "    date LIKE '%".$stmt."%' OR          ".
+               "    startTime LIKE '%".$stmt."%' OR          ".
+               "    endTime LIKE '%".$stmt."%'           ";
         return $this->createEventArray($sql);
     }
 
@@ -177,10 +176,10 @@ class DBEventStore implements EventStore {
      * @return array
      * @throws Exception
      */
-    public function createEventArray(string $sql): array
-    {
-        $stmt = $this->db->query($sql)->fetchAll();
-
+    public function createEventArray(string $sql): array {
+        $stmt = $this->db->query($sql);
+        // funktioniert mit AJAX nicht.
+        $stmt = $stmt->fetchAll();
 
         $return = array();
         foreach ($stmt as $event) {

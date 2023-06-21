@@ -1,7 +1,7 @@
 <?php
-
+include_once "item/Event.php";
 global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventOptions;
-
+include_once "../php/settings.php";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                  item variables                                                    */
@@ -32,7 +32,7 @@ isset($_POST["event_city"]) && is_string($_POST["event_city"])   ?   $_SESSION["
 
 $_SESSION["itemList"] = (isset($_GET["type"]) && is_string($_GET["type"])) ? getItems($_GET["type"]) : "";
 $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? null;
-$_SESSION["showEventOptions"] = $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
+$_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
@@ -102,7 +102,7 @@ if (isset($_POST["onEdit"])){
  */
 if (isset($_POST["onGetAllEvents"])) {
     $_SESSION["itemList"] = getAllEvents();
-}
+}       
 
 /**
  * if a user clicks on get all events, all events created by the loggedIn user are displayed
@@ -125,6 +125,12 @@ if (isset($_POST["submitSearch"])) {
         $_SESSION["itemList"] = $itemDate.$itemSearch;
     }
 }
+
+/*
+if (isset($_GET["submitSearchJavaScript"])) {
+    echo getAnyEvents($_GET["submitSearchJavaScript"]);
+}
+*/
 
 /**
  * switches from ascending sort to descending sort.
@@ -238,7 +244,7 @@ function getAnyEvents($stmt): string {
         return buildItemList($_SESSION["events"], 'There are no Events with: "'.$stmt.'".', false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
-        return "";
+        return $e;
     }
 }
 
@@ -276,6 +282,7 @@ function getBands(): string {
 function buildItemList($events, $msg, $editVisible) : string {
     if (!empty($events)) {
         $return = "";
+
         foreach ($events as $event) {
             if ($editVisible) {
                 $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button

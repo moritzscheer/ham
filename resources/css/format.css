@@ -138,6 +138,9 @@ input:-webkit-autofill {
     grid-template-columns: 1fr 1fr;
     gap: 30px;
 }
+#split input {
+    width: 100%;
+}
 
 
 

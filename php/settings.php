@@ -85,8 +85,6 @@ function initDatabase(): void {
     /**
      * database
      */
-
-
     $addressStore = new DBAddressStore($db);
     $eventStore = new DBEventStore($db, $addressStore, $blobObj);
     $userStore = new DBUserStore($db, $addressStore, $blobObj);
@@ -94,7 +92,6 @@ function initDatabase(): void {
     /**
      * memory
      */
-
     //$addressStore = new FileAddressStore($db);
     /*$bandStore = new FileBandStore("../resources/json/Bands.json");
     $eventStore = new FileEventStore("../resources/json/Events.json");
