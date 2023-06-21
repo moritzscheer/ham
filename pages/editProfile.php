@@ -11,21 +11,23 @@ include_once "../php/head/head.php" ?>
             <input oninput="window.document.getElementById('addBackgroundImage').click()" type="file"
                    accept=".jpg, .png, .jpeg" name="profile_picture_large">
         </label>
-        <input hidden id="addBackgroundImage" type="submit" value="Add" name="profile_picture_large">
+        <input id="addBackgroundImage" type="submit" value="Add" name="profile_picture_large">
     </div>
 </form>
 
 <div class="profile-Navigation">
     <div>
         <form method="post" class="profile-Picture-Box" id="edit" enctype="multipart/form-data">
-            <img onclick="window.document.getElementById('profileInput').click()" src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
+            <img onclick="window.document.getElementById('profileInput').click()"
+                 ondrop="window.document.getElementById('profileInput').click()"
+                 src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
             <div id="profile-Picture-Link">
                 <label>Select Image
                     <input oninput="window.document.getElementById('addProfileImage').click()" type="file"
                            id="profileInput"
                            name="profile_picture_small" accept=".jpg, .png, .jpeg">
                 </label>
-                <input hidden id="addProfileImage" type="submit" value="Add" name="profile_picture_small"
+                <input id="addProfileImage" type="submit" value="Add" name="profile_picture_small"
                        class="profile-Picture-Submit">
             </div>
         </form>

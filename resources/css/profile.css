@@ -67,9 +67,9 @@
 
 }
 .profile-Picture-Box:hover > #profile-Picture-Link {
-    display: flex;
+    display: grid;
     text-align: center;
-    justify-content: center;
+    grid-auto-columns: auto auto;
     position: relative;
     gap: 10px;
     top: 40px;

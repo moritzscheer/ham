@@ -2,6 +2,7 @@
 <body>
 <?php include_once "../php/navigation/header/header.php";
 global $newEvent;
+
 ?>
 
 <div>
@@ -12,7 +13,7 @@ global $newEvent;
                 <label id="image" class="big-text">Image:
                     <input type="File" onchange="onImageAdd(event)" id="image" accept=".jpg, .png, .jpeg" name="image">
                 </label>
-                <img id="preview" class="full-width" src="#" alt="preview">
+                <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImageSource() ?>" alt="preview">
                 <label id="description" class="big-text">Description: <br/>
                     <textarea class="full-width" name="description"
                               rows="5"><?php echo $_SESSION["event"]->getDescription() ?></textarea>
