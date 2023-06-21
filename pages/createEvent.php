@@ -10,9 +10,9 @@ global $newEvent;
         <div id="create-event">
             <section class="left-column">
                 <label id="image" class="big-text">Image:
-                    <input type="File" id="image" accept=".jpg, .png, .jpeg" name="image">
+                    <input type="File" onchange="onImageAdd(event)" id="image" accept=".jpg, .png, .jpeg" name="image">
                 </label>
-                <img class="full-width" src="../resources/images/events/event.jpg" alt="eventImage">
+                <img id="preview" class="full-width" src="#" alt="preview">
                 <label id="description" class="big-text">Description: <br/>
                     <textarea class="full-width" name="description"
                               rows="5"><?php echo $_SESSION["event"]->getDescription() ?></textarea>
@@ -101,3 +101,13 @@ global $newEvent;
 <?php include_once "../php/navigation/footer/footer.php" ?>
 </body>
 </html>
+<script>
+    function onImageAdd(image) {
+        var preview = window.document.getElementById('preview');
+        preview.src = URL.createObjectURL(image.target.files[0]);
+        preview.onload = function (){
+            URL.revokeObjectURL(preview.src);
+        }
+
+    }
+</script>
