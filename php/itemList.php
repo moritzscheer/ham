@@ -93,7 +93,7 @@ if (isset($_POST["onDelete"])) {
 if (isset($_POST["onEdit"])){
     $_SESSION["event"] = $eventStore->findOne($_POST["onEdit"]);
 
-    header("Location: createEvent.php?status=edit");
+    header("Location: createEvent.php?status=Edit");
     exit();
 }
 

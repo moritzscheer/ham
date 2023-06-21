@@ -2,15 +2,17 @@
 <body>
 <?php include_once "../php/navigation/header/header.php";
 global $newEvent;
-
+if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
+    $_SESSION['event'] = new Event();
+}
 ?>
 
 <div>
-    <h1> Create Event </h1>
+    <h1> <?php echo $_SESSION["status"] ?> Event </h1>
     <form method="post" enctype="multipart/form-data">
         <div id="create-event">
             <section class="left-column">
-                <label id="image" class="big-text">Image:
+                <label id="imagFe" class="big-text">Image:
                     <input type="File" onchange="onImageAdd(event)" id="image" accept=".jpg, .png, .jpeg" name="image">
                 </label>
                 <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImageSource() ?>" alt="preview">

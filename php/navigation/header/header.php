@@ -1,3 +1,4 @@
+<?php global $newEvent?>
 <nav>
     <div id="navbar">
         <div class="logo">
