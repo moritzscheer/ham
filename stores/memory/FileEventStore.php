@@ -89,21 +89,20 @@ class FileEventStore implements EventStore
     /**
      * Deletes Event form json file by given id
      *
-     * Loads all the content form the json file into a variable,
-     * deletes an entry in the array and overwrites the json file
+     * Deletes an entry in the array and overwrites the json file
      * @param string $id
      * @return void
      */
-    public function delete(string $id)
+    public function delete(string $id) : void
     {
-        $i = 0;
         foreach ($this->itemsOfJsonfile as $item) {
             if ($id == $item->id) {
-                unset($this->itemsOfJsonfile[$i]);
+                unset($this->itemsOfJsonfile[$item]);
+                $this->addItemsToJsonFile();
+                return;
             }
-            $i++;
         }
-        $this->addItemsToJsonFile();
+        throw new Exception("No such Event was found.");
     }
 
     public function findMany(array $ids)

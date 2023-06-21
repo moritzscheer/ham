@@ -92,11 +92,10 @@ function initDatabase(): void {
     /**
      * memory
      */
-    //$addressStore = new FileAddressStore($db);
-    /*$bandStore = new FileBandStore("../resources/json/Bands.json");
-    $eventStore = new FileEventStore("../resources/json/Events.json");
-    $userStore = new FileUserStore("../resources/json/Events.json");
-    */
+
+    //$eventStore = new FileEventStore("../resources/json/Events.json");
+    //$userStore = new FileUserStore("../resources/json/user.json");
+
 }
 
 function closeConnection(): void {

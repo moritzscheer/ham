@@ -1,1 +1,53 @@
-[{"image":"..\/resources\/images\/events\/event.jpg","id":"av0441","authorID":"ut4001","type":"event","description":"Hornbach Bau- und Gartenmarkt er\u00f6ffnet voraussichtlich im Fr\u00fchjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.","name":"Hornbach Bau- und Gartenmarkt","address_ID":"jdsf832","street":"Steinweg","houseNr":2,"postalCode":42275,"city":"Wuppertal","Date":"2023-04-12","startTime":"14:00","endTime":"14:00","requirements":"Jazzband mit Repertoir f\u00fcr einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000\u20ac"},{"image":"..\/resources\/images\/events\/event2.jpg","id":"df4357","authorID":"gt0125","type":"event","description":"Hornbach Bau- und Gartenmarkt er\u00f6ffnet voraussichtlich im Fr\u00fchjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.","name":"Hornbach Bau- und Gartenmarkt","address_ID":"ak9375","street":"Steinweg","houseNr":2,"postalCode":42275,"city":"Wuppertal","Date":"2023-04-12","startTime":"14:00","endTime":"14:00","requirements":"Jazzband mit Repertoir f\u00fcr einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000\u20ac"},{"image":"..\/resources\/images\/events\/event.jpg","id":"ev_648c860464005","authorID":16,"type":"event","description":"some test 2","name":"Ein Testevent 2","address_ID":"","street":"Teststra\u00dfe","houseNr":"2","postalCode":"21345","city":"Teststadt2","Date":"2023-06-19","startTime":"18:24","endTime":"18:30","requirements":"Test2"}]
+[
+  {
+    "image": "..\/resources\/images\/events\/event.jpg",
+    "id": "av0441",
+    "authorID": "ut4001",
+    "type": "event",
+    "description": "Hornbach Bau- und Gartenmarkt er\u00f6ffnet voraussichtlich im Fr\u00fchjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
+    "name": "Hornbach Bau- und Gartenmarkt",
+    "address_ID": "jdsf832",
+    "street": "Steinweg",
+    "houseNr": 2,
+    "postalCode": 42275,
+    "city": "Wuppertal",
+    "Date": "2023-04-12",
+    "startTime": "14:00",
+    "endTime": "14:00",
+    "requirements": "Jazzband mit Repertoir f\u00fcr einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000\u20ac"
+  },
+  {
+    "image": "..\/resources\/images\/events\/event2.jpg",
+    "id": "df4357",
+    "authorID": "gt0125",
+    "type": "event",
+    "description": "Hornbach Bau- und Gartenmarkt er\u00f6ffnet voraussichtlich im Fr\u00fchjahr 2023 einen weiteren Markt in Leipzig auf rund 10.000 Quadratmetern und einem Gartenmarkt mit rund 3.000 Quadratmetern.",
+    "name": "Hornbach Bau- und Gartenmarkt",
+    "address_ID": "ak9375",
+    "street": "Steinweg",
+    "houseNr": 2,
+    "postalCode": 42275,
+    "city": "Wuppertal",
+    "Date": "2023-04-12",
+    "startTime": "14:00",
+    "endTime": "14:00",
+    "requirements": "Jazzband mit Repertoir f\u00fcr einen Nachmittag (3std)\n    Kostenlose Verpflegung\n    Bis 2000\u20ac"
+  },
+  {
+    "image": "..\/resources\/images\/events\/event.jpg",
+    "id": "ev_648c860464005",
+    "authorID": 16,
+    "type": "event",
+    "description": "some test 2",
+    "name": "Ein Testevent 2",
+    "address_ID": "",
+    "street": "Teststra\u00dfe",
+    "houseNr": "2",
+    "postalCode": "21345",
+    "city": "Teststadt2",
+    "Date": "2023-06-19",
+    "startTime": "18:24",
+    "endTime": "18:30",
+    "requirements": "Test2"
+  }
+]

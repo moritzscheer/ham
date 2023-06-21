@@ -1,6 +1,6 @@
 [
   {
-    "user_ID": 1,
+    "user_ID": "user_123",
     "type": "Musician",
     "address_ID": 1,
     "name": "test",
@@ -8,6 +8,13 @@
     "password": "1234",
     "phone_number": "0176123456789",
     "email": "test@uni.de",
+    "genre": "Rock",
+    "members": "",
+    "other_remarks": "",
+    "street_name" : "",
+    "house_number": "",
+    "postal_code": "",
+    "city": "",
     "profile_picture_small": "",
     "profile_picture_large": "",
     "profile_gallery": [
@@ -24,6 +31,13 @@
     "password": "2",
     "phone_number": "",
     "email": "moritz@uni.de",
+    "genre": "",
+    "members": "",
+    "other_remarks": "",
+    "street_name" : "",
+    "house_number": "",
+    "postal_code": "",
+    "city": "Oldenburg",
     "profile_picture_small": "",
     "profile_picture_large": "",
     "profile_gallery": []

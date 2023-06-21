@@ -168,8 +168,8 @@ if(isset($_POST["update_profile"])) {
         $user = update_user_variable($_SESSION["loggedIn"]["user"]);
         $_SESSION["loggedIn"]["user"] = $userStore->update($user);
 
-        //header("Location: profile.php");
-        //exit();
+        header("Location: profile.php");
+        exit();
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
     }

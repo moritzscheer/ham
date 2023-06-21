@@ -43,7 +43,6 @@ $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESS
  */
 if (isset($_POST["submit"])) {
     try {
-        var_dump($_SESSION["status"]);
         if ($_SESSION["status"] === "create") {
             $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
             $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
@@ -102,7 +101,7 @@ if (isset($_POST["onEdit"])){
  */
 if (isset($_POST["onGetAllEvents"])) {
     $_SESSION["itemList"] = getAllEvents();
-}       
+}
 
 /**
  * if a user clicks on get all events, all events created by the loggedIn user are displayed
