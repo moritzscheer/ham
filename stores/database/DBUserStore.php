@@ -48,13 +48,12 @@ class DBUserStore implements UserStore
                 throw new Exception("Email or Password already exist");
             }
 
-            //  creates address if user has put anything in any address field
             if($user->getStreetName() !== "" || $user->getHouseNumber() !== "" || $user->getPostalCode() !== "" || $user->getCity() !== "") {
                 $address_ID = $this->addressStore->create($user);
                 $user->setAddressID($address_ID);
             }
-            $sql = "INSERT INTO user (".$user->getAttributes("key", "list").") VALUES (".$user->getAttributes("value", "list").");";
 
+            $sql = "INSERT INTO user (".$user->getAttributes("key", "list").") VALUES (".$user->getAttributes("valueWithApo", "list").");";
             $this->db->exec($sql);
 
             $user = $this->findOne($this->db->lastInsertId());
@@ -73,10 +72,10 @@ class DBUserStore implements UserStore
      */
     public function update(object $user): User {
         $address_ID = $this->addressStore->update($user);
-        $user->setAddressID($address_ID);#
+        $user->setAddressID($address_ID);
 
         $sql = "UPDATE user SET ".$user->getAttributes("key", "set")." WHERE user_ID = '". $user->getUserID()."';";
-        var_dump($sql);
+
         $this->db->exec($sql);
         return $this->findOne($user->getUserID());
     }
@@ -115,6 +114,7 @@ class DBUserStore implements UserStore
 
         if($address_ID !== NULL) {
             $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
+
             $stmt = $this->db->prepare($sql);
             $stmt->execute(array(":address_ID" => $address_ID));
             $stmt->bindColumn(2, $street_name);
@@ -123,11 +123,12 @@ class DBUserStore implements UserStore
             $stmt->bindColumn(5, $city);
             $stmt->fetch(PDO::FETCH_BOUND);
         }
-        
-        return User::withAddress(array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type, "name" => $name, "surname" => $surname
+
+        $user =  User::withAddress(array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type, "name" => $name, "surname" => $surname
         , "password" => $password, "phone_number" => $phone_number, "email" => $email, "genre" => $genre, "members" => $members
         , "other_remarks" => $other_remarks, "street_name" => $street_name, "house_number" => $house_number
         , "postal_code" => $postal_code, "city" => $city));
+        return $user;
     }
 
     /**
@@ -135,7 +136,7 @@ class DBUserStore implements UserStore
      * @param array $user_IDs
      * @return false|int
      */
-    public function findMany(array $user_IDs) {
+    public function findMany(array $user_IDs) : false|int {
         foreach ($user_IDs as $user_ID) {
             $id = "user_ID = " . $user_ID;
         }
@@ -184,7 +185,10 @@ class DBUserStore implements UserStore
     public function login($email, $password): User {
         $sql = "SELECT * FROM user WHERE email = '".$email."';";
         $stmt = $this->db->query($sql)->fetch();
-
+        
+        if($stmt === false) {
+            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
+        }
         if(!password_verify($password, $stmt["password"])) {
             throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
         }

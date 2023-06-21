@@ -1,7 +1,7 @@
 <?php include_once "../php/head/head.php" ?>
 <body>
 <?php include_once "../php/navigation/header/header.php" ?>
-    <?php echo var_dump($_SESSION["a"]) ?>
+
 <section id="about-area">
     <div id="about-picture">
         <img id="about-logo-img" src="../resources/images/logo/ham_white.png" alt="ham-Logo">

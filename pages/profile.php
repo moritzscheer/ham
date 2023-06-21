@@ -38,7 +38,7 @@ include_once "../php/head/head.php" ?>
                 </div>
 
                 <div id="output-entry" class="entry">Address:
-                    <div><?php echo $_SESSION["user"]->printAddress() ?></div>
+                    <div><?php echo $_SESSION["user"]->getAddressAttributes("value", "list") ?></div>
                 </div>
 
                 <div id="output-entry" class="entry">Type:

@@ -42,22 +42,20 @@ class DBEventStore implements EventStore {
             if($stmt !== false) {
                 throw new Exception("There is already an Event called ".$item->getName()."!");
             }
-
-            //  creates address if user has put anything in any address field
             if($item->getStreetName() !== "" || $item->getHouseNumber() !== "" || $item->getPostalCode() !== "" || $item->getCity() !== "") {
-                $address = $this->addressStore->create($item);
-                $item->setAddressID($address->getAddressID());
+                $address_ID = $this->addressStore->create($item);
+                $item->setAddressID($address_ID);
             }
 
-            // inserting an entry
-            $sql = "INSERT INTO event (".$item->getKeys(false).") VALUES (".$item->getValues(false).");";
+            $sql = "INSERT INTO event (".$item->getAttributes("key", "list").") VALUES (".$item->getAttributes("valueWithApo", "list").");";
             $this->db->exec($sql);
+
             $item = $this->findOne($this->db->lastInsertId());
             $this->db->commit();
             return $item;
         } catch (Exception $ex) {
             $this->db->rollBack();
-            throw new Exception(" ");
+            throw new Exception($ex);
         }
     }
 
@@ -66,23 +64,13 @@ class DBEventStore implements EventStore {
      * @return Event
      */
     public function update(Event $item):Event {
-        $this->db->beginTransaction();
+        $address_ID = $this->addressStore->update($item);
+        $item->setAddressID($address_ID);
 
-        $sql = "UPDATE event SET ".
-               "image = '".$item->getImageSource()."' ".
-               "description = '".$item->getDescription()."' ".
-               "name = '".$item->getName()."' ".
-               "date = '".$item->getDate()."' ".
-               "startTime = '".$item->getStartTime()."' ".
-               "endTime = '".$item->getEndTime()."' ".
-               "requirements = '".$item->getRequirements()."' ".
-               "WHERE event_ID = '". $item-> getEventID()."';";
+        $sql = "UPDATE event SET ".$item->getAttributes("key", "set")." WHERE event_ID = '". $item->getEventID()."';";
 
         $this->db->exec($sql);
-        $event = $this->findOne($this->db->lastInsertId());
-        
-        $this->db->commit();
-        return $event;
+        return $this->findOne($item->getEventID());
     }
 
     /**
@@ -100,26 +88,31 @@ class DBEventStore implements EventStore {
      * @return Event
      */
     public function findOne(string $event_ID): Event {
-        $sql ="SELECT * FROM event WHERE event_ID = '".$event_ID."';";
+        $sql ="SELECT * FROM event WHERE event_ID = :event_ID;";
         $stmt = $this->db->prepare($sql);
-
-        $stmt->execute(array(":user_ID" => $event_ID));
-
-        $stmt->bindColumn(1, $address_ID);
-        $stmt->bindColumn(2, $user_ID);
-        $stmt->bindColumn(3, $name);
-        $stmt->bindColumn(4, $description);
-        $stmt->bindColumn(5, $requirements);
-        $stmt->bindColumn(6, $date);
-        $stmt->bindColumn(7, $startTime);
-        $stmt->bindColumn(8, $endTime);
-        $stmt->bindColumn(10, $street_name);
-        $stmt->bindColumn(11, $house_number);
-        $stmt->bindColumn(12, $postal_code);
-        $stmt->bindColumn(13, $city);
-
+        $stmt->execute(array(":event_ID" => $event_ID));
+        $stmt->bindColumn(2, $address_ID);
+        $stmt->bindColumn(3, $user_ID);
+        $stmt->bindColumn(4, $name);
+        $stmt->bindColumn(5, $description);
+        $stmt->bindColumn(6, $requirements);
+        $stmt->bindColumn(7, $date);
+        $stmt->bindColumn(8, $startTime);
+        $stmt->bindColumn(9, $endTime);
         $stmt->fetch(PDO::FETCH_BOUND);
-        
+
+        if($address_ID !== NULL) {
+            $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(array(":address_ID" => $address_ID));
+            $stmt->bindColumn(2, $street_name);
+            $stmt->bindColumn(3, $house_number);
+            $stmt->bindColumn(4, $postal_code);
+            $stmt->bindColumn(5, $city);
+            $stmt->fetch(PDO::FETCH_BOUND);
+        }
+
         return Event::withAddress(array("event_ID" => $event_ID, "address_ID" => $address_ID, "user_ID" => $user_ID
         , "name" => $name, "description" => $description, "requirements" => $requirements, "date" => $date, "startTime" => $startTime
         , "endTime" => $endTime, "street_name" => $street_name, "house_number" => $house_number

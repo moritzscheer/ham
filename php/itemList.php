@@ -9,9 +9,8 @@ global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventO
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
-if ($_SESSION["event"]->getEventID() == -1){
-    $_SESSION["CreateOrUpdateWord"] = "Create";
-} else $_SESSION["CreateOrUpdateWord"] = "Update";
+$_SESSION["CreateOrUpdateWord"] = $_SESSION["event"]->getEventID() === null ? "Create" : "Update";
+
 
 
 $_SESSION["events"] = $_SESSION["events"] ?? null;
@@ -44,11 +43,11 @@ $_SESSION["showEventOptions"] = $_SESSION["loggedIn"]["status"] === false ? "hid
  */
 if (isset($_POST["submit"])) {
     try {
-        if ($_SESSION["CreateOrUpdateWord"] == "Create"){
+        if ($_SESSION["CreateOrUpdateWord"] == "Create") {
+            var_dump("aaa");
             $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
             $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
-        }
-        else {
+        } else {
             $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
         }
 
@@ -133,8 +132,8 @@ if (isset($_POST["sort"])) {
         }
 
         $_SESSION["itemList"] = buildItemList($_SESSION["events"], "could not sort");
-    } catch (Exception $e) {
-        
+    } catch (Exception $ex) {
+       $error_message = $ex;
     }
 }
 

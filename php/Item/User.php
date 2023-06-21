@@ -76,29 +76,6 @@ class User {
     /**
      * @return string
      */
-    public function printAddress(): string {
-        $result = "";
-        foreach ($this as $key => $value) {
-            if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                if ($value !== null && $value !== "") {
-                    if ($result === "") {
-                        $result = $value;
-                    } else {
-                        if ($key === "house_number") {
-                            $result = $result . ", " . $value;
-                        } else {
-                            $result = $result . " " . $value;
-                        }
-                    }
-                }
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * @return string
-     */
     public function getImageSource() : string {
         if(empty($this->blobData)) {
             return "../resources/images/profile/default/defaultLarge.jpeg";
@@ -117,7 +94,6 @@ class User {
     public function getAttributes($keyOrValue, $schema) : String {
         $result = "";
         foreach ($this as $key => $value) {
-            $keyOrValue = $keyOrValue === "value" ? $value : $key;
             if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
                 $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
             }
@@ -150,20 +126,21 @@ class User {
      * @return string
      */
     private function concatString($result, $key, $value, $keyOrValue, $schema) : string {
-        $attr = $keyOrValue === "value" ? "'".$value."'" : $key;
+        $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
+        
         if ($schema === "list") {
             if ($value !== null && $value !== "") {
                 if ($result === "") {
                     $result = $attr;
                 } else {
                     $result = $result . ", " . $attr;
-                }
+                    }
             }
         } elseif ($schema === "set") {
             if ($result === "") {
-                $result = $attr . " = '" . $this->$attr . "' ";
+                $result = $key . " = '" . $value . "'";
             } else {
-                $result = $result .  ", " . $attr . " = '" . $this->$attr . "' " ;
+                $result = $result . ", " . $key . " = '" . $value . "'";
             }
         }
 

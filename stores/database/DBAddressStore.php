@@ -41,8 +41,9 @@ class DBAddressStore implements AddressStore {
         }
 
         // inserting an entry
-        $sql = "INSERT INTO address (".$item->getKeys(true).") VALUES (".$item->getValues(true).") RETURNING address_ID;";
-        return $this->db->exec($sql);
+        $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("valueWithApo", "list").");";
+        $this->db->exec($sql);
+        return $this->db->lastInsertId();
     }
 
     /**
@@ -50,18 +51,24 @@ class DBAddressStore implements AddressStore {
      * @return string
      */
     public function update(object $item): string {
-        // checking if address_ID is saved in any entry
-        $sql = "SELECT COUNT(*) FROM (".
-               "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
-               "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
-        $stmt = $this->db->query($sql)->fetch();
-
-        if ($stmt["COUNT(*)"] > 1) {  // if address_ID is used somewhere else
-            $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("value", "list").");";
-        } else {  // else edit address
-            $sql = "UPDATE address SET ".$item->getAddressAttributes("key", "set")." WHERE address_ID = ". $item-> getAddressID()." RETURNING address_ID";
+        if($item->getAddressID() === NULL) {
+            $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("valueWithApo", "list").");";
+        } else {
+            // checking if address_ID is saved in any entry
+            $sql = "SELECT COUNT(*) FROM (".
+                   "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
+                   "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
+            $stmt = $this->db->query($sql)->fetch();
+            if ($stmt["COUNT(*)"] > 1) {  // if address_ID is used somewhere else
+                $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("valueWithApo", "list").");";
+            } else {  // else edit address
+                $sql = "UPDATE address SET ".$item->getAddressAttributes("key", "set")." WHERE address_ID = ". $item->getAddressID().";";
+                $this->db->exec($sql);
+                return $item->getAddressID();
+            }
         }
-        return $this->db->exec($sql);
+        $this->db->exec($sql);
+        return $this->db->lastInsertId();
     }
 
     /**

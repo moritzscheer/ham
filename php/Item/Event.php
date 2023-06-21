@@ -92,20 +92,20 @@ class Event
     {
         return $string =
             '    <form method="post" name="event_ID" id="item">                                                    ' .
-            '        <div id="item_image">                                                                                         ' .
-            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              ' .
+            '        <div id="item_image">                                                                         ' .
+            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
-            '        <div id="item_short_description" class="text-line-pre">                                             ' .
+            '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>Address: ' . $this->printAddress() . '</span>                                         ' .
+            '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
             '            <br>                                                                                      ' .
             '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
-            '    </form>                                                                                           ';
+            '    </form>                                                                                           ' ;
     }
 
     //todo: fix line 120 to 127 with ajax ?
@@ -113,30 +113,30 @@ class Event
     {
         return $string =
             '    <form method="post" name="event_ID" id="item">                                                    ' .
-            '        <div id="item_image">                                                                                         ' .
-            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>              ' .
+            '        <div id="item_image">                                                                         ' .
+            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
-            '        <div id="item_editable">                                                                                         ' .
-            '             <label>Edit                                                          ' .
-            '                   <a href="createEvent.php"  name="onEdit" ></a>                 ' .
-            '                   <input type="submit" name="onEdit" value="' . $this->event_ID . '">                                                            ' .
-            '             </label>                                                                    ' .
-            '             <label>Delete                                                           ' .
-            '                   <a href="events.php"  name="onDelete" ></a>                                    ' .
-            '                   <input type="submit" name="onDelete" value="' . $this->event_ID . '">                 ' .
-            '              </label>                                                                     ' .
-            '        </div>                                                                             ' .
-            '        <div id="item_short_description" class="text-line-pre">                                             ' .
+            '        <div id="item_editable">                                                                      ' .
+            '             <label>Edit                                                                              ' .
+            '                   <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
+            '                   <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
+            '             </label>                                                                                 ' .
+            '             <label>Delete                                                                            ' .
+            '                   <a href="events.php"  name="onDelete" ></a>                                        ' .
+            '                   <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
+            '              </label>                                                                                ' .
+            '        </div>                                                                                        ' .
+            '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>Address: ' . $this->printAddress() . '</span>                                         ' .
+            '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
             '            <br>                                                                                      ' .
             '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
-            '    </form>                                                                                           ';
+            '    </form>                                                                                           ' ;
 
     }
 
@@ -161,84 +161,65 @@ class Event
     }
 
     /**
-     * @return string
-     */
-    public function printAddress(): string
-    {
-        if ($this->street_name === "" && $this->house_number === "") {
-            return $this->postal_code . " " . $this->city;
-        } else {
-            return $this->street_name . " " . $this->house_number . ", " . $this->postal_code . " " . $this->city;
-
-        }
-    }
-
-    /**
-     * gets attributes of the event class. If $getAddressOnly is true the address attributes defined
-     * in address Table are returned else only the user attributes defined in user Table are returned
-     * @param $getAddressOnly
+     * returns a String containing all attributes of the user class defined in user Table that are not null.
+     * The String is formatted according to the $schema variable
+     * @param $keyOrValue
+     * @param $schema
      * @return String
      */
-    public function getKeys($getAddressOnly) : String {
+    public function getAttributes($keyOrValue, $schema) : String {
         $result = "";
         foreach ($this as $key => $value) {
-            if($getAddressOnly) {
-                if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                    if ($value !== null && $value !== "") {
-                        if ($result === "") {
-                            $result = $key;
-                        } else {
-                            $result = $result . ", " . $key;
-                        }
-                    }
-                }
-            } else {
-                if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
-                    if($value !== null && $value !== "") {
-                        if ($result === "") {
-                            $result = $key;
-                        } else {
-                            $result = $result . ", " . $key;
-                        }
-                    }
-                }
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
             }
         }
-
         return $result;
     }
 
     /**
-     * gets the values for the attributes of the user class. If $getAddressOnly is true the address values
-     * defined in address Table are returned else only the user values defined in user Table are returned
-     * @param $getAddressOnly
+     * returns a String containing all attributes of the user class defined in address Table that are not null.
+     * The String is formatted according to the $schema variable
+     * @param $keyOrValue
+     * @param $schema
      * @return String
      */
-    public function getValues($getAddressOnly) : String {
+    public function getAddressAttributes($keyOrValue, $schema) : String {
         $result = "";
         foreach ($this as $key => $value) {
-            if($getAddressOnly) {
-                if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                    if ($value !== null && $value !== "") {
-                        if ($result === "") {
-                            $result = "'" . $value . "'";
-                        } else {
-                            $result = $result . ", '" . $value . "'";
-                        }
-                    }
-                }
-            } else {
-                if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
-                    if($value !== null && $value !== "") {
-                        if ($result === "") {
-                            $result = "'" . $value . "'";
-                        } else {
-                            $result = $result . ", '" . $value . "'";
-                        }
-                    }
-                }
+            if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
             }
         }
+        return $result;
+    }
+
+    /**
+     * @param $result
+     * @param $value
+     * @param $keyOrValue
+     * @param $schema
+     * @return string
+     */
+    private function concatString($result, $key, $value, $keyOrValue, $schema) : string {
+        $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
+
+        if ($schema === "list") {
+            if ($value !== null && $value !== "") {
+                if ($result === "") {
+                    $result = $attr;
+                } else {
+                    $result = $result . ", " . $attr;
+                }
+            }
+        } elseif ($schema === "set") {
+            if ($result === "") {
+                $result = $key . " = '" . $value . "'";
+            } else {
+                $result = $result . ", " . $key . " = '" . $value . "'";
+            }
+        }
+
         return $result;
     }
 
