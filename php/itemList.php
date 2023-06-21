@@ -9,7 +9,7 @@ global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventO
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
-$_SESSION["CreateOrUpdateWord"] = $_SESSION["event"]->getEventID() === null ? "Create" : "Update";
+$_SESSION["status"] =  (isset($_GET["status"]) && is_string($_GET["status"])) ? "edit" : "create";
 
 
 
@@ -43,17 +43,21 @@ $_SESSION["showEventOptions"] = $_SESSION["loggedIn"]["status"] === false ? "hid
  */
 if (isset($_POST["submit"])) {
     try {
-        if ($_SESSION["CreateOrUpdateWord"] == "Create") {
-            var_dump("aaa");
+        var_dump($_SESSION["status"]);
+        if ($_SESSION["status"] === "create") {
             $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
             $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
-        } else {
+        } elseif ($_SESSION["status"] === "edit") {
             $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
         }
 
+        /*
         // if an image was uploaded insert it in the files table
-            $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
+        $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
         $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
+        */
+        header("Location: events.php?type=events");
+        exit();
     } catch (Exception $e) {
         echo $e->getMessage();
     }
@@ -88,7 +92,9 @@ if (isset($_POST["onDelete"])) {
  */
 if (isset($_POST["onEdit"])){
     $_SESSION["event"] = $eventStore->findOne($_POST["onEdit"]);
-    unset($_POST["onEdit"]);
+
+    header("Location: createEvent.php?status=edit");
+    exit();
 }
 
 /**
@@ -131,7 +137,7 @@ if (isset($_POST["sort"])) {
             $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_DESC);
         }
 
-        $_SESSION["itemList"] = buildItemList($_SESSION["events"], "could not sort");
+        $_SESSION["itemList"] = buildItemList($_SESSION["events"], "could not sort", false);
     } catch (Exception $ex) {
        $error_message = $ex;
     }
@@ -197,15 +203,10 @@ function getItems($type): string {
 function getAllEvents(): string {
     global $eventStore, $error_message;
 
-    $loggedIn = false;
-    if ($_SESSION["loggedIn"]["status"] === true) {
-        $loggedIn = true;
-    }
-
     try {
         $_SESSION["events"] = $eventStore->findAll();
 
-        return buildItemList($_SESSION["events"], "there are no Events uploaded currently!");
+        return buildItemList($_SESSION["events"], "there are no Events uploaded currently!", false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -219,7 +220,7 @@ function getMyEvents($user_ID): string {
     try {
         $_SESSION["events"] = $eventStore->findMy($user_ID);
         
-        return buildItemList($_SESSION["events"], "You have not created an Event!");
+        return buildItemList($_SESSION["events"], "You have not created an Event!", true);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -234,7 +235,7 @@ function getAnyEvents($stmt): string {
     try {
         $_SESSION["events"] = $eventStore->findAny($stmt);
 
-        return buildItemList($_SESSION["events"], 'There are no Events with: "'.$stmt.'".');
+        return buildItemList($_SESSION["events"], 'There are no Events with: "'.$stmt.'".', false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -272,11 +273,11 @@ function getBands(): string {
 /**
  * @throws Exception
  */
-function buildItemList($events, $msg) : string {
+function buildItemList($events, $msg, $editVisible) : string {
     if (!empty($events)) {
         $return = "";
         foreach ($events as $event) {
-            if (($_SESSION["user_ID"] == $event->getUserID())) {
+            if ($editVisible) {
                 $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button
             } else {
                 $return = $return . $event->getEventHTML();
@@ -303,7 +304,7 @@ function getDetail(Object $item) : string {
         '        <div id="item_short_description" class="text-line-pre">                                       '.
         '            <span>' . $item->getName() . '</span>                                                     '.
         '            <br>                                                                                      '.
-        '            <span>Address: ' . $item->printAddress() . '</span>                                       '.
+        '            <span>Address: '.$item->getAddressAttributes("value", "list").'</span>                    ' .
         '            <br>                                                                                      '.
         '            <span> ' . $item->getTime() . '</span>                                                    '.
         '        </div>                                                                                        '.

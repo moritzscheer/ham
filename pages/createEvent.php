@@ -91,7 +91,7 @@ global $newEvent;
                     </label>
                 </section>
                 <!--Maybe put a link for directing to the events.php page ? -->
-                <input type="submit" name="submit" value="<?php echo $_SESSION["CreateOrUpdateWord"]?> Event">
+                <input type="submit" name="submit" value="<?php echo $_SESSION["status"] ?> Event">
             </div>
         </div>
     </form>

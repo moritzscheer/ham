@@ -24,7 +24,7 @@
             </label>
         </form>
 
-        <form action="createEvent.php" id="mobile" class="<?php echo $_SESSION["profileHeader"] ?> create">
+        <form action="createEvent.php?status=create" id="mobile" class="<?php echo $_SESSION["profileHeader"] ?> create">
             <label id="navbar-button">create
                 <input type="submit">
             </label>
@@ -75,9 +75,9 @@
             </label>
         </form>
 
-        <form action="createEvent.php" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
+        <form action="createEvent.php?status=create" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <label id="navbar-button">create
-                <input type="submit" value="create">
+                <input type="submit" name="onCreate" value="create">
             </form>
         </form>
     </div>
