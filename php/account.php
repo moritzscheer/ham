@@ -49,6 +49,8 @@ $_SESSION["normalHeader"] = $_SESSION["loggedIn"]["status"] === true ? "hidden" 
 $_SESSION["profileHeader"] = $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
 $_SESSION["profileHeaderBox"] = $_SESSION["loggedIn"]["status"] === true ? $profile_header_box : "";
 
+$_SESSION["selectImageBox"] = "";
+
 $error_message = "";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -233,44 +235,34 @@ if(isset($_POST["viewChangePassword"])) {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
- *  If a user wants to change the small profile picture
+ *  If a user wants to change any image in the profile a box appears where you can select an image
  */
-if (isset($_POST["profile_picture_small"])) {
-    try {
-        $path = "../resources/images/profile/custom/".verifyImage("profile_picture_small", "profile/custom");
-
-        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "profile_picture_small", $path, "image/gif");
-        $image = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID(), true);
-        $_SESSION["profile_picture_small"] = $image;
-        $_SESSION["loggedIn"]["profile_picture_small"] = $image;
-    } catch (RuntimeException $e) {
-        $error_message = $e->getMessage();
+if (isset($_POST["onEditProfilePicture"])) {
+    if(isset($_SESSION["selectImageBox"])) {
+        unset($_SESSION["selectImageBox"]);
+    } else {
+        $_SESSION["selectImageBox"] = "visible";
     }
 }
 
-/**
- *  If a user wants to change the large profile picture
- */
-if (isset($_POST["profile_picture_large"])) {
+if (isset($_POST["postImage"])) {
     try {
-        $path = "../resources/images/profile/custom/".verifyImage("profile_picture_large", "profile/custom");
+        $path = "../resources/images/profile/custom/".verifyImage($_POST["onSelectImageClick"], "profile/custom");
 
-        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "profile_picture_large", $path, "image/gif");
-        $_SESSION["profile_picture_large"] = getProfilePictureLarge($_SESSION["loggedIn"]["user"]->getUserID(), true);
-    } catch (RuntimeException $e) {
-        $error_message = $e->getMessage();
-    }
-}
+        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), $_POST["onSelectImageClick"], $path, "image/gif");
 
-/**
- *  If a user wants to add an image to the profile gallery
- */
-if (isset($_POST["newImage"])) {
-    try {
-        $path = "../resources/images/profile/custom/".verifyImage("newImage", "profile/custom");
+        if($_POST["onSelectImageClick"] === "profile_picture_small") {
+            $image = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID(), true);
+            $_SESSION["profile_picture_small"] = $image;
+            $_SESSION["loggedIn"]["profile_picture_small"] = $image;
 
-        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), "image_gallery", $path, "image/gif");
-        $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
+        } elseif ($_POST["onSelectImageClick"] === "profile_picture_large") {
+            $_SESSION["profile_picture_large"] = getProfilePictureLarge($_SESSION["loggedIn"]["user"]->getUserID(), true);
+
+        } elseif ($_POST["onSelectImageClick"] === "newImage") {
+            $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
+
+        }
     } catch (RuntimeException $e) {
         $error_message = $e->getMessage();
     }

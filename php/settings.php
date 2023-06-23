@@ -40,13 +40,16 @@ session_start();
 $_SESSION["url2"] = "";
 
 // sets the link to the stylesheet depending on which page is currently displayed
-if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile") || str_contains($_SERVER["PHP_SELF"], "editProfile")) {
-    $_SESSION["url1"] = "../resources/css/profile.css";
+if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile")) {
+    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
+} elseif (str_contains($_SERVER["PHP_SELF"], "editProfile")) {
+    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
+    $_SESSION["url2"] = '<script type="text/javascript" src="../javascript(flickr.js"></script>';
 } elseif (str_contains($_SERVER["PHP_SELF"], "bands") || str_contains($_SERVER["PHP_SELF"], "events")) {
-    $_SESSION["url1"] = "../resources/css/posts.css";
+    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
 } elseif (str_contains($_SERVER["PHP_SELF"], "closeToMe")) {
-    $_SESSION["url1"] = "../resources/css/closeToMe.css";
-    $_SESSION["url2"] = "../resources/css/posts.css";
+    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/closeToMe.css">';
+    $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
 } else {
     $_SESSION["url1"] = "../resources/css/" . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . ".css";
 }

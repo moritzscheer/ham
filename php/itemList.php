@@ -50,11 +50,11 @@ if (isset($_POST["submit"])) {
             $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
         }
 
-        /*
+
         // if an image was uploaded insert it in the files table
         $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
         $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
-        */
+
         header("Location: events.php?type=events");
         exit();
     } catch (Exception $e) {
@@ -125,20 +125,23 @@ if (isset($_POST["submitSearch"])) {
     }
 }
 
-/*
+
+/**
+ * method for ajax
+ */
 if (isset($_GET["submitSearchJavaScript"])) {
     echo getAnyEvents($_GET["submitSearchJavaScript"]);
 }
-*/
+
 
 /**
  * switches from ascending sort to descending sort.
  */
 if (isset($_POST["sort"])) {
     try {
-        if(!isset($_SESSION["sort"]) || $_SESSION["sort"] === "desc") {
+        if(!isset($_SESSION["sort"]) || $_SESSION["sort"] === SORT_DESC) {
             $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_ASC);
-        } elseif ($_SESSION["sort"] === "asc") {
+        } elseif ($_SESSION["sort"] === SORT_ASC) {
             $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_DESC);
         }
 
@@ -156,7 +159,7 @@ if (isset($_POST["sort"])) {
  * @return array
  */
 function sortArray(array $array, $attribute, $dir) : array {
-    $_SESSION["sort"] = ($dir === SORT_ASC) ? "asc" : "desc";
+    $_SESSION["sort"] = $dir;
 
     foreach ($array as $key => $value) {
         if($attribute === "Name") {
@@ -169,13 +172,9 @@ function sortArray(array $array, $attribute, $dir) : array {
     return $array;
 }
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                              get Event and get Bands method                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 /**
  * Checks if the page shows events or bands and delegates to the method that fits for the page
@@ -198,8 +197,6 @@ function getItems($type): string {
     return $result;
 }
 
-
-
 /**
  * Loads all event from the eventsstore and prints (echos) the html data to the page
  * @return string
@@ -218,7 +215,10 @@ function getAllEvents(): string {
     }
 }
 
-
+/**
+ * @param $user_ID
+ * @return string
+ */
 function getMyEvents($user_ID): string {
     global $eventStore, $error_message;
 
@@ -232,8 +232,10 @@ function getMyEvents($user_ID): string {
     }
 }
 
-
-
+/**
+ * @param $stmt
+ * @return string
+ */
 function getAnyEvents($stmt): string {
     global $eventStore, $error_message;
 
@@ -246,8 +248,6 @@ function getAnyEvents($stmt): string {
         return $e;
     }
 }
-
-
 
 /**
  * loads all User that are the type musician from the userStore and print the html data to the page

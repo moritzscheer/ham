@@ -2,6 +2,69 @@
 /*                                               for desktop resolution                                               */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+/* ---------------------  select Image Box ----------------- */
+#select_image_box {
+    display: none;
+
+    position: fixed;
+    width: 80vw;
+    left: 10vw;
+    top: 10vh;
+    height: 80vh;
+    z-index: 1;
+    grid-template-rows: 20px auto;
+    background-color: white;
+}
+#select_image_box_header {
+    background-color: rgba(0, 0, 0, 0.50);
+}
+#select_image_box_content {
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+}
+#select_image_box_content > div{
+    margin: 10px 20px 10px 20px;
+}
+#flickr_search {
+    display: grid;
+    grid-template-columns: auto 100px;
+    gap: 20px;
+}
+#select_image_box_content input, #select_image_box_content label  {
+    background-color: var(--bluegrey);
+    padding-left: 10px;
+    border-radius: 4px;
+    position: relative;
+    color: var(--white);
+    border: 1px grey solid;
+    border: transparent;
+    outline: none;
+    height: 30px;
+}
+#flickr_search > input, #flickr_search > label {
+    width: 100%;
+}
+
+#flickr_search > label  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#flickr_images {
+    border: 1px solid var(--black2);
+}
+#flickr_buttons label {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: max-content;
+    text-align: center;
+}
+
+
+
+
+
 /* ------------------------ Image on top ------------------- */
 .profile-Picture-Large, .profile-Picture-Large-Box {
     height: 400px;
@@ -153,7 +216,7 @@ input[type=file] {
     place-items: center;
     justify-content: center;
 }
-#profile-Submit input {
+input[type=submit] {
     display: none;
 }
 

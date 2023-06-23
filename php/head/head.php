@@ -11,8 +11,8 @@
     <meta name="keywords" content="Musiker, Veranstalter">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../resources/css/format.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $_SESSION["url1"] ?>">
-    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $_SESSION["url2"] ?>">
+    <?php echo $_SESSION["url1"] ?>
+    <?php echo $_SESSION["url2"] ?>
     <link rel="stylesheet" type="text/css" media="screen" href="../resources/css/header.css">
     <link rel="stylesheet" type="text/css" media="screen" href="../resources/css/footer.css">
     <title>ham</title>
