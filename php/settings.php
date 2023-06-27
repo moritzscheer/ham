@@ -51,7 +51,7 @@ if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVE
     $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/closeToMe.css">';
     $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
 } else {
-    $_SESSION["url1"] = "../resources/css/" . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . ".css";
+    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/' . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . '.css">';
 }
 
 

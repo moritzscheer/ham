@@ -1,6 +1,7 @@
 <?php include_once "../php/settings.php" ?>
 <?php include_once "../php/account.php" ?>
 <?php include_once "../php/itemList.php" ?>
+<?php include_once "../JavaScript/flickr.php" ?>
 <!DOCTYPE html>
 <html lang="de">
 

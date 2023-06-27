@@ -236,36 +236,25 @@ if(isset($_POST["viewChangePassword"])) {
 
 /**
  *  If a user wants to change any image in the profile a box appears where you can select an image
- */
+ */                 
 if (isset($_POST["onEditProfilePicture"])) {
-    if(isset($_SESSION["selectImageBox"])) {
-        unset($_SESSION["selectImageBox"]);
+    if($_POST["onEditProfilePicture"] === "hidden") {
+        $_SESSION["selectImageBox"] = "";
     } else {
         $_SESSION["selectImageBox"] = "visible";
     }
 }
 
-if (isset($_POST["postImage"])) {
-    try {
-        $path = "../resources/images/profile/custom/".verifyImage($_POST["onSelectImageClick"], "profile/custom");
+if (isset($_POST["upload_image"])) {
+    $_SESSION["profile_preview"] = "../resources/images/profile/custom/".verifyImage($_POST["upload_image"], "profile/custom");
+}
 
-        $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), $_POST["onSelectImageClick"], $path, "image/gif");
+if (isset($_POST["select_image"])) {
+    $_SESSION["profile_preview"] =  $_POST["select_image"];
+}
 
-        if($_POST["onSelectImageClick"] === "profile_picture_small") {
-            $image = getProfilePictureSmall($_SESSION["loggedIn"]["user"]->getUserID(), true);
-            $_SESSION["profile_picture_small"] = $image;
-            $_SESSION["loggedIn"]["profile_picture_small"] = $image;
-
-        } elseif ($_POST["onSelectImageClick"] === "profile_picture_large") {
-            $_SESSION["profile_picture_large"] = getProfilePictureLarge($_SESSION["loggedIn"]["user"]->getUserID(), true);
-
-        } elseif ($_POST["onSelectImageClick"] === "newImage") {
-            $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
-
-        }
-    } catch (RuntimeException $e) {
-        $error_message = $e->getMessage();
-    }
+if(isset($_POST["submit_image"])) {
+    $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), $_POST["onEditProfilePicture"], $_POST["profile_preview"], "image/gif");
 }
 
 if (isset($_POST["onImageGalleryClick"])) {

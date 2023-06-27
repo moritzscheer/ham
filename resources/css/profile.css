@@ -5,18 +5,32 @@
 /* ---------------------  select Image Box ----------------- */
 #select_image_box {
     display: none;
-
     position: fixed;
     width: 80vw;
     left: 10vw;
     top: 10vh;
     height: 80vh;
     z-index: 1;
-    grid-template-rows: 20px auto;
+    grid-template-rows: 30px auto;
     background-color: white;
+    border: 1px solid black;
+}
+#select_image_box label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #select_image_box_header {
     background-color: rgba(0, 0, 0, 0.50);
+    display: flex;
+    flex-direction: revert;
+}
+#select_image_box_header label {
+    width: 30px;
+    margin-left: auto;
+}
+#select_image_box_header label:hover {
+    background-color: rgba(0, 0, 0, 0.30);
 }
 #select_image_box_content {
     display: grid;
@@ -29,6 +43,7 @@
     display: grid;
     grid-template-columns: auto 100px;
     gap: 20px;
+    height: 30px;
 }
 #select_image_box_content input, #select_image_box_content label  {
     background-color: var(--bluegrey);
@@ -39,26 +54,29 @@
     border: 1px grey solid;
     border: transparent;
     outline: none;
-    height: 30px;
+    heisght: 30px;
 }
 #flickr_search > input, #flickr_search > label {
     width: 100%;
 }
-
-#flickr_search > label  {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 #flickr_images {
     border: 1px solid var(--black2);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
 }
-#flickr_buttons label {
+#flickr_buttons {
     display: flex;
-    align-items: center;
+    justify-content: end;
     gap: 20px;
-    width: max-content;
-    text-align: center;
+    height: 30px;
+}
+#profile_image_submit {
+    width: 80px;
+}
+#select_own {
+    width: 160px;
 }
 
 
@@ -77,7 +95,7 @@
 .profile-Picture-Large-Box:hover > #image-Select, #image-Select:hover {
     display: block;
     position: relative;
-    left: 90%;
+    left: 93%;
     top: -40px;
     color: black;
     z-index: 1;
@@ -135,7 +153,7 @@
     grid-auto-columns: auto auto;
     position: relative;
     gap: 10px;
-    top: 40px;
+    top: 50px;
 }
 #profile-Picture-Link {
     color: white;

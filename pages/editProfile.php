@@ -4,24 +4,30 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/navigation/header/header.php" ?>
 
 <section id="select_image_box" class="<?php echo $_SESSION["selectImageBox"] ?>">
-    <div id="select_image_box_header">
-
-    </div>
+    <form method="post" id="select_image_box_header">
+        <label>X
+            <input type="submit" name="onEditProfilePicture" value="hidden">
+        </label>
+    </form>
     <form method="post" id="select_image_box_content">
         <div id="flickr_search">
-            <input type="search" name="search" value="" placeholder="search" >
+            <input type="search" name="search" placeholder="search" >
             <label>Search
-                <input type="submit" name="submit_flickr_search" value="" placeholder="search" >
+                <input type="submit" id="submit_flickr_search" name="flickr_search" value="" placeholder="search" >
             </label>
         </div>
         <div id="flickr_images">
+            <?php echo $_SESSION["flickr_search"] ?>
+        </div>
+        <div id="profile_picture_preview">
+            <img src="<?php echo $_SESSION["profile_preview"] ?>" alt="no image selected!">
         </div>
         <div id="flickr_buttons">
-            <label>Select your Image
-                <input type="file" accept=".jpg, .png, .jpeg" name="">
+            <label id="select_own">Select your Image
+                <input type="file" accept=".jpg, .png, .jpeg" name="upload_image">
             </label>
-            <label>Submit
-                <input id="addProfileImage" type="submit" value="Add" name="profile_picture_small" class="profile-Picture-Submit">
+            <label id="profile_image_submit" >Submit
+                <input type="submit" name="submit_image" class="profile-Picture-Submit">
             </label>
         </div>
     </form>
@@ -32,9 +38,6 @@ include_once "../php/head/head.php" ?>
          class="profile-Picture-Large">
     <div id="image-Select">
         <label>Select Image
-
-        </label>
-        <label>Add
             <input id="addBackgroundImage" type="submit" value="profile_picture_large" name="onEditProfilePicture">
         </label>
     </div>
@@ -48,11 +51,6 @@ include_once "../php/head/head.php" ?>
                  src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
             <div id="profile-Picture-Link">
                 <label>Select Image
-                    <input oninput="window.document.getElementById('addProfileImage').click()" type="file"
-                           id="profileInput"
-                           name="profile_picture_small" accept=".jpg, .png, .jpeg">
-                </label>
-                <label>Add
                     <input id="addProfileImage" type="submit" value="profile_picture_small" name="onEditProfilePicture"
                        class="profile-Picture-Submit">
                 </label>
@@ -142,9 +140,6 @@ include_once "../php/head/head.php" ?>
         <?php echo $error_message ?>
         <div class="newImage-Link">
             <label>Select Image
-                <input type="file" accept=".jpg, .png, .jpeg" name="newImage">
-            </label>
-            <label>Add
                 <input type="submit" value="newImage" name="onEditProfilePicture">
             </label>
         </div>
