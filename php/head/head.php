@@ -16,5 +16,6 @@
     <?php echo $_SESSION["url2"] ?>
     <link rel="stylesheet" type="text/css" media="screen" href="../resources/css/header.css">
     <link rel="stylesheet" type="text/css" media="screen" href="../resources/css/footer.css">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
     <title>ham</title>
 </head>
