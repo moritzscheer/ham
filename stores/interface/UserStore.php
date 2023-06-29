@@ -1,5 +1,5 @@
 <?php
-include_once "../stores/Store.php";
+include_once "../stores/interface/Store.php";
 
 
 interface UserStore extends Store {

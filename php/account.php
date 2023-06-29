@@ -70,16 +70,20 @@ if(isset($_POST["reset"])) {
 if(isset($_POST["register"])) {
     try {
         if($password === $repeat_password) {
-            $user = $_SESSION["user"];
-            $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+            // sets password in user object
+            $_SESSION["user"]->setPassword(password_hash($password, PASSWORD_DEFAULT));
 
-            $user = $userStore->create($user);
+            // creates user and address in store
+            $_SESSION["user"] = $userStore->create($_SESSION["user"]);
 
-            $image = getProfilePictureSmall($user->getUserID(), false);
-            $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
-            
+            // sets the loggedIn session variable with user and profile picture for header
+            $image = getProfilePictureSmall($_SESSION["user"]->getUserID(), false);
+            $_SESSION["loggedIn"] = array("status" => true, "user" => $_SESSION["user"], "profile_picture_small" => $image);
+
             $_SESSION["success_message"] = "Success! Welcome to our Team.";
+            unset($_SESSION["user"]);
 
+            // redirect to next step
             header("Location: " . getNextUrl($step));
             exit();
         } else {
@@ -97,12 +101,16 @@ if(isset($_POST["register"])) {
  */
 if(isset($_POST["login"])) {
     try {
-        $user = $_SESSION["user"];
+        // gets user and address from store
+        $_SESSION["user"] = $userStore->login($_SESSION["user"]->getEmail(), $password);
 
-        $user = $userStore->login($user->getEmail(), $password);
-        $image = getProfilePictureSmall($user->getUserID(), false);
-        $_SESSION["loggedIn"] = array("status" => true, "user" => $user, "profile_picture_small" => $image);
+        // sets the loggedIn session variable with user and profile picture for header
+        $image = getProfilePictureSmall($_SESSION["user"]->getUserID(), false);
+        $_SESSION["loggedIn"] = array("status" => true, "user" => $_SESSION["user"], "profile_picture_small" => $image);
 
+        unset($_SESSION["user"]);
+
+        // redirect to homepage
         header("Location: index.php");
         exit();
     } catch (Exception $ex) {
@@ -117,6 +125,7 @@ if(isset($_POST["logout"])) {
     try {
         reset_variables();
 
+        // redirect to homepage
         header("Location: index.php");
         exit();
     } catch (Exception $ex) {
@@ -129,11 +138,13 @@ if(isset($_POST["logout"])) {
  */
 if(isset($_POST["delete"])) {
     try {
+        // delete all user information
         $userStore->delete($_SESSION["loggedIn"]["user"]->getUserID());
         $blobObj->delete($_SESSION["loggedIn"]["user"]->getUserID());
         
         reset_variables();
 
+        // redirect to homepage
         header("Location: index.php");
         exit();
     } catch (Exception $ex) {
@@ -147,8 +158,10 @@ if(isset($_POST["delete"])) {
 if(isset($_POST["change_password"])) {
     try {
         if($new_password === $repeat_new_password) {
+            // changes password in store
             $_SESSION["loggedIn"]["user"] = $userStore->changePassword($_SESSION["loggedIn"]["user"], $old_password, $new_password);
 
+            // redirect to homepage
             header("Location: profile.php");
             exit();
         } else {
@@ -170,6 +183,7 @@ if(isset($_POST["update_profile"])) {
         $user = update_user_variable($_SESSION["loggedIn"]["user"]);
         $_SESSION["loggedIn"]["user"] = $userStore->update($user);
 
+        // redirect to profile page
         header("Location: profile.php");
         exit();
     } catch (Exception $ex) {
@@ -190,13 +204,18 @@ if(isset($_POST["update_profile"])) {
 if(isset($_POST["viewProfile"])) {
     try {
         if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
+            // sets the user variable to the loggedInUser (for display information)
             $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
             $_SESSION["navigation"] = "../php/navigation/profile/private.php";
         } else {
             $_SESSION["user"] = $userStore->findOne($_POST["viewProfile"]);
             $_SESSION["navigation"] = "../php/navigation/profile/public.php";
         }
+        
+        // sets the images of the profile via user_ID
         setImages($_POST["viewProfile"], false);
+
+        // redirect to profile page
         header("Location: profile.php");
         exit();
     } catch (Exception $ex) {
@@ -211,7 +230,11 @@ if(isset($_POST["viewProfile"])) {
 if(isset($_POST["viewEditProfile"])) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewEditProfile"]) {
         $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+
+        // sets the images of the profile via user_ID
         setImages($_POST["viewEditProfile"], true);
+
+        // redirect to edit profile page
         header("Location: editProfile.php");
         exit();
     }
@@ -223,8 +246,13 @@ if(isset($_POST["viewEditProfile"])) {
  */
 if(isset($_POST["viewChangePassword"])) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewChangePassword"]) {
+        // if user equals the loggedInUser
         $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+
+        // sets the images of the profile via user_ID
         setImages($_POST["viewChangePassword"], false);
+
+        // redirect to change password page
         header("Location: changePassword.php");
         exit();
     }
@@ -234,33 +262,17 @@ if(isset($_POST["viewChangePassword"])) {
 /*                                                                                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-/**
- *  If a user wants to change any image in the profile a box appears where you can select an image
- */                 
-if (isset($_POST["onEditProfilePicture"])) {
-    if($_POST["onEditProfilePicture"] === "hidden") {
-        $_SESSION["selectImageBox"] = "";
-    } else {
-        $_SESSION["selectImageBox"] = "visible";
-    }
-}
 
-if (isset($_POST["upload_image"])) {
-    $_SESSION["profile_preview"] = "../resources/images/profile/custom/".verifyImage($_POST["upload_image"], "profile/custom");
-}
-
-if (isset($_POST["select_image"])) {
-    $_SESSION["profile_preview"] =  $_POST["select_image"];
-}
-
-if(isset($_POST["submit_image"])) {
-    $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), $_POST["onEditProfilePicture"], $_POST["profile_preview"], "image/gif");
-}
 
 if (isset($_POST["onImageGalleryClick"])) {
     try {
+        // deletes image from store
         $blobObj->delete($_POST["onImageGalleryClick"]);
+
+        // gets image gallery
         $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
+
+        // redirect to edit profile page
         header("Location: editProfile.php");
         exit();
     } catch (RuntimeException $e) {
@@ -415,10 +427,10 @@ function getImageGallery($id, $isEdit): string {
  * @return String
  */
 function verifyImage($name, $type): String {
-    $file_name = $_FILES["$name"]["name"];
-    $file_size = $_FILES["$name"]["size"];
-    $file_tmp = $_FILES["$name"]["tmp_name"];
-    $file_format = strtolower(pathinfo($_FILES["$name"]["name"], PATHINFO_EXTENSION));
+    $file_name = $_FILES[$name]["name"];
+    $file_size = $_FILES[$name]["size"];
+    $file_tmp = $_FILES[$name]["tmp_name"];
+    $file_format = strtolower(pathinfo($_FILES[$name]["name"], PATHINFO_EXTENSION));
     $expected_format = array("jpeg","jpg","png");
 
     // checking file format
@@ -427,7 +439,7 @@ function verifyImage($name, $type): String {
     }
 
     // checking image size
-    if ($file_size > 2000000) {
+    if ($file_size > 8000000) {
         throw new RuntimeException("exceeds filesize limit");
     }
 

@@ -6,38 +6,46 @@ include_once "../php/head/head.php" ?>
 <section id="select_image_box" class="<?php echo $_SESSION["selectImageBox"] ?>">
     <form method="post" id="select_image_box_header">
         <label>X
-            <input type="submit" name="onEditProfilePicture" value="hidden">
+            <input type="submit" name="onEditProfilePicture" value="hide">
         </label>
     </form>
-    <form method="post" id="select_image_box_content">
-        <div id="flickr_search">
-            <input type="search" name="search" placeholder="search" >
+    <div id="select_image_box_content">
+        <form method="post" id="flickr_search">
+            <input type="search" name="flickr_search" placeholder="search" >
             <label>Search
-                <input type="submit" id="submit_flickr_search" name="flickr_search" value="" placeholder="search" >
+                <input type="submit" id="submit_flickr_search" placeholder="search" >
             </label>
-        </div>
-        <div id="flickr_images">
+        </form>
+        <form method="post" id="flickr_images">
             <?php echo $_SESSION["flickr_search"] ?>
-        </div>
+        </form>
         <div id="profile_picture_preview">
             <img src="<?php echo $_SESSION["profile_preview"] ?>" alt="no image selected!">
         </div>
         <div id="flickr_buttons">
-            <label id="select_own">Select your Image
-                <input type="file" accept=".jpg, .png, .jpeg" name="upload_image">
-            </label>
-            <label id="profile_image_submit" >Submit
-                <input type="submit" name="submit_image" class="profile-Picture-Submit">
-            </label>
+            <form method="post" enctype="multipart/form-data">
+                <?php echo $error_message ?>
+                <label id="select_own">Select your Image
+                    <input type="file" accept=".jpg, .png, .jpeg" name="upload_image">
+                </label>
+                <label id="submit_own" >upload
+                    <input type="submit" name="upload_image" value="upload_image">
+                </label>
+            </form>
+            <form method="post">
+                <label id="profile_image_submit" >Submit
+                    <input type="submit" name="submit_image" class="profile-Picture-Submit">
+                </label>
+            </form>
         </div>
-    </form>
+    </div>
 </section>
 
 <form method="post" class="profile-Picture-Large-Box" enctype="multipart/form-data">
     <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image"
          class="profile-Picture-Large">
     <div id="image-Select">
-        <label>Select Image
+        <label>Edit Image
             <input id="addBackgroundImage" type="submit" value="profile_picture_large" name="onEditProfilePicture">
         </label>
     </div>
@@ -50,7 +58,7 @@ include_once "../php/head/head.php" ?>
                  ondrop="window.document.getElementById('profileInput').click()"
                  src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
             <div id="profile-Picture-Link">
-                <label>Select Image
+                <label>Edit Image
                     <input id="addProfileImage" type="submit" value="profile_picture_small" name="onEditProfilePicture"
                        class="profile-Picture-Submit">
                 </label>
@@ -139,7 +147,7 @@ include_once "../php/head/head.php" ?>
         <?php echo $_SESSION["image_gallery"] ?>
         <?php echo $error_message ?>
         <div class="newImage-Link">
-            <label>Select Image
+            <label>Add Image
                 <input type="submit" value="newImage" name="onEditProfilePicture">
             </label>
         </div>

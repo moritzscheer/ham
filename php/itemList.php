@@ -130,6 +130,7 @@ if (isset($_POST["submitSearch"])) {
  * method for ajax
  */
 if (isset($_GET["submitSearchJavaScript"])) {
+    initDatabase();
     echo getAnyEvents($_GET["submitSearchJavaScript"]);
 }
 

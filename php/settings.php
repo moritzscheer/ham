@@ -70,35 +70,30 @@ function initDatabase(): void {
     try {
         $user = "root";
         $pw = null;
-        $dsn = "sqlite:sqlite-pdo.db";
+        $dsn = "sqlite:../stores/sqlite-pdo.db";
         $db = new PDO($dsn, $user, $pw);
-        $dsnBlob = "sqlite:sqlite-pdo-blob.db";
-        $dbBlob = new PDO($dsnBlob, $user, $pw);
+
+        /**
+         * Blob object
+         */
+        $blobObj = new Blob($db);
+
+        /**
+         * database
+         */
+        $addressStore = new DBAddressStore($db);
+        $eventStore = new DBEventStore($db, $addressStore, $blobObj);
+        $userStore = new DBUserStore($db, $addressStore, $blobObj);
+
     } catch (PDOException $exc) {
         $db = NULL;
-        $dbBlob = NULL;
-        throw $exc;
+
+        /**
+         * memory
+         */
+        $eventStore = new FileEventStore("../resources/json/Events.json");
+        $userStore = new FileUserStore("../resources/json/user.json");
     }
-
-    /**
-     * Blob object
-     */
-    $blobObj = new Blob($dbBlob);
-
-    /**
-     * database
-     */
-    $addressStore = new DBAddressStore($db);
-    $eventStore = new DBEventStore($db, $addressStore, $blobObj);
-    $userStore = new DBUserStore($db, $addressStore, $blobObj);
-
-    /**
-     * memory
-     */
-
-    //$eventStore = new FileEventStore("../resources/json/Events.json");
-    //$userStore = new FileUserStore("../resources/json/user.json");
-
 }
 
 function closeConnection(): void {

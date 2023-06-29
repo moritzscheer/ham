@@ -1,5 +1,5 @@
 <?php
-include_once "../stores/Store.php";
+include_once "../stores/interface/Store.php";
 
 interface AddressStore extends Store {
     public function create(object $item): string;
