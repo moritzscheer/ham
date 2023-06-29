@@ -9,8 +9,7 @@ include_once "../php/includes/includes.php";
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
-$_SESSION["status"] =  (isset($_GET["status"]) && is_string($_GET["status"])) ? "edit" : "create";
-
+$_SESSION["status"] = (isset($_GET["status"]) && is_string($_GET["status"])) ? "edit" : "create";
 
 
 $_SESSION["events"] = $_SESSION["events"] ?? null;
@@ -19,16 +18,16 @@ $_SESSION["bands"] = $_SESSION["bands"] ?? null;
 $_SESSION["search"] = $_POST["search"] ?? "";
 $_SESSION["searchDate"] = $_POST["searchDate"] ?? "";
 
-isset($_POST["event_name"]) && is_string($_POST["event_name"])   ?   $_SESSION["event"]->setName(htmlspecialchars($_POST["event_name"]))   :   "";
-isset($_POST["description"]) && is_string($_POST["description"])   ?   $_SESSION["event"]->setDescription(htmlspecialchars($_POST["description"]))   :   "";
-isset($_POST["requirements"]) && is_string($_POST["requirements"])   ?   $_SESSION["event"]->setRequirements(htmlspecialchars($_POST["requirements"]))   :   "";
-isset($_POST["date"]) && is_string($_POST["date"])   ?   $_SESSION["event"]->setDate(htmlspecialchars($_POST["date"]))   :   "";
-isset($_POST["startTime"]) && is_string($_POST["startTime"])   ?   $_SESSION["event"]->setStartTime(htmlspecialchars($_POST["startTime"]))   :   "";
-isset($_POST["endTime"]) && is_string($_POST["endTime"])   ?   $_SESSION["event"]->setEndTime(htmlspecialchars($_POST["endTime"]))   :   "";
-isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])   ?   $_SESSION["event"]->setStreetName(htmlspecialchars($_POST["event_street_name"]))   :   "";
-isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])   ?   $_SESSION["event"]->setHouseNumber(htmlspecialchars($_POST["event_house_number"]))  :   "";
-isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])   ?   $_SESSION["event"]->setPostalCode(htmlspecialchars($_POST["event_postal_code"]))   :   "";
-isset($_POST["event_city"]) && is_string($_POST["event_city"])   ?   $_SESSION["event"]->setCity(htmlspecialchars($_POST["event_city"]))   :   "";
+isset($_POST["event_name"]) && is_string($_POST["event_name"]) ? $_SESSION["event"]->setName(htmlspecialchars($_POST["event_name"])) : "";
+isset($_POST["description"]) && is_string($_POST["description"]) ? $_SESSION["event"]->setDescription(htmlspecialchars($_POST["description"])) : "";
+isset($_POST["requirements"]) && is_string($_POST["requirements"]) ? $_SESSION["event"]->setRequirements(htmlspecialchars($_POST["requirements"])) : "";
+isset($_POST["date"]) && is_string($_POST["date"]) ? $_SESSION["event"]->setDate(htmlspecialchars($_POST["date"])) : "";
+isset($_POST["startTime"]) && is_string($_POST["startTime"]) ? $_SESSION["event"]->setStartTime(htmlspecialchars($_POST["startTime"])) : "";
+isset($_POST["endTime"]) && is_string($_POST["endTime"]) ? $_SESSION["event"]->setEndTime(htmlspecialchars($_POST["endTime"])) : "";
+isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"]) ? $_SESSION["event"]->setStreetName(htmlspecialchars($_POST["event_street_name"])) : "";
+isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"]) ? $_SESSION["event"]->setHouseNumber(htmlspecialchars($_POST["event_house_number"])) : "";
+isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"]) ? $_SESSION["event"]->setPostalCode(htmlspecialchars($_POST["event_postal_code"])) : "";
+isset($_POST["event_city"]) && is_string($_POST["event_city"]) ? $_SESSION["event"]->setCity(htmlspecialchars($_POST["event_city"])) : "";
 
 $_SESSION["itemList"] = (isset($_GET["type"]) && is_string($_GET["type"])) ? getItems($_GET["type"]) : "";
 $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? null;
@@ -44,7 +43,7 @@ $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESS
 if (isset($_POST["submit"])) {
     try {
         if ($_SESSION["status"] === "create") {
-            $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
+            $_SESSION["event"]->setUserID((int)$_SESSION["loggedIn"]["user"]->getUserID());
             $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
         } elseif ($_SESSION["status"] === "edit") {
             $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
@@ -52,7 +51,7 @@ if (isset($_POST["submit"])) {
 
 
         // if an image was uploaded insert it in the files table
-        $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
+            $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
         $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
 
         header("Location: events.php?type=events");
@@ -89,7 +88,7 @@ if (isset($_POST["onDelete"])) {
  * Sets the current session event to the event the user wants to edit.
  * That means all fields in createEvent are filled with the data of the specific event
  */
-if (isset($_POST["onEdit"])){
+if (isset($_POST["onEdit"])) {
     $_SESSION["event"] = $eventStore->findOne($_POST["onEdit"]);
 
     header("Location: createEvent.php?status=Edit");
@@ -114,20 +113,20 @@ if (isset($_POST["onGetMyEvents"])) {
  * if a user submits a search, all events with the statement are displayed
  */
 if (isset($_POST["submitSearch"])) {
-    if(isset($_POST["searchDate"]) && $_POST["search"] === "") {
+    if (isset($_POST["searchDate"]) && $_POST["search"] === "") {
         $_SESSION["itemList"] = getAnyEvents($_POST["searchDate"]);
     } elseif (isset($_POST["search"]) && $_POST["searchDate"] === "") {
         $_SESSION["itemList"] = getAnyEvents($_POST["search"]);
     } else {
         $itemDate = getAnyEvents($_POST["searchDate"]);
         $itemSearch = getAnyEvents($_POST["search"]);
-        $_SESSION["itemList"] = $itemDate.$itemSearch;
+        $_SESSION["itemList"] = $itemDate . $itemSearch;
     }
 }
 
 
 /**
- * method for ajax
+ * method for ajax on the events page
  */
 if (isset($_GET["submitSearchJavaScript"])) {
     initDatabase();
@@ -140,7 +139,7 @@ if (isset($_GET["submitSearchJavaScript"])) {
  */
 if (isset($_POST["sort"])) {
     try {
-        if(!isset($_SESSION["sort"]) || $_SESSION["sort"] === SORT_DESC) {
+        if (!isset($_SESSION["sort"]) || $_SESSION["sort"] === SORT_DESC) {
             $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_ASC);
         } elseif ($_SESSION["sort"] === SORT_ASC) {
             $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_DESC);
@@ -148,7 +147,7 @@ if (isset($_POST["sort"])) {
 
         $_SESSION["itemList"] = buildItemList($_SESSION["events"], "could not sort", false);
     } catch (Exception $ex) {
-       $error_message = $ex;
+        $error_message = $ex;
     }
 }
 
@@ -159,11 +158,12 @@ if (isset($_POST["sort"])) {
  * @param $dir
  * @return array
  */
-function sortArray(array $array, $attribute, $dir) : array {
+function sortArray(array $array, $attribute, $dir): array
+{
     $_SESSION["sort"] = $dir;
 
     foreach ($array as $key => $value) {
-        if($attribute === "Name") {
+        if ($attribute === "Name") {
             $column[] = $value->getName();
         } elseif ($attribute === "Date") {
             $column[] = $value->getDate();
@@ -183,14 +183,17 @@ function sortArray(array $array, $attribute, $dir) : array {
  * @return string
  * @throws Exception
  */
-function getItems($type): string {
+function getItems($type): string
+{
     switch ($type) {
-        case 'bands': {
-            $_SESSION["itemDetail"] =  null;
+        case 'bands':
+        {
+            $_SESSION["itemDetail"] = null;
             $result = getBands();
             break;
         }
-        default: {
+        default:
+        {
             $result = getAllEvents();
             break;
         }
@@ -203,7 +206,8 @@ function getItems($type): string {
  * @return string
  * @throws Exception
  */
-function getAllEvents(): string {
+function getAllEvents(): string
+{
     global $eventStore, $error_message;
 
     try {
@@ -220,12 +224,13 @@ function getAllEvents(): string {
  * @param $user_ID
  * @return string
  */
-function getMyEvents($user_ID): string {
+function getMyEvents($user_ID): string
+{
     global $eventStore, $error_message;
 
     try {
         $_SESSION["events"] = $eventStore->findMy($user_ID);
-        
+
         return buildItemList($_SESSION["events"], "You have not created an dto\Event!", true);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
@@ -237,13 +242,14 @@ function getMyEvents($user_ID): string {
  * @param $stmt
  * @return string
  */
-function getAnyEvents($stmt): string {
+function getAnyEvents($stmt): string
+{
     global $eventStore, $error_message;
 
     try {
         $_SESSION["events"] = $eventStore->findAny($stmt);
 
-        return buildItemList($_SESSION["events"], 'There are no Events with: "'.$stmt.'".', false);
+        return buildItemList($_SESSION["events"], 'There are no Events with: "' . $stmt . '".', false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return $e;
@@ -254,7 +260,8 @@ function getAnyEvents($stmt): string {
  * loads all dto\User that are the type musician from the userStore and print the html data to the page
  * @return string
  */
-function getBands(): string {
+function getBands(): string
+{
     global $userStore, $error_message;
 
     try {
@@ -279,7 +286,8 @@ function getBands(): string {
 /**
  * @throws Exception
  */
-function buildItemList($events, $msg, $editVisible) : string {
+function buildItemList($events, $msg, $editVisible): string
+{
     if (!empty($events)) {
         $return = "";
 
@@ -301,7 +309,8 @@ function buildItemList($events, $msg, $editVisible) : string {
  * @param Object $item
  * @return string
  */
-function getDetail(Object $item) : string {
+function getDetail(object $item): string
+{
     return $string =
         '<form method="post" id="item_details">                                                                '.
         '    <div id="item">                                                                                   '.
