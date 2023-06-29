@@ -5,7 +5,6 @@ global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
 /*                                                 initialize variables                                               */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-
 $step_1 = "hidden";
 $step_2 = "hidden";
 $step_3 = "hidden";
@@ -18,12 +17,9 @@ $progressBar = "";
 
 $step = (isset($_GET["step"]) && is_string($_GET["step"])) ? $_GET["step"] : "1";
 
-
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                        setting variables to make steps visible                                     */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 if(!isset($_POST["cancel"])) {
     // different states depending on the $step
@@ -42,3 +38,26 @@ if(!isset($_POST["cancel"])) {
     }
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                       functions to switch urls in register                                         */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/**
+ * gets the url for the next step in the register progressbar
+ * @param $var
+ * @return String
+ */
+function getNextUrl($var): String {
+    $var++;
+    return "register.php?step=" . $var;
+}
+
+/**
+ * gets the url for the last step in the register progressbar
+ * @param $var
+ * @return String
+ */
+function getLastUrl($var): String {
+    $var--;
+    return "register.php?step=" . $var;
+}

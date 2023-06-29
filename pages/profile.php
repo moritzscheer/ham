@@ -4,13 +4,13 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/includes/navigation/header/header.php" ?>
 
     <section class="profile-Picture-Large-Box">
-        <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image" class="profile-Picture-Large">
+        <?php echo $_SESSION["profile_large"] ?>
     </section>
 
     <div class="profile-Navigation">
         <div>
             <div class="profile-Picture-Box">
-                <img src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
+                <?php echo $_SESSION["profile_small"] ?>
             </div>
             <?php include_once $_SESSION["navigation"] ?>
         </div>
@@ -60,7 +60,7 @@ include_once "../php/head/head.php" ?>
         </div>
                                             
         <div id="uploaded-Images">
-            <?php echo $_SESSION["image_gallery"] ?>
+            <?php echo $_SESSION["profile_gallery"] ?>
         </div>
     </section>
 <?php include_once "../php/includes/navigation/footer/footer.php" ?>

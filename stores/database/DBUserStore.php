@@ -35,12 +35,12 @@ class DBUserStore implements UserStore
 
     /**
      * methode to register a user into the database. First it searches the database, if the email or password
-     * already exist, then the data set is inserted and returned as a dto\User object. Else an exception is thrown.
-     * @param object $user the user object given in
+     * already exist, then the data set is inserted and returned as a Item\User object. Else an exception is thrown.
+     * @param User $user the user object given in
      * @return User the returned user object with the user_ID in it
      * @throws Exception
      */
-    public function create(object $user): User {
+    public function create(User $user): User {
         try {
             $this->db->beginTransaction();
 
@@ -73,7 +73,7 @@ class DBUserStore implements UserStore
      * @param object $user
      * @return User
      */
-    public function update(object $user): User {
+    public function update(User $user): User {
         $address_ID = $this->addressStore->update($user);
         $user->setAddressID($address_ID);
 
@@ -89,9 +89,9 @@ class DBUserStore implements UserStore
      * @return void
      */
     public function delete(string $user_ID): void {
-        $delete = "DELETE FROM event WHERE user_ID = '" . $user_ID . "' RETURNING address_ID;";
-        $this->db->exec($delete);
-        $this->addressStore->delete($delete);
+        $sql = "DELETE FROM user WHERE user_ID = '" . $user_ID . "' RETURNING 'address_ID';";
+        $stmt = $this->db->exec($sql);
+        $this->addressStore->delete($stmt);
     }
 
     /**

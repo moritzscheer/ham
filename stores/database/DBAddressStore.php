@@ -3,7 +3,7 @@
 use Item\Address;
 
 include_once "../stores/interface/AddressStore.php";
-include_once "../php/includes/dto/Address.php";
+include_once "../php/includes/Item/Address.php";
 
 class DBAddressStore implements AddressStore {
 

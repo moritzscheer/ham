@@ -1,19 +1,19 @@
 <?php
 
-//namespace Item;
-class event
+namespace Item;
+class Event
 {
 
     // event attributes
-    private ?int $event_id = null;
-    private ?string $address_id = "";
-    private ?int $user_id = null;
+    private ?int $event_ID = null;
+    private ?string $address_ID = "";
+    private ?int $user_ID = null;
     private ?string $name = "";
     private ?string $description = "";
     private ?string $requirements = "";
     private ?string $date = "";
-    private ?string $starttime = "";
-    private ?string $endtime = "";
+    private ?string $startTime = "";
+    private ?string $endTime = "";
 
     // address attributes
     private ?string $street_name = "";
@@ -22,24 +22,24 @@ class event
     private ?string $city = "";
 
     // image attributes
-    private ?array $blobdata = null;
+    private ?array $blobData = null;
 
     /**
      * @param array $item
-     * @return event
+     * @return Event
      */
-    public static function withaddress(array $item): event
+    public static function withAddress(array $item): Event
     {
         $instance = new self();
-        $instance->event_id = $item["event_id"];
-        $instance->address_id = $item["address_id"];
-        $instance->user_id = $item["user_id"];
+        $instance->event_ID = $item["event_ID"];
+        $instance->address_ID = $item["address_ID"];
+        $instance->user_ID = $item["user_ID"];
         $instance->name = $item["name"];
         $instance->description = $item["description"];
         $instance->requirements = $item["requirements"];
         $instance->date = $item["date"];
-        $instance->starttime = $item["starttime"];
-        $instance->endtime = $item["endtime"];
+        $instance->startTime = $item["startTime"];
+        $instance->endTime = $item["endTime"];
         $instance->street_name = $item["street_name"];
         $instance->house_number = $item["house_number"];
         $instance->postal_code = $item["postal_code"];
@@ -47,94 +47,94 @@ class event
         return $instance;
     }
 
-    public static function getjsonevent($item): event
+    public static function getJsonEvent($item): Event
     {
         $instance = new self();
-        $instance->event_id = (int)$item->id;
-        $instance->address_id = $item->address_id;
-        $instance->user_id = (int)$item->authorid;
+        $instance->event_ID = (int)$item->id;
+        $instance->address_ID = $item->address_ID;
+        $instance->user_ID = (int)$item->authorID;
         $instance->name = $item->name;
         $instance->description = $item->description;
         $instance->requirements = $item->requirements;
-        $instance->date = $item->date;
-        $instance->starttime = $item->starttime;
-        $instance->endtime = $item->endtime;
+        $instance->date = $item->Date;
+        $instance->startTime = $item->startTime;
+        $instance->endTime = $item->endTime;
         $instance->street_name = $item->street;
-        $instance->house_number = $item->housenr;
-        $instance->postal_code = $item->postalcode;
+        $instance->house_number = $item->houseNr;
+        $instance->postal_code = $item->postalCode;
         $instance->city = $item->city;
         return $instance;
     }
 
-    public static function toarrayforjsonentry(event $item): array
+    public static function toArrayForJsonEntry(Event $item): array
     {
-        $jsonevent = array(
-            "image" => $item->getimagesource(),
+        $jsonEvent = array(
+            "image" => $item->getImageSource(),
             "id" => uniqid('ev_'),
-            "authorid" => $item->getuserid(),
+            "authorID" => $item->getUserID(),
             "type" => "event",
-            "description" => $item->getdescription(),
-            "name" => $item->getname(),
-            "address_id" => $item->getaddressid(),
-            "street" => $item->getstreetname(),
-            "housenr" => $item->gethousenumber(),
-            "postalcode" => $item->getpostalcode(),
-            "city" => $item->getcity(),
-            "date" => $item->getdate(),
-            "starttime" => $item->getstarttime(),
-            "endtime" => $item->getendtime(),
-            "requirements" => $item->getrequirements()
+            "description" => $item->getDescription(),
+            "name" => $item->getName(),
+            "address_ID" => $item->getAddressID(),
+            "street" => $item->getStreetName(),
+            "houseNr" => $item->getHouseNumber(),
+            "postalCode" => $item->getPostalCode(),
+            "city" => $item->getCity(),
+            "Date" => $item->getDate(),
+            "startTime" => $item->getStartTime(),
+            "endTime" => $item->getEndTime(),
+            "requirements" => $item->getRequirements()
         );
-        return $jsonevent;
+        return $jsonEvent;
     }
 
-    public function geteventhtml(): string
+    public function getEventHTML(): string
     {
         return $string =
-            '    <form method="post" name="event_id" id="item">                                                    ' .
+            '    <form method="post" name="event_ID" id="item">                                                    ' .
             '        <div id="item_image">                                                                         ' .
-            '            <img src="' . $this->getimagesource() . '" alt="bandimage"/>                              ' .
+            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>dto\address: ' . $this->getaddressattributes("value", "list") . '</span>   ' .
+            '            <span>Item\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
             '            <br>                                                                                      ' .
-            '            <span> ' . $this->gettime() . '</span>                                                    ' .
+            '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
-            '             <input type="submit" name="onitemclick" value="' . $this->event_id . '">                 ' .
+            '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
             '    </form>                                                                                           ';
     }
 
     //todo: fix line 120 to 127 with ajax ?
-    public function geteditableeventhtml(): string
+    public function getEditableEventHTML(): string
     {
         return $string =
-            '    <form method="post" name="event_id" id="item">                                                    ' .
+            '    <form method="post" name="event_ID" id="item">                                                    ' .
             '        <div id="item_image">                                                                         ' .
-            '            <img src="' . $this->getimagesource() . '" alt="bandimage"/>                              ' .
+            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
             '        <div id="item_editable">                                                                      ' .
-            '             <label>edit                                                                              ' .
-            '                   <a href="createevent.php"  name="onedit" ></a>                                     ' .
-            '                   <input type="submit" name="onedit" value="' . $this->event_id . '">                ' .
+            '             <label>Edit                                                                              ' .
+            '                   <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
+            '                   <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
             '             </label>                                                                                 ' .
-            '             <label>delete                                                                            ' .
-            '                   <a href="events.php"  name="ondelete" ></a>                                        ' .
-            '                   <input type="submit" name="ondelete" value="' . $this->event_id . '">              ' .
+            '             <label>Delete                                                                            ' .
+            '                   <a href="events.php"  name="onDelete" ></a>                                        ' .
+            '                   <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
             '              </label>                                                                                ' .
             '        </div>                                                                                        ' .
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>dto\address: ' . $this->getaddressattributes("value", "list") . '</span>   ' .
+            '            <span>Item\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
             '            <br>                                                                                      ' .
-            '            <span> ' . $this->gettime() . '</span>                                                    ' .
+            '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
-            '             <input type="submit" name="onitemclick" value="' . $this->event_id . '">                 ' .
+            '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
             '    </form>                                                                                           ';
 
@@ -143,54 +143,54 @@ class event
     /**
      * @return string
      */
-    public function getimagesource(): string
+    public function getImageSource(): string
     {
-        if (empty($this->blobdata)) {
+        if (empty($this->blobData)) {
             return "../resources/images/events/event.jpg";
         } else {
-            return "data:" . $this->blobdata["mime"] . ";base64," . base64_encode($this->blobdata["data"]);
+            return "data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]);
         }
     }
 
     /**
      * @return string
      */
-    public function gettime(): string
+    public function getTime(): string
     {
-        return $this->starttime . " - " . $this->endtime;
+        return $this->startTime . " - " . $this->endTime;
     }
 
     /**
-     * returns a string containing all attributes of the user class defined in user table that are not null.
-     * the string is formatted according to the $schema variable
-     * @param $keyorvalue
+     * returns a String containing all attributes of the user class defined in user Table that are not null.
+     * The String is formatted according to the $schema variable
+     * @param $keyOrValue
      * @param $schema
-     * @return string
+     * @return String
      */
-    public function getattributes($keyorvalue, $schema): string
+    public function getAttributes($keyOrValue, $schema): string
     {
         $result = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobdata") {
-                $result = $this->concatstring($result, $key, $value, $keyorvalue, $schema);
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
             }
         }
         return $result;
     }
 
     /**
-     * returns a string containing all attributes of the user class defined in address table that are not null.
-     * the string is formatted according to the $schema variable
-     * @param $keyorvalue
+     * returns a String containing all attributes of the user class defined in address Table that are not null.
+     * The String is formatted according to the $schema variable
+     * @param $keyOrValue
      * @param $schema
-     * @return string
+     * @return String
      */
-    public function getaddressattributes($keyorvalue, $schema): string
+    public function getAddressAttributes($keyOrValue, $schema): string
     {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = $this->concatstring($result, $key, $value, $keyorvalue, $schema);
+                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
             }
         }
         return $result;
@@ -199,13 +199,13 @@ class event
     /**
      * @param $result
      * @param $value
-     * @param $keyorvalue
+     * @param $keyOrValue
      * @param $schema
      * @return string
      */
-    private function concatstring($result, $key, $value, $keyorvalue, $schema): string
+    private function concatString($result, $key, $value, $keyOrValue, $schema): string
     {
-        $attr = $keyorvalue === "value" ? $value : ($keyorvalue === "valuewithapo" ? "'" . $value . "'" : $key);
+        $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
 
         if ($schema === "list") {
             if ($value !== null && $value !== "") {
@@ -231,25 +231,25 @@ class event
     /* -------------------------------------------------------------------------------------------------------------- */
 
     /**
-     * @param int $user_id
+     * @param int $user_ID
      */
-    public function setuserid(int $user_id): void
+    public function setUserID(int $user_ID): void
     {
-        $this->user_id = $user_id;
+        $this->user_ID = $user_ID;
     }
 
     /**
      * @return int
      */
-    public function getuserid(): int
+    public function getUserID(): int
     {
-        return $this->user_id;
+        return $this->user_ID;
     }
 
     /**
      * @return string|null
      */
-    public function getstreetname(): ?string
+    public function getStreetName(): ?string
     {
         return $this->street_name;
     }
@@ -257,7 +257,7 @@ class event
     /**
      * @param string|null $street_name
      */
-    public function setstreetname(?string $street_name): void
+    public function setStreetName(?string $street_name): void
     {
         $this->street_name = $street_name;
     }
@@ -265,39 +265,39 @@ class event
     /**
      * @return array|null
      */
-    public function getblobdata(): ?array
+    public function getBlobData(): ?array
     {
-        return $this->blobdata;
+        return $this->blobData;
     }
 
     /**
-     * @param array|null $blobdata
+     * @param array|null $blobData
      */
-    public function setblobdata(?array $blobdata): void
+    public function setBlobData(?array $blobData): void
     {
-        $this->blobdata = $blobdata;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getaddressid(): ?string
-    {
-        return $this->address_id;
-    }
-
-    /**
-     * @param string|null $address_id
-     */
-    public function setaddressid(?string $address_id): void
-    {
-        $this->address_id = $address_id;
+        $this->blobData = $blobData;
     }
 
     /**
      * @return string|null
      */
-    public function getname(): ?string
+    public function getAddressID(): ?string
+    {
+        return $this->address_ID;
+    }
+
+    /**
+     * @param string|null $address_ID
+     */
+    public function setAddressID(?string $address_ID): void
+    {
+        $this->address_ID = $address_ID;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -305,7 +305,7 @@ class event
     /**
      * @param string|null $name
      */
-    public function setname(?string $name): void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -313,7 +313,7 @@ class event
     /**
      * @return string|null
      */
-    public function getdescription(): ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -321,7 +321,7 @@ class event
     /**
      * @param string|null $description
      */
-    public function setdescription(?string $description): void
+    public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
@@ -329,7 +329,7 @@ class event
     /**
      * @return string|null
      */
-    public function getrequirements(): ?string
+    public function getRequirements(): ?string
     {
         return $this->requirements;
     }
@@ -337,7 +337,7 @@ class event
     /**
      * @param string|null $requirements
      */
-    public function setrequirements(?string $requirements): void
+    public function setRequirements(?string $requirements): void
     {
         $this->requirements = $requirements;
     }
@@ -345,7 +345,7 @@ class event
     /**
      * @return string|null
      */
-    public function getdate(): ?string
+    public function getDate(): ?string
     {
         return $this->date;
     }
@@ -353,7 +353,7 @@ class event
     /**
      * @param string|null $date
      */
-    public function setdate(?string $date): void
+    public function setDate(?string $date): void
     {
         $this->date = $date;
     }
@@ -361,39 +361,39 @@ class event
     /**
      * @return string|null
      */
-    public function getstarttime(): ?string
+    public function getStartTime(): ?string
     {
-        return $this->starttime;
+        return $this->startTime;
     }
 
     /**
-     * @param string|null $starttime
+     * @param string|null $startTime
      */
-    public function setstarttime(?string $starttime): void
+    public function setStartTime(?string $startTime): void
     {
-        $this->starttime = $starttime;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getendtime(): ?string
-    {
-        return $this->endtime;
-    }
-
-    /**
-     * @param string|null $endtime
-     */
-    public function setendtime(?string $endtime): void
-    {
-        $this->endtime = $endtime;
+        $this->startTime = $startTime;
     }
 
     /**
      * @return string|null
      */
-    public function gethousenumber(): ?string
+    public function getEndTime(): ?string
+    {
+        return $this->endTime;
+    }
+
+    /**
+     * @param string|null $endTime
+     */
+    public function setEndTime(?string $endTime): void
+    {
+        $this->endTime = $endTime;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHouseNumber(): ?string
     {
         return $this->house_number;
     }
@@ -401,7 +401,7 @@ class event
     /**
      * @param string|null $house_number
      */
-    public function sethousenumber(?string $house_number): void
+    public function setHouseNumber(?string $house_number): void
     {
         $this->house_number = $house_number;
     }
@@ -409,7 +409,7 @@ class event
     /**
      * @return string|null
      */
-    public function getpostalcode(): ?string
+    public function getPostalCode(): ?string
     {
         return $this->postal_code;
     }
@@ -417,7 +417,7 @@ class event
     /**
      * @param string|null $postal_code
      */
-    public function setpostalcode(?string $postal_code): void
+    public function setPostalCode(?string $postal_code): void
     {
         $this->postal_code = $postal_code;
     }
@@ -425,7 +425,7 @@ class event
     /**
      * @return string|null
      */
-    public function getcity(): ?string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -433,7 +433,7 @@ class event
     /**
      * @param string|null $city
      */
-    public function setcity(?string $city): void
+    public function setCity(?string $city): void
     {
         $this->city = $city;
     }
@@ -441,9 +441,9 @@ class event
     /**
      * @return int|null
      */
-    public function geteventid(): ?int
+    public function getEventID(): ?int
     {
-        return $this->event_id;
+        return $this->event_ID;
     }
 
 

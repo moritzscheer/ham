@@ -100,6 +100,15 @@ class blob {
 
         return ($stmt == null) ? throw new RuntimeException("could not find any"): $stmt;
     }
+
+    public function queryOwnIDs($assigned_ID) : array {
+        $sql = "SELECT id
+                FROM files
+                WHERE assigned_ID = '".$assigned_ID."';";
+        $stmt = $this->db->query($sql)->fetchAll();
+
+        return ($stmt == null) ? throw new RuntimeException("could not find any"): $stmt;
+    }
 }
 
 

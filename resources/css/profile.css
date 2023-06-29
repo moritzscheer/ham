@@ -11,11 +11,17 @@
 .profile-Picture-Large-Box div {
     display: none;
 }
+.profile-Picture-Large-Box img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
 .profile-Picture-Large-Box:hover > #image-Select, #image-Select:hover {
     display: block;
     position: relative;
-    left: 93%;
-    top: -40px;
+    left: 92%;
+    top: -60px;
     color: black;
     z-index: 1;
 }
@@ -28,16 +34,14 @@
 /* ------------------- profile navigation bar -------------- */
 .profile-Navigation {
     height: 100px;
-    width: 70%;
 }
 .profile-Navigation > div {
     display: grid;
-    grid-template-columns: min-content auto;
-    gap: 50px;
+    grid-template-columns: 1fr 6fr;
+    gap: 30px;
     position: relative;
     top: -40px;
-    width: 70%;
-    padding: 0 0 10px 50px;
+    padding: 0 0 10px 30px;
     overflow: visible;
 }
 .profile-Navigation form input {
@@ -61,7 +65,7 @@
     width: 120px;
     height: 120px;
 }
-#edit:hover > img {
+.profile-Picture-Box:hover img {
     filter: blur(5px);
     position: absolute;
 
