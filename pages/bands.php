@@ -20,6 +20,7 @@ include_once "../php/head/head.php" ?>
 
     <h1 id="header">Bands</h1>
 
+    <!-- remove final deadline-->
     <p id="error-message"><?php echo $error_message ?></p>
     <section id="item_list">
         <?php echo $_SESSION["itemList"] ?>

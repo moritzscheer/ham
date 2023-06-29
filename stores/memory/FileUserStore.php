@@ -32,7 +32,7 @@ class FileUserStore implements UserStore
     private function addUsersToJsonFile(): bool
     {
         $var = file_put_contents($this->userJsonFile, json_encode($this->usersOfJsonFile));
-        if ($var !== false){
+        if ($var !== false) {
             return true;
         } else return false;
     }
@@ -51,7 +51,7 @@ class FileUserStore implements UserStore
             if ($userJSON->email === $user->getEmail() || $userJSON->password === $user->getPassword()) {
                 throw new Exception("Email or Password already exist");
             }
-            while ($userJSON->userID === $user_ID) {
+            while ($userJSON->user_ID === $user_ID) {
                 $user_ID = uniqid("user_", false);
             }
         }
@@ -75,8 +75,8 @@ class FileUserStore implements UserStore
         try {
             $this->delete($user->getUserID());
             $this->create($user);
-        } catch (Exception $e){
-            throw new Exception("Update doesn't worked: " . $e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception("FileUserStore-update(" . $user->getUserID() ."): Update doesn't worked: " . $e->getMessage());
         }
         return $this->findOne($user->getUserID());
     }
@@ -89,10 +89,14 @@ class FileUserStore implements UserStore
      */
     public function delete(string $user_ID): void
     {
+
+        $i = 0;
         foreach ($this->usersOfJsonFile as $userJSON) {
-            if ($userJSON->user_ID === $user_ID) {
-                unset($this->usersOfJsonFile[$userJSON]);
+            if ($userJSON->user_ID == $user_ID) {
+                unset($this->usersOfJsonFile[$i]);
+                return;
             }
+            $i++;
         }
         throw new Exception("No such dto\User was found.");
     }
@@ -124,7 +128,7 @@ class FileUserStore implements UserStore
     {
         foreach ($this->usersOfJsonFile as $user) {
             if ($user->email === $email && $user->password === $password) {
-                return $user;
+                return User::getJsonUser($user);
             }
         }
         throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
@@ -133,10 +137,10 @@ class FileUserStore implements UserStore
     public function findMany(array $ids)
     {
         $users = array();
-        foreach($ids as $id){
+        foreach ($ids as $id) {
             try {
                 $users[] = $this->findOne($id);
-            }catch (Exception $e){
+            } catch (Exception $e) {
                 yield $e;
                 continue;
             }
@@ -151,7 +155,7 @@ class FileUserStore implements UserStore
     public function findAll()
     {
         $users = array();
-        foreach ($this->usersOfJsonFile as $userJson){
+        foreach ($this->usersOfJsonFile as $userJson) {
             $user = User::getJsonUser($userJson);
             $users[] = $user;
         }

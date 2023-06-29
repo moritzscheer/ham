@@ -11,7 +11,7 @@
     "genre": "Rock",
     "members": "",
     "other_remarks": "",
-    "street_name" : "",
+    "street_name": "",
     "house_number": "",
     "postal_code": "",
     "city": "",
@@ -23,23 +23,26 @@
     ]
   },
   {
-    "user_ID": 933443,
+    "user_ID": "user_649b47dae133e",
     "type": "Host",
-    "address_ID": "",
-    "name": "Moritz",
-    "surname": "Scheer",
-    "password": "2",
+    "name": "My Name is",
+    "address_ID": "user_649b47dae134e",
+    "surname": "Test User 1",
+    "password": "$2y$10$101PXYRzziM67UufnBDo5uK4vqwpcMnFTkHdOqHnU\/AwF8GT2S7MG",
     "phone_number": "",
-    "email": "moritz@uni.de",
-    "genre": "",
+    "email": "testUser1@uni.de",
+    "genre": "none",
     "members": "",
     "other_remarks": "",
-    "street_name" : "",
-    "house_number": "",
-    "postal_code": "",
-    "city": "Oldenburg",
     "profile_picture_small": "",
     "profile_picture_large": "",
-    "profile_gallery": []
+    "profile_gallery": [
+      "..\\\/resources\\\/images\\\/bands\\\/band.jpg",
+      "..\\\/resources\\\/images\\\/bands\\\/band.jpg"
+    ],
+    "street_name": "",
+    "house_number": "",
+    "postal_code": "",
+    "city": ""
   }
 ]
