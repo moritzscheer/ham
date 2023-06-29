@@ -21,7 +21,6 @@
     box-sizing: border-box;
 }
 
-
 .main {
     /*font: 16px "Roboto Light";*/
 }
@@ -47,6 +46,9 @@ textarea {
 }
 
 
+
+
+
 /* visibility classes */
 .visible {
     display: grid !important;
@@ -65,23 +67,27 @@ textarea {
     display: none !important;
 }
 
-.profile-Picture {
+
+
+
+
+/* styling for the small profile picture */
+.profile_picture_small img {
     border-radius: 50%;
     object-fit: cover;
     height: 60px;
     width: 60px;
     border: 1px white solid;
 }
+
+
+
+
+
+/* formatting for input fields */
 .text-line-pre {
     white-space: pre-line;
 }
-#error-message {
-    text-align: center;
-}
-
-
-
-
 
 input[type=text], input[type=password], input[type=tel], input[type=email], textarea {
     background-color: var(--bluegrey);
@@ -108,18 +114,59 @@ input:-webkit-autofill {
 
 
 
-/* formatting for hint field */
-#hint {
+
+/* formatting for output fields */
+.hint {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-content: center;
+    text-align: center;
+    gap: 20px;
     width: 100%;
-    height: 10vh;
-    background-color: rgba(255, 255, 255, 0.5);
+    height: 0;                          
+    background-color: rgba(255, 255, 255, 0.3);
     color: black;
 }
+#hintVisible {
+    height: min-content;
+    padding: 20px 0 20px 0;
+}
+#hintVisible label, #hintVisible span {
+    display: block;
+}
+.hint label, .hint span {
+    display: none;
+}
+#hint_buttons {
+    display: flex;
+    margin-left: auto;
+    padding-right: 20px;
+    gap: 20px;
+}
+#hint_button {
+    margin-left: auto;
+    margin-right: 30px;
+}
+#hint_button label {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-self: flex-end;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+}
+#hint_button label:hover {
+    border: 1px solid white;
+    border-radius: 50%;
+}
+#error-message {
+    text-align: center;
+}
 
+#success_message {
+    color:green;
+
+}
 
 
 
@@ -132,7 +179,7 @@ input:-webkit-autofill {
     align-items: center;
     width: 100%;
 }
-#input-entry {
+#input-en   try {
     grid-template-columns: auto;
     grid-template-rows: auto auto;
     gap: 5px;
@@ -160,10 +207,7 @@ input:-webkit-autofill {
 
 
 
-#success_message {
-    color:green;
 
-}
 
 
 

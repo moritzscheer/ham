@@ -42,7 +42,7 @@ class DBEventStore implements EventStore {
             $sql = "SELECT * FROM event WHERE name = '".$item->getName()."';";
             $stmt = $this->db->query($sql)->fetch();
             if($stmt !== false) {
-                throw new Exception("There is already an dto\Event called ".$item->getName()."!");
+                throw new Exception("There is already an Item\Event called ".$item->getName()."!");
             }
             if($item->getStreetName() !== "" || $item->getHouseNumber() !== "" || $item->getPostalCode() !== "" || $item->getCity() !== "") {
                 $address_ID = $this->addressStore->create($item);
@@ -80,9 +80,9 @@ class DBEventStore implements EventStore {
      * @return void
      */
     public function delete(string $event_ID): void {
-        $delete = "DELETE FROM event WHERE event_ID = '" . $event_ID . "' RETURNING address_ID;";
-        $this->db->exec($delete);
-        $this->addressStore->delete($delete);
+        $sql = "DELETE FROM event WHERE event_ID = '" . $event_ID . "' RETURNING address_ID;";
+        $stmt = $this->db->exec($sql);
+        $this->addressStore->delete($stmt);
     }
 
     /**
@@ -136,7 +136,7 @@ class DBEventStore implements EventStore {
                "  LIMIT " .count($ids).";                  ";
         $events = $this->db->query($sql)->fetchAll();
         foreach ($events as $key => $event) {
-            $events[$key] = new Event($event);
+            $events[$key] = Event::withAddress($event);
         }
         return $events;
     }

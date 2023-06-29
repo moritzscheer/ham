@@ -94,7 +94,7 @@ class FileUserStore implements UserStore
                 unset($this->usersOfJsonFile[$userJSON]);
             }
         }
-        throw new Exception("No such dto\User was found.");
+        throw new Exception("No such Item\User was found.");
     }
 
     /**
@@ -110,7 +110,7 @@ class FileUserStore implements UserStore
                 return User::getJsonUser($userJSON);
             }
         }
-        throw new Exception("No such dto\User was found.");
+        throw new Exception("No such Item\User was found.");
     }
 
     /**
@@ -145,7 +145,7 @@ class FileUserStore implements UserStore
     }
 
     /**
-     * Returns all dto\User stored in the user.json file
+     * Returns all Item\User stored in the user.json file
      * @return array
      */
     public function findAll()

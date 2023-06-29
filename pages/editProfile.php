@@ -9,11 +9,10 @@ include_once "../php/head/head.php" ?>
     <?php include_once "../php/includes/elements/flickr.php"?>
 
     <form method="post" class="profile-Picture-Large-Box" enctype="multipart/form-data">
-        <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image"
-             class="profile-Picture-Large">
+        <?php echo $_SESSION["profile_large"] ?>
         <div id="image-Select">
             <label>Edit Image
-                <input id="addBackgroundImage" type="submit" value="profile_picture_large" name="onEditImage">
+                <input id="addBackgroundImage" type="submit" value="profile_large" name="onEditImage">
             </label>
         </div>
     </form>
@@ -21,12 +20,12 @@ include_once "../php/head/head.php" ?>
     <div class="profile-Navigation">
         <div>
             <form method="post" class="profile-Picture-Box" id="edit" enctype="multipart/form-data">
-                <img onclick="window.document.getElementById('profileInput').click()"
-                     ondrop="window.document.getElementById('profileInput').click()"
-                     src="<?php echo $_SESSION["profile_picture_small"] ?>" alt="profilePicture" class="profile-Picture">
+                <div id="profile_picture_small" class="edit">
+                    <?php echo $_SESSION["profile_small"] ?>
+                </div>
                 <div id="profile-Picture-Link">
                     <label>Edit Image
-                        <input id="addProfileImage" type="submit" value="profile_picture_small" name="onEditImage"
+                        <input id="addProfileImage" type="submit" value="profile_small" name="onEditImage"
                            class="profile-Picture-Submit">
                     </label>
                 </div>
@@ -111,11 +110,11 @@ include_once "../php/head/head.php" ?>
         </form>
 
         <form method="post" enctype="multipart/form-data" id="uploaded-Images">
-            <?php echo $_SESSION["image_gallery"] ?>
+            <?php echo $_SESSION["profile_gallery"] ?>
             <?php echo $error_message ?>
             <div class="newImage-Link">
                 <label>Add Image
-                    <input type="submit" value="newImage" name="onEditImage">
+                    <input type="submit" value="profile_gallery" name="onEditImage">
                 </label>
             </div>
         </form>

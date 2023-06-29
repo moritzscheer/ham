@@ -1,5 +1,6 @@
 <?php
 
+namespace Item;
 class Event
 {
 
@@ -97,7 +98,7 @@ class Event
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>dto\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
+            '            <span>Item\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
             '            <br>                                                                                      ' .
             '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
@@ -128,7 +129,7 @@ class Event
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>dto\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
+            '            <span>Item\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
             '            <br>                                                                                      ' .
             '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .

@@ -42,7 +42,6 @@ if (isset($_POST["select_image"])) {
  * submits the preview image
  */
 if(isset($_POST["submit_image"])) {
-    var_dump($_SESSION["profile_preview"]);
     $blobObj->insertBlob($_SESSION["loggedIn"]["user"]->getUserID(), $_SESSION["profile_preview"]["category"], $_SESSION["profile_preview"]["source"], "image/gif");
     unset($_SESSION["profile_preview"]);
 }
@@ -84,35 +83,6 @@ if(isset($_POST["flickr_search"])) {
             . ' </label> ';
     }
 }
-
-function addImage($user_ID, $url, $alturl, $category, $isEdit) : string {
-    global $blobObj;
-    try {
-        $ids = $blobObj->queryID($user_ID, $category);
-
-        $string = "";
-        foreach ($ids as $image) {
-            $a = $blobObj->selectBlob($image[0]);
-
-            if($isEdit) {
-                $string = $string.
-                    '<div>                                                                                                         '.
-                    '    <img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image"/>  '.
-                    '    <label id="exit">X                                                                                        '.
-                    '         <input type="submit" name="onDeleteImage" value="' . $image[0] . '">                                 '.
-                    '    </label>                                                                                                  '.
-                    '</div>                                                                                                        ';
-            } else {
-                $string = $string.'<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image"/>';
-            }
-        }
-        return $string;
-    } catch (RuntimeException $e) {
-        return $alturl;
-    }
-}
-
-
 
 
 

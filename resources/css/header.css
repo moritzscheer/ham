@@ -84,7 +84,10 @@ nav {
 .dropdownProfile {
     display: grid;
     grid-template-columns: auto auto;
-
+}
+.dropdownProfile img {
+    height: 50px;
+    width: 50px;
 }
 #navbar-Profile {
     display: grid;

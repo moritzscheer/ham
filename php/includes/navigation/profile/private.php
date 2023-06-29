@@ -22,4 +22,10 @@
             <input type="submit" name="delete">
         </label>
     </form>
+
+    <form method="post" id="hint_button" class="<?php echo $_SESSION["hintField"]["button"] ?>">
+        <label>?
+            <input type="submit" name="show_hint" value='Hint: To Change Images in Profile hover on an image and select "Edit Image".'>
+        </label>
+    </form>
 </div>

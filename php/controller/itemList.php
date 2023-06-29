@@ -7,6 +7,8 @@ include_once "../php/includes/includes.php";
 /*                                                  item variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+use Item\Event;
+
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
 $_SESSION["status"] =  (isset($_GET["status"]) && is_string($_GET["status"])) ? "edit" : "create";
@@ -39,7 +41,7 @@ $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESS
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
- * Creates a new dto\Event in the Eventstore
+ * Creates a new Item\Event in the Eventstore
  */
 if (isset($_POST["submit"])) {
     try {
@@ -78,7 +80,7 @@ if (isset($_POST["onItemClick"])) {
 }
 
 /**
- * Deletes an dto\Event from the Eventstore
+ * Deletes an Item\Event from the Eventstore
  */
 if (isset($_POST["onDelete"])) {
     $eventStore->delete($_POST["onDelete"]);
@@ -174,7 +176,7 @@ function sortArray(array $array, $attribute, $dir) : array {
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                              get dto\Event and get Bands method                                        */
+/*                                              get Item\Event and get Bands method                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
@@ -226,7 +228,7 @@ function getMyEvents($user_ID): string {
     try {
         $_SESSION["events"] = $eventStore->findMy($user_ID);
         
-        return buildItemList($_SESSION["events"], "You have not created an dto\Event!", true);
+        return buildItemList($_SESSION["events"], "You have not created an Event!", true);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -251,7 +253,7 @@ function getAnyEvents($stmt): string {
 }
 
 /**
- * loads all dto\User that are the type musician from the userStore and print the html data to the page
+ * loads all Item\User that are the type musician from the userStore and print the html data to the page
  * @return string
  */
 function getBands(): string {
@@ -311,7 +313,7 @@ function getDetail(Object $item) : string {
         '        <div id="item_short_description" class="text-line-pre">                                       '.
         '            <span>' . $item->getName() . '</span>                                                     '.
         '            <br>                                                                                      '.
-        '            <span>dto\Address: '.$item->getAddressAttributes("value", "list").'</span>                    ' .
+        '            <span>Item\Address: '.$item->getAddressAttributes("value", "list").'</span>                    ' .
         '            <br>                                                                                      '.
         '            <span> ' . $item->getTime() . '</span>                                                    '.
         '        </div>                                                                                        '.
