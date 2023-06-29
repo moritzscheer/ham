@@ -1,13 +1,16 @@
 <?php
 
-class Address {
+namespace Item;
+class Address
+{
     private int $address_ID;
     private ?string $street_name;
     private ?string $house_number;
     private ?string $postal_code;
     private ?string $city;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->street_name = "";
         $this->house_number = "";
         $this->postal_code = "";
@@ -19,7 +22,8 @@ class Address {
      * @param $address
      * @return Address
      */
-    public static function withAddressID($address): Address {
+    public static function withAddressID($address): Address
+    {
         $instance = new self();
         $instance->address_ID = $address[0];
         $instance->street_name = $address[1];
@@ -100,7 +104,6 @@ class Address {
     {
         $this->city = $city;
     }
-
 
 
 }

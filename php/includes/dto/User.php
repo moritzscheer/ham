@@ -1,5 +1,6 @@
 <?php
 
+namespace Item;
 class User
 {
 
@@ -33,7 +34,7 @@ class User
     public static function withAddress($user): User
     {
         $instance = new self();
-        $instance->user_ID = (string) $user["user_ID"];
+        $instance->user_ID = (string)$user["user_ID"];
         $instance->address_ID = $user["address_ID"];
         $instance->type = $user["type"];
         $instance->name = $user["name"];
@@ -75,7 +76,7 @@ class User
         );
     }
 
-    public static function getJsonUser($user) : User
+    public static function getJsonUser($user): User
     {
         $instance = new self();
         $instance->user_ID = (string)$user->user_ID;
@@ -177,7 +178,8 @@ class User
      * @param $schema
      * @return string
      */
-    private function concatString($result, $key, $value, $keyOrValue, $schema) : string {
+    private function concatString($result, $key, $value, $keyOrValue, $schema): string
+    {
         $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
 
         if ($schema === "list") {
@@ -186,7 +188,7 @@ class User
                     $result = $attr;
                 } else {
                     $result = $result . ", " . $attr;
-                    }
+                }
             }
         } elseif ($schema === "set") {
             if ($result === "") {
@@ -295,7 +297,7 @@ class User
      * @param string|null $id
      * @return void
      */
-    public function setUserID(?string $id) : void
+    public function setUserID(?string $id): void
     {
         $this->user_ID = $id;
     }

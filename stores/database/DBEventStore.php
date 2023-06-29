@@ -1,4 +1,7 @@
 <?php
+
+use Item\Event;
+
 include_once "../stores/interface/EventStore.php";
 
 class DBEventStore implements EventStore {
@@ -39,7 +42,7 @@ class DBEventStore implements EventStore {
             $sql = "SELECT * FROM event WHERE name = '".$item->getName()."';";
             $stmt = $this->db->query($sql)->fetch();
             if($stmt !== false) {
-                throw new Exception("There is already an Event called ".$item->getName()."!");
+                throw new Exception("There is already an dto\Event called ".$item->getName()."!");
             }
             if($item->getStreetName() !== "" || $item->getHouseNumber() !== "" || $item->getPostalCode() !== "" || $item->getCity() !== "") {
                 $address_ID = $this->addressStore->create($item);

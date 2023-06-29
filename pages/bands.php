@@ -1,7 +1,7 @@
 <?php global $itemList, $error_message;
 include_once "../php/head/head.php" ?>
 <body>
-<?php include_once "../php/navigation/header/header.php" ?>
+<?php include_once "../php/includes/navigation/header/header.php" ?>
 
 <section id="events">
     <div id="filter">
@@ -27,7 +27,7 @@ include_once "../php/head/head.php" ?>
 
 </section>
 
-<?php include_once "../php/navigation/footer/footer.php" ?>
+<?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>
 

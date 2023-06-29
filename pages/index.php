@@ -1,6 +1,6 @@
 <?php include_once "../php/head/head.php" ?>
 <body>
-<?php include_once "../php/navigation/header/header.php" ?>
+<?php include_once "../php/includes/navigation/header/header.php" ?>
 
 <section id="about-area">
     <div id="about-picture">
@@ -19,6 +19,6 @@
     </div>
 </section>
 
-<?php include_once "../php/navigation/footer/footer.php" ?>
+<?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>

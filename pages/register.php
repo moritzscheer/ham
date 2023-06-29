@@ -1,10 +1,10 @@
 <?php
     global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message, $progressBar;
-    include_once "../php/register/progressBar.php";
+    include_once "../php/controller/progressBar.php";
     include_once "../php/head/head.php";
 ?>
 <body>
-<?php include_once "../php/navigation/header/header.php" ?>
+<?php include_once "../php/includes/navigation/header/header.php" ?>
 
     <section class="register">
 
@@ -121,8 +121,8 @@
                 <h1 id="success_message"><?php echo $_SESSION["success_message"] ?></h1>
 
                 <div>
-                    <p><?php echo $_SESSION["user"]->getName() . " " . $_SESSION["user"]->getSurname() ?></p>
-                    <p><?php echo $_SESSION["user"]->getEmail() ?></p>
+                    <p><?php echo $_SESSION["loggedIn"]["user"]->getName() . " " . $_SESSION["loggedIn"]["user"]->getSurname() ?></p>
+                    <p><?php echo $_SESSION["loggedIn"]["user"]->getEmail() ?></p>
                 </div>
                 
                 <label>Stay Logged In?
@@ -136,6 +136,6 @@
         </div>
     </section>
 
-<?php include "../php/navigation/footer/footer.php" ?>
+<?php include "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>

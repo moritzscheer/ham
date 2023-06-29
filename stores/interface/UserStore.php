@@ -1,4 +1,7 @@
 <?php
+
+use Item\User;
+
 include_once "../stores/interface/Store.php";
 
 

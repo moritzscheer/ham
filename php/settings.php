@@ -1,6 +1,6 @@
 <?php
-    include_once "../php/includes/includes.php";
-    global $blobObj, $db;
+
+global $blobObj, $db;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -40,11 +40,14 @@ session_start();
 $_SESSION["url2"] = "";
 
 // sets the link to the stylesheet depending on which page is currently displayed
-if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile")) {
+if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile") || str_contains($_SERVER["PHP_SELF"], "editProfile")) {
     $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
-} elseif (str_contains($_SERVER["PHP_SELF"], "editProfile")) {
-    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
-    $_SESSION["url2"] = '<script type="text/javascript" src="../javascript(flickr.js"></script>';
+    if(str_contains($_SERVER["PHP_SELF"], "editProfile")) {
+        $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
+    }
+} elseif (str_contains($_SERVER["PHP_SELF"], "createEvent")) {
+    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/createEvent.css">';
+    $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
 } elseif (str_contains($_SERVER["PHP_SELF"], "bands") || str_contains($_SERVER["PHP_SELF"], "events")) {
     $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
 } elseif (str_contains($_SERVER["PHP_SELF"], "closeToMe")) {

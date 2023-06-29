@@ -1,5 +1,4 @@
 <?php
-include_once "Item.php";
 
 class Event
 {
@@ -50,9 +49,9 @@ class Event
     public static function getJsonEvent($item): Event
     {
         $instance = new self();
-        $instance->event_ID = (int) $item->id;
+        $instance->event_ID = (int)$item->id;
         $instance->address_ID = $item->address_ID;
-        $instance->user_ID = (int) $item->authorID;
+        $instance->user_ID = (int)$item->authorID;
         $instance->name = $item->name;
         $instance->description = $item->description;
         $instance->requirements = $item->requirements;
@@ -66,7 +65,7 @@ class Event
         return $instance;
     }
 
-    public static function toArrayForJsonEntry(Event $item) : array
+    public static function toArrayForJsonEntry(Event $item): array
     {
         $jsonEvent = array(
             "image" => $item->getImageSource(),
@@ -98,18 +97,18 @@ class Event
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
+            '            <span>dto\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
             '            <br>                                                                                      ' .
             '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
-            '    </form>                                                                                           ' ;
+            '    </form>                                                                                           ';
     }
 
     //todo: fix line 120 to 127 with ajax ?
-    public function getEditableEventHTML() : string
+    public function getEditableEventHTML(): string
     {
         return $string =
             '    <form method="post" name="event_ID" id="item">                                                    ' .
@@ -129,14 +128,14 @@ class Event
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
+            '            <span>dto\Address: ' . $this->getAddressAttributes("value", "list") . '</span>   ' .
             '            <br>                                                                                      ' .
             '            <span> ' . $this->getTime() . '</span>                                                    ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
-            '    </form>                                                                                           ' ;
+            '    </form>                                                                                           ';
 
     }
 
@@ -167,7 +166,8 @@ class Event
      * @param $schema
      * @return String
      */
-    public function getAttributes($keyOrValue, $schema) : String {
+    public function getAttributes($keyOrValue, $schema): string
+    {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
@@ -184,7 +184,8 @@ class Event
      * @param $schema
      * @return String
      */
-    public function getAddressAttributes($keyOrValue, $schema) : String {
+    public function getAddressAttributes($keyOrValue, $schema): string
+    {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
@@ -201,7 +202,8 @@ class Event
      * @param $schema
      * @return string
      */
-    private function concatString($result, $key, $value, $keyOrValue, $schema) : string {
+    private function concatString($result, $key, $value, $keyOrValue, $schema): string
+    {
         $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
 
         if ($schema === "list") {

@@ -1,4 +1,8 @@
 <?php
+
+use Item\Event;
+use Item\Item;
+
 include_once "../stores/interface/EventStore.php";
 
 class FileEventStore implements EventStore
@@ -25,7 +29,7 @@ class FileEventStore implements EventStore
 
 
     /**
-     * Adds an Event to json file
+     * Adds an dto\Event to json file
      * @param array $item
      * @return bool
      */
@@ -53,8 +57,8 @@ class FileEventStore implements EventStore
     }
 
     /**
-     * Stores an Event to the event json file
-     * @param Item $item an Event object
+     * Stores an dto\Event to the event json file
+     * @param Item $item an dto\Event object
      * @return bool return true if event was successfully written
      * @throws Exception will be thrown if item is not an event object
      */
@@ -87,7 +91,7 @@ class FileEventStore implements EventStore
     }
 
     /**
-     * Deletes Event form json file by given id
+     * Deletes dto\Event form json file by given id
      *
      * Deletes an entry in the array and overwrites the json file
      * @param string $id
@@ -102,7 +106,7 @@ class FileEventStore implements EventStore
                 return;
             }
         }
-        throw new Exception("No such Event was found.");
+        throw new Exception("No such dto\Event was found.");
     }
 
     public function findMany(array $ids)

@@ -6,6 +6,8 @@ global $userStore, $addressStore, $blobObj, $images, $step, $step_1, $step_2, $s
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 // init loggedIn session variable
+use Item\User;
+
 $_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false);
 
 if($_SESSION["loggedIn"]["status"] === true) {
@@ -204,12 +206,15 @@ if(isset($_POST["update_profile"])) {
 if(isset($_POST["viewProfile"])) {
     try {
         if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
-            // sets the user variable to the loggedInUser (for display information)
+            // sets the user variable to the loggedInUser (user variable is displayed in profile)
             $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
-            $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+            // sets the profile navigation to private -> with navigation buttons
+            $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
         } else {
+            // sets the user variable to the user with the user_ID (user variable is displayed in profile)
             $_SESSION["user"] = $userStore->findOne($_POST["viewProfile"]);
-            $_SESSION["navigation"] = "../php/navigation/profile/public.php";
+            // sets the profile navigation to public -> without navigation buttons
+            $_SESSION["navigation"] = "../php/includes/navigation/profile/public.php";
         }
         
         // sets the images of the profile via user_ID
@@ -229,7 +234,8 @@ if(isset($_POST["viewProfile"])) {
  */
 if(isset($_POST["viewEditProfile"])) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewEditProfile"]) {
-        $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+        // sets the profile navigation to private -> with navigation buttons
+        $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
 
         // sets the images of the profile via user_ID
         setImages($_POST["viewEditProfile"], true);
@@ -246,8 +252,8 @@ if(isset($_POST["viewEditProfile"])) {
  */
 if(isset($_POST["viewChangePassword"])) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewChangePassword"]) {
-        // if user equals the loggedInUser
-        $_SESSION["navigation"] = "../php/navigation/profile/private.php";
+        // sets the profile navigation to private -> with navigation buttons
+        $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
 
         // sets the images of the profile via user_ID
         setImages($_POST["viewChangePassword"], false);

@@ -1,0 +1,99 @@
+/* ---------------------  select Image Box ----------------- */
+#select_image_box {
+    display: none;
+    position: fixed;
+    width: 80vw;
+    left: 10vw;
+    top: 10vh;
+    height: 80vh;
+    z-index: 1;
+    grid-template-rows: 5vh auto;
+    background-color: white;
+    border: 1px solid black;
+    overflow: hidden;
+}
+#select_image_box label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Header of the edit image box */
+#select_image_box_header {
+    background-color: rgba(0, 0, 0, 0.50);
+    display: flex;
+    flex-direction: revert;
+    margin-bottom: 0;
+}
+#select_image_box_header label {
+    width: 5vh;
+    margin-left: auto;
+}
+#select_image_box_header label:hover {
+    background-color: rgba(0, 0, 0, 0.30);
+}
+
+/* Content of the edit image box */
+#select_image_box_content {
+    display: grid;
+    grid-template-rows: min-content auto 150px min-content;
+    height: 75vh;
+}
+#select_image_box_content > div, #select_image_box_content > form {
+    margin: 10px 20px 10px 20px;
+}
+#flickr_search {
+    display: grid;
+    grid-template-columns: auto 100px;
+    gap: 20px;
+    height: 30px;
+}
+#flickr_search input, #flickr_search label, #flickr_buttons label  {
+    background-color: var(--bluegrey);
+    padding-left: 10px;
+    border-radius: 4px;
+    position: relative;
+    color: var(--white);
+    border: 1px grey solid;
+    border: transparent;
+    outline: none;
+    height: 30px;
+}
+#flickr_search > input, #flickr_search > label {
+    width: 100%;
+}
+#flickr_images {
+    border: 1px solid var(--black2);
+    gap: 10px;
+    padding: 10px;
+    overflow: scroll;
+}
+#flickr_images div {
+}
+#flickr_images img {
+
+}
+#profile_picture_preview {
+    border: 2px dashed var(--black2);
+    padding: 2px;
+
+}
+#profile_picture_preview img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+#flickr_buttons, #flickr_buttons form {
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+    height: 30px;
+}
+#profile_image_submit {
+    width: 80px;
+}
+#select_own {
+    width: 160px;
+}
+#submit_own {
+    width: 80px;
+}

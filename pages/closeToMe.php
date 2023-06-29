@@ -4,7 +4,7 @@ include_once "../php/head/head.php" ?>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
 </head>
 <body>
-<?php include_once "../php/navigation/header/header.php" ?>
+<?php include_once "../php/includes/navigation/header/header.php" ?>
 
 <h1> Close to Me </h1>
 
@@ -36,7 +36,7 @@ echo $range;
 
 </div>
 
-<?php include_once "../php/navigation/footer/footer.php" ?>
+<?php include_once "../php/includes/navigation/footer/footer.php" ?>
 
 </body>
 </html>

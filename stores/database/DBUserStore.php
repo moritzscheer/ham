@@ -1,4 +1,7 @@
 <?php
+
+use Item\User;
+
 include_once "../stores/interface/UserStore.php";
 
 class DBUserStore implements UserStore
@@ -32,7 +35,7 @@ class DBUserStore implements UserStore
 
     /**
      * methode to register a user into the database. First it searches the database, if the email or password
-     * already exist, then the data set is inserted and returned as a User object. Else an exception is thrown.
+     * already exist, then the data set is inserted and returned as a dto\User object. Else an exception is thrown.
      * @param object $user the user object given in
      * @return User the returned user object with the user_ID in it
      * @throws Exception

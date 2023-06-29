@@ -2,7 +2,7 @@
     global $error_message;
     include_once "../php/head/head.php" ?>
 <body>
-<?php include_once "../php/navigation/header/header.php" ?>
+<?php include_once "../php/includes/navigation/header/header.php" ?>
 <section class="login-view">
     <form method="post" class="login-container">
         <div class="loginElement">
@@ -34,6 +34,6 @@
     </form>
 
 </section>
-<?php include "../php/navigation/footer/footer.php" ?>
+<?php include "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>

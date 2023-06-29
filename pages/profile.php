@@ -1,7 +1,7 @@
 <?php global $error_message;
 include_once "../php/head/head.php" ?>
 <body>
-<?php include_once "../php/navigation/header/header.php" ?>
+<?php include_once "../php/includes/navigation/header/header.php" ?>
 
     <section class="profile-Picture-Large-Box">
         <img src="<?php echo $_SESSION["profile_picture_large"] ?>" alt="could not load image" class="profile-Picture-Large">
@@ -63,6 +63,6 @@ include_once "../php/head/head.php" ?>
             <?php echo $_SESSION["image_gallery"] ?>
         </div>
     </section>
-<?php include_once "../php/navigation/footer/footer.php" ?>
+<?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>
