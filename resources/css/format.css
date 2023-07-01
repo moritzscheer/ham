@@ -104,6 +104,10 @@ input[type=text], input[type=password], input[type=tel], input[type=email] {
     height: 30px;
 }
 
+input[type=date], input[type=time]{
+    color-scheme: dark;
+}
+
 input:-webkit-autofill {
     -webkit-text-fill-color: white;
     -webkit-font-feature-settings: unset;

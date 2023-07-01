@@ -58,10 +58,6 @@ textarea {
     width: 100%;
 }
 
-input[type=date], input[type=time]{
-    color-scheme: dark;
-}
-
 .requirements {
     display: grid;
     width: 50%;
