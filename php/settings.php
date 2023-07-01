@@ -80,6 +80,9 @@ function initDatabase(): void {
         $eventStore = new DBEventStore($db, $addressStore, $blobObj);
         $userStore = new DBUserStore($db, $addressStore, $blobObj);
 
+        //todo: remove following line at deadline. Just use for memory Filestore Testing
+        //throw new PDOException("Use Memory Stores");
+
     } catch (PDOException $exc) {
         $db = NULL;
 

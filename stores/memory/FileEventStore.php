@@ -120,4 +120,9 @@ class FileEventStore implements EventStore
     }
 
 
+    public function findMy($user_ID): array
+    {
+        // TODO: Implement findMy() method.
+        return array();
+    }
 }

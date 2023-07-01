@@ -45,14 +45,14 @@ class FileUserStore implements UserStore
      */
     public function create(User $user): User
     {
-        $user_ID = uniqid("user_", false);
+        $user_ID = rand(5, 7);
 
         foreach ($this->usersOfJsonFile as $userJSON) {
             if ($userJSON->email === $user->getEmail() || $userJSON->password === $user->getPassword()) {
                 throw new Exception("Email or Password already exist");
             }
             while ($userJSON->user_ID === $user_ID) {
-                $user_ID = uniqid("user_", false);
+                $user_ID = rand(5, 7);
             }
         }
         $user->setUserID($user_ID);
