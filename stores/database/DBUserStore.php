@@ -11,25 +11,26 @@ class DBUserStore implements UserStore
     private Blob $blobObj;
 
 
-    public function __construct(PDO $db, Store $addressStore, Blob $blobObj) {
+    public function __construct(PDO $db, Store $addressStore, Blob $blobObj)
+    {
         $this->db = $db;
         $this->addressStore = $addressStore;
         $this->blobObj = $blobObj;
 
         // creates the user table
-        $sql = "CREATE TABLE IF NOT EXISTS user (".
-               "user_ID INTEGER PRIMARY KEY AUTOINCREMENT, ".
-               "address_ID int(11) DEFAULT NULL, ".
-               "type varchar(15) NOT NULL, ".
-               "name varchar(50) DEFAULT NULL, ".
-               "surname varchar(50) DEFAULT NULL, ".
-               "password varchar(255) NOT NULL UNIQUE, ".
-               "phone_number varchar(20) DEFAULT NULL, ".
-               "email varchar(255) NOT NULL UNIQUE, ".
-               "genre varchar(255) DEFAULT NULL, ".
-               "members varchar(255) DEFAULT NULL, ".
-               "other_remarks longtext DEFAULT NULL, ".
-               "FOREIGN KEY (address_ID) REFERENCES address(address_ID));";
+        $sql = "CREATE TABLE IF NOT EXISTS user (" .
+            "user_ID INTEGER PRIMARY KEY AUTOINCREMENT, " .
+            "address_ID int(11) DEFAULT NULL, " .
+            "type varchar(15) NOT NULL, " .
+            "name varchar(50) DEFAULT NULL, " .
+            "surname varchar(50) DEFAULT NULL, " .
+            "password varchar(255) NOT NULL UNIQUE, " .
+            "phone_number varchar(20) DEFAULT NULL, " .
+            "email varchar(255) NOT NULL UNIQUE, " .
+            "genre varchar(255) DEFAULT NULL, " .
+            "members varchar(255) DEFAULT NULL, " .
+            "other_remarks longtext DEFAULT NULL, " .
+            "FOREIGN KEY (address_ID) REFERENCES address(address_ID));";
         $db->exec($sql);
     }
 
@@ -40,23 +41,24 @@ class DBUserStore implements UserStore
      * @return User the returned user object with the user_ID in it
      * @throws Exception
      */
-    public function create(User $user): User {
+    public function create(User $user): User
+    {
         try {
             $this->db->beginTransaction();
 
             // checking if an entry already exist with the password an email
-            $sql = "SELECT * FROM user WHERE email = '".$user->getEmail()."' OR password = '".$user->getPassword()."';";
+            $sql = "SELECT * FROM user WHERE email = '" . $user->getEmail() . "' OR password = '" . $user->getPassword() . "';";
             $stmt = $this->db->query($sql)->fetch();
-            if($stmt !== false) {
+            if ($stmt !== false) {
                 throw new Exception("Email or Password already exist");
             }
 
-            if($user->getStreetName() !== "" || $user->getHouseNumber() !== "" || $user->getPostalCode() !== "" || $user->getCity() !== "") {
+            if ($user->getStreetName() !== "" || $user->getHouseNumber() !== "" || $user->getPostalCode() !== "" || $user->getCity() !== "") {
                 $address_ID = $this->addressStore->create($user);
                 $user->setAddressID($address_ID);
             }
 
-            $sql = "INSERT INTO user (".$user->getAttributes("key", "list").") VALUES (".$user->getAttributes("valueWithApo", "list").");";
+            $sql = "INSERT INTO user (" . $user->getAttributes("key", "list") . ") VALUES (" . $user->getAttributes("valueWithApo", "list") . ");";
             $this->db->exec($sql);
 
             $user = $this->findOne($this->db->lastInsertId());
@@ -73,11 +75,12 @@ class DBUserStore implements UserStore
      * @param object $user
      * @return User
      */
-    public function update(User $user): User {
+    public function update(User $user): User
+    {
         $address_ID = $this->addressStore->update($user);
         $user->setAddressID($address_ID);
 
-        $sql = "UPDATE user SET ".$user->getAttributes("key", "set")." WHERE user_ID = '". $user->getUserID()."';";
+        $sql = "UPDATE user SET " . $user->getAttributes("key", "set") . " WHERE user_ID = '" . $user->getUserID() . "';";
 
         $this->db->exec($sql);
         return $this->findOne($user->getUserID());
@@ -88,7 +91,8 @@ class DBUserStore implements UserStore
      * @param string $user_ID
      * @return void
      */
-    public function delete(string $user_ID): void {
+    public function delete(string $user_ID): void
+    {
         $sql = "DELETE FROM user WHERE user_ID = '" . $user_ID . "' RETURNING 'address_ID';";
         $stmt = $this->db->exec($sql);
         $this->addressStore->delete($stmt);
@@ -99,7 +103,8 @@ class DBUserStore implements UserStore
      * @param string $user_ID
      * @return User
      */
-    public function findOne(string $user_ID): User {
+    public function findOne(string $user_ID): User
+    {
         $sql = "SELECT * FROM user WHERE user_ID = :user_ID;";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(array(":user_ID" => $user_ID));
@@ -115,7 +120,7 @@ class DBUserStore implements UserStore
         $stmt->bindColumn(11, $other_remarks);
         $stmt->fetch(PDO::FETCH_BOUND);
 
-        if($address_ID !== NULL) {
+        if ($address_ID !== NULL) {
             $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
 
             $stmt = $this->db->prepare($sql);
@@ -127,7 +132,7 @@ class DBUserStore implements UserStore
             $stmt->fetch(PDO::FETCH_BOUND);
         }
 
-        $user =  User::withAddress(array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type, "name" => $name, "surname" => $surname
+        $user = User::withAddress(array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type, "name" => $name, "surname" => $surname
         , "password" => $password, "phone_number" => $phone_number, "email" => $email, "genre" => $genre, "members" => $members
         , "other_remarks" => $other_remarks, "street_name" => $street_name, "house_number" => $house_number
         , "postal_code" => $postal_code, "city" => $city));
@@ -139,15 +144,16 @@ class DBUserStore implements UserStore
      * @param array $user_IDs
      * @return false|int
      */
-    public function findMany(array $user_IDs) : false|int {
+    public function findMany(array $user_IDs): false|int
+    {
         foreach ($user_IDs as $user_ID) {
             $id = "user_ID = " . $user_ID;
         }
-        $sql = "SELECT * FROM user ".
-               "WHERE ". $user_IDs.join(" OR ").
-               "INNER JOIN address ".
-               "ON address.address_ID = user.address_ID ".
-               "LIMIT " .count($user_IDs);
+        $sql = "SELECT * FROM user " .
+            "WHERE " . $user_IDs . join(" OR ") .
+            "INNER JOIN address " .
+            "ON address.address_ID = user.address_ID " .
+            "LIMIT " . count($user_IDs);
         return $this->db->query($sql)->fetchAll();
     }
 
@@ -155,10 +161,11 @@ class DBUserStore implements UserStore
      * methode to find all users
      * @return array
      */
-    public function findAll() : array {
-        $sql = "SELECT * FROM user INNER JOIN address ".
-               "ON address.address_ID = user.address_ID ".
-               "WHERE type = 'Musician';";
+    public function findAll(): array
+    {
+        $sql = "SELECT * FROM user LEFT JOIN address ".
+            "ON address.address_ID = user.address_ID ".
+            "WHERE type = 'Musician';";
         $stmt = $this->db->query($sql)->fetchAll();
 
         $return = array();
@@ -167,7 +174,7 @@ class DBUserStore implements UserStore
 
             try {
                 $imageID = $this->blobObj->queryID($band["user_ID"], "profile_picture_large");
-                if($imageID[0]["id"] !== null) {
+                if ($imageID[0]["id"] !== null) {
                     $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
                     $newUser->setBlobData($blobArray);
                 }
@@ -185,14 +192,15 @@ class DBUserStore implements UserStore
      * @return User
      * @throws Exception
      */
-    public function login($email, $password): User {
-        $sql = "SELECT * FROM user WHERE email = '".$email."';";
+    public function login($email, $password): User
+    {
+        $sql = "SELECT * FROM user WHERE email = '" . $email . "';";
         $stmt = $this->db->query($sql)->fetch();
-        
-        if($stmt === false) {
+
+        if ($stmt === false) {
             throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
         }
-        if(!password_verify($password, $stmt["password"])) {
+        if (!password_verify($password, $stmt["password"])) {
             throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
         }
 
@@ -202,19 +210,20 @@ class DBUserStore implements UserStore
     /**
      * @throws Exception
      */
-    public function changePassword(object $user, $old_password, $new_password): User {
+    public function changePassword(object $user, $old_password, $new_password): User
+    {
         // checking if new password already exist
-        $sql = "SELECT * FROM user WHERE password = '".$new_password."';";
+        $sql = "SELECT * FROM user WHERE password = '" . $new_password . "';";
         $stmt = $this->db->query($sql)->fetch();
-        if($stmt !== false) {
+        if ($stmt !== false) {
             throw new Exception("Something went wrong! try again.");
         }
 
         // checking if user password is equal to typed in old password
-        $sql = "SELECT password FROM user WHERE user_ID = '".$user->getUserID()."';";
+        $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
         $stmt = $this->db->query($sql)->fetch();
 
-        if($stmt[0] != $old_password) {
+        if ($stmt[0] != $old_password) {
             throw new Exception("Old Password is incorrect.");
         }
 
