@@ -12,7 +12,7 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
     <form id="hint">
         <span>Hover on Image to edit it.</span>
         <label>
-            <input type="submit" name="onHintClicked">
+            <input type="submit" id="createEventHint" name="onHintClicked">
         </label>
     </form>
 
@@ -20,8 +20,8 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
 
     <div>
         <h1> <?php echo $_SESSION["status"] ?> Event </h1>
-        <form method="post" enctype="multipart/form-data">
-            <div id="create-event">
+        <form method="post" class="create-event" enctype="multipart/form-data">
+            <div id="create-event-inputs">
                 <section class="left-column">
                     <label id="image" class="big-text">Image:
                         <input type="File" onchange="onImageAdd(event)" id="image" accept=".jpg, .png, .jpeg" name="image">
@@ -104,9 +104,11 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
                                       rows="5"><?php echo $_SESSION["event"]->getRequirements() ?></textarea>
                         </label>
                     </section>
-                    <!--Maybe put a link for directing to the events.php page ? -->
-                    <input type="submit" name="submit" value="<?php echo $_SESSION["status"] ?> Event">
                 </div>
+            </div>
+            <div class="create-event-submit">
+                <!--Maybe put a link for directing to the events.php page ? -->
+                <input type="submit" id="createEventSubmit" name="submit" value="<?php echo $_SESSION["status"] ?> Event">
             </div>
         </form>
     </div>

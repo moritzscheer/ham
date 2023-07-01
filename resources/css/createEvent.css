@@ -1,5 +1,5 @@
 input {
-    border: 2px solid lightblue;
+    /*border: 2px solid lightblue;*/
     border-radius: 20px;
     background-color: white;
     padding: 0 20px;
@@ -7,25 +7,27 @@ input {
     height: 30px;
     width: -webkit-fill-available;
 }
+
 textarea {
-    border: 2px solid lightblue;
     border-radius: 20px;
     padding: 10px 20px;
     margin-top: 10px;
 }
 
-.left-column {
-    display: grid;
-    padding-right: 10%;
-}
-
-#create-event {
+#create-event-inputs {
     display: grid;
     grid-template-columns: 30% 70%;
 }
 
-.right-column {
+.left-column {
     display: grid;
+    padding-right: 10%;
+    padding-left: 5%;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
     width: 70%;
 }
 
@@ -55,6 +57,11 @@ textarea {
     gap: 10px;
     width: 100%;
 }
+
+input[type=date], input[type=time]{
+    color-scheme: dark;
+}
+
 .requirements {
     display: grid;
     width: 50%;
@@ -76,9 +83,74 @@ textarea {
     grid-area: city;
 }
 
+.create-event-submit{
+    display: flex;
+    justify-content: center;
+}
+
+#createEventSubmit{
+    --gradientDegree: 180deg;
+    background-image: linear-gradient(var(--gradientDegree), var(--darkblue), var(--oceanblue));
+    width: 70%;
+    align-self: center;
+    height: 40px;
+    border: transparent;
+    font-size: large;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 1000px) {
-    #create-event {
-        display: block;
+    #create-event-inputs {
+        /*display: block;
         grid-template-columns: 30% 70%;
+        */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .left-column{
+        display: block;
+        padding-right: 5%;
+        padding-left: 5%;
+    }
+
+    .right-column{
+        width: 100%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .address-inputs{
+        grid-template-columns: 30% 30% 30%;
+    }
+
+    .time-inputs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .requirements{
+        width: 100%;
+    }
+
+    .create-event-submit{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    #createEventSubmit{
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 413px){
+
+    .address-inputs{
+        display: flex;
+        flex-direction: column;
+
     }
 }

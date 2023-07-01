@@ -89,7 +89,7 @@ textarea {
     white-space: pre-line;
 }
 
-input[type=text], input[type=password], input[type=tel], input[type=email], textarea {
+input[type=text], input[type=password], input[type=tel], input[type=email],input[type=date],input[type=time],input[type=File],input[id=createEventHint], textarea {
     background-color: var(--bluegrey);
     padding-left: 10px;
     border-radius: 4px;
