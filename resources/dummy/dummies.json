@@ -1,0 +1,155 @@
+{
+  "users": [
+    {
+      "user_ID": "1",
+      "address_ID": "1",
+      "type": "Musician",
+      "name": "Test",
+      "surname": "Test",
+      "password": "1",
+      "phone_number": "0176 123456789",
+      "email": "test@uni.de",
+      "genre": "Test",
+      "members": "Test",
+      "other_remarks": "Test",
+      "street_name": "Cloppenburger Straße",
+      "house_number": "21",
+      "postal_code": "26135",
+      "city": "Oldenburg"
+    },
+    {
+      "user_ID": "2",
+      "address_ID": "2",
+      "type": "Host",
+      "name": "Amadeus",
+      "surname": "Oldenburg",
+      "password": "1234",
+      "phone_number": "0176 123456789",
+      "email": "amadeus@oldenburg.de",
+      "genre": "Pop, Rock, Metal, Hiphop und vieles mehr",
+      "members": "",
+      "other_remarks": "Stimmungsvoller Club für junge Leute mit Livekonzerten und DJs, die einen Musikmix von Pop bis Metal auflegen.",
+      "street_name": "Mottenstraße",
+      "house_number": "21",
+      "postal_code": "26122",
+      "city": "Oldenburg"
+    },
+    {
+      "user_ID": "3",
+      "address_ID": "",
+      "type": "Musician",
+      "name": "Seeed",
+      "surname": "",
+      "password": "4321",
+      "phone_number": "0176 123456789",
+      "email": "seeed@musician.de",
+      "genre": "Raggae and German Pop",
+      "members": "Peter Fox, Tobias Cordes, Boundzound usw.",
+      "other_remarks": "Wir sind eine Berliner Band, die vor allem in den Genres Reggae und Dancehall tätig sind.",
+      "street_name": "",
+      "house_number": "",
+      "postal_code": "",
+      "city": ""
+    }
+  ],
+  "events": [
+    {
+      "event_ID": "1",
+      "address_ID": "2",
+      "user_ID": "2",
+      "name": "Alle Zusammen Samstag 23H",
+      "description": "Jeden Samstag feiern wir ALLE ZUSAMMEN mit den feinsten Hits aus allen Musikrichtungen! Fühlt Euch wie zu Hause - nur lauter. Ticket 8€ +2€ Verzehr ",
+      "requirements": "Wir brauchen ein paar Bands sei es Rock, Pop, Hiphop oder Metal",
+      "date": "2023-07-01",
+      "startTime": "23:00",
+      "endTime": "23:59",
+      "street_name": "",
+      "house_number": "",
+      "postal_code": "",
+      "city": ""
+    },
+    {
+      "event_ID": "2",
+      "address_ID": "1",
+      "user_ID": "2",
+      "name": "Techno Rave Huntebrücke",
+      "description": "\"Wir suchen einen leidenschaftlichen und erfahrenen Techno-DJ, der ein fesselndes Erlebnis aus bahnbrechender Musik, lebendigen visuellen Elementen und einer mitreißenden Atmosphäre kreiert.\"",
+      "requirements": "Du hast bereits vorerfahrung als DJ und begeisterst dich für Techno / Hardtechno",
+      "date": "2023-08-01",
+      "startTime": "00:00",
+      "endTime": "08:00",
+      "street_name": "",
+      "house_number": "",
+      "postal_code": "",
+      "city": ""
+    }
+  ],
+  "images": [
+    {
+      "assignded_ID": "2",
+      "category": "event",
+      "path": "../resources/dummy/images/image_event2.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "1",
+      "category": "event",
+      "path": "../resources/dummy/images/image_event1.gif",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "2",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user2_large.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "2",
+      "category": "profile_small",
+      "path": "../resources/dummy/images/image_user2_small.png",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "2",
+      "category": "profile_gallery",
+      "path": "../resources/dummy/images/image_user2_gallery1.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "2",
+      "category": "profile_gallery",
+      "path": "../resources/dummy/images/image_user2_gallery2.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "3",
+      "category": "profile_small",
+      "path": "../resources/dummy/images/image_user3_small.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "3",
+      "category": "profile_small",
+      "path": "../resources/dummy/images/image_user3_small.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "3",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user3_large.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "3",
+      "category": "profile_gallery",
+      "path": "../resources/dummy/images/image_user3_gallery1.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assignded_ID": "3",
+      "category": "profile_gallery",
+      "path": "../resources/dummy/images/image_user3_gallery2.jpg", 
+      "mime": "image/gif"
+    }
+  ]
+}

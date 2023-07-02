@@ -36,6 +36,7 @@
     margin-right: 20px;
 }
 #sort input {
+    display: block;
     width: 40px;
     background-color: transparent;
     border: none;

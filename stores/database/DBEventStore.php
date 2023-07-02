@@ -103,6 +103,10 @@ class DBEventStore implements EventStore {
         $stmt->bindColumn(9, $endTime);
         $stmt->fetch(PDO::FETCH_BOUND);
 
+        $event = array("event_ID" => $event_ID, "address_ID" => $address_ID, "user_ID" => $user_ID, "name" => $name
+        , "description" => $description, "requirements" => $requirements, "date" => $date, "startTime" => $startTime
+        , "endTime" => $endTime, "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
+
         if($address_ID !== NULL) {
             $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
 
@@ -113,12 +117,14 @@ class DBEventStore implements EventStore {
             $stmt->bindColumn(4, $postal_code);
             $stmt->bindColumn(5, $city);
             $stmt->fetch(PDO::FETCH_BOUND);
+
+            $event["street_name"] = $street_name;
+            $event["house_number"] = $house_number;
+            $event["postal_code"] = $postal_code;
+            $event["city"] = $city;
         }
 
-        return Event::withAddress(array("event_ID" => $event_ID, "address_ID" => $address_ID, "user_ID" => $user_ID
-        , "name" => $name, "description" => $description, "requirements" => $requirements, "date" => $date, "startTime" => $startTime
-        , "endTime" => $endTime, "street_name" => $street_name, "house_number" => $house_number
-        , "postal_code" => $postal_code, "city" => $city));
+        return Event::withAddress($event);
     }
 
     /**
@@ -181,7 +187,6 @@ class DBEventStore implements EventStore {
      */
     public function createEventArray(string $sql): array {
         $stmt = $this->db->query($sql);
-        // funktioniert mit AJAX nicht.
         $stmt = $stmt->fetchAll();
 
         $return = array();

@@ -98,7 +98,7 @@
     justify-content: space-evenly;
     margin-top: 30px;
 }
-.submit input, .submit a {
+.submit label, .submit a {
     border: 1px white solid;
     border-radius: 2px;
     background-color: transparent;
@@ -108,6 +108,7 @@
     color: white;
     text-decoration-line: unset;
     text-align: center;
+    
 }
 .type input{
     width: 30px;

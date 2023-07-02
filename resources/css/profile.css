@@ -1,50 +1,35 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                               for desktop resolution                                               */
+/*                                               Profile Picture Large                                                */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-/* ------------------------ Image on top ------------------- */
-.profile-Picture-Large, .profile-Picture-Large-Box {
+.pictureLarge_container, .pictureLarge_container img {
     height: 400px;
     width: 100%;
     object-fit: cover;
 }
-.profile-Picture-Large-Box div {
+#pictureLarge_edit {
     display: none;
 }
-.profile-Picture-Large-Box img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-.profile-Picture-Large-Box:hover > #image-Select, #image-Select:hover {
+.pictureLarge_container:hover > #pictureLarge_edit, #pictureLarge_edit:hover {
     display: block;
     position: relative;
-    left: 92%;
-    top: -60px;
-    color: black;
-    z-index: 1;
+    left: 93%;
+    top: -40px;
 }
-.profile-Picture-Large-Box input[type=submit] {
+.pictureLarge_container input[type=submit] {
     color: black;
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                              Profile Navigation Bar                                                */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
-
-/* ------------------- profile navigation bar -------------- */
-.profile-Navigation {
+#navigation_container {
     height: 100px;
 }
-.profile-Navigation > div {
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    gap: 30px;
-    position: relative;
-    top: -40px;
-    padding: 0 0 10px 30px;
-    overflow: visible;
-}
-.profile-Navigation form input {
+
+/* general formatting */
+#navigation_container form input {
     background-color: transparent;
     border: transparent;
     cursor: pointer;
@@ -53,147 +38,47 @@
     font-weight: bold;
     font-size: 16px;
 }
-.profile-Picture-Box {
-    grid-column: 1;
+
+/* formatting for profile picture small */
+.pictureSmall_container {
+    display: flex;
+    position: relative;
     border-radius: 50%;
-    margin: auto;
     place-items: center;
     width: 120px;
-    height: 120px;
+    top: -50px;
+    left: 50px;
 }
-.profile-Picture-Box img {                                              
+.pictureSmall_container img {
     width: 120px;
     height: 120px;
 }
-.profile-Picture-Box:hover img {
+#edit:hover img {
     filter: blur(5px);
-    position: absolute;
-
 }
-.profile-Picture-Box:hover > #profile-Picture-Link {
+.pictureSmall_container:hover > #pictureSmall_edit {
     display: grid;
     text-align: center;
     grid-auto-columns: auto auto;
-    position: relative;
     gap: 10px;
-    top: 50px;
+    left: -80px;
+    position: relative;
 }
-#profile-Picture-Link {
-    color: white;
+#pictureSmall_edit {
     display: none;
 }
-.profile-Links {
-    grid-column: 2;
+
+/* formatting for navigation buttons and labels */
+#navigation_buttons {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding-top: 50px;
-}
-
-
-
-
-/* ------- styling for profile-Grid (the main grid) -------- */
-.profile-Grid {
-    display: grid;
-    grid-template-columns: auto 400px;
-    grid-template-rows: auto;
-    gap: 0.5vw;
-    margin: 0.5vw;
-}
-.profile-Grid h2 {
-    text-align: center;
-}
-#uploaded-Images, #about-me, #contact-Information, #password-Data {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: var(--black) 1px solid;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: min-content;
-}
-
-/* formatting for the Information box on the left */
-.profile-Content {
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: auto auto;
-    gap: 0.5vw;
-    height: min-content;
-}
-#password-Data {
-    grid-row: 1 / span 2;
-    padding: 20px 5vw 20px 5vw;
-    width: 50vw;
-    margin: auto;
-}
-#contact-Information {
-    grid-row: 1;
-    padding: 20px 5vw 20px 5vw;
-}
-#about-me {
-    grid-row: 2;
-    padding: 20px 5vw 20px 5vw;
-}
-input[type=file] {
-    display: none;
-}
-#profile-Submit {
-    width: 400px;
-    margin: 20px auto 20px auto;
-    display: flex;
-    justify-content: space-evenly;
-    text-align: center;
-}
-#profile-Submit label {
-    background-color: white;
-    width: 150px;
+    margin-left: 200px;
+    position: relative;
+    top: -80px;
     height: 30px;
-    border: 1px black solid;
-    border-radius: 5px;
-    color: black;
-    font-size: 14px;
-    display: flex;
-    place-items: center;
-    justify-content: center;
 }
-input[type=submit] {
-    display: none;
-}
-
-
-
-/* --- formatting for the image upload box on the right ---- */
-#uploaded-Images {
-    grid-column: 2;
-    gap: 10px;
-    width: 100%;
-    padding: 20px;
-}
-#uploaded-Images img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-.newImage-Link {
-    background-color: white;
-    display: flex;
-    justify-content: space-evenly;
-    place-items: center;
-    height: 30px;
-    border: 1px black solid;
-    border-radius: 5px;
-}
-.newImage-Link label, .newImage-Link input {
-    background-color: white;
-    border: none;
-    color: black;
-    font-size: 14px;
-}
-#profile-navbar-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#navigation_button {
     background-color: transparent;
     border: transparent;
     cursor: pointer;
@@ -202,126 +87,207 @@ input[type=submit] {
     font-size: large;
     width: max-content;
 }
-#profile-navbar-button:hover {
+#navigation_button:hover {
     border-bottom: 2px solid gray;
 }
-#profile-navbar-button input {
-    display: none;
-}
-#imageGallery {
-    position: relative;
-}
-.imageGalleryEdit label {
-    height: 30px;
-    width: 30px;
-    position: absolute;
-    top: 1px; 
-    right: 1px;
-    border: 1px solid white;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.imageGalleryEdit input {
+#navigation_button input {
     display: none;
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                     Profile Content                                                */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
-
-
-/* ---- styling for changePassword-Grid (the main grid) ---- */
-#change-Password-Content {
+#content_container {
+    display: grid;
+    grid-template-columns: auto 400px;
+    grid-template-rows: auto;
+    gap: 0.5vw;
+    margin: 0.5vw;
+}
+#changePassword_container {
     gap: 0.5vw;
     margin-left: 20px;
     margin-right: 20px;
 }
 
+/* general formatting */
+#content_container h2 {
+    text-align: center;
+}
+#gallery_container, #about_me, #contact_information, #changePassword_container {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: var(--black) 1px solid;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: min-content;
+}
 
+/* formatting for the profile information */
+.information_container {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+    gap: 0.5vw;
+    height: min-content;
+}
+#password_data {
+    grid-row: 1 / span 2;
+    padding: 20px 5vw 20px 5vw;
+    width: 50vw;
+    margin: auto;
+}
+#contact_information {
+    grid-row: 1;
+    padding: 20px 5vw 20px 5vw;
+}
+#about_me {
+    grid-row: 2;
+    padding: 20px 5vw 20px 5vw;
+}
+#profile_submit {
+    width: 400px;
+    margin: 20px auto 20px auto;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+}
+#profile_submit label {
+    background-color: white;
+    width: 150px;
+    height: 30px;
+    border: 1px black solid;
+    border-radius: 5px;
+    color: black;
+    font-size: 14px;
+}
 
+/* formatting for image gallery */
+#gallery_container {
+    grid-column: 2;
+    gap: 10px;
+    width: 100%;
+    padding: 20px;
+}
+#gallery_container img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.gallery_edit {
+    background-color: white;
+    display: flex;
+    justify-content: space-evenly;
+    place-items: center;
+    height: 30px;
+    border: 1px black solid;
+    border-radius: 5px;
+}
+.gallery_edit label, .gallery_edit input {
+    background-color: white;
+    border: none;
+    color: black;
+    font-size: 14px;
+}
 
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                           formatting for bigger resolution                                         */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-@media screen and (min-width: 1800px) {
-    .profile-Grid {
-        width: 1780px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .profile-Navigation {
-        width: 1780px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+/* formatting for delete box */
+#delete_grid {
+    display: none;
+    grid-template-columns: 30vw auto 30vw;
+    grid-template-rows: 40vh auto 40vh;
+    position: fixed;
+    z-index: 1;
+}
+#delete {
+    background-color: white;
+    display: grid;
+    grid-template-rows: 50px 50px  auto;
+    place-items: center;
+}
+#delete label {
+    background-color: var(--bluegrey);
+    padding-left: 10px;
+    border-radius: 4px;
+    position: relative;
+    color: var(--white);
+    border: transparent;
+    outline: none;
+    height: 30px;
+}
+#delete span {
+    color: black;
 }
 
 
 
 
 
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                                 for Tablet resolution                                              */
-/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------- formatting for bigger resolution ------------------------------------- */
+
+@media screen and (min-width: 1800px) {
+    .content_container {
+        width: 1780px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    #navigation_container {
+        width: 1780px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ----------------------------------------------- for Tablet resolution -------------------------------------------- */
 
 @media screen and (min-width: 766px) and (max-width: 1200px) {
-    .profile-Grid {
+    .content_container {
         grid-template-columns: auto 300px;
     }
 }
 
-
-
-
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                               for Smartphone resolution                                            */
-/* ------------------------------------------------------------------------------------------------------------------ */
+/* --------------------------------------------- for Smartphone resolution ------------------------------------------ */
 
 @media screen and (max-width: 766px) {
-    .profile-Picture-Large {
+    .pictureLarge_container, .pictureLarge_container img {
         height: 200px;
     }
-    .profile-Grid {
+    .pictureLarge_container:hover > #pictureLarge_edit, #pictureLarge_edit:hover {
+        left: 75%;
+    }
+    #content_container {
         grid-template-columns: auto;
         grid-template-rows: auto auto auto auto;
     }
-    .profile-Grid div {
+    #content_container div {
         padding: 10px;
     }
-    .profile-Navigation {
-        height: 400px;
+    #navigation_container {
+        height: 450px;
         width: 100%;
+        display: grid;
+        grid-template-rows: min-content auto;
+        gap: 40px;
+        padding: 40px;
     }
-    .profile-Navigation > div{
-        grid-template-columns: auto;
-        grid-template-rows: max-content auto;
-        align-items: center;
-        padding: 0;
-        width: 100%;
-        top: -40px;
+    .pictureSmall_container {
+        margin: 0 auto;
+        position: unset;
     }
-    .profile-Links {
-        grid-row: 2;
-        grid-column: 1;
+    #navigation_buttons {
         flex-direction: column;
         padding: 0;
+        position: unset;
+        margin: unset;
     }
-    .profile-Links input {
+    #navigation_buttons input {
         font-size: 16px;
         text-align: center;
     }
-    .profile-Content {
+    .information_container {
         margin-bottom: 30px;
     }
-    .entry {
-        grid-template-columns: 140px auto;
-    }
-    #uploaded-Images {
+    #gallery_container {
         grid-row: 3;
         grid-column: 1;
         width: 100%;
@@ -329,16 +295,20 @@ input[type=submit] {
         overflow: hidden;
         display: inline-block;
     }
-    #profile-Submit {
-        grid-row: 4;
+    #profile_submit {
+        width: unset;
+        gap: 5vw;
     }
-    #change-Password-Content {
+    #changePassword_container {
         margin-bottom: 30px;
         margin-left: 0;
         margin-right: 0;
     }
-    #password-Data {
+    #password_data {
         width: 100vw;
+    }
+    #hint_button {
+        margin: 0;
     }
 }
 

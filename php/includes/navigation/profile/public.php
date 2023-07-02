@@ -1,4 +1,4 @@
-<div class="profile-Links">
+<div id="navigation_buttons">
     <label>
         <?php echo "Name: ".$_SESSION["user"]->getName()." ".$_SESSION["user"]->getSurname() ?>
     </label>

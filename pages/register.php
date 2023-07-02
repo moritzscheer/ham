@@ -59,7 +59,9 @@
 
                 <div class="submit">
                     <a href="index.php">Cancel</a>
-                    <input type="submit" value="Next Step">
+                    <label>Next Step
+                        <input type="submit">
+                    </label>
                 </div>
             </form>
 
@@ -92,7 +94,9 @@
 
                 <div class="submit">
                     <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
-                    <input type="submit" value="Next Step">
+                    <label>Next Step
+                        <input type="submit">
+                    </label>
                 </div>
             </form>
 
@@ -113,7 +117,9 @@
 
                 <div class="submit">
                     <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
-                    <input id="registerSubmit" type="submit" value="Finish" name="register">
+                    <label>Finish
+                        <input type="submit" name="register" id="registerSubmit">
+                    </label>
                 </div>
             </form>
 
@@ -130,7 +136,9 @@
                 </label>
 
                 <div class="submit">
-                    <input type="submit" value="Ok">
+                    <label>Ok
+                        <input type="submit">
+                    </label>
                 </div>
             </form>
         </div>

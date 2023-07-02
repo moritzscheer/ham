@@ -44,7 +44,11 @@ textarea {
     resize: none;
     height: 100px;
 }
-
+label:has(input[type=submit]) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 
@@ -71,14 +75,28 @@ textarea {
 
 
 
-/* styling for the small profile picture */
-.profile_picture_small img {
+/* formatting for images  */
+#pictureSmall_image img {
     border-radius: 50%;
     object-fit: cover;
-    height: 60px;
-    width: 60px;
     border: 1px white solid;
 }
+#image {
+    position: relative;
+
+}
+#image label {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    top: 1px;
+    right: 1px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
 
 
 
@@ -88,8 +106,7 @@ textarea {
 .text-line-pre {
     white-space: pre-line;
 }
-
-input[type=text], input[type=password], input[type=tel], input[type=email],input[type=date],input[type=time],input[type=File],input[id=createEventHint], textarea {
+input[type=text], input[type=password], input[type=tel], input[type=email], textarea {
     background-color: var(--bluegrey);
     padding-left: 10px;
     border-radius: 4px;
@@ -99,13 +116,15 @@ input[type=text], input[type=password], input[type=tel], input[type=email],input
     border: transparent;
     outline: none;
 }
-
 input[type=text], input[type=password], input[type=tel], input[type=email] {
     height: 30px;
 }
-
-input[type=date], input[type=time]{
+input[type=submit], input[type=file] {
+    display: none;
+}
+input[type=date], input[type=time] {
     color-scheme: dark;
+    color: black;
 }
 
 input:-webkit-autofill {
@@ -120,7 +139,7 @@ input:-webkit-autofill {
 
 
 /* formatting for output fields */
-.hint {
+#hint {
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -130,14 +149,14 @@ input:-webkit-autofill {
     background-color: rgba(255, 255, 255, 0.3);
     color: black;
 }
-#hintVisible {
-    height: min-content;
+.hintVisible {
+    height: min-content !important;
     padding: 20px 0 20px 0;
 }
-#hintVisible label, #hintVisible span {
-    display: block;
+.hintVisible label, .hintVisible span {
+    display: block !important;
 }
-.hint label, .hint span {
+#hint label, #hint span {
     display: none;
 }
 #hint_buttons {
@@ -151,9 +170,6 @@ input:-webkit-autofill {
     margin-right: 30px;
 }
 #hint_button label {
-    display: flex;
-    justify-content: center;
-    align-content: center;
     align-self: flex-end;
     width: 30px;
     height: 30px;
@@ -213,7 +229,29 @@ input:-webkit-autofill {
 
 
 
-
+/* styling for the areas around the flickr box */
+.col1 {
+    grid-column: 1;
+    grid-row: 1/span3;
+}
+.col3 {
+    grid-column: 3;
+    grid-row: 1/span3;
+}
+.row1 {
+    grid-column: 2;
+    grid-row: 1;
+}
+.row3 {
+    grid-column: 2;
+    grid-row: 3;
+}
+.col1 label, .col3 label, .row1 label, .row3 label {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
 
 
 

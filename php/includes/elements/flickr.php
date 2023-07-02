@@ -1,11 +1,26 @@
 <?php global $error_message ?>
-<section id="select_image_box" class="<?php echo $_SESSION["ImageBox"] ?>">
-    <form method="post" id="select_image_box_header">
-        <label>X
+<section id="select_image_grid" class="<?php echo $_SESSION["ImageBox"] ?>">
+    <form method="post" class="col1">
+        <label>
             <input type="submit" name="onEditImage" value="hide">
         </label>
     </form>
-    <div id="select_image_box_content">
+    <form method="post" class="col3">
+        <label>
+            <input type="submit" name="onEditImage" value="hide">
+        </label>
+    </form>
+    <form method="post" class="row1">
+        <label>
+            <input type="submit" name="onEditImage" value="hide">
+        </label>
+    </form>
+    <form method="post" class="row3">
+        <label>
+            <input type="submit" name="onEditImage" value="hide">
+        </label>
+    </form>
+    <div id="select_image_box" >
         <form method="post" id="flickr_search">
             <input type="search" name="flickr_search" placeholder="search" >
             <label>Search
@@ -16,7 +31,7 @@
             <?php echo $_SESSION["flickr_search"] ?>
         </form>
         <div id="profile_picture_preview">
-            <img src="<?php echo $_SESSION["profile_preview"]["source"] ?>" alt="no image selected!">
+            <?php echo $_SESSION["profile_preview"]["image"] ?>
         </div>
         <div id="flickr_buttons">
             <form method="post" enctype="multipart/form-data">
@@ -28,8 +43,8 @@
                     <input type="submit" name="upload_image" value="upload_image">
                 </label>
             </form>
-            <form method="post">
-                <label id="profile_image_submit" >Submit
+            <form method="post" id="profile_image_submit">
+                <label>Submit
                     <input type="submit" name="submit_image">
                 </label>
             </form>

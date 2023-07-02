@@ -1,6 +1,10 @@
 <?php
 
-global $blobObj, $db;
+global $blobObj, $db, $flickrApi;
+
+use Item\User;
+use Item\Event;
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -60,7 +64,7 @@ $_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["init
 
 function initDatabase(): void {
 
-    global $db, $userStore, $addressStore, $bandStore, $eventStore, $blobObj;
+    global $db, $userStore, $addressStore, $eventStore, $blobObj, $flickrApi;
 
     try {
         $user = "root";
@@ -80,6 +84,9 @@ function initDatabase(): void {
         $eventStore = new DBEventStore($db, $addressStore, $blobObj);
         $userStore = new DBUserStore($db, $addressStore, $blobObj);
 
+        $flickrApi = new Flickr("3b8e15fa98c7850431166704a6ed5be0");
+
+        insertDummies();
     } catch (PDOException $exc) {
         $db = NULL;
 
@@ -99,8 +106,33 @@ function closeConnection(): void {
 }
 
 
+/**
+ * sources for the dummies
+ * www.facebook.com/seeedde/photos
+ * www.facebook.com/amadeus.oldenburg
+ * www.pixabay.com
+ */
+function insertDummies() : void {
+    global $userStore, $eventStore, $blobObj;
+    $content = file_get_contents("../resources/dummy/dummies.json", false);
+    $dummyJson = json_decode($content, true);
 
-
+    try {
+        foreach ($dummyJson["users"] as $user) {
+            $result = User::withAddress($user);
+            $result->setPassword(password_hash($result->getPassword(), PASSWORD_DEFAULT));
+            $userStore->create($result);
+        }
+        foreach ($dummyJson["events"] as $event) {
+            $eventStore->create(Event::withAddress($event));
+        }
+        foreach ($dummyJson["images"] as $image) {
+            $blobObj->insertBlob($image["assignded_ID"], $image["category"], $image["path"], $image["mime"]);
+        }
+    } catch (Exception $ex) {
+        
+    }
+}
 
 
 

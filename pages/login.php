@@ -23,7 +23,9 @@
             </label>
         </div>
         <div class="loginElement">
-            <input type="submit" id="loginSubmit" name="login" value="Login">
+            <label id="loginSubmit">Login
+                <input type="submit" name="login">
+            </label>
         </div>
         <div class="loginElement">
             <span id="noAccountText">No Account yet ?</span>

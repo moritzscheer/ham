@@ -121,6 +121,7 @@ input::placeholder{
 /*login button*/
 #loginSubmit {
     color: white;
+    display: flex;
     text-shadow: black;
     font-family: Tahoma, sans-serif;
     border-radius: 4px;

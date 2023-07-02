@@ -120,6 +120,11 @@ class DBUserStore implements UserStore
         $stmt->bindColumn(11, $other_remarks);
         $stmt->fetch(PDO::FETCH_BOUND);
 
+        $user = array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type
+        , "name" => $name, "surname" => $surname, "password" => $password, "phone_number" => $phone_number
+        , "email" => $email, "genre" => $genre, "members" => $members, "other_remarks" => $other_remarks
+        , "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
+        
         if ($address_ID !== NULL) {
             $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
 
@@ -130,13 +135,14 @@ class DBUserStore implements UserStore
             $stmt->bindColumn(4, $postal_code);
             $stmt->bindColumn(5, $city);
             $stmt->fetch(PDO::FETCH_BOUND);
+
+            $user["street_name"] = $street_name;
+            $user["house_number"] = $house_number;
+            $user["postal_code"] = $postal_code;
+            $user["city"] = $city;
         }
 
-        $user = User::withAddress(array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type, "name" => $name, "surname" => $surname
-        , "password" => $password, "phone_number" => $phone_number, "email" => $email, "genre" => $genre, "members" => $members
-        , "other_remarks" => $other_remarks, "street_name" => $street_name, "house_number" => $house_number
-        , "postal_code" => $postal_code, "city" => $city));
-        return $user;
+        return User::withAddress($user);
     }
 
     /**
@@ -173,7 +179,7 @@ class DBUserStore implements UserStore
             $newUser = User::withAddress($band);
 
             try {
-                $imageID = $this->blobObj->queryID($band["user_ID"], "profile_picture_large");
+                $imageID = $this->blobObj->queryID($band["user_ID"], "profile_large");
                 if ($imageID[0]["id"] !== null) {
                     $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
                     $newUser->setBlobData($blobArray);

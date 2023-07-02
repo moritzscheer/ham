@@ -8,11 +8,11 @@ class blob {
         $this->db = $db;
 
         $sql = "CREATE TABLE IF NOT EXISTS files (".
-            "    id INTEGER PRIMARY KEY AUTOINCREMENT," .
-            "    assigned_ID int(11) NOT NULL," .
-            "    category VARCHAR(255) NOT NULL," .
-            "    mime VARCHAR(255) NOT NULL," .
-            "    data BLOB NOT NULL
+               "    id INTEGER PRIMARY KEY AUTOINCREMENT," .
+               "    assigned_ID int(11) NOT NULL," .
+               "    category VARCHAR(255) NOT NULL," .
+               "    mime VARCHAR(255) NOT NULL," .
+               "    data BLOB NOT NULL
         );";
         $db->exec($sql);
     }
@@ -20,7 +20,7 @@ class blob {
     public function insertBlob($assigned_ID, $category, $filePath, $mime): bool {
         $this->db->beginTransaction();
 
-        if($category === "profile_picture_small" || $category === "profile_picture_large") {
+        if($category === "profile_small" || $category === "profile_large") {
             $sql = "SELECT * FROM files WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
             $result = $this->db->query($sql)->fetch();
             if($result !== false) {

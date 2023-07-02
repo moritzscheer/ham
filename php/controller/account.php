@@ -51,7 +51,7 @@ $_SESSION["normalHeader"] = $_SESSION["loggedIn"]["status"] === true ? "hidden" 
 $_SESSION["profileHeader"] = $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
 $_SESSION["profileHeaderBox"] = $_SESSION["loggedIn"]["status"] === true ? $profile_header_box : "";
 
-$_SESSION["selectImageBox"] = "";
+$_SESSION["delete"] = $_SESSION["delete"] ?? "";
 $_SESSION["hintField"] = $_SESSION["hintField"] ?? array("showAlways" => false, "message" => "", "visibility" => "", "button" => "hidden");
 
 $error_message = "";
@@ -211,6 +211,17 @@ if(isset($_POST["show_hint"])) {
     }
 }
 
+/**
+ *  if a user wants to delete the account
+ */
+if(isset($_POST["onDeleteClicked"])) {
+    if($_SESSION["delete"] === "") {
+        $_SESSION["delete"] = "visible";
+    } else {
+        $_SESSION["delete"] = "";
+
+    }
+}
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -260,7 +271,7 @@ if(isset($_POST["viewEditProfile"])) {
         $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
 
         // sets the images of the profile via user_ID
-        setProfileImages($_POST["viewEditProfile"], false);
+        setProfileImages($_POST["viewEditProfile"], true);
 
         // adds the hint field
         $_SESSION["hintField"]["button"] = "visible";
@@ -337,8 +348,8 @@ function reset_variables(): void {
  * @return void
  */
 function setProfileImages($user_ID, $isEdit) : void {
-    $_SESSION["profile_small"] = getImage($user_ID, "profile_small", "../resources/images/profile/default/defaultSmall.png", $isEdit);
-    $_SESSION["profile_large"] = getImage($user_ID, "profile_large", "../resources/images/profile/default/defaultLarge.jpeg", $isEdit);
+    $_SESSION["profile_small"] = getImage($user_ID, "profile_small", "../resources/images/profile/default/defaultSmall.png", false);
+    $_SESSION["profile_large"] = getImage($user_ID, "profile_large", "../resources/images/profile/default/defaultLarge.jpeg", false);
     $_SESSION["profile_gallery"] = getImage($user_ID, "profile_gallery", "../resources/images/profile/default/defaultGallery.jpeg", $isEdit);
 }
 
@@ -355,26 +366,27 @@ function getImage($user_ID, $category, $altUrl, $isEdit) : string {
     try {
         $ids = $blobObj->queryID($user_ID, $category);
 
-        $string = "";
+        $output = "";
         foreach ($ids as $image) {
             $a = $blobObj->selectBlob($image[0]);
 
-            if($isEdit) {
-                $string = $string.
-                    '<div>                                                                                                         '.
+            if($isEdit && $category === "profile_gallery") {
+                $img =
+                    '<div id="image">                                                                                              '.
                     '    <img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image"/>  '.
                     '    <label id="exit">X                                                                                        '.
                     '         <input type="submit" name="onDeleteImage" value="' . $image[0] . '">                                 '.
                     '    </label>                                                                                                  '.
                     '</div>                                                                                                        ';
             } else {
-                $string = $string.'<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image"/>';
+                $img = '<img src="data:' . $a['mime'] . ';base64,' . base64_encode($a['data']) . '" alt="could not load image"/>';
             }
+            $category === "profile_gallery" ? $output .= $img : $output = $img;
         }
-        return $string;
+        return $output;
     } catch (RuntimeException $e) {
         if($category === "profile_gallery") {
-            return "There are no Images uploaded!";
+            return $isEdit ? "" : "There are no Images uploaded!";
         } else {
             return '<img src="'.$altUrl.'" alt="could not load image"/>';
         }
@@ -384,11 +396,11 @@ function getImage($user_ID, $category, $altUrl, $isEdit) : string {
 if (isset($_POST["onDeleteImage"])) {
     try {
         // deletes image from store
-        $blobObj->delete($_POST["onImageGalleryClick"]);
+        $blobObj->delete($_POST["onDeleteImage"]);
 
         // gets image gallery
-        $_SESSION["image_gallery"] = getImageGallery($_SESSION["loggedIn"]["user"]->getUserID(), true);
-
+        setProfileImages($_SESSION["loggedIn"]["user"]->getUserID(), true);
+                                                                                
         // redirect to edit profile page
         header("Location: editProfile.php");
         exit();

@@ -12,7 +12,7 @@
 
 
 /* navigation bar */
-nav {
+header {
     display: grid;
     gap: 0;
     grid-template-rows: min-content min-content;

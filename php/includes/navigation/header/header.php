@@ -1,5 +1,5 @@
 <?php global $newEvent?>
-<nav>
+<header>
     <div id="navbar">
         <div class="logo">
             <a href="index.php">
@@ -47,7 +47,7 @@
             <div id="navbar-Profile">
                 <?php echo $_SESSION["profileHeaderBox"]; ?>
             </div>
-            <div id="profile_picture_small">
+            <div ID="pictureSmall_image">
                 <?php echo $_SESSION["loggedIn"]["profile_small"] ?>
             </div>
         </form>
@@ -110,4 +110,4 @@
             </label>
         </form>
     </div>
-</nav>
+</header>
