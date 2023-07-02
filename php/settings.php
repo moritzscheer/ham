@@ -87,6 +87,10 @@ function initDatabase(): void {
         $flickrApi = new Flickr("3b8e15fa98c7850431166704a6ed5be0");
 
         insertDummies();
+
+        //todo: remove following line at deadline. Just use for memory Filestore Testing
+        //throw new PDOException("Use Memory Stores");
+
     } catch (PDOException $exc) {
         $db = NULL;
 
@@ -130,7 +134,7 @@ function insertDummies() : void {
             $blobObj->insertBlob($image["assignded_ID"], $image["category"], $image["path"], $image["mime"]);
         }
     } catch (Exception $ex) {
-        
+
     }
 }
 

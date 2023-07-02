@@ -110,9 +110,9 @@ class User
             '            <br>                                                                                      ' .
             '            <span>Genre: ' . $this->genre . '</span>                                                  ' .
             '            <br>                                                                                      ' .
-            '            <span>Members: ' . $this->members . '</span>                                              ' .
+            '            <span>Members:<br>' . $this->members . '</span>                                              ' .
             '            <br>                                                                                      ' .
-            '            <span>other Remarks: ' . $this->other_remarks . '</span>                                  ' .
+            '            <span>Other Remarks:<br>' . $this->other_remarks . '</span>                                  ' .
             '            <br>                                                                                      ' .
             '            <form method="post">                                                                      ' .
             '                <label id="profile_Link">link to profile                                              ' .

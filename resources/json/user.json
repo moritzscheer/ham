@@ -1,29 +1,6 @@
-[
-  {
-    "user_ID": "user_123",
-    "type": "Musician",
-    "address_ID": 1,
-    "name": "test",
-    "surname": "test",
-    "password": "1234",
-    "phone_number": "0176123456789",
-    "email": "test@uni.de",
-    "genre": "Rock",
-    "members": "",
-    "other_remarks": "",
-    "street_name": "",
-    "house_number": "",
-    "postal_code": "",
-    "city": "",
-    "profile_picture_small": "",
-    "profile_picture_large": "",
-    "profile_gallery": [
-      "..\/resources\/images\/bands\/band.jpg",
-      "..\/resources\/images\/bands\/band.jpg"
-    ]
-  },
-  {
-    "user_ID": "user_649b47dae133e",
+{
+  "1": {
+    "user_ID": "649b47dae133e",
     "type": "Host",
     "name": "My Name is",
     "address_ID": "user_649b47dae134e",
@@ -44,5 +21,28 @@
     "house_number": "",
     "postal_code": "",
     "city": ""
+  },
+  "2": {
+    "user_ID": "5",
+    "type": "Musician",
+    "name": "Name of",
+    "address_ID": "user_64a09285ea943",
+    "surname": "a Band",
+    "password": "1234",
+    "phone_number": "0176123456789",
+    "email": "test@uni.de",
+    "genre": "Rock",
+    "members": "",
+    "other_remarks": "",
+    "profile_picture_small": "",
+    "profile_picture_large": "",
+    "profile_gallery": [
+      "..\\\/resources\\\/images\\\/bands\\\/band.jpg",
+      "..\\\/resources\\\/images\\\/bands\\\/band.jpg"
+    ],
+    "street_name": "",
+    "house_number": "",
+    "postal_code": "",
+    "city": ""
   }
-]
+}
