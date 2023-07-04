@@ -164,35 +164,6 @@ class DBUserStore implements UserStore
     }
 
     /**
-     * methode to find all users
-     * @return array
-     */
-    public function findAll(): array
-    {
-        $sql = "SELECT * FROM user LEFT JOIN address ".
-            "ON address.address_ID = user.address_ID ".
-            "WHERE type = 'Musician';";
-        $stmt = $this->db->query($sql)->fetchAll();
-
-        $return = array();
-        foreach ($stmt as $band) {
-            $newUser = User::withAddress($band);
-
-            try {
-                $imageID = $this->blobObj->queryID($band["user_ID"], "profile_large");
-                if ($imageID[0]["id"] !== null) {
-                    $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
-                    $newUser->setBlobData($blobArray);
-                }
-                $return[] = $newUser;
-            } catch (RuntimeException $ex) {
-                $return[] = $newUser;
-            }
-        }
-        return $return;
-    }
-
-    /**
      * @param $email
      * @param $password
      * @return User
@@ -235,6 +206,59 @@ class DBUserStore implements UserStore
 
         $user->setPassword($new_password);
         return $this->update($user);
+    }
+
+    /**
+     * @param string $stmt
+     * @return array
+     * @throws Exception
+     */
+    public function findAny(string $stmt): array {
+        $sql = "SELECT * FROM user ".
+            "LEFT JOIN address ".
+            "ON address.address_ID = user.address_ID ".
+            "WHERE type = 'Musician' AND ".
+            "name LIKE '%".$stmt."%' OR ".
+            "surname LIKE '%".$stmt."%' OR ".
+            "genre LIKE '%".$stmt."%' OR ".
+            "members LIKE '%".$stmt."%' OR ".
+            "other_remarks LIKE '%".$stmt."%';";
+        return $this->createUserArray($sql);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function findAll(): array {
+        $sql = "SELECT * FROM user LEFT JOIN address ".
+               "ON address.address_ID = user.address_ID ".
+               "WHERE type = 'Musician';";
+        return $this->createUserArray($sql);
+    }
+
+    /**
+     * @param string $sql
+     * @return array
+     * @throws Exception
+     */
+    public function createUserArray(string $sql): array {
+        $stmt = $this->db->query($sql);
+        $stmt = $stmt->fetchAll();
+
+        $return = array();
+        foreach ($stmt as $user) {
+            $newUser = User::withAddress($user);
+
+            try {
+                $imageID = $this->blobObj->queryID($newUser->getUserID(), "profile_large");
+                $image = $this->blobObj->selectBlob($imageID[0]["id"]);
+                $newUser->setBlobData($image);
+                $return[] = $newUser;
+            } catch (RuntimeException $ex) {
+                $return[] = $newUser;
+            }
+        }
+        return $return;
     }
 
 }

@@ -89,7 +89,7 @@ function initDatabase(): void {
         insertDummies();
 
         //todo: remove following line at deadline. Just use for memory Filestore Testing
-        throw new PDOException("Use Memory Stores");
+        //throw new PDOException("Use Memory Stores");
 
     } catch (PDOException $exc) {
         $db = NULL;

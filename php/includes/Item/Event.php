@@ -100,7 +100,9 @@ class Event
             '            <br>                                                                                      ' .
             '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
             '            <br>                                                                                      ' .
-            '            <span> ' . $this->getTime() . '</span>                                                    ' .
+            '            <span>Date: ' . $this->getDate() . '</span>                                               ' .
+            '            <br>                                                                                      ' .
+            '            <span>Time: ' . $this->getTime() . '</span>                                               ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
@@ -131,7 +133,9 @@ class Event
             '            <br>                                                                                      ' .
             '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
             '            <br>                                                                                      ' .
-            '            <span> ' . $this->getTime() . '</span>                                                    ' .
+            '            <span>Date: ' . $this->getDate() . '</span>                                               ' .
+            '            <br>                                                                                      ' .
+            '            <span>Time: ' . $this->getTime() . '</span>                                               ' .
             '        </div>                                                                                        ' .
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
@@ -146,7 +150,7 @@ class Event
     public function getImageSource(): string
     {
         if (empty($this->blobData)) {
-            return "../resources/images/events/event.jpg";
+            return "../resources/images/events/event1.jpg";
         } else {
             return "data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]);
         }
