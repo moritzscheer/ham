@@ -13,7 +13,7 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
 
     <div>
         <h1> <?php echo $_SESSION["status"] ?> Event </h1>
-        <form method="post" class="create-event" enctype="multipart/form-data">
+        <form method="post" class="create-event">
             <div id="create-event-inputs">
                 <section class="left-column">
                     <label id="image" class="big-text">Select Image

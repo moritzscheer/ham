@@ -1,19 +1,16 @@
 <?php
 
 global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventOptions;
-include_once "../php/includes/includes.php";
+//include_once "../php/includes/includes.php";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                  item variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-use Item\Event;
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
 $_SESSION["status"] =  (isset($_GET["status"]) && is_string($_GET["status"])) ? "edit" : "create";
-
-
 
 $_SESSION["events"] = $_SESSION["events"] ?? null;
 $_SESSION["bands"] = $_SESSION["bands"] ?? null;
@@ -32,7 +29,11 @@ isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])  
 isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])   ?   $_SESSION["event"]->setPostalCode(htmlspecialchars($_POST["event_postal_code"]))   :   "";
 isset($_POST["event_city"]) && is_string($_POST["event_city"])   ?   $_SESSION["event"]->setCity(htmlspecialchars($_POST["event_city"]))   :   "";
 
-$_SESSION["itemList"] = (isset($_GET["type"]) && is_string($_GET["type"])) ? getItems($_GET["type"]) : "";
+if(isset($_GET["type"]) && is_string($_GET["type"])) {
+    $type = $_GET["type"];
+    $_SESSION["itemList"] = getAllItems();
+}
+$_SESSION["itemList"] = (isset($_GET["type"]) && is_string($_GET["type"])) ? getAllItems() : "";
 $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? null;
 $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
 
@@ -48,7 +49,7 @@ if (isset($_POST["submit"])) {
         if ($_SESSION["status"] === "create") {
             $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
             $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
-        } elseif ($_SESSION["status"] === "edit") {
+        } else {
             $_SESSION["event"] = $eventStore->update($_SESSION["event"]);
         }
 
@@ -102,7 +103,7 @@ if (isset($_POST["onEdit"])){
  * if a user clicks on get all events, all events are displayed
  */
 if (isset($_POST["onGetAllEvents"])) {
-    $_SESSION["itemList"] = getAllEvents();
+    $_SESSION["itemList"] = getAllItems();
 }
 
 /**
@@ -116,14 +117,18 @@ if (isset($_POST["onGetMyEvents"])) {
  * if a user submits a search, all events with the statement are displayed
  */
 if (isset($_POST["submitSearch"])) {
-    if(isset($_POST["searchDate"]) && $_POST["search"] === "") {
-        $_SESSION["itemList"] = getAnyEvents($_POST["searchDate"]);
-    } elseif (isset($_POST["search"]) && $_POST["searchDate"] === "") {
-        $_SESSION["itemList"] = getAnyEvents($_POST["search"]);
-    } else {
-        $itemDate = getAnyEvents($_POST["searchDate"]);
-        $itemSearch = getAnyEvents($_POST["search"]);
-        $_SESSION["itemList"] = $itemDate.$itemSearch;
+    if($type === "events") {
+        if(isset($_POST["searchDate"]) && $_POST["search"] === "") {
+            $_SESSION["itemList"] = getAnyItems($_POST["searchDate"]);
+        } elseif (isset($_POST["search"]) && $_POST["searchDate"] === "") {
+            $_SESSION["itemList"] = getAnyItems($_POST["search"]);
+        } elseif(isset($_POST["search"]) && isset($_POST["searchDate"])) {
+            $itemDate = getAnyItems($_POST["searchDate"]);
+            $itemSearch = getAnyItems($_POST["search"]);
+            $_SESSION["itemList"] = $itemDate.$itemSearch;
+        }
+    } elseif ($type === "bands") {
+        $_SESSION["itemList"] = getAnyItems($_POST["search"]);
     }
 }
 
@@ -133,7 +138,7 @@ if (isset($_POST["submitSearch"])) {
  */
 if (isset($_GET["submitSearchJavaScript"])) {
     initDatabase();
-    echo getAnyEvents($_GET["submitSearchJavaScript"]);
+    echo getAnyItems($_GET["submitSearchJavaScript"]);
 }
 
 
@@ -141,14 +146,16 @@ if (isset($_GET["submitSearchJavaScript"])) {
  * switches from ascending sort to descending sort.
  */
 if (isset($_POST["sort"])) {
+    $list = ($type === "bands" ? $_SESSION["bands"] : ($type === "events" ? $_SESSION["events"] : ""));
+
     try {
         if(!isset($_SESSION["sort"]) || $_SESSION["sort"] === SORT_DESC) {
-            $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_ASC);
+            $list = sortArray($list, $_POST["sort"], SORT_ASC);
         } elseif ($_SESSION["sort"] === SORT_ASC) {
-            $_SESSION["events"] = sortArray($_SESSION["events"], $_POST["sort"], SORT_DESC);
+            $list = sortArray($list, $_POST["sort"], SORT_DESC);
         }
 
-        $_SESSION["itemList"] = buildItemList($_SESSION["events"], "could not sort", false);
+        $_SESSION["itemList"] = buildItemList($list, "could not sort", false);
     } catch (Exception $ex) {
        $error_message = $ex;
     }
@@ -169,6 +176,8 @@ function sortArray(array $array, $attribute, $dir) : array {
             $column[] = $value->getName();
         } elseif ($attribute === "Date") {
             $column[] = $value->getDate();
+        } elseif ($attribute === "Genre") {
+            $column[] = $value->getGenre();
         }
     }
     array_multisort($column, $dir, $array);
@@ -180,55 +189,24 @@ function sortArray(array $array, $attribute, $dir) : array {
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
- * Checks if the page shows events or bands and delegates to the method that fits for the page
- * @param $type
- * @return string
- * @throws Exception
- */
-function getItems($type): string {
-    switch ($type) {
-        case 'bands': {
-            $_SESSION["itemDetail"] =  null;
-            $result = getBands();
-            break;
-        }
-        default: {
-            $result = getAllEvents();
-            break;
-        }
-    }
-    return $result;
-}
-
-/**
  * Loads all event from the eventsstore and prints (echos) the html data to the page
  * @return string
  * @throws Exception
  */
-function getAllEvents(): string {
-    global $eventStore, $error_message;
-
+function getAllItems(): string {
+    global $eventStore, $error_message, $type, $userStore;
+    $list = ""; $msg = "";
     try {
-        $_SESSION["events"] = $eventStore->findAll();
-
-        return buildItemList($_SESSION["events"], "there are no Events uploaded currently!", false);
-    } catch (Exception $e) {
-        $error_message = $e->getMessage();
-        return "";
-    }
-}
-
-/**
- * @param $user_ID
- * @return string
- */
-function getMyEvents($user_ID): string {
-    global $eventStore, $error_message;
-
-    try {
-        $_SESSION["events"] = $eventStore->findMy($user_ID);
-        
-        return buildItemList($_SESSION["events"], "You have not created an Event!", true);
+        if($type === "bands") {
+            $_SESSION["bands"] = $userStore->findAll();
+            $list = $_SESSION["bands"];
+            $msg = "There are no Musicians currently!";
+        } elseif ($type === "events") {
+            $_SESSION["events"] = $eventStore->findAll();
+            $list = $_SESSION["events"];
+            $msg = "There are no Events uploaded currently!";
+        }
+        return buildItemList($list, $msg, false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -239,58 +217,63 @@ function getMyEvents($user_ID): string {
  * @param $stmt
  * @return string
  */
-function getAnyEvents($stmt): string {
-    global $eventStore, $error_message;
+function getAnyItems($stmt): string {
+    global $eventStore, $error_message, $type, $userStore;
 
     try {
-        $_SESSION["events"] = $eventStore->findAny($stmt);
-
-        return buildItemList($_SESSION["events"], 'There are no Events with: "'.$stmt.'".', false);
+        if($type === "bands") {
+            $_SESSION["bands"] = $userStore->findAny($stmt);
+            $list = $_SESSION["bands"];
+            $msg = 'There are no Bands with: "'.$stmt.'".';
+        } elseif ($type === "events") {
+            $_SESSION["events"] = $eventStore->findAny($stmt);
+            $list = $_SESSION["events"];
+            $msg = 'There are no Events with: "'.$stmt.'".';
+        }
+        return buildItemList($list, $msg, false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return $e;
     }
 }
 
+
 /**
- * loads all Item\User that are the type musician from the userStore and print the html data to the page
+ * @param $user_ID
  * @return string
  */
-function getBands(): string {
-    global $userStore, $error_message;
+function getMyEvents($user_ID): string {
+    global $eventStore, $error_message;
 
     try {
-        $_SESSION["bands"] = $userStore->findAll();
+        $_SESSION["events"] = $eventStore->findMy($user_ID);
 
-        if (!empty($_SESSION["bands"])) {
-            $return = "";
-            foreach ($_SESSION["bands"] as $band) {
-                $return = $return . $band->getBandHTML();
-            }
-            return $return;
-        } else {
-            throw new Exception("there are no Bands currently!");
-        }
+        return buildItemList($_SESSION["events"], "You have not created an Event!", true);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
     }
 }
 
-
 /**
  * @throws Exception
  */
-function buildItemList($events, $msg, $editVisible) : string {
-    if (!empty($events)) {
+function buildItemList($list, $msg, $editVisible) : string {
+    global $type;
+    if (!empty($list)) {
         $return = "";
 
-        foreach ($events as $event) {
-            if ($editVisible) {
-                $return = $return . $event->getEditableEventHTML(); //add the "Delete" and "Edit" Button
-            } else {
-                $return = $return . $event->getEventHTML();
+        foreach ($list as $item) {
+            if($type === "bands") {
+                $return = $return . $item->getBandHTML();
+            } elseif ($type === "events") {
+                if ($editVisible) {
+                    $return = $return . $item->getEditableEventHTML(); // adds the "Delete" and "Edit" Button
+                } else {
+                    $return = $return . $item->getEventHTML();
+                }
             }
+
         }
         return $return;
     } else {

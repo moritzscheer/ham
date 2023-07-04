@@ -7,14 +7,19 @@ include_once "../php/head/head.php" ?>
     <div id="filter">
         <form method="post" id="search">
             <input type="search" name="search" placeholder="search" >
-            <input type="date" name="searchDate" placeholder="Date">
-            <input type="submit" name="submitSearch">
+            <label>Search
+                <input type="submit" name="submitSearch">
+            </label>
         </form>
         <form method="post" id="sort">
-            <label>Sort by:
-                <input type="submit" name="sortName" value="name">
-                <input type="submit" name="sortDate" value="date">
-            </label>
+            <div>Sort by:
+                <label>Name
+                    <input type="submit" name="sort" value="Name">
+                </label>
+                <label>Genre
+                    <input type="submit" name="sort" value="Genre">
+                </label>
+            </div>
         </form>
     </div>
 

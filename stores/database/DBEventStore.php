@@ -154,7 +154,7 @@ class DBEventStore implements EventStore {
      */
     public function findAny(string $stmt): array {
         $sql = "SELECT * FROM event                         ".
-               "    INNER JOIN address                      ".
+               "    LEFT JOIN address                      ".
                "    ON address.address_ID = event.address_ID".
                "    WHERE name LIKE '%".$stmt."%' OR          ".
                "    description LIKE '%".$stmt."%' OR          ".
@@ -165,17 +165,23 @@ class DBEventStore implements EventStore {
         return $this->createEventArray($sql);
     }
 
+    /**
+     * @throws Exception
+     */
     public function findMy($user_ID): array {
         $sql = "SELECT * FROM event                         ".
-               "    INNER JOIN address                      ".
+               "    LEFT JOIN address                      ".
                "    ON address.address_ID = event.address_ID".
                "    WHERE user_ID = '".$user_ID."';         ";
         return $this->createEventArray($sql);
     }
 
+    /**
+     * @throws Exception
+     */
     public function findAll(): array {
         $sql = "SELECT * FROM event                          ".
-               "     INNER JOIN address                      ".
+               "    LEFT JOIN address                        ".
                "    ON address.address_ID = event.address_ID;";
         return $this->createEventArray($sql);
     }
@@ -194,9 +200,9 @@ class DBEventStore implements EventStore {
             $newEvent = Event::withAddress($event);
 
             try {
-                $imageID = $this->blobObj->queryID($event["event_ID"], "event");
-                $blobArray = $this->blobObj->selectBlob($imageID[0]["id"]);
-                $newEvent->setBlobData($blobArray);
+                $imageID = $this->blobObj->queryID($newEvent->getEventID(), "event");
+                $image = $this->blobObj->selectBlob($imageID[0]["id"]);
+                $newEvent->setBlobData($image);
                 $return[] = $newEvent;
             } catch (RuntimeException $ex) {
                 $return[] = $newEvent;

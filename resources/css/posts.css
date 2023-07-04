@@ -10,13 +10,18 @@
     height: 50px;
     border-bottom: 1px solid white;
 }
-#filter input {
-    width: 100%;
+#filter input, #search label {
     background-color: var(--bluegrey);
     height: 30px;
     border: none;
     border-radius: 4px;
     color: var(--white);
+}
+#filter input {
+    width: 100%;
+}
+#search label {
+    width: 100px;
 }
 #search {
     display: flex;
@@ -35,9 +40,12 @@
     margin-left: auto;
     margin-right: 20px;
 }
-#sort input {
-    display: block;
-    width: 40px;
+#sort div {
+    display: flex;
+    gap: 5px;
+}
+#sort label {
+    width: min-content;
     background-color: transparent;
     border: none;
     text-decoration: underline;

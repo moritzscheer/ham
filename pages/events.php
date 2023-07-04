@@ -9,13 +9,19 @@ include_once "../php/head/head.php" ?>
         <form method="post" id="search">
             <input type="search" name="search" oninput="sendRequest(search)" value="<?php echo $_SESSION["search"] ?>" placeholder="search" >
             <input type="date" name="searchDate" value="<?php echo $_SESSION["searchDate"] ?>" placeholder="Date">
-            <input type="submit" name="submitSearch">
+            <label>Search
+                <input type="submit" name="submitSearch">
+            </label>
         </form>
         <form method="post" id="sort">
-            <label>Sort by:
-                <input type="submit" name="sort" value="Name">
-                <input type="submit" name="sort" value="Date">
-            </label>
+            <div>Sort by:
+                <label>Name
+                    <input type="submit" name="sort" value="Name">
+                </label>
+                <label>Date
+                    <input type="submit" name="sort" value="Date">
+                </label>
+            </div>
         </form>
     </div>
 
