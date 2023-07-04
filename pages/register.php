@@ -115,9 +115,10 @@
                     <input type="password" name="repeat_password"required>
                 </label>
 
-                <label>I accept all Terms and Conditions.
-                    <input type="checkbox" required>
-                </label>
+                <div>
+                    <input type="checkbox" id="userAgreement">
+
+                </div>
 
                 <div class="submit">
                     <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
