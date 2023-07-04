@@ -26,6 +26,7 @@
 }
 #search input[type=date] {
     width: 20vw;
+    color-scheme: dark;
 }
 #search input[type=submit] {
     width: 80px;

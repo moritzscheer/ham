@@ -115,6 +115,11 @@
                     <input type="password" name="repeat_password"required>
                 </label>
 
+                <div>
+                    <input type="checkbox" id="userAgreement">
+
+                </div>
+
                 <div class="submit">
                     <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
                     <label>Finish
