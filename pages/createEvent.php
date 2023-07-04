@@ -9,13 +9,6 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
 }
 ?>
 
-    <form id="hint">
-        <span>Hover on Image to edit it.</span>
-        <label>
-            <input type="submit" id="createEventHint" name="onHintClicked">
-        </label>
-    </form>
-
     <?php include_once "../php/includes/elements/flickr.php"?>
 
     <div>
@@ -108,6 +101,7 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
             </div>
             <div class="create-event-submit">
                 <!--Maybe put a link for directing to the events.php page ? -->
+
                 <input type="submit" id="createEventSubmit" name="submit" value="<?php echo $_SESSION["status"] ?> Event">
             </div>
         </form>
