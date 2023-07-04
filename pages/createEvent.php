@@ -16,8 +16,8 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
         <form method="post" class="create-event" enctype="multipart/form-data">
             <div id="create-event-inputs">
                 <section class="left-column">
-                    <label id="image" class="big-text">Image:
-                        <input type="File" onchange="onImageAdd(event)" id="image" accept=".jpg, .png, .jpeg" name="image">
+                    <label id="image" class="big-text">Select Image
+                        <input type="submit" id="imageLoader" value="event" name="onEditImage">
                     </label>
                     <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImageSource() ?>" alt="preview">
                     <label id="description" class="big-text">Description: <br/>
@@ -100,9 +100,9 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
                 </div>
             </div>
             <div class="create-event-submit">
-                <!--Maybe put a link for directing to the events.php page ? -->
-
-                <input type="submit" id="createEventSubmit" name="submit" value="<?php echo $_SESSION["status"] ?> Event">
+                <label id="createEventSubmit"><?php echo $_SESSION["status"] ?> Event
+                    <input type="submit" name="submit">
+                </label>
             </div>
         </form>
     </div>

@@ -106,7 +106,7 @@ label:has(input[type=submit]) {
 .text-line-pre {
     white-space: pre-line;
 }
-input[type=text], input[type=password], input[type=tel], input[type=email], textarea {
+input[type=text], input[type=password], input[type=tel], input[type=email], input[type=date], input[type=time], textarea {
     background-color: var(--bluegrey);
     padding-left: 10px;
     border-radius: 4px;
@@ -122,10 +122,7 @@ input[type=text], input[type=password], input[type=tel], input[type=email] {
 input[type=submit], input[type=file] {
     display: none;
 }
-input[type=date], input[type=time] {
-    color-scheme: dark;
-    color: black;
-}
+
 
 input:-webkit-autofill {
     -webkit-text-fill-color: white;

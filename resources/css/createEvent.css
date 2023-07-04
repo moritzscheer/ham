@@ -58,6 +58,23 @@ textarea {
     width: 100%;
 }
 
+#date, #startTime, #endTime{
+    color-scheme: dark;
+}
+
+#image{
+    display: flex;
+    place-items: center;
+    margin: 5px;
+    height: 30px;
+    border-radius: 4px;
+    background-color: var(--bluegrey);
+}
+
+#imageLoader{
+    display: none
+}
+
 .requirements {
     display: grid;
     width: 50%;
@@ -93,6 +110,8 @@ textarea {
     border: transparent;
     font-size: large;
     font-weight: bold;
+    border-radius: 8px;
+    margin: 10px;
 }
 
 @media screen and (max-width: 1000px) {
