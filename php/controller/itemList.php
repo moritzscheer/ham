@@ -7,6 +7,8 @@ global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventO
 /*                                                  item variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+use Item\User;
+use Item\Event;
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
@@ -233,7 +235,7 @@ function getAnyItems($stmt): string {
         return buildItemList($list, $msg, false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
-        return $e;
+        return "";
     }
 }
 

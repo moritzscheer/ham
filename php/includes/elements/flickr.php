@@ -30,20 +30,20 @@
         <form method="post" id="flickr_images">
             <?php echo $_SESSION["flickr_search"] ?>
         </form>
-        <div id="profile_picture_preview">
+        <div id="image_preview">
             <?php echo $_SESSION["profile_preview"]["image"] ?>
         </div>
-        <div id="flickr_buttons">
+        <div id="image_buttons">
             <form method="post" enctype="multipart/form-data">
                 <?php echo $error_message ?>
                 <label id="select_own">Select your Image
-                    <input type="file" accept=".jpg, .png, .jpeg" name="upload_image">
+                    <input type="file" accept=".jpg, .png, .jpeg" name="upload_image" onclick="onImageAdd(upload_image)">
                 </label>
                 <label id="submit_own" >upload
                     <input type="submit" name="upload_image" value="upload_image">
                 </label>
             </form>
-            <form method="post" id="profile_image_submit">
+            <form method="post" id="image_submit">
                 <label>Submit
                     <input type="submit" name="submit_image">
                 </label>
@@ -51,3 +51,12 @@
         </div>
     </div>
 </section>
+<script>
+    function onImageAdd(image) {
+        var preview = window.document.getElementById('image_preview').getRootNode();
+        preview.src = URL.createObjectURL(image.target.files[0]);
+        preview.onload = function (){
+            URL.revokeObjectURL(preview.src);
+        }
+    }
+</script>

@@ -110,12 +110,4 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
 <?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>
-<script>
-    function onImageAdd(image) {
-        var preview = window.document.getElementById('preview');
-        preview.src = URL.createObjectURL(image.target.files[0]);
-        preview.onload = function (){
-            URL.revokeObjectURL(preview.src);
-        }
-    }
-</script>
+

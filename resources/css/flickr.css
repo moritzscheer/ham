@@ -23,7 +23,7 @@
     width: 100%;
     object-fit: cover;
 }
-#select_image_box label, #profile_picture_preview {
+#select_image_box label, #image_preview {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,7 +37,7 @@
     gap: 20px;
     height: 30px;
 }
-#flickr_search > input, #flickr_search label, #flickr_buttons label  {
+#flickr_search > input, #flickr_search label, #image_buttons label  {
     background-color: var(--bluegrey);
     padding-left: 10px;
     border-radius: 4px;
@@ -79,27 +79,27 @@
 
 
 /* styling for image preview box */
-#profile_picture_preview {
+#image_preview {
     border: 2px dashed var(--black2);
     padding: 2px;
     color: black;
 }
-#profile_picture_preview img {
+#image_preview img {
     object-fit: contain;
 }
 
 
 /* styling for buttons at the buttom */
-#flickr_buttons, #flickr_buttons form {
+#image_buttons, #image_buttons form {
     display: flex;
     justify-content: end;
     gap: 20px;
     height: 30px;
 }
-#profile_image_submit {
+#image_submit {
     margin-left: auto;
 }
-#profile_image_submit label {
+#image_submit label {
     width: 100px;
 }
 #select_own {

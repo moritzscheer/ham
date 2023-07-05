@@ -349,6 +349,7 @@ function reset_variables(): void {
  */
 function setProfileImages($user_ID, $isEdit) : void {
     $_SESSION["profile_small"] = getImage($user_ID, "profile_small", "../resources/images/profile/default/defaultSmall.png", false);
+    $_SESSION["loggedIn"]["profile_small"] = $_SESSION["profile_small"];
     $_SESSION["profile_large"] = getImage($user_ID, "profile_large", "../resources/images/profile/default/defaultLarge.jpeg", false);
     $_SESSION["profile_gallery"] = getImage($user_ID, "profile_gallery", "../resources/images/profile/default/defaultGallery.jpeg", $isEdit);
 }
