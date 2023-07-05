@@ -111,12 +111,12 @@
 
 #agreementCheck {
     scale: 120%;
-    margin-right: 2%;
+    margin-left: 2%;
     margin-right: 2%;
 }
 
 #agreementText > a {
-    color: var(--white);
+    color: dodgerblue;
 }
 
 .submit {

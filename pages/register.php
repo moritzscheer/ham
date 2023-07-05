@@ -117,11 +117,11 @@ include_once "../php/head/head.php";
                 <input type="password" name="repeat_password" required>
             </label>
 
-            <div id="agreementField">*
+            <label id="agreementField">*
                 <input type="checkbox" id="agreementCheck" required>
                 <div id="agreementText"> I agree with the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
                         of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy</a></div>
-            </div>
+            </label>
 
             <div class="submit">
                 <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
