@@ -4,7 +4,7 @@ Namen der Studierenden:
 - Artur Scheling
 - Moritz Scheer
 
-Aufgabe zu Aufgabenblatt 5
+Aufgabe zu Aufgabenblatt 6
 
 Hinweise:
         
