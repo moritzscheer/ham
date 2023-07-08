@@ -6,7 +6,7 @@ include_once "../php/head/head.php" ?>
 <section id="events">
     <div id="filter">
         <form method="post" id="search">
-            <input type="search" name="search" placeholder="search" >
+            <input type="search" oninput="searchBand(search)" name="search" placeholder="search" value="<?php echo $_SESSION["search"] ?>" >
             <label>Search
                 <input type="submit" name="submitSearch">
             </label>
@@ -36,4 +36,22 @@ include_once "../php/head/head.php" ?>
 <?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>
+<script>
+    function searchBand(search){
+        search = search.value;
 
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.open("GET", "../php/itemList.php?submitSearchJavaScript="+search, true);
+        xmlhttp.setRequestHeader("Content-type","application/x-www-formurlencoded");
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200){
+                document.getElementById("item_list").innerHTML = this.responseText;
+                console.log(this);
+            }
+        }
+        xmlhttp.send();
+    }
+
+
+</script>
