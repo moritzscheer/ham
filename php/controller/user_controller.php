@@ -8,7 +8,7 @@ global $userStore, $addressStore, $blobObj, $registerFlag, $db, $success_message
 use Item\User;
 
 // init loggedIn session variable
-$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false);
+$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false, "profile_small" => "../resources/images/profile/default/defaultSmall.png");
 
 if($_SESSION["loggedIn"]["status"] === true) {
     $_SESSION["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
@@ -36,11 +36,11 @@ if($_SESSION["loggedIn"]["status"] === true) {
 $_SESSION["user"] = update_user_variable($_SESSION["user"] ?? new User());
 
 // password variables
-$password = isset($_POST["password"]) && is_string($_POST["password"])   ?   htmlspecialchars($_POST["password"])   :   "";
-$repeat_password = isset($_POST["repeat_password"]) && is_string($_POST["repeat_password"])   ?   htmlspecialchars($_POST["repeat_password"])   :   "";
-$old_password = isset($_POST["old_password"]) && is_string($_POST["old_password"])   ?   htmlspecialchars($_POST["old_password"])   :   "";
-$new_password = isset($_POST["new_password"]) && is_string($_POST["new_password"])   ?   htmlspecialchars($_POST["new_password"])   :   "";
-$repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST["repeat_new_password"])   ?   htmlspecialchars($_POST["repeat_new_password"])   :   "";
+$password = isset($_POST["password"]) && is_string($_POST["password"])   ?   $_POST["password"]   :   "";
+$repeat_password = isset($_POST["repeat_password"]) && is_string($_POST["repeat_password"])   ?   $_POST["repeat_password"]   :   "";
+$old_password = isset($_POST["old_password"]) && is_string($_POST["old_password"])   ?   $_POST["old_password"]   :   "";
+$new_password = isset($_POST["new_password"]) && is_string($_POST["new_password"])   ?   $_POST["new_password"]   :   "";
+$repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST["repeat_new_password"])   ?   $_POST["repeat_new_password"]   :   "";
 
 // for the checkbox in profile
 $_SESSION["Musician"] = ($_SESSION["user"]->getType() === "Musician") ? "checked" : "";
@@ -52,6 +52,7 @@ $_SESSION["profileHeader"] = $_SESSION["loggedIn"]["status"] === false ? "hidden
 $_SESSION["profileHeaderBox"] = $_SESSION["loggedIn"]["status"] === true ? $profile_header_box : "";
 
 $_SESSION["delete"] = $_SESSION["delete"] ?? "";
+$_SESSION["token"] = $_SESSION["token"] ?? "";
 $_SESSION["hintField"] = $_SESSION["hintField"] ?? array("showAlways" => false, "message" => "", "visibility" => "", "button" => "hidden");
 
 $error_message = "";
@@ -82,10 +83,11 @@ if(isset($_POST["register"])) {
             // sets the loggedIn session variable with user and profile picture for header
             $image = getImage($_SESSION["user"]->getUserID(), "profile_small", "../resources/images/profile/default/defaultSmall.png", false);
             $_SESSION["loggedIn"] = array("status" => true, "user" => $_SESSION["user"], "profile_small" => $image);
+            unset($_SESSION["user"]);
 
             $_SESSION["success_message"] = "Success! Welcome to our Team.";
-            unset($_SESSION["user"]);
             $_SESSION["hintField"]["showAlways"] = true;
+            $_SESSION["token"] = uniqid();
 
             // redirect to next step
             header("Location: " . getNextUrl($step));
@@ -111,8 +113,9 @@ if(isset($_POST["login"])) {
         // sets the loggedIn session variable with user and profile picture for header
         $image = getImage($_SESSION["user"]->getUserID(), "profile_small", "../resources/images/profile/default/defaultSmall.png", false);
         $_SESSION["loggedIn"] = array("status" => true, "user" => $_SESSION["user"], "profile_small" => $image);
-
         unset($_SESSION["user"]);
+
+        $_SESSION["token"] = uniqid();
 
         // redirect to homepage
         header("Location: index.php");
@@ -125,7 +128,7 @@ if(isset($_POST["login"])) {
 /**
  * If a user clicks on login
  */
-if(isset($_POST["logout"])) {
+if(isset($_POST["logout"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         reset_variables();
 
@@ -140,7 +143,7 @@ if(isset($_POST["logout"])) {
 /**
  * If a user clicks on delete account
  */
-if(isset($_POST["delete"])) {
+if(isset($_POST["delete"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         // delete all user information
         $userStore->delete($_SESSION["loggedIn"]["user"]->getUserID());
@@ -162,7 +165,7 @@ if(isset($_POST["delete"])) {
 /**
  * If a user wants to change passwords
  */
-if(isset($_POST["change_password"])) {
+if(isset($_POST["change_password"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         if($new_password === $repeat_new_password) {
             // changes password in store
@@ -185,7 +188,7 @@ if(isset($_POST["change_password"])) {
 /**
  *  If a user wants to change user data
  */
-if(isset($_POST["update_profile"])) {
+if(isset($_POST["update_profile"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         $user = update_user_variable($_SESSION["loggedIn"]["user"]);
         $_SESSION["loggedIn"]["user"] = $userStore->update($user);
@@ -201,7 +204,7 @@ if(isset($_POST["update_profile"])) {
 /**
  *  if a user opens and closes the hints field
  */
-if(isset($_POST["show_hint"])) {
+if(isset($_POST["show_hint"]) && $_POST["token"] === $_SESSION["token"]) {
     if($_SESSION["hintField"]["visibility"] === "") {
         $_SESSION["hintField"]["message"] = $_POST["show_hint"];
         $_SESSION["hintField"]["visibility"] = "hintVisible";
@@ -214,7 +217,7 @@ if(isset($_POST["show_hint"])) {
 /**
  *  if a user wants to delete the account
  */
-if(isset($_POST["onDeleteClicked"])) {
+if(isset($_POST["onDeleteClicked"]) && $_POST["token"] === $_SESSION["token"]) {
     if($_SESSION["delete"] === "") {
         $_SESSION["delete"] = "visible";
     } else {
@@ -233,7 +236,7 @@ if(isset($_POST["onDeleteClicked"])) {
  * $_POST["viewProfile"] contains the user_ID of the profile
 
  */
-if(isset($_POST["viewProfile"])) {
+if(isset($_POST["viewProfile"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
             // sets the user variable to the loggedInUser (user variable is displayed in profile)
@@ -265,7 +268,7 @@ if(isset($_POST["viewProfile"])) {
  * If a user wants to view an edit profile page
  * $_POST["viewEditProfile"] contains the user_ID of the profile
  */
-if(isset($_POST["viewEditProfile"])) {
+if(isset($_POST["viewEditProfile"]) && $_POST["token"] === $_SESSION["token"]) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewEditProfile"]) {
         // sets the profile navigation to private -> with navigation buttons
         $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
@@ -289,7 +292,7 @@ if(isset($_POST["viewEditProfile"])) {
  * If a user wants to view the change password page
  * $_POST["viewChangePassword"] contains the user_ID of the profile
  */
-if(isset($_POST["viewChangePassword"])) {
+if(isset($_POST["viewChangePassword"]) && $_POST["token"] === $_SESSION["token"]) {
     if ($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewChangePassword"]) {
         // sets the profile navigation to private -> with navigation buttons
         $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
@@ -394,7 +397,7 @@ function getImage($user_ID, $category, $altUrl, $isEdit) : string {
     }
 }
 
-if (isset($_POST["onDeleteImage"])) {
+if (isset($_POST["onDeleteImage"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         // deletes image from store
         $blobObj->delete($_POST["onDeleteImage"]);

@@ -1,17 +1,21 @@
-<?php global $itemList, $error_message;
-include_once "../php/head/head.php" ?>
+<?php
+    global $itemList, $error_message;
+    include_once "../php/includes/head/head.php"
+?>
 <body>
 <?php include_once "../php/includes/navigation/header/header.php" ?>
 
 <section id="events">
     <div id="filter">
         <form method="post" id="search">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <input type="search" oninput="searchBand(search)" name="search" placeholder="search" value="<?php echo $_SESSION["search"] ?>" >
             <label>Search
                 <input type="submit" name="submitSearch">
             </label>
         </form>
         <form method="post" id="sort">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <div>Sort by:
                 <label>Name
                     <input type="submit" name="sort" value="Name">

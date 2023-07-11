@@ -1,6 +1,7 @@
 <?php
     global $error_message;
-    include_once "../php/head/head.php" ?>
+    include_once "../php/includes/head/head.php"
+?>
 <body>
 <?php include_once "../php/includes/navigation/header/header.php" ?>
 <section class="login-view">

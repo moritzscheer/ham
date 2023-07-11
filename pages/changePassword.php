@@ -1,10 +1,12 @@
-<?php global $error_message;
-include_once "../php/head/head.php" ?>
+<?php
+    global $error_message;
+    include_once "../php/includes/head/head.php"
+?>
 <body>
 <?php include_once "../php/includes/navigation/header/header.php" ?>
 
     <section id="popup_elements">
-        <?php include_once "../php/includes/elements/deleteAccount.php"?>
+        <?php include_once "../php/includes/elements/delete.php" ?>
     </section>
 
     <section id="page_content">
@@ -22,6 +24,7 @@ include_once "../php/head/head.php" ?>
         </div>
 
         <form method="post" id="changePassword_container" class="information_container">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <div id="password_data">
                 <p id="error-message"><?php echo $error_message ?></p>
 

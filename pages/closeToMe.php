@@ -1,5 +1,7 @@
-<?php global $error_message;
-include_once "../php/head/head.php" ?>
+<?php
+    global $error_message;
+    include_once "../php/includes/head/head.php"
+?>
 <head>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
 </head>

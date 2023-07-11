@@ -1,5 +1,7 @@
-<?php global $itemList, $itemDetail, $error_message, $showEventOptions;
-include_once "../php/head/head.php" ?>
+<?php
+    global $itemList, $itemDetail, $error_message, $showEventOptions;
+    include_once "../php/includes/head/head.php"
+?>
 <body>
 <?php include_once "../php/includes/navigation/header/header.php" ?>
 
@@ -7,6 +9,7 @@ include_once "../php/head/head.php" ?>
 
     <div id="filter">
         <form method="post" id="search">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <input type="search" name="search" oninput="sendRequest(search)" value="<?php echo $_SESSION["search"] ?>" placeholder="search" >
             <input type="date" name="searchDate" value="<?php echo $_SESSION["searchDate"] ?>" placeholder="Date">
             <label>Search
@@ -14,6 +17,7 @@ include_once "../php/head/head.php" ?>
             </label>
         </form>
         <form method="post" id="sort">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <div>Sort by:
                 <label>Name
                     <input type="submit" name="sort" value="Name">
@@ -26,6 +30,7 @@ include_once "../php/head/head.php" ?>
     </div>
 
     <form method="post" id="event_options" class="<?php echo $_SESSION["showEventOptions"] ?>">
+        <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
         <label id="option1">All Events
             <input type="submit" name="onGetAllEvents">
         </label>

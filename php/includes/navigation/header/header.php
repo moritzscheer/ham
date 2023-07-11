@@ -79,6 +79,7 @@
         </form>
 
         <form action="createEvent.php?status=create" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <label id="navbar-button">create
                 <input type="submit" name="onCreate" value="create">
             </form>
@@ -99,12 +100,14 @@
         </form>
 
         <form action="profile.php" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <label id="navbar-button">profile
                 <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
             </label>
         </form>
 
         <form method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <label id="navbar-button">Log-out
                 <input type="submit" name="logout">
             </label>

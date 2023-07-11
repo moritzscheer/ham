@@ -1,9 +1,11 @@
-<?php global $error_message;
-include_once "../php/head/head.php" ?>
+<?php
+    global $error_message;
+    include_once "../php/includes/head/head.php"
+?>
 <body>
 
     <section id="popup_elements">
-        <?php include_once "../php/includes/elements/deleteAccount.php"?>
+        <?php include_once "../php/includes/elements/delete.php" ?>
     </section>
 
     <?php include_once "../php/includes/navigation/header/header.php" ?>
@@ -44,7 +46,7 @@ include_once "../php/head/head.php" ?>
                     </div>
 
                     <div id="output-entry" class="entry">Address:
-                        <div><?php echo $_SESSION["user"]->getAddressAttributes("value", "list") ?></div>
+                        <div><?php echo $_SESSION["user"]->getAddress() ?></div>
                     </div>
 
                     <div id="output-entry" class="entry">Type:

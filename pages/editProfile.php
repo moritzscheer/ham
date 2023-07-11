@@ -1,10 +1,12 @@
-<?php global $error_message;
-include_once "../php/head/head.php" ?>
+<?php
+    global $error_message;
+    include_once "../php/includes/head/head.php"
+?>
 <body>
 
     <section id="popup_elements">
         <?php include_once "../php/includes/elements/flickr.php"?>
-        <?php include_once "../php/includes/elements/deleteAccount.php"?>
+        <?php include_once "../php/includes/elements/delete.php" ?>
         <?php include_once "../php/includes/elements/hints.php" ?>
     </section>
 
@@ -12,6 +14,7 @@ include_once "../php/head/head.php" ?>
 
     <section id="page_content">
         <form id="edit" class="pictureLarge_container" method="post"  enctype="multipart/form-data">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <div id="pictureLarge_image">
                 <?php echo $_SESSION["profile_large"] ?>
             </div>
@@ -22,6 +25,7 @@ include_once "../php/head/head.php" ?>
 
         <div id="navigation_container">
             <form id="edit" class="pictureSmall_container" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                 <div id="pictureSmall_image">
                     <?php echo $_SESSION["profile_small"] ?>
                 </div>
@@ -35,6 +39,7 @@ include_once "../php/head/head.php" ?>
 
         <div id="content_container">
             <form class="information_container" method="post">
+                <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                 <div id="contact_information">
                     <h2>Contact Information</h2>
 
@@ -109,6 +114,7 @@ include_once "../php/head/head.php" ?>
             </form>
 
             <form id="gallery_container" method="post" enctype="multipart/form-data" >
+                <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                 <?php echo $_SESSION["profile_gallery"] ?>
                 <?php echo $error_message ?>
                 <div class="gallery_edit">

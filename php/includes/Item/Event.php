@@ -90,8 +90,7 @@ class Event
 
     public function getEventHTML(): string
     {
-        return $string =
-            '    <form method="post" name="event_ID" id="item">                                                    ' .
+        return '<form method="post" name="event_ID" id="item">                                                     ' .
             '        <div id="item_image">                                                                         ' .
             '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
@@ -107,14 +106,13 @@ class Event
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
-            '    </form>                                                                                           ';
+            '    </form>                                                                                           ' ;
     }
 
     //todo: fix line 120 to 127 with ajax ?
     public function getEditableEventHTML(): string
     {
-        return $string =
-            '    <form method="post" name="event_ID" id="item">                                                    ' .
+        return '<form method="post" name="event_ID" id="item">                                                     ' .
             '        <div id="item_image">                                                                         ' .
             '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
@@ -131,7 +129,7 @@ class Event
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
             '            <span>' . $this->name . '</span>                                                          ' .
             '            <br>                                                                                      ' .
-            '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
+            '            <span>Address: ' . $this->getAddress() . '</span>                                         ' .
             '            <br>                                                                                      ' .
             '            <span>Date: ' . $this->getDate() . '</span>                                               ' .
             '            <br>                                                                                      ' .
@@ -140,8 +138,7 @@ class Event
             '        <label>click to display more / less                                                           ' .
             '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
             '        </label>                                                                                      ' .
-            '    </form>                                                                                           ';
-
+            '    </form>                                                                                           ' ;
     }
 
     /**
@@ -149,20 +146,15 @@ class Event
      */
     public function getImageSource(): string
     {
+
         if (empty($this->blobData)) {
-            return "../resources/images/events/event1.jpg";
+            return htmlspecialchars("../resources/images/events/event1.jpg");
         } else {
-            return "data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]);
+            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getTime(): string
-    {
-        return $this->startTime . " - " . $this->endTime;
-    }
+
 
     /**
      * returns a String containing all attributes of the user class defined in user Table that are not null.
@@ -235,6 +227,22 @@ class Event
     /* -------------------------------------------------------------------------------------------------------------- */
 
     /**
+     * @return int|null
+     */
+    public function getEventID(): ?int
+    {
+        return $this->event_ID;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserID(): int
+    {
+        return htmlspecialchars($this->user_ID);
+    }
+
+    /**
      * @param int $user_ID
      */
     public function setUserID(int $user_ID): void
@@ -243,35 +251,11 @@ class Event
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getUserID(): int
+    public function getTime(): string
     {
-        return $this->user_ID;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getStreetName(): ?string
-    {
-        return $this->street_name;
-    }
-
-    /**
-     * @param string|null $street_name
-     */
-    public function setStreetName(?string $street_name): void
-    {
-        $this->street_name = $street_name;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getBlobData(): ?array
-    {
-        return $this->blobData;
+        return htmlspecialchars($this->startTime . " - " . $this->endTime);
     }
 
     /**
@@ -303,7 +287,7 @@ class Event
      */
     public function getName(): ?string
     {
-        return $this->name;
+        return htmlspecialchars($this->name);
     }
 
     /**
@@ -319,7 +303,7 @@ class Event
      */
     public function getDescription(): ?string
     {
-        return $this->description;
+        return htmlspecialchars($this->description);
     }
 
     /**
@@ -335,7 +319,7 @@ class Event
      */
     public function getRequirements(): ?string
     {
-        return $this->requirements;
+        return htmlspecialchars($this->requirements);
     }
 
     /**
@@ -351,7 +335,7 @@ class Event
      */
     public function getDate(): ?string
     {
-        return $this->date;
+        return htmlspecialchars($this->date);
     }
 
     /**
@@ -367,7 +351,7 @@ class Event
      */
     public function getStartTime(): ?string
     {
-        return $this->startTime;
+        return htmlspecialchars($this->startTime);
     }
 
     /**
@@ -383,7 +367,7 @@ class Event
      */
     public function getEndTime(): ?string
     {
-        return $this->endTime;
+        return htmlspecialchars($this->endTime);
     }
 
     /**
@@ -397,9 +381,17 @@ class Event
     /**
      * @return string|null
      */
+    public function getAddress(): ?string
+    {
+        return htmlspecialchars($this->getAddressAttributes("value", "list"));
+    }
+
+    /**
+     * @return string|null
+     */
     public function getHouseNumber(): ?string
     {
-        return $this->house_number;
+        return htmlspecialchars($this->house_number);
     }
 
     /**
@@ -415,7 +407,7 @@ class Event
      */
     public function getPostalCode(): ?string
     {
-        return $this->postal_code;
+        return htmlspecialchars($this->postal_code);
     }
 
     /**
@@ -431,7 +423,7 @@ class Event
      */
     public function getCity(): ?string
     {
-        return $this->city;
+        return htmlspecialchars($this->city);
     }
 
     /**
@@ -443,11 +435,19 @@ class Event
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getEventID(): ?int
+    public function getStreetName(): ?string
     {
-        return $this->event_ID;
+        return htmlspecialchars($this->street_name);
+    }
+
+    /**
+     * @param string|null $street_name
+     */
+    public function setStreetName(?string $street_name): void
+    {
+        $this->street_name = $street_name;
     }
 
 

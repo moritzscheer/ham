@@ -1,4 +1,4 @@
-<?php include_once "../php/head/head.php" ?>
+<?php include_once "../php/includes/head/head.php" ?>
 
 <body>
 

@@ -1,10 +1,12 @@
-<?php use Item\Event;
-
-include_once "../php/head/head.php" ?>
+<?php
+    use Item\Event;
+    include_once "../php/includes/head/head.php"
+?>
 <body>
-<?php include_once "../php/includes/navigation/header/header.php";
-global $newEvent;
-if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
+<?php
+    include_once "../php/includes/navigation/header/header.php";
+    global $newEvent;
+    if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
     $_SESSION['event'] = new Event();
 }
 ?>
@@ -14,6 +16,7 @@ if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
     <div>
         <h1> <?php echo $_SESSION["status"] ?> Event </h1>
         <form method="post" class="create-event">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <div id="create-event-inputs">
                 <section class="left-column">
                     <label id="image" class="big-text">Select Image

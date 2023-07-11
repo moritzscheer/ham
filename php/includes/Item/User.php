@@ -106,13 +106,13 @@ class User
             '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
             '        </div>                                                                                        ' .
             '        <div id="item_short_description" class="text-line-pre">                                       ' .
-            '            <span>' . $this->name . ' ' . $this->surname . '</span>                                   ' .
+            '            <span>' . $this->getName() . ' ' . $this->getSurname() . '</span>                         ' .
             '            <br>                                                                                      ' .
-            '            <span>Genre: ' . $this->genre . '</span>                                                  ' .
+            '            <span>Genre: ' . $this->getGenre() . '</span>                                             ' .
             '            <br>                                                                                      ' .
-            '            <span>Members:<br>' . $this->members . '</span>                                              ' .
+            '            <span>Members:<br>' . $this->getMembers() . '</span>                                      ' .
             '            <br>                                                                                      ' .
-            '            <span>Other Remarks:<br>' . $this->other_remarks . '</span>                                  ' .
+            '            <span>Other Remarks:<br>' . $this->getOtherRemarks() . '</span>                           ' .
             '            <br>                                                                                      ' .
             '            <form method="post">                                                                      ' .
             '                <label id="profile_Link">link to profile                                              ' .
@@ -129,9 +129,9 @@ class User
     public function getImageSource(): string
     {
         if (empty($this->blobData)) {
-            return "../resources/images/profile/default/defaultLarge.jpeg";
+            return htmlspecialchars("../resources/images/profile/default/defaultLarge.jpeg");
         } else {
-            return "data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]);
+            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
         }
     }
 
@@ -173,6 +173,7 @@ class User
 
     /**
      * @param $result
+     * @param $key
      * @param $value
      * @param $keyOrValue
      * @param $schema
@@ -181,7 +182,6 @@ class User
     private function concatString($result, $key, $value, $keyOrValue, $schema): string
     {
         $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
-
         if ($schema === "list") {
             if ($value !== null && $value !== "") {
                 if ($result === "") {
@@ -197,93 +197,12 @@ class User
                 $result = $result . ", " . $key . " = '" . $value . "'";
             }
         }
-
         return $result;
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
     /*                                               getter and setter                                                */
     /* -------------------------------------------------------------------------------------------------------------- */
-
-    /**
-     * @return array|null
-     */
-    public function getBlobData(): ?array
-    {
-        return $this->blobData;
-    }
-
-    /**
-     * @param array|null $blobData
-     */
-    public function setBlobData(?array $blobData): void
-    {
-        $this->blobData = $blobData;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getStreetName(): ?string
-    {
-        return $this->street_name;
-    }
-
-    /**
-     * @param string|null $street_name
-     */
-    public function setStreetName(?string $street_name): void
-    {
-        $this->street_name = $street_name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHouseNumber(): ?string
-    {
-        return $this->house_number;
-    }
-
-    /**
-     * @param string|null $house_number
-     */
-    public function setHouseNumber(?string $house_number): void
-    {
-        $this->house_number = $house_number;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPostalCode(): ?string
-    {
-        return $this->postal_code;
-    }
-
-    /**
-     * @param string|null $postal_code
-     */
-    public function setPostalCode(?string $postal_code): void
-    {
-        $this->postal_code = $postal_code;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    /**
-     * @param string|null $city
-     */
-    public function setCity(?string $city): void
-    {
-        $this->city = $city;
-    }
 
     /**
      * @return string
@@ -307,7 +226,7 @@ class User
      */
     public function getAddressID(): ?string
     {
-        return $this->address_ID;
+        return htmlspecialchars($this->address_ID);
     }
 
     /**
@@ -323,7 +242,7 @@ class User
      */
     public function getType(): ?string
     {
-        return $this->type;
+        return htmlspecialchars($this->type);
     }
 
     /**
@@ -339,7 +258,7 @@ class User
      */
     public function getName(): ?string
     {
-        return $this->name;
+        return htmlspecialchars($this->name);
     }
 
     /**
@@ -355,7 +274,7 @@ class User
      */
     public function getSurname(): ?string
     {
-        return $this->surname;
+        return htmlspecialchars($this->surname);
     }
 
     /**
@@ -371,7 +290,7 @@ class User
      */
     public function getPassword(): ?string
     {
-        return $this->password;
+        return htmlspecialchars($this->password);
     }
 
     /**
@@ -387,7 +306,7 @@ class User
      */
     public function getPhoneNumber(): ?string
     {
-        return $this->phone_number;
+        return htmlspecialchars($this->phone_number);
     }
 
     /**
@@ -403,7 +322,7 @@ class User
      */
     public function getEmail(): ?string
     {
-        return $this->email;
+        return htmlspecialchars($this->email);
     }
 
     /**
@@ -419,7 +338,7 @@ class User
      */
     public function getGenre(): ?string
     {
-        return $this->genre;
+        return htmlspecialchars($this->genre);
     }
 
     /**
@@ -435,7 +354,7 @@ class User
      */
     public function getMembers(): ?string
     {
-        return $this->members;
+        return htmlspecialchars($this->members);
     }
 
     /**
@@ -451,7 +370,7 @@ class User
      */
     public function getOtherRemarks(): ?string
     {
-        return $this->other_remarks;
+        return htmlspecialchars($this->other_remarks);
     }
 
     /**
@@ -460,5 +379,85 @@ class User
     public function setOtherRemarks(?string $other_remarks): void
     {
         $this->other_remarks = $other_remarks;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStreetName(): ?string
+    {
+        return htmlspecialchars($this->street_name);
+    }
+
+    /**
+     * @param string|null $street_name
+     */
+    public function setStreetName(?string $street_name): void
+    {
+        $this->street_name = $street_name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHouseNumber(): ?string
+    {
+        return htmlspecialchars($this->house_number);
+    }
+
+    /**
+     * @param string|null $house_number
+     */
+    public function setHouseNumber(?string $house_number): void
+    {
+        $this->house_number = $house_number;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPostalCode(): ?string
+    {
+        return htmlspecialchars($this->postal_code);
+    }
+
+    /**
+     * @param string|null $postal_code
+     */
+    public function setPostalCode(?string $postal_code): void
+    {
+        $this->postal_code = $postal_code;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCity(): ?string
+    {
+        return htmlspecialchars($this->city);
+    }
+
+    /**
+     * @param string|null $city
+     */
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAddress(): ?string
+    {
+        return htmlspecialchars($this->getAddressAttributes("value", "list"));
+    }
+
+    /**
+     * @param array|null $blobData
+     */
+    public function setBlobData(?array $blobData): void
+    {
+        $this->blobData = $blobData;
     }
 }

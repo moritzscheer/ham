@@ -20,16 +20,16 @@ $_SESSION["bands"] = $_SESSION["bands"] ?? null;
 $_SESSION["search"] = $_POST["search"] ?? "";
 $_SESSION["searchDate"] = $_POST["searchDate"] ?? "";
 
-isset($_POST["event_name"]) && is_string($_POST["event_name"])   ?   $_SESSION["event"]->setName(htmlspecialchars($_POST["event_name"]))   :   "";
-isset($_POST["description"]) && is_string($_POST["description"])   ?   $_SESSION["event"]->setDescription(htmlspecialchars($_POST["description"]))   :   "";
-isset($_POST["requirements"]) && is_string($_POST["requirements"])   ?   $_SESSION["event"]->setRequirements(htmlspecialchars($_POST["requirements"]))   :   "";
-isset($_POST["date"]) && is_string($_POST["date"])   ?   $_SESSION["event"]->setDate(htmlspecialchars($_POST["date"]))   :   "";
-isset($_POST["startTime"]) && is_string($_POST["startTime"])   ?   $_SESSION["event"]->setStartTime(htmlspecialchars($_POST["startTime"]))   :   "";
-isset($_POST["endTime"]) && is_string($_POST["endTime"])   ?   $_SESSION["event"]->setEndTime(htmlspecialchars($_POST["endTime"]))   :   "";
-isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])   ?   $_SESSION["event"]->setStreetName(htmlspecialchars($_POST["event_street_name"]))   :   "";
-isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])   ?   $_SESSION["event"]->setHouseNumber(htmlspecialchars($_POST["event_house_number"]))  :   "";
-isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])   ?   $_SESSION["event"]->setPostalCode(htmlspecialchars($_POST["event_postal_code"]))   :   "";
-isset($_POST["event_city"]) && is_string($_POST["event_city"])   ?   $_SESSION["event"]->setCity(htmlspecialchars($_POST["event_city"]))   :   "";
+isset($_POST["event_name"]) && is_string($_POST["event_name"])   ?   $_SESSION["event"]->setName($_POST["event_name"])   :   "";
+isset($_POST["description"]) && is_string($_POST["description"])   ?   $_SESSION["event"]->setDescription($_POST["description"])   :   "";
+isset($_POST["requirements"]) && is_string($_POST["requirements"])   ?   $_SESSION["event"]->setRequirements($_POST["requirements"])   :   "";
+isset($_POST["date"]) && is_string($_POST["date"])   ?   $_SESSION["event"]->setDate($_POST["date"])   :   "";
+isset($_POST["startTime"]) && is_string($_POST["startTime"])   ?   $_SESSION["event"]->setStartTime($_POST["startTime"])   :   "";
+isset($_POST["endTime"]) && is_string($_POST["endTime"])   ?   $_SESSION["event"]->setEndTime($_POST["endTime"])   :   "";
+isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])   ?   $_SESSION["event"]->setStreetName($_POST["event_street_name"])   :   "";
+isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])   ?   $_SESSION["event"]->setHouseNumber($_POST["event_house_number"])  :   "";
+isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])   ?   $_SESSION["event"]->setPostalCode($_POST["event_postal_code"])   :   "";
+isset($_POST["event_city"]) && is_string($_POST["event_city"])   ?   $_SESSION["event"]->setCity($_POST["event_city"])   :   "";
 
 if(isset($_GET["type"]) && is_string($_GET["type"])) {
     $type = $_GET["type"];
@@ -140,7 +140,7 @@ if (isset($_POST["submitSearch"])) {
  */
 if (isset($_GET["submitSearchJavaScript"])) {
     initDatabase();
-    echo getAnyItems($_GET["submitSearchJavaScript"]);
+    echo htmlspecialchars(getAnyItems($_GET["submitSearchJavaScript"]));
 }
 
 

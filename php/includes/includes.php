@@ -22,7 +22,7 @@ include_once "../stores/database/DBEventStore.php";
 include_once "../php/settings.php";
 
 // controller 
-include_once "../php/controller/account.php";
-include_once "../php/controller/itemList.php";
-include_once "../php/controller/flickr.php";
+include_once "../php/controller/user_controller.php";
+include_once "../php/controller/item_controller.php";
+include_once "../php/controller/flickr_controller.php";
 
