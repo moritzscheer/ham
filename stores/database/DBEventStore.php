@@ -42,14 +42,14 @@ class DBEventStore implements EventStore {
             $sql = "SELECT * FROM event WHERE name = '".$item->getName()."';";
             $stmt = $this->db->query($sql)->fetch();
             if($stmt !== false) {
-                throw new Exception("There is already an Item\Event called ".$item->getName()."!");
+                throw new Exception("There is already an items\Event called ".$item->getName()."!");
             }
             if($item->getStreetName() !== "" || $item->getHouseNumber() !== "" || $item->getPostalCode() !== "" || $item->getCity() !== "") {
                 $address_ID = $this->addressStore->create($item);
                 $item->setAddressID($address_ID);
             }
 
-            $sql = "INSERT INTO event (".$item->getAttributes("key", "list").") VALUES (".$item->getAttributes("valueWithApo", "list").");";
+            $sql = "INSERT INTO event (".$item->getEventAttributesAsList("key", false).") VALUES (".$item->getEventAttributesAsList("value", true).");";
             $this->db->exec($sql);
 
             $item = $this->findOne($this->db->lastInsertId());
@@ -69,7 +69,7 @@ class DBEventStore implements EventStore {
         $address_ID = $this->addressStore->update($item);
         $item->setAddressID($address_ID);
 
-        $sql = "UPDATE event SET ".$item->getAttributes("key", "set")." WHERE event_ID = '". $item->getEventID()."';";
+        $sql = "UPDATE event SET ".$item->getEventAttributesAsSet(",")." WHERE event_ID = '". $item->getEventID()."';";
 
         $this->db->exec($sql);
         return $this->findOne($item->getEventID());
@@ -124,7 +124,7 @@ class DBEventStore implements EventStore {
             $event["city"] = $city;
         }
 
-        return Event::withAddress($event);
+        return (new Item\Event)->withAddress($event);
     }
 
     /**
@@ -197,7 +197,7 @@ class DBEventStore implements EventStore {
 
         $return = array();
         foreach ($stmt as $event) {
-            $newEvent = Event::withAddress($event);
+            $newEvent = (new Item\Event)->withAddress($event);
 
             try {
                 $imageID = $this->blobObj->queryID($newEvent->getEventID(), "event");

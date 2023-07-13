@@ -115,7 +115,7 @@
 #content_container h2 {
     text-align: center;
 }
-#gallery_container, #about_me, #contact_information, #changePassword_container {
+#gallery_container, #about_me, #contact_information, #changePassword_container, #legal_disclosure {
     background-color: rgba(255, 255, 255, 0.05);
     border: var(--black) 1px solid;
     display: flex;
@@ -128,7 +128,6 @@
 .information_container {
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: auto auto;
     gap: 0.5vw;
     height: min-content;
 }
@@ -161,6 +160,13 @@
     border-radius: 5px;
     color: black;
     font-size: 14px;
+}
+#legal_disclosure label {
+    grid-template-rows: auto;
+    grid-template-columns: auto auto;
+}
+#legal_disclosure p {
+    margin: 40px;
 }
 
 /* formatting for image gallery */

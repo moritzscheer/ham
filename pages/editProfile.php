@@ -103,6 +103,17 @@
                     </label>
                 </div>
 
+                <div id="legal_disclosure">
+                    <h2>Legal Disclosure</h2>
+
+                    <label class="entry">
+                        <input type="checkbox" id="agreementCheck" name="dsr" value="y" <?php echo $_SESSION["loggedIn"]["user"]->getDsrCheckBox() ?>>
+                        <div id="agreementText"> I agree with the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
+                                of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy</a></div>
+                    </label>
+                    <p>Note that if you uncheck this mark you can no longer see content from third party companies including google maps and flickr.</p>
+                </div>
+
                 <div id="profile_submit">
                     <label>Cancel
                         <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">

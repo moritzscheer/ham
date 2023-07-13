@@ -6,6 +6,9 @@ $_SESSION["selectImageBox"] = $_SESSION["selectImageBox"] ?? "";
 
 $_SESSION["profile_preview"] = $_SESSION["profile_preview"] ?? array("source" => "", "category" => "", "image" => "No Image Selected.");
 
+/**
+ * if an image was clicked the editImage box will be displayed
+ */
 if (isset($_POST["onEditImage"])) {
     if($_POST["onEditImage"] === "hide") {
         $_SESSION["ImageBox"] = "hidden";
@@ -16,6 +19,11 @@ if (isset($_POST["onEditImage"])) {
 
         // sets the category of the image
         $_SESSION["profile_preview"]["category"] = $_POST["onEditImage"];
+
+        if($_SESSION["loggedIn"]["user"]->getDsr() === "n") {
+            $_SESSION["flickr_search"] = '<span>If you want to see the content of Third party companies accept the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
+                                of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy.</span>';
+        }
     }
 }
 

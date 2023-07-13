@@ -1,8 +1,8 @@
 <?php
 
 namespace Item;
-class User
-{
+
+class User extends Item {
 
     // user attributes
     private ?string $user_ID = "";
@@ -16,6 +16,7 @@ class User
     private ?string $genre = "";
     private ?string $members = "";
     private ?string $other_remarks = "";
+    private ?string $dsr = "";
 
     // address attributes
     private ?string $street_name = "";
@@ -31,8 +32,7 @@ class User
      * @param $user
      * @return User
      */
-    public static function withAddress($user): User
-    {
+    public static function withAddress($user): User {
         $instance = new self();
         $instance->user_ID = (string)$user["user_ID"];
         $instance->address_ID = $user["address_ID"];
@@ -45,6 +45,7 @@ class User
         $instance->genre = $user["genre"];
         $instance->members = $user["members"];
         $instance->other_remarks = $user["other_remarks"];
+        $instance->dsr = $user["dsr"];
         $instance->street_name = $user["street_name"];
         $instance->house_number = $user["house_number"];
         $instance->postal_code = $user["postal_code"];
@@ -52,8 +53,7 @@ class User
         return $instance;
     }
 
-    public static function toArrayForJsonEntry(User $user): array
-    {
+    public static function toArrayForJsonEntry(User $user): array {
         return array(
             "user_ID" => $user->getUserID(),
             "type" => $user->getType(),
@@ -66,6 +66,7 @@ class User
             "genre" => $user->getGenre(),
             "members" => $user->getMembers(),
             "other_remarks" => $user->getOtherRemarks(),
+            "dsr" => $user->getDsr(),
             "profile_picture_small" => "",
             "profile_picture_large" => "",
             "profile_gallery" => array("..\/resources\/images\/bands\/band.jpg", "..\/resources\/images\/bands\/band.jpg"),
@@ -76,8 +77,7 @@ class User
         );
     }
 
-    public static function getJsonUser($user): User
-    {
+    public static function getJsonUser($user): User {
         $instance = new self();
         $instance->user_ID = (string)$user->user_ID;
         $instance->type = $user->type;
@@ -90,6 +90,7 @@ class User
         $instance->genre = $user->genre;
         $instance->members = $user->members;
         $instance->other_remarks = $user->other_remarks;
+        $instance->dsr = $user->dsr;
         $instance->street_name = $user->street_name;
         $instance->house_number = $user->house_number;
         $instance->postal_code = $user->postal_code;
@@ -98,103 +99,82 @@ class User
         return $instance;
     }
 
-    public function getBandHTML(): string
-    {
-        return $string =
-            '    <form method="post" name="event_ID" id="item">                                                    ' .
-            '        <div id="item_image">                                                                         ' .
-            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
-            '        </div>                                                                                        ' .
-            '        <div id="item_short_description" class="text-line-pre">                                       ' .
-            '            <span>' . $this->getName() . ' ' . $this->getSurname() . '</span>                         ' .
-            '            <br>                                                                                      ' .
-            '            <span>Genre: ' . $this->getGenre() . '</span>                                             ' .
-            '            <br>                                                                                      ' .
-            '            <span>Members:<br>' . $this->getMembers() . '</span>                                      ' .
-            '            <br>                                                                                      ' .
-            '            <span>Other Remarks:<br>' . $this->getOtherRemarks() . '</span>                           ' .
-            '            <br>                                                                                      ' .
-            '            <form method="post">                                                                      ' .
-            '                <label id="profile_Link">link to profile                                              ' .
-            '                    <input type="submit" name="viewProfile" value="' . $this->user_ID . '">           ' .
-            '                </label>                                                                              ' .
-            '            </form>                                                                                   ' .
-            '        </div>                                                                                        ' .
-            '    </form>                                                                                           ';
+    public function getBandHTML(): string {
+        return '<form method="post" name="event_ID" id="item">                                                    ' .
+            '       <div id="item_image">                                                                         ' .
+            '           <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
+            '       </div>                                                                                        ' .
+            '       <div id="item_short_description" class="text-line-pre">                                       ' .
+            '           <span>' . $this->getName() . ' ' . $this->getSurname() . '</span>                         ' .
+            '           <br>                                                                                      ' .
+            '           <span>Genre: ' . $this->getGenre() . '</span>                                             ' .
+            '           <br>                                                                                      ' .
+            '           <span>Members:<br>' . $this->getMembers() . '</span>                                      ' .
+            '           <br>                                                                                      ' .
+            '           <span>Other Remarks:<br>' . $this->getOtherRemarks() . '</span>                           ' .
+            '           <br>                                                                                      ' .
+            '           <form method="post">                                                                      ' .
+            '               <label id="profile_Link">link to profile                                              ' .
+            '                   <input type="submit" name="viewProfile" value="' . $this->user_ID . '">           ' .
+            '               </label>                                                                              ' .
+            '           </form>                                                                                   ' .
+            '       </div>                                                                                        ' .
+            '   </form>                                                                                           ';
     }
 
     /**
+     * @param $keyOrValue
+     * @param $withApostroph
      * @return string
      */
-    public function getImageSource(): string
-    {
-        if (empty($this->blobData)) {
-            return htmlspecialchars("../resources/images/profile/default/defaultLarge.jpeg");
-        } else {
-            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
-        }
-    }
-
-    /**
-     * returns a String containing all attributes of the user class defined in user Table that are not null.
-     * The String is formatted according to the $schema variable
-     * @param $keyOrValue
-     * @param $schema
-     * @return String
-     */
-    public function getAttributes($keyOrValue, $schema): string
-    {
+    public function getUserAttributesAsList($keyOrValue, $withApostroph): string {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
-                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
+                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
             }
         }
         return $result;
     }
 
     /**
-     * returns a String containing all attributes of the user class defined in address Table that are not null.
-     * The String is formatted according to the $schema variable
-     * @param $keyOrValue
-     * @param $schema
-     * @return String
+     * @param $separator
+     * @return string
      */
-    public function getAddressAttributes($keyOrValue, $schema): string
-    {
+    public function getUserAttributesAsSet($separator): string {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                $result = $this->concatSet($result, $key, $value, $separator);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param $keyOrValue
+     * @param $withApostroph
+     * @return string
+     */
+    public function getAddressAttributesAsList($keyOrValue, $withApostroph): string {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
+                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
             }
         }
         return $result;
     }
 
     /**
-     * @param $result
-     * @param $key
-     * @param $value
-     * @param $keyOrValue
-     * @param $schema
+     * @param $separator
      * @return string
      */
-    private function concatString($result, $key, $value, $keyOrValue, $schema): string
-    {
-        $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
-        if ($schema === "list") {
-            if ($value !== null && $value !== "") {
-                if ($result === "") {
-                    $result = $attr;
-                } else {
-                    $result = $result . ", " . $attr;
-                }
-            }
-        } elseif ($schema === "set") {
-            if ($result === "") {
-                $result = $key . " = '" . $value . "'";
-            } else {
-                $result = $result . ", " . $key . " = '" . $value . "'";
+    public function getAddressAttributesAsSet($separator): string {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                $result = parent::concatSet($result, $key, $value, $separator);
             }
         }
         return $result;
@@ -203,6 +183,17 @@ class User
     /* -------------------------------------------------------------------------------------------------------------- */
     /*                                               getter and setter                                                */
     /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * @return string
+     */
+    public function getImageSource(): string {
+        if (empty($this->blobData)) {
+            return htmlspecialchars("../resources/images/profile/default/defaultLarge.jpeg");
+        } else {
+            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
+        }
+    }
 
     /**
      * @return string
@@ -450,7 +441,7 @@ class User
      */
     public function getAddress(): ?string
     {
-        return htmlspecialchars($this->getAddressAttributes("value", "list"));
+        return htmlspecialchars($this->getAddressAttributesAsList("value", false));
     }
 
     /**
@@ -459,5 +450,33 @@ class User
     public function setBlobData(?array $blobData): void
     {
         $this->blobData = $blobData;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDsr(): ?string
+    {
+        return $this->dsr;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDsrCheckBox(): ?string
+    {
+        if($this->dsr === "y") {
+            return "checked";
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * @param string|null $dsr
+     */
+    public function setDsr(?string $dsr): void
+    {
+        $this->dsr = $dsr;
     }
 }

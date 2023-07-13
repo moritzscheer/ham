@@ -1,8 +1,9 @@
 <?php
 
 namespace Item;
-class Event
-{
+use Item\Item;
+
+class Event extends Item {
 
     // event attributes
     private ?int $event_ID = null;
@@ -28,8 +29,7 @@ class Event
      * @param array $item
      * @return Event
      */
-    public static function withAddress(array $item): Event
-    {
+    public static function withAddress(array $item): Event {
         $instance = new self();
         $instance->event_ID = $item["event_ID"];
         $instance->address_ID = $item["address_ID"];
@@ -47,8 +47,7 @@ class Event
         return $instance;
     }
 
-    public static function getJsonEvent($item): Event
-    {
+    public static function getJsonEvent($item): Event {
         $instance = new self();
         $instance->event_ID = (int)$item->id;
         $instance->address_ID = $item->address_ID;
@@ -66,9 +65,8 @@ class Event
         return $instance;
     }
 
-    public static function toArrayForJsonEntry(Event $item): array
-    {
-        $jsonEvent = array(
+    public static function toArrayForJsonEntry(Event $item): array {
+        return array(
             "image" => $item->getImageSource(),
             "id" => uniqid('ev_'),
             "authorID" => $item->getUserID(),
@@ -85,146 +83,131 @@ class Event
             "endTime" => $item->getEndTime(),
             "requirements" => $item->getRequirements()
         );
-        return $jsonEvent;
     }
 
-    public function getEventHTML(): string
-    {
-        return '<form method="post" name="event_ID" id="item">                                                     ' .
-            '        <div id="item_image">                                                                         ' .
-            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
-            '        </div>                                                                                        ' .
-            '        <div id="item_short_description" class="text-line-pre">                                       ' .
-            '            <span>' . $this->name . '</span>                                                          ' .
-            '            <br>                                                                                      ' .
-            '            <span>Address: '.$this->getAddressAttributes("value", "list").'</span>   ' .
-            '            <br>                                                                                      ' .
-            '            <span>Date: ' . $this->getDate() . '</span>                                               ' .
-            '            <br>                                                                                      ' .
-            '            <span>Time: ' . $this->getTime() . '</span>                                               ' .
-            '        </div>                                                                                        ' .
-            '        <label>click to display more / less                                                           ' .
-            '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
-            '        </label>                                                                                      ' .
-            '    </form>                                                                                           ' ;
+    public function getEventHTML(): string {
+        return '<form method="post" name="event_ID" id="item">                                                    ' .
+            '       <div id="item_image">                                                                         ' .
+            '           <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
+            '       </div>                                                                                        ' .
+            '       <div id="item_short_description" class="text-line-pre">                                       ' .
+            '           <span>' . $this->name . '</span>                                                          ' .
+            '           <br>                                                                                      ' .
+            '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
+            '           <br>                                                                                      ' .
+            '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
+            '           <br>                                                                                      ' .
+            '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
+            '       </div>                                                                                        ' .
+            '       <label>click to display more / less                                                           ' .
+            '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
+            '       </label>                                                                                      ' .
+            '   </form>                                                                                           ' ;
     }
 
     //todo: fix line 120 to 127 with ajax ?
-    public function getEditableEventHTML(): string
-    {
-        return '<form method="post" name="event_ID" id="item">                                                     ' .
-            '        <div id="item_image">                                                                         ' .
-            '            <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
-            '        </div>                                                                                        ' .
-            '        <div id="item_editable">                                                                      ' .
-            '             <label>Edit                                                                              ' .
-            '                   <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
-            '                   <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
-            '             </label>                                                                                 ' .
-            '             <label>Delete                                                                            ' .
-            '                   <a href="events.php"  name="onDelete" ></a>                                        ' .
-            '                   <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
-            '              </label>                                                                                ' .
-            '        </div>                                                                                        ' .
-            '        <div id="item_short_description" class="text-line-pre">                                       ' .
-            '            <span>' . $this->name . '</span>                                                          ' .
-            '            <br>                                                                                      ' .
-            '            <span>Address: ' . $this->getAddress() . '</span>                                         ' .
-            '            <br>                                                                                      ' .
-            '            <span>Date: ' . $this->getDate() . '</span>                                               ' .
-            '            <br>                                                                                      ' .
-            '            <span>Time: ' . $this->getTime() . '</span>                                               ' .
-            '        </div>                                                                                        ' .
-            '        <label>click to display more / less                                                           ' .
-            '             <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
-            '        </label>                                                                                      ' .
-            '    </form>                                                                                           ' ;
+    public function getEditableEventHTML(): string {
+        return '<form method="post" name="event_ID" id="item">                                                    ' .
+            '       <div id="item_image">                                                                         ' .
+            '           <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
+            '       </div>                                                                                        ' .
+            '       <div id="item_editable">                                                                      ' .
+            '            <label>Edit                                                                              ' .
+            '                  <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
+            '                  <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
+            '            </label>                                                                                 ' .
+            '            <label>Delete                                                                            ' .
+            '                  <a href="events.php"  name="onDelete" ></a>                                        ' .
+            '                  <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
+            '             </label>                                                                                ' .
+            '       </div>                                                                                        ' .
+            '       <div id="item_short_description" class="text-line-pre">                                       ' .
+            '           <span>' . $this->name . '</span>                                                          ' .
+            '           <br>                                                                                      ' .
+            '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
+            '           <br>                                                                                      ' .
+            '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
+            '           <br>                                                                                      ' .
+            '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
+            '       </div>                                                                                        ' .
+            '       <label>click to display more / less                                                           ' .
+            '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
+            '       </label>                                                                                      ' .
+            '   </form>                                                                                           ' ;
     }
 
     /**
+     * @param $keyOrValue
+     * @param $withApostroph
      * @return string
      */
-    public function getImageSource(): string
-    {
-
-        if (empty($this->blobData)) {
-            return htmlspecialchars("../resources/images/events/event1.jpg");
-        } else {
-            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
-        }
-    }
-
-
-
-    /**
-     * returns a String containing all attributes of the user class defined in user Table that are not null.
-     * The String is formatted according to the $schema variable
-     * @param $keyOrValue
-     * @param $schema
-     * @return String
-     */
-    public function getAttributes($keyOrValue, $schema): string
-    {
+    public function getEventAttributesAsList($keyOrValue, $withApostroph): string {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
-                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
+                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
             }
         }
         return $result;
     }
 
     /**
-     * returns a String containing all attributes of the user class defined in address Table that are not null.
-     * The String is formatted according to the $schema variable
-     * @param $keyOrValue
-     * @param $schema
-     * @return String
+     * @param $separator
+     * @return string
      */
-    public function getAddressAttributes($keyOrValue, $schema): string
-    {
+    public function getEventAttributesAsSet($separator): string {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+                $result = $this->concatSet($result, $key, $value, $separator);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param $keyOrValue
+     * @param $withApostroph
+     * @return string
+     */
+    public function getAddressAttributesAsList($keyOrValue, $withApostroph): string {
         $result = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = $this->concatString($result, $key, $value, $keyOrValue, $schema);
+                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
             }
         }
         return $result;
     }
 
     /**
-     * @param $result
-     * @param $value
-     * @param $keyOrValue
-     * @param $schema
+     * @param $separator
      * @return string
      */
-    private function concatString($result, $key, $value, $keyOrValue, $schema): string
-    {
-        $attr = $keyOrValue === "value" ? $value : ($keyOrValue === "valueWithApo" ? "'" . $value . "'" : $key);
-
-        if ($schema === "list") {
-            if ($value !== null && $value !== "") {
-                if ($result === "") {
-                    $result = $attr;
-                } else {
-                    $result = $result . ", " . $attr;
-                }
-            }
-        } elseif ($schema === "set") {
-            if ($result === "") {
-                $result = $key . " = '" . $value . "'";
-            } else {
-                $result = $result . ", " . $key . " = '" . $value . "'";
+    public function getAddressAttributesAsSet($separator): string {
+        $result = "";
+        foreach ($this as $key => $value) {
+            if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
+                $result = parent::concatSet($result, $key, $value, $separator);
             }
         }
-
         return $result;
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
     /*                                               getter and setter                                                */
     /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * @return string
+     */
+    public function getImageSource(): string {
+        if (empty($this->blobData)) {
+            return htmlspecialchars("../resources/images/events/event1.jpg");
+        } else {
+            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
+        }
+    }
 
     /**
      * @return int|null
@@ -383,7 +366,7 @@ class Event
      */
     public function getAddress(): ?string
     {
-        return htmlspecialchars($this->getAddressAttributes("value", "list"));
+        return htmlspecialchars($this->getAddressAttributesAsList("value", false));
     }
 
     /**

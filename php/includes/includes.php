@@ -1,9 +1,10 @@
 <?php
 
 // items
-include_once "../php/includes/Item/Address.php";
-include_once "../php/includes/Item/User.php";
-include_once "../php/includes/Item/Event.php";
+include_once "../php/includes/items/Item.php";
+include_once "../php/includes/items/Address.php";
+include_once "../php/includes/items/User.php";
+include_once "../php/includes/items/Event.php";
 
 // api's
 include_once "../php/includes/api/Flickr.php";

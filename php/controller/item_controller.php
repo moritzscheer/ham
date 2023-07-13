@@ -44,7 +44,7 @@ $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESS
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
- * Creates a new Item\Event in the Eventstore
+ * Creates a new items\Event in the Eventstore
  */
 if (isset($_POST["submit"])) {
     try {
@@ -83,7 +83,7 @@ if (isset($_POST["onItemClick"])) {
 }
 
 /**
- * Deletes an Item\Event from the Eventstore
+ * Deletes an items\Event from the Eventstore
  */
 if (isset($_POST["onDelete"])) {
     $eventStore->delete($_POST["onDelete"]);
@@ -187,7 +187,7 @@ function sortArray(array $array, $attribute, $dir) : array {
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                              get Item\Event and get Bands method                                        */
+/*                                              get items\Event and get Bands method                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
@@ -298,7 +298,7 @@ function getDetail(Object $item) : string {
         '        <div id="item_short_description" class="text-line-pre">                                       '.
         '            <span>' . $item->getName() . '</span>                                                     '.
         '            <br>                                                                                      '.
-        '            <span>Item\Address: '.$item->getAddressAttributes("value", "list").'</span>                    ' .
+        '            <span>Address: '.$item->getAddressAttributesAsList("value", false).'</span>               ' .
         '            <br>                                                                                      '.
         '            <span> ' . $item->getTime() . '</span>                                                    '.
         '        </div>                                                                                        '.

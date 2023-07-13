@@ -118,7 +118,7 @@
             </label>
 
             <label id="agreementField">*
-                <input type="checkbox" id="agreementCheck" required>
+                <input type="checkbox" id="agreementCheck" name="dsr" value="y" required>
                 <div id="agreementText"> I agree with the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
                         of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy</a></div>
             </label>

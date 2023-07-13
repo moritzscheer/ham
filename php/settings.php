@@ -120,12 +120,11 @@ function insertDummies() : void {
     global $userStore, $eventStore, $blobObj;
     $content = file_get_contents("../resources/dummy/dummies.json", false);
     $dummyJson = json_decode($content, true);
-
     try {
         foreach ($dummyJson["users"] as $user) {
-            $result = User::withAddress($user);
-            $result->setPassword(password_hash($result->getPassword(), PASSWORD_DEFAULT));
-            $userStore->create($result);
+            $user = User::withAddress($user);
+            $user->setPassword(password_hash($user->getPassword(), PASSWORD_DEFAULT));
+            $userStore->create($user);
         }
         foreach ($dummyJson["events"] as $event) {
             $eventStore->create(Event::withAddress($event));

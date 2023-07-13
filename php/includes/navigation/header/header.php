@@ -100,7 +100,6 @@
         </form>
 
         <form action="profile.php" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
-            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <label id="navbar-button">profile
                 <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
             </label>

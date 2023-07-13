@@ -1,9 +1,11 @@
 <?php
 
 use Item\Address;
+use Item\User;
+use Item\Event;
 
 include_once "../stores/interface/AddressStore.php";
-include_once "../php/includes/Item/Address.php";
+include_once "../php/includes/items/Address.php";
 
 class DBAddressStore implements AddressStore {
 
@@ -44,7 +46,7 @@ class DBAddressStore implements AddressStore {
         }
 
         // inserting an entry
-        $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("valueWithApo", "list").");";
+        $sql = "INSERT INTO address (".$item->getAddressAttributesAsList("key", false).") VALUES (".$item->getAddressAttributesAsList("value", true).");";
         $this->db->exec($sql);
         return $this->db->lastInsertId();
     }
@@ -52,26 +54,39 @@ class DBAddressStore implements AddressStore {
     /**
      * @param object $item
      * @return string
+     * @throws Exception
      */
     public function update(object $item): string {
-        if($item->getAddressID() === NULL) {
-            $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("valueWithApo", "list").");";
-        } else {
+        try {
+            // selects all addresses with the same data
+            $sql = "SELECT address_ID FROM address WHERE " . $item->getAddressAttributesAsSet("AND") . ";";
+            $stmt1 = $this->db->query($sql)->fetch();
+            $DataInDB = $stmt1 !== false;
+
+
             // checking if address_ID is saved in any entry
             $sql = "SELECT COUNT(*) FROM (".
-                   "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
-                   "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
-            $stmt = $this->db->query($sql)->fetch();
-            if ($stmt["COUNT(*)"] > 1) {  // if address_ID is used somewhere else
-                $sql = "INSERT INTO address (".$item->getAddressAttributes("key", "list").") VALUES (".$item->getAddressAttributes("valueWithApo", "list").");";
-            } else {  // else edit address
-                $sql = "UPDATE address SET ".$item->getAddressAttributes("key", "set")." WHERE address_ID = ". $item->getAddressID().";";
+                "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
+                "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
+            $stmt2 = $this->db->query($sql)->fetch();
+            
+            if($item->getAddressID() === NULL || $stmt2["COUNT(*)"] > 1) {  // if address_ID is used somewhere else or null
+                if($DataInDB) {
+                     return $stmt1["address_ID"];
+                } else {
+                    $sql = "INSERT INTO address (".$item->getAddressAttributesAsList("key", false).") VALUES (".$item->getAddressAttributesAsList("value", true).");";
+                    $this->db->exec($sql);
+                    return $this->db->lastInsertId();
+                }
+            } else {
+                // else edit address
+                $sql = "UPDATE address SET ".$item->getAddressAttributesAsSet(",")." WHERE address_ID = ". $item->getAddressID().";";
                 $this->db->exec($sql);
                 return $item->getAddressID();
             }
+        } catch (SQLiteException $e) {
+            return $item->getAddressID();
         }
-        $this->db->exec($sql);
-        return $this->db->lastInsertId();
     }
 
     /**

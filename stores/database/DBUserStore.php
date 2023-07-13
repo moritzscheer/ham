@@ -30,13 +30,14 @@ class DBUserStore implements UserStore
             "genre varchar(255) DEFAULT NULL, " .
             "members varchar(255) DEFAULT NULL, " .
             "other_remarks longtext DEFAULT NULL, " .
+            "dsr varchar(1) NOT NULL, " .
             "FOREIGN KEY (address_ID) REFERENCES address(address_ID));";
         $db->exec($sql);
     }
 
     /**
      * methode to register a user into the database. First it searches the database, if the email or password
-     * already exist, then the data set is inserted and returned as a Item\User object. Else an exception is thrown.
+     * already exist, then the data set is inserted and returned as a items\User object. Else an exception is thrown.
      * @param User $user the user object given in
      * @return User the returned user object with the user_ID in it
      * @throws Exception
@@ -58,7 +59,8 @@ class DBUserStore implements UserStore
                 $user->setAddressID($address_ID);
             }
 
-            $sql = "INSERT INTO user (" . $user->getAttributes("key", "list") . ") VALUES (" . $user->getAttributes("valueWithApo", "list") . ");";
+            $sql = "INSERT INTO user (" . $user->getUserAttributesAsList("key", false) . ") VALUES (" . $user->getUserAttributesAsList("value", true) . ");";
+
             $this->db->exec($sql);
 
             $user = $this->findOne($this->db->lastInsertId());
@@ -72,7 +74,7 @@ class DBUserStore implements UserStore
 
     /**
      * methode to update user information.
-     * @param object $user
+     * @param User $user
      * @return User
      */
     public function update(User $user): User
@@ -80,8 +82,7 @@ class DBUserStore implements UserStore
         $address_ID = $this->addressStore->update($user);
         $user->setAddressID($address_ID);
 
-        $sql = "UPDATE user SET " . $user->getAttributes("key", "set") . " WHERE user_ID = '" . $user->getUserID() . "';";
-
+        $sql = "UPDATE user SET " . $user->getUserAttributesAsSet(",") . " WHERE user_ID = '" . $user->getUserID() . "';";
         $this->db->exec($sql);
         return $this->findOne($user->getUserID());
     }
@@ -118,12 +119,13 @@ class DBUserStore implements UserStore
         $stmt->bindColumn(9, $genre);
         $stmt->bindColumn(10, $members);
         $stmt->bindColumn(11, $other_remarks);
+        $stmt->bindColumn(12, $dsr);
         $stmt->fetch(PDO::FETCH_BOUND);
 
         $user = array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type
         , "name" => $name, "surname" => $surname, "password" => $password, "phone_number" => $phone_number
         , "email" => $email, "genre" => $genre, "members" => $members, "other_remarks" => $other_remarks
-        , "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
+        , "dsr" => $dsr, "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
         
         if ($address_ID !== NULL) {
             $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";

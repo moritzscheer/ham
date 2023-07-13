@@ -98,7 +98,7 @@ class FileUserStore implements UserStore
             }
             $i++;
         }
-        throw new Exception("No such Item\User was found.");
+        throw new Exception("No such items\User was found.");
     }
 
     /**
@@ -114,7 +114,7 @@ class FileUserStore implements UserStore
                 return User::getJsonUser($userJSON);
             }
         }
-        throw new Exception("No such Item\User was found.");
+        throw new Exception("No such items\User was found.");
     }
 
     /**
@@ -149,7 +149,7 @@ class FileUserStore implements UserStore
     }
 
     /**
-     * Returns all Item\User stored in the user.json file
+     * Returns all items\User stored in the user.json file
      * @return array
      */
     public function findAll()

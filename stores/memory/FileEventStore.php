@@ -28,7 +28,7 @@ class FileEventStore implements EventStore
 
 
     /**
-     * Adds an Item\Event to json file
+     * Adds an items\Event to json file
      * @param array $item
      * @return bool
      */
@@ -56,8 +56,8 @@ class FileEventStore implements EventStore
     }
 
     /**
-     * Stores an Item\Event to the event json file
-     * @param Event $item an Item\Event object
+     * Stores an items\Event to the event json file
+     * @param Event $item an items\Event object
      * @return bool return true if event was successfully written
      * @throws Exception will be thrown if item is not an event object
      */
@@ -90,7 +90,7 @@ class FileEventStore implements EventStore
     }
 
     /**
-     * Deletes Item\Event form json file by given id
+     * Deletes items\Event form json file by given id
      *
      * Deletes an entry in the array and overwrites the json file
      * @param string $id
@@ -105,7 +105,7 @@ class FileEventStore implements EventStore
                 return;
             }
         }
-        throw new Exception("No such Item\Event was found.");
+        throw new Exception("No such items\Event was found.");
     }
 
     public function findMany(array $ids)

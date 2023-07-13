@@ -22,9 +22,9 @@
     </form>
     <div id="select_image_box" >
         <form method="post" id="flickr_search">
-            <input type="search" name="flickr_search" placeholder="search" >
+            <input type="search" name="flickr_search" placeholder="search"  class"<?php echo $_SESSION["dsr"] ?>">
             <label>Search
-                <input type="submit" id="submit_flickr_search" placeholder="search" >
+                <input type="submit" id="submit_flickr_search" placeholder="search"  class"<?php echo $_SESSION["dsr"] ?>">
             </label>
         </form>
         <form method="post" id="flickr_images">
@@ -37,7 +37,7 @@
             <form method="post" enctype="multipart/form-data">
                 <?php echo $error_message ?>
                 <label id="select_own">Select your Image
-                    <input type="file" accept=".jpg, .png, .jpeg" name="upload_image" onclick="onImageAdd(upload_image)">
+                    <input type="file" accept=".jpg, .png, .jpeg" name="upload_image" onclick="onImageAdd(this)">
                 </label>
                 <label id="submit_own" >upload
                     <input type="submit" name="upload_image" value="upload_image">
@@ -53,10 +53,16 @@
 </section>
 <script>
     function onImageAdd(image) {
-        var preview = window.document.getElementById('image_preview').getRootNode();
-        preview.src = URL.createObjectURL(image.target.files[0]);
+        var preview = document.getElementById("image_preview");
+        var newImage = new Image();
+
+        input.addEventListener('change', () => {
+            newImage.src = URL.createObjectURL(image.files[0]);
+        })
+        newImage.alt = "could not load image";
         preview.onload = function (){
             URL.revokeObjectURL(preview.src);
+            preview.appendChild(newImage);
         }
     }
 </script>

@@ -12,7 +12,8 @@ $_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false, "profi
 
 if($_SESSION["loggedIn"]["status"] === true) {
     $_SESSION["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
-
+    $_SESSION["dsr"] = ($_SESSION["loggedIn"]["user"]->getDsr() === "y") ? "disable" : "";
+    
     $profile_header_box =                           
         '<div id="name">                                   '.
         $_SESSION["loggedIn"]["user"]->getName().' '.
@@ -98,7 +99,7 @@ if(isset($_POST["register"])) {
             throw new Exception("Passwords must be the same.");
         }
     } catch (Exception $ex) {
-        $error_message = $ex->getMessage();
+        $error_message = "$ex->getMessage()";
     }
 }
 
@@ -236,11 +237,12 @@ if(isset($_POST["onDeleteClicked"]) && $_POST["token"] === $_SESSION["token"]) {
  * $_POST["viewProfile"] contains the user_ID of the profile
 
  */
-if(isset($_POST["viewProfile"]) && $_POST["token"] === $_SESSION["token"]) {
+if(isset($_POST["viewProfile"])) {
     try {
         if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
             // sets the user variable to the loggedInUser (user variable is displayed in profile)
             $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
+            var_dump($_SESSION["user"]);
             // sets the profile navigation to private -> with navigation buttons
             $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
         } else {
@@ -252,9 +254,6 @@ if(isset($_POST["viewProfile"]) && $_POST["token"] === $_SESSION["token"]) {
 
         // sets the images of the profile via user_ID
         setProfileImages($_POST["viewProfile"], false);
-
-        $_SESSION["hintField"]["visibility"] = "";
-        $_SESSION["hintField"]["button"] = "hidden";
 
         // redirect to profile page
         header("Location: profile.php");
@@ -276,12 +275,13 @@ if(isset($_POST["viewEditProfile"]) && $_POST["token"] === $_SESSION["token"]) {
         // sets the images of the profile via user_ID
         setProfileImages($_POST["viewEditProfile"], true);
 
-        // adds the hint field
+        // adds the hint field only if registered
         $_SESSION["hintField"]["button"] = "visible";
         if($_SESSION["hintField"]["showAlways"] === true) {
             $_SESSION["hintField"]["visibility"] = "hintVisible";
             $_SESSION["hintField"]["message"] = 'Hint: To Change Images in Profile hover on an image and select "Edit Image".';
         }
+        
         // redirect to edit profile page
         header("Location: editProfile.php");
         exit();
@@ -300,9 +300,6 @@ if(isset($_POST["viewChangePassword"]) && $_POST["token"] === $_SESSION["token"]
         // sets the images of the profile via user_ID
         setProfileImages($_POST["viewChangePassword"], false);
 
-        $_SESSION["hintField"]["visibility"] = "";
-        $_SESSION["hintField"]["button"] = "hidden";
-
         // redirect to change password page
         header("Location: changePassword.php");
         exit();
@@ -319,18 +316,19 @@ if(isset($_POST["viewChangePassword"]) && $_POST["token"] === $_SESSION["token"]
  * @return User
  */
 function update_user_variable($user): User {
-    isset($_POST["type"]) && is_string($_POST["type"])   ?   $user->setType(htmlspecialchars($_POST["type"]))   :   "";
-    isset($_POST["name"]) && is_string($_POST["name"])   ?   $user->setName(htmlspecialchars($_POST["name"]))   :   "";
-    isset($_POST["surname"]) && is_string($_POST["surname"])   ?   $user->setSurname(htmlspecialchars($_POST["surname"]))   :   "";
-    isset($_POST["phone_number"]) && is_string($_POST["phone_number"])   ?   $user->setPhoneNumber(htmlspecialchars($_POST["phone_number"]))   :   "";
-    isset($_POST["email"]) && is_string($_POST["email"])   ?   $user->setEmail(htmlspecialchars($_POST["email"]))   :   "";
-    isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $user->setGenre(htmlspecialchars($_POST["genre"]))   :   "";
-    isset($_POST["members"]) && is_string($_POST["members"])   ?   $user->setMembers(htmlspecialchars($_POST["members"]))   :   "";
-    isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $user->setOtherRemarks(htmlspecialchars($_POST["other_remarks"]))   :   "";
-    isset($_POST["user_street_name"])&& is_string($_POST["user_street_name"])   ?   $user->setStreetName(htmlspecialchars($_POST["user_street_name"]))   :   "";
-    isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $user->setHouseNumber(htmlspecialchars($_POST["user_house_number"]))  :   "";
-    isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $user->setPostalCode(htmlspecialchars($_POST["user_postal_code"]))   :   "";
-    isset($_POST["user_city"]) && is_string($_POST["user_city"])   ?   $user->setCity(htmlspecialchars($_POST["user_city"]))   :   "";
+    isset($_POST["type"]) && is_string($_POST["type"])   ?   $user->setType($_POST["type"])   :   "";
+    isset($_POST["name"]) && is_string($_POST["name"])   ?   $user->setName($_POST["name"])   :   "";
+    isset($_POST["surname"]) && is_string($_POST["surname"])   ?   $user->setSurname($_POST["surname"])   :   "";
+    isset($_POST["phone_number"]) && is_string($_POST["phone_number"])   ?   $user->setPhoneNumber($_POST["phone_number"])   :   "";
+    isset($_POST["email"]) && is_string($_POST["email"])   ?   $user->setEmail($_POST["email"])   :   "";
+    isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $user->setGenre($_POST["genre"])   :   "";
+    isset($_POST["members"]) && is_string($_POST["members"])   ?   $user->setMembers($_POST["members"])   :   "";
+    isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $user->setOtherRemarks($_POST["other_remarks"])   :   "";
+    isset($_POST["dsr"]) && is_string($_POST["dsr"])   ?   $user->setDsr($_POST["dsr"])   :   $user->setDsr("n");
+    isset($_POST["user_street_name"])&& is_string($_POST["user_street_name"])   ?   $user->setStreetName($_POST["user_street_name"])   :   "";
+    isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $user->setHouseNumber($_POST["user_house_number"])  :   "";
+    isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $user->setPostalCode($_POST["user_postal_code"])   :   "";
+    isset($_POST["user_city"]) && is_string($_POST["user_city"])   ?   $user->setCity($_POST["user_city"])   :   "";
     return $user;
 }
 
