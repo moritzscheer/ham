@@ -70,8 +70,9 @@
         <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_2 ?>">
             <h1>More Information</h1>
 
-            <div id="type-entry" class="entry">* Type:
-                <div class="type">
+            <fieldset>
+                <legend>Type:</legend>
+                <div id="type-entry" class="entry">
                     <label>Musician
                         <input type="radio" name="type" value="Musician" required>
                     </label>
@@ -79,7 +80,7 @@
                         <input type="radio" name="type" value="Host" required>
                     </label>
                 </div>
-            </div>
+            </fieldset>
 
             <label id="input-entry" class="entry">Genre:
                 <input type="text" value="<?php echo $_SESSION["user"]->getGenre() ?>" name="genre">
@@ -119,8 +120,8 @@
 
             <label id="agreementField">*
                 <input type="checkbox" id="agreementCheck" name="dsr" value="y" required>
-                <div id="agreementText"> I agree with the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
-                        of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy</a></div>
+                <div id="agreementText"> I agree with the <a id="agreementLinks" href="impressum.php" target="_blank" rel="noopener noreferrer">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php" target="_blank" rel="noopener noreferrer">Terms
+                        of Use</a> and the <a id="agreementLinks" href="datenschutz.php" target="_blank" rel="noopener noreferrer">Privacy Policy</a></div>
             </label>
 
             <div class="submit">

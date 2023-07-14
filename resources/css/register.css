@@ -103,21 +103,9 @@
     color: black;
 }
 
-#agreementField {
-    display: flex;
-    flex-direction: row;
-    place-items: flex-start;
-}
 
-#agreementCheck {
-    scale: 120%;
-    margin-left: 2%;
-    margin-right: 2%;
-}
 
-#agreementText > a {
-    color: dodgerblue;
-}
+
 
 .submit {
     display: flex;

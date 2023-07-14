@@ -49,6 +49,7 @@ class DBUserStore implements UserStore
 
             // checking if an entry already exist with the password an email
             $sql = "SELECT * FROM user WHERE email = '" . $user->getEmail() . "' OR password = '" . $user->getPassword() . "';";
+
             $stmt = $this->db->query($sql)->fetch();
             if ($stmt !== false) {
                 throw new Exception("Email or Password already exist");
@@ -60,7 +61,6 @@ class DBUserStore implements UserStore
             }
 
             $sql = "INSERT INTO user (" . $user->getUserAttributesAsList("key", false) . ") VALUES (" . $user->getUserAttributesAsList("value", true) . ");";
-
             $this->db->exec($sql);
 
             $user = $this->findOne($this->db->lastInsertId());
@@ -68,7 +68,7 @@ class DBUserStore implements UserStore
             return $user;
         } catch (Exception $ex) {
             $this->db->rollBack();
-            throw new Exception($ex);
+            throw new Exception($ex->getMessage());
         }
     }
 

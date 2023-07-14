@@ -43,7 +43,7 @@
 
             <div id="profile_submit">
                 <label>Cancel
-                    <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
+                    <input type="submit" name="viewProfile" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
                 </label>
                 <label>Save <Change></Change>
                     <input type="submit" name="change_password">

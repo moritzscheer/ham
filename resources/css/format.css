@@ -51,8 +51,6 @@ label:has(input[type=submit]) {
 }
 
 
-
-
 /* visibility classes */
 .visible {
     display: grid !important;
@@ -70,9 +68,6 @@ label:has(input[type=submit]) {
 #hidden {
     display: none !important;
 }
-
-
-
 
 
 /* formatting for images  */
@@ -98,10 +93,6 @@ label:has(input[type=submit]) {
 }
 
 
-
-
-
-
 /* formatting for input fields */
 .text-line-pre {
     white-space: pre-line;
@@ -122,17 +113,15 @@ input[type=text], input[type=password], input[type=tel], input[type=email] {
 input[type=submit], input[type=file] {
     display: none;
 }
-
-
+input:disabled, label:has(input:disabled) {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
 input:-webkit-autofill {
     -webkit-text-fill-color: white;
     -webkit-font-feature-settings: unset;
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
 }
-
-
-
 
 
 /* formatting for output fields */
@@ -179,14 +168,9 @@ input:-webkit-autofill {
 #error-message {
     text-align: center;
 }
-
 #success_message {
     color:green;
-
 }
-
-
-
 
 
 /* formatting for entry sets (attribute and value) */
@@ -209,9 +193,13 @@ input:-webkit-autofill {
 #type-entry {
     grid-template-columns: auto auto;
     grid-template-rows: auto;
+    gap: 20px;
+    justify-content: center;
+    margin: unset;
 }
-#type-entry > div{
-    margin-right: auto;
+#type-entry label {
+    width: max-content;
+    text-align: center;
 }
 #split {
     display: grid;
@@ -221,9 +209,9 @@ input:-webkit-autofill {
 #split input {
     width: 100%;
 }
-
-
-
+fieldset {
+    margin: 10px 0 10px 0;
+}
 
 
 /* styling for the areas around the flickr box */
@@ -251,7 +239,21 @@ input:-webkit-autofill {
 }
 
 
-
+/* styling for checkfield */
+#agreementField {
+    display: flex;
+    flex-direction: row;
+    place-items: flex-start;
+    margin: 10px 0 10px 0;
+}
+#agreementText > a {
+    color: dodgerblue;
+}
+#agreementCheck {
+    scale: 120%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
 
 
 

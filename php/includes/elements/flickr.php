@@ -22,9 +22,9 @@
     </form>
     <div id="select_image_box" >
         <form method="post" id="flickr_search">
-            <input type="search" name="flickr_search" placeholder="search"  class"<?php echo $_SESSION["dsr"] ?>">
+            <input type="search" name="flickr_search" placeholder="search" <?php echo $_SESSION["dsr"] ?>>
             <label>Search
-                <input type="submit" id="submit_flickr_search" placeholder="search"  class"<?php echo $_SESSION["dsr"] ?>">
+                <input type="submit" id="submit_flickr_search" placeholder="search" <?php echo $_SESSION["dsr"] ?>>
             </label>
         </form>
         <form method="post" id="flickr_images">

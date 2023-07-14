@@ -34,11 +34,7 @@ class DBAddressStore implements AddressStore {
      */
     public function create(object $item): string {
         // checking if an entry already exist
-        $sql = "SELECT address_ID FROM address WHERE ".
-               "street_name = '".$item->getStreetName()."' AND ".
-               "house_number = '".$item->getHouseNumber()."' AND ".
-               "postal_code = '".$item->getPostalCode()."' AND ".
-               "city = '".$item->getCity()."';";
+        $sql = "SELECT address_ID FROM address WHERE " . $item->getAddressAttributesAsSet("AND") . ";";
         $stmt = $this->db->query($sql)->fetch();
 
         if ($stmt !== false) { // if an entry exist
@@ -63,26 +59,36 @@ class DBAddressStore implements AddressStore {
             $stmt1 = $this->db->query($sql)->fetch();
             $DataInDB = $stmt1 !== false;
 
-
             // checking if address_ID is saved in any entry
             $sql = "SELECT COUNT(*) FROM (".
                 "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
                 "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
             $stmt2 = $this->db->query($sql)->fetch();
-            
-            if($item->getAddressID() === NULL || $stmt2["COUNT(*)"] > 1) {  // if address_ID is used somewhere else or null
-                if($DataInDB) {
-                     return $stmt1["address_ID"];
+            $IDUsedAnywhereElse = $stmt2["COUNT(*)"] > 1;
+
+            if($item->getAddressID() === "") {  // if item had no address_ID
+                if ($item->getStreetName() === "" && $item->getHouseNumber() === "" && $item->getPostalCode() === "" && $item->getCity() === "") {
+                    // if no address was typed In
+                    return "";
+                } elseif ($DataInDB) {
+                    return $stmt1["address_ID"];
                 } else {
-                    $sql = "INSERT INTO address (".$item->getAddressAttributesAsList("key", false).") VALUES (".$item->getAddressAttributesAsList("value", true).");";
-                    $this->db->exec($sql);
-                    return $this->db->lastInsertId();
+                    return $this->create($item);
                 }
-            } else {
-                // else edit address
-                $sql = "UPDATE address SET ".$item->getAddressAttributesAsSet(",")." WHERE address_ID = ". $item->getAddressID().";";
-                $this->db->exec($sql);
-                return $item->getAddressID();
+            } else {  // if item had an address_ID
+                if ($item->getStreetName() === "" && $item->getHouseNumber() === "" && $item->getPostalCode() === "" && $item->getCity() === "") {
+                    // if no address was typed In
+                    if(!$IDUsedAnywhereElse) {
+                        $this->delete($item->getAddressID());
+                    }
+                    return "";
+                } elseif ($DataInDB) {
+                    return $item->getAddressID();
+                } else {
+                    $sql = "UPDATE address SET ".$item->getAddressAttributesAsSet(",")." WHERE address_ID = ". $item->getAddressID().";";
+                    $this->db->exec($sql);
+                    return $item->getAddressID();
+                }
             }
         } catch (SQLiteException $e) {
             return $item->getAddressID();

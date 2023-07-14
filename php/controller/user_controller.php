@@ -8,13 +8,13 @@ global $userStore, $addressStore, $blobObj, $registerFlag, $db, $success_message
 use Item\User;
 
 // init loggedIn session variable
-$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false, "profile_small" => "../resources/images/profile/default/defaultSmall.png");
+$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false, "profile_small" => "../resources/images/profile/default/defaultSmall.png", "user_ID" => "");
 
 if($_SESSION["loggedIn"]["status"] === true) {
-    $_SESSION["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
-    $_SESSION["dsr"] = ($_SESSION["loggedIn"]["user"]->getDsr() === "y") ? "disable" : "";
-    
-    $profile_header_box =                           
+    $_SESSION["loggedIn"]["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
+    $_SESSION["dsr"] = ($_SESSION["loggedIn"]["user"]->getDsr() === "n") ? "disabled" : "";
+
+    $profile_header_box =
         '<div id="name">                                   '.
         $_SESSION["loggedIn"]["user"]->getName().' '.
         $_SESSION["loggedIn"]["user"]->getSurname().
@@ -25,10 +25,7 @@ if($_SESSION["loggedIn"]["status"] === true) {
 
     $_SESSION["Musician"] = ($_SESSION["loggedIn"]["user"]->getType() === "Musician") ? "checked" : "";
     $_SESSION["Host"] = ($_SESSION["loggedIn"]["user"]->getType() === "Host") ? "checked" : "";
-} else {
-    $_SESSION["user_ID"] = "";
 }
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -62,6 +59,8 @@ $error_message = "";
 /*                                               post methods                                                         */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
+
+
 /**
  * If a user clicks on logout or on Sign up
  */
@@ -77,17 +76,20 @@ if(isset($_POST["register"])) {
         if($password === $repeat_password) {
             // sets password in user object
             $_SESSION["user"]->setPassword(password_hash($password, PASSWORD_DEFAULT));
+            isset($_POST["dsr"]) && is_string($_POST["dsr"]) ? $_SESSION["user"]->setDsr($_POST["dsr"]) : $_SESSION["user"]->setDsr("n");
 
             // creates user and address in store
             $_SESSION["user"] = $userStore->create($_SESSION["user"]);
 
             // sets the loggedIn session variable with user and profile picture for header
             $image = getImage($_SESSION["user"]->getUserID(), "profile_small", "../resources/images/profile/default/defaultSmall.png", false);
-            $_SESSION["loggedIn"] = array("status" => true, "user" => $_SESSION["user"], "profile_small" => $image);
+            $_SESSION["loggedIn"]["status"] = true;
+            $_SESSION["loggedIn"]["user"] = $_SESSION["user"];
+            $_SESSION["loggedIn"]["profile_small"] = $image;
             unset($_SESSION["user"]);
 
             $_SESSION["success_message"] = "Success! Welcome to our Team.";
-            $_SESSION["hintField"]["showAlways"] = true;
+            $_SESSION["hintField"]["show"] = true;
             $_SESSION["token"] = uniqid();
 
             // redirect to next step
@@ -99,7 +101,7 @@ if(isset($_POST["register"])) {
             throw new Exception("Passwords must be the same.");
         }
     } catch (Exception $ex) {
-        $error_message = "$ex->getMessage()";
+        $error_message = $ex->getMessage();
     }
 }
 
@@ -113,7 +115,9 @@ if(isset($_POST["login"])) {
 
         // sets the loggedIn session variable with user and profile picture for header
         $image = getImage($_SESSION["user"]->getUserID(), "profile_small", "../resources/images/profile/default/defaultSmall.png", false);
-        $_SESSION["loggedIn"] = array("status" => true, "user" => $_SESSION["user"], "profile_small" => $image);
+        $_SESSION["loggedIn"]["status"] = true;
+        $_SESSION["loggedIn"]["user"] = $_SESSION["user"];
+        $_SESSION["loggedIn"]["profile_small"] = $image;
         unset($_SESSION["user"]);
 
         $_SESSION["token"] = uniqid();
@@ -192,11 +196,9 @@ if(isset($_POST["change_password"]) && $_POST["token"] === $_SESSION["token"]) {
 if(isset($_POST["update_profile"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
         $user = update_user_variable($_SESSION["loggedIn"]["user"]);
-        $_SESSION["loggedIn"]["user"] = $userStore->update($user);
+        isset($_POST["dsr"]) && is_string($_POST["dsr"]) ? $user->setDsr($_POST["dsr"]) : $user->setDsr("n");
 
-        // redirect to profile page
-        header("Location: profile.php");
-        exit();
+        $_SESSION["loggedIn"]["user"] = $userStore->update($user);
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
     }
@@ -211,7 +213,7 @@ if(isset($_POST["show_hint"]) && $_POST["token"] === $_SESSION["token"]) {
         $_SESSION["hintField"]["visibility"] = "hintVisible";
     } else {
         $_SESSION["hintField"]["visibility"] = "";
-        $_SESSION["hintField"]["showAlways"] = false;
+        $_SESSION["hintField"]["show"] = false;
     }
 }
 
@@ -242,7 +244,7 @@ if(isset($_POST["viewProfile"])) {
         if($_SESSION["loggedIn"]["status"] === true && $_SESSION["loggedIn"]["user"]->getUserID() == $_POST["viewProfile"]) {
             // sets the user variable to the loggedInUser (user variable is displayed in profile)
             $_SESSION["user"] = $_SESSION["loggedIn"]["user"];
-            var_dump($_SESSION["user"]);
+
             // sets the profile navigation to private -> with navigation buttons
             $_SESSION["navigation"] = "../php/includes/navigation/profile/private.php";
         } else {
@@ -277,7 +279,7 @@ if(isset($_POST["viewEditProfile"]) && $_POST["token"] === $_SESSION["token"]) {
 
         // adds the hint field only if registered
         $_SESSION["hintField"]["button"] = "visible";
-        if($_SESSION["hintField"]["showAlways"] === true) {
+        if($_SESSION["hintField"]["show"] === true) {
             $_SESSION["hintField"]["visibility"] = "hintVisible";
             $_SESSION["hintField"]["message"] = 'Hint: To Change Images in Profile hover on an image and select "Edit Image".';
         }
@@ -324,7 +326,6 @@ function update_user_variable($user): User {
     isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $user->setGenre($_POST["genre"])   :   "";
     isset($_POST["members"]) && is_string($_POST["members"])   ?   $user->setMembers($_POST["members"])   :   "";
     isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $user->setOtherRemarks($_POST["other_remarks"])   :   "";
-    isset($_POST["dsr"]) && is_string($_POST["dsr"])   ?   $user->setDsr($_POST["dsr"])   :   $user->setDsr("n");
     isset($_POST["user_street_name"])&& is_string($_POST["user_street_name"])   ?   $user->setStreetName($_POST["user_street_name"])   :   "";
     isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $user->setHouseNumber($_POST["user_house_number"])  :   "";
     isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $user->setPostalCode($_POST["user_postal_code"])   :   "";

@@ -79,8 +79,9 @@
                         </label>
                     </div>
 
-                    <label id="type-entry" class="entry">Type:
-                        <div>
+                    <fieldset>
+                        <legend>Type:</legend>
+                        <div id="type-entry" class="entry">
                             <label>Musician
                                 <input type="radio" name="type" value="Musician" <?php echo $_SESSION["Musician"] ?> required>
                             </label>
@@ -88,7 +89,7 @@
                                 <input type="radio" name="type" value="Host" <?php echo $_SESSION["Host"] ?> required>
                             </label>
                         </div>
-                    </label>
+                    </fieldset>
 
                     <label id="input-entry" class="entry">Genre:
                         <input type="text" name="genre" value="<?php echo $_SESSION["user"]->getGenre() ?>">
@@ -107,19 +108,19 @@
                     <h2>Legal Disclosure</h2>
 
                     <label class="entry">
-                        <input type="checkbox" id="agreementCheck" name="dsr" value="y" <?php echo $_SESSION["loggedIn"]["user"]->getDsrCheckBox() ?>>
+                        <input type="checkbox" id="agreementCheck" name="dsr" value="y" <?php echo $_SESSION["loggedIn"]["user"]->getDsrCheckBox() ?> onclick="document.getElementById('update_profile').click()">
                         <div id="agreementText"> I agree with the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
                                 of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy</a></div>
                     </label>
-                    <p>Note that if you uncheck this mark you can no longer see content from third party companies including google maps and flickr.</p>
+                    <p>Note that if you uncheck this mark you can no longer see content from third party companies including Google Maps and Flickr.</p>
                 </div>
 
                 <div id="profile_submit">
                     <label>Cancel
-                        <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
+                        <input type="submit" name="viewProfile" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
                     </label>
                     <label>Save Change
-                        <input type="submit" name="update_profile">
+                        <input type="submit" id="update_profile" name="update_profile">
                     </label>
                 </div>
             </form>

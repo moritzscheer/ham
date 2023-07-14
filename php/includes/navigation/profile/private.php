@@ -2,14 +2,14 @@
     <form method="post" action="editProfile.php">
         <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
         <label id="navigation_button">edit Profile
-            <input type="submit" name="viewEditProfile" value="<?php echo $_SESSION["user_ID"] ?>">
+            <input type="submit" name="viewEditProfile" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
         </label>
     </form>
 
     <form method="post" action="changePassword.php">
         <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
         <label id="navigation_button">Change Password
-            <input type="submit" name="viewChangePassword" value="<?php echo $_SESSION["user_ID"] ?>">
+            <input type="submit" name="viewChangePassword" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
         </label>
     </form>
 

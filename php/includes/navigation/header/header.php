@@ -101,7 +101,7 @@
 
         <form action="profile.php" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <label id="navbar-button">profile
-                <input type="submit" name="viewProfile" value="<?php echo $_SESSION["user_ID"] ?>">
+                <input type="submit" name="viewProfile" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
             </label>
         </form>
 

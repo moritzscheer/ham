@@ -12,7 +12,7 @@ footer {
     align-items: center;
 }
 
-a {
+footer a {
     color: var(--grey);
     text-decoration: none;
 }

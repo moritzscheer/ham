@@ -36,7 +36,7 @@
         </label>
         
         <label id="option2">My Events
-            <input type="submit" name="onGetMyEvents" value="<?php echo $_SESSION["user_ID"] ?>">
+            <input type="submit" name="onGetMyEvents" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
         </label>
     </form>
     

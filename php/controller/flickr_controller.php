@@ -21,8 +21,11 @@ if (isset($_POST["onEditImage"])) {
         $_SESSION["profile_preview"]["category"] = $_POST["onEditImage"];
 
         if($_SESSION["loggedIn"]["user"]->getDsr() === "n") {
-            $_SESSION["flickr_search"] = '<span>If you want to see the content of Third party companies accept the <a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, <a id="agreementLinks" href="nutzungsbedingungen.php">Terms
-                                of Use</a> and the <a id="agreementLinks" href="datenschutz.php">Privacy Policy.</span>';
+            $_SESSION["flickr_search"] =
+                '<span id="agreementText">If you want to see the content of Third party companies accept the <a id="agreementLinks" href="impressum.php" target="_blank" rel="noopener noreferrer">Legal Disclosure</a>' .
+                ', <a id="agreementLinks" href="nutzungsbedingungen.php" target="_blank" rel="noopener noreferrer">Terms of Use</a>' .
+                ' and the <a id="agreementLinks" href="datenschutz.php" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</span>';
+
         }
     }
 }
