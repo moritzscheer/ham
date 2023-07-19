@@ -197,7 +197,7 @@ class DBEventStore implements EventStore {
 
         $return = array();
         foreach ($stmt as $event) {
-            $newEvent = (new Item\Event)->withAddress($event);
+            $newEvent = Event::withAddress($event);
 
             try {
                 $imageID = $this->blobObj->queryID($newEvent->getEventID(), "event");

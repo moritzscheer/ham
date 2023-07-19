@@ -3,11 +3,11 @@
 
 class Flickr {
 
-    private $flickr_key;
+    private $api_key;
 
     // Setting up flickr_key and flickr_secret
-    public function __construct( $flickr_key ) {
-        $this->flickr_key = $flickr_key;
+    public function __construct( $api_key ) {
+        $this->$api_key = $api_key;
     }
 
     public function searchPhotos($tag, $page) : string {
@@ -16,7 +16,7 @@ class Flickr {
     
             // Construct the url
             $url = 'https://api.flickr.com/services/rest/?method=flickr.photos.search';
-            $url .= '&api_key='.$this->flickr_key;
+            $url .= '&api_key='.$this->api_key;
             $url .= '&text='.$tag;
             $url .= '&tags='.$tag;
             $url .= '&media=photos';

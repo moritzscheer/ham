@@ -8,6 +8,7 @@ include_once "../php/includes/items/Event.php";
 
 // api's
 include_once "../php/includes/api/Flickr.php";
+include_once "../php/includes/api/GeoLocation.php";
 
 // memory stores
 include_once "../stores/memory/FileUserStore.php";
@@ -26,4 +27,5 @@ include_once "../php/settings.php";
 include_once "../php/controller/user_controller.php";
 include_once "../php/controller/item_controller.php";
 include_once "../php/controller/flickr_controller.php";
+include_once "../php/controller/map_controller.php";
 

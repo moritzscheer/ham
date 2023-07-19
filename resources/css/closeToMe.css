@@ -25,11 +25,9 @@
     grid-template-rows: auto;
     align-content: center;
 }
-
 .closeToMe-Filter > label {
     margin: auto;
 }
-
 .closeToMe-Search {
     grid-column: 1;
     height: 30px;
@@ -39,7 +37,6 @@
     padding-left: 10px;
     outline: none;
 }
-
 .closeToMe-Radius-Box {
     grid-column: 3;
     font-size: larger;
@@ -48,28 +45,34 @@
     grid-template-columns: max-content max-content;
     gap: 10px;
 }
-
+input[type="text"] {
+    background-color: unset !important;
+    border-radius: unset !important;
+    position: unset !important;
+    border: unset !important;
+    border: unset !important;
+    outline: unset !important;
+}
+#map, strong, span, input[type="text"] {
+    color: black !important;
+}
 
 @media screen and (max-width: 500px) {
-
     .closeToMe-Filter {
         grid-template-columns: 100%;
         place-items: center;
         margin-bottom: 0px;
     }
-
     .closeToMe-Search {
         margin: 10px;
         width: 100%;
     }
-
     .closeToMe-Radius-Box {
         grid-column: 1;
         padding-left: 5px;
     }
-
     .closeToMe-Filter > label {
         margin-top: 5px;
     }
-
 }
+

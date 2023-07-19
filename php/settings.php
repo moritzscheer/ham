@@ -1,6 +1,6 @@
 <?php
 
-global $blobObj, $db, $flickrApi;
+global $blobObj, $db, $flickrApi, $mapApi;
 
 use Item\User;
 use Item\Event;
@@ -36,24 +36,29 @@ session_start();
 /*                                                  assign urls to stylesheets                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-$_SESSION["url2"] = "";
 
 // sets the link to the stylesheet depending on which page is currently displayed
 if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile") || str_contains($_SERVER["PHP_SELF"], "editProfile")) {
-    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
+    $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
     if(str_contains($_SERVER["PHP_SELF"], "editProfile")) {
-        $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
+        $_SESSION["url"] .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
     }
 } elseif (str_contains($_SERVER["PHP_SELF"], "createEvent")) {
-    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/createEvent.css">';
-    $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
+    $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/createEvent.css">'.
+        '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
+
+    var_dump($_SESSION["url"]);
 } elseif (str_contains($_SERVER["PHP_SELF"], "bands") || str_contains($_SERVER["PHP_SELF"], "events")) {
-    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
+    $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
 } elseif (str_contains($_SERVER["PHP_SELF"], "closeToMe")) {
-    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/closeToMe.css">';
-    $_SESSION["url2"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
+    $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/closeToMe.css">'.
+        '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">'.
+        '<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.3.1/styles/a11y-light.min.css">'.
+        '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />'.
+        '<link rel="stylesheet" href="../resources/css/leaflet/range.css">'.
+        '<link rel="stylesheet" href="../resources/css/leaflet/search.css">';
 } else {
-    $_SESSION["url1"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/' . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . '.css">';
+    $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/' . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . '.css">';
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -64,7 +69,7 @@ $_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["init
 
 function initDatabase(): void {
 
-    global $db, $userStore, $addressStore, $eventStore, $blobObj, $flickrApi;
+    global $db, $userStore, $addressStore, $eventStore, $blobObj, $flickrApi, $mapApi;
 
     try {
         $user = "root";
@@ -85,6 +90,7 @@ function initDatabase(): void {
         $userStore = new DBUserStore($db, $addressStore, $blobObj);
 
         $flickrApi = new Flickr("3b8e15fa98c7850431166704a6ed5be0");
+        $mapApi = new GeoLocation("3e6cf917f419488cbeec8ac503210f17");
 
         insertDummies();
 

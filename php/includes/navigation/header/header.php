@@ -19,7 +19,7 @@
             </label>
         </form>
 
-        <form action="closeToMe.php" id="desktop">
+        <form action="closeToMe.php?map=init" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
             <label id="navbar-button">Close to Me
                 <input type="submit" id="navbar-button">
             </label>
@@ -60,21 +60,21 @@
 
 
     <div id="content-general" class="Header-Content">
-        <form action="bands.php?type=bands">
+        <form action="bands.php?type=bands" method="post">
             <label id="navbar-button">Bands
                 <input type="submit" value="Bands">
             </label>
         </form>
 
-        <form action="events.php?type=events">
+        <form action="events.php?type=events" method="post">
             <label id="navbar-button">Events
                 <input type="submit">
             </label>
         </form>
 
-        <form action="closeToMe.php">
+        <form action="closeToMe.php?map=init" class="<?php echo $_SESSION["profileHeader"]?>" method="post">
             <label id="navbar-button">Close To Me
-                <input type="submit" value="Close to Me">
+                <input type="submit">
             </label>
         </form>
 

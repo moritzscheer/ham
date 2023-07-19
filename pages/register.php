@@ -24,9 +24,9 @@
 
         <p id="error-message" class="<?php echo $progressBar ?>"><?php echo $error_message ?></p>
 
-        <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_1 ?>">
+        <form method="post" id="<?php echo $step_1 ?>">
             <h1>Personal Data</h1>
-
+            
             <label id="input-entry" class="entry">* Name:
                 <input type="text" value="<?php echo $_SESSION["user"]->getName() ?>" name="name" required>
             </label>
@@ -61,7 +61,7 @@
             <div class="submit">
                 <a href="index.php">Cancel</a>
                 <label>Next Step
-                    <input type="submit">
+                    <input type="submit" name="check_address">
                 </label>
             </div>
         </form>

@@ -25,6 +25,9 @@ class Event extends Item {
     // image attributes
     private ?array $blobData = null;
 
+    // distance to user
+    private ?float $distance = 0;
+    
     /**
      * @param array $item
      * @return Event
@@ -144,7 +147,7 @@ class Event extends Item {
     public function getEventAttributesAsList($keyOrValue, $withApostroph): string {
         $result = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
                 $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
             }
         }
@@ -158,7 +161,7 @@ class Event extends Item {
     public function getEventAttributesAsSet($separator): string {
         $result = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
                 $result = $this->concatSet($result, $key, $value, $separator);
             }
         }
@@ -431,6 +434,22 @@ class Event extends Item {
     public function setStreetName(?string $street_name): void
     {
         $this->street_name = $street_name;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getDistance(): ?float
+    {
+        return $this->distance;
+    }
+
+    /**
+     * @param float|null $distance
+     */
+    public function setDistance(?float $distance): void
+    {
+        $this->distance = $distance;
     }
 
 

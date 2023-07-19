@@ -27,6 +27,9 @@ class User extends Item {
     // small profile picture attributes
     private ?array $blobData = null;
 
+    // distance to user
+    private ?float $distance = 0;
+
     /**
      * constructor
      * @param $user
@@ -130,7 +133,7 @@ class User extends Item {
     public function getUserAttributesAsList($keyOrValue, $withApostroph): string {
         $result = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
                 $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
             }
         }
@@ -144,7 +147,7 @@ class User extends Item {
     public function getUserAttributesAsSet($separator): string {
         $result = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData") {
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
                 $result = $this->concatSet($result, $key, $value, $separator);
             }
         }
@@ -478,5 +481,21 @@ class User extends Item {
     public function setDsr(?string $dsr): void
     {
         $this->dsr = $dsr;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getDistance(): ?float
+    {
+        return $this->distance;
+    }
+
+    /**
+     * @param float|null $distance
+     */
+    public function setDistance(?float $distance): void
+    {
+        $this->distance = $distance;
     }
 }
