@@ -66,10 +66,9 @@ if (isset($_POST["submit"])) {
 
 
         // if an image was uploaded insert it in the files table
-        if(isset($_POST["image"])) {
-            $path = "../resources/images/events/" . verifyImage("image", "events");
-            $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
-        }
+        $path = "../resources/images/events/" . verifyImage("image", "events");
+        $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
+
         header("Location: events.php?type=events");
         exit();
     } catch (Exception $e) {
@@ -201,49 +200,47 @@ if (isset($_GET["submitSearchJavaScript"])) {
  * method for ajax
  */
 if (isset($_POST["range_update"])) {
-    $_SESSION["closeToMe"] = array();
-    //$_SESSION["events"] = $_POST["range_update"][0];
-    var_dump($_POST["range_update"]);
+    include $_SERVER['DOCUMENT_ROOT'] . "/php/settings.php";
+    initDatabase();
 
+    $closeToMe = array();
+    $message = json_decode($_POST["range_update"], true);
 
-    /*
-        foreach ($_SESSION["events"] as $value) {
-            if($value->getDistance() <= $_POST["range_update"]) {
-                $_SESSION["closeToMe"][] = $value;
-            }
-        }
-        try {
-            echo buildItemList($_SESSION["closeToMe"], "There are no nearby Events within an" . $_POST["range_update"][1] . "Range.", false);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-    */
-}
-
-if (isset($_POST["new_marker"])) {
-    $_SESSION["closeToMe"] = array();
-    //$_SESSION["events"] = $_POST["range_update"][0];
-    var_dump($_POST["new_marker"]);
-
-
-    /*
-    foreach ($_SESSION["events"] as $value) {
-        // gets the longitude and latitude from the item
-        $item_cord = $geoLocApi->getCoordinates($value->getStreetName(), $value->getHouseNumber(), $value->getPostalCode(), $value->getCity());
-
-        //calculates the distance and sets the distance attribute in object
-        $value->setDistance($geoLocApi->getDistance($item_cord, array("lat" => $_POST["new_marker"][1],"lon" => $_POST["new_marker"][2])));
-
-        if($value->getDistance() <= $_POST["new_marker"][3]) {
-            $_SESSION["closeToMe"][] = $value;
+    foreach ($message["list"] as $value) {
+        if($value["distance"] <= $_POST["range_update"]["range"]) {
+            $closeToMe[] = $value;
         }
     }
     try {
-        echo buildItemList($_SESSION["closeToMe"], "There are no nearby Events within an" . $_POST["location_request"][2] . "Range.", false);
+        echo buildItemList($closeToMe, "There are no nearby Events within an" . $_POST["range_update"][1] . "Range.", false);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
-    */
+}
+
+if (isset($_POST["new_marker"])) {
+    include $_SERVER['DOCUMENT_ROOT'] . "/php/settings.php";
+    initDatabase();
+
+    $closeToMe = array();
+    $message = json_decode($_POST["new_marker"], true);
+
+    foreach ($message["list"] as $value) {
+        // gets the longitude and latitude from the item
+        $item_cord = $geoLocApi->getCoordinates($value["street"], $value["houseNr"], $value["postalCode"], $value["city"]);
+
+        //calculates the distance and sets the distance attribute in object
+        $value["distance"] = $geoLocApi->getDistance($item_cord, array("lat" => $_POST["new_marker"]["lat"],"lon" => $_POST["new_marker"]["lon"]));
+
+        if($value["distance"] <= $_POST["new_marker"]["range"]) {
+            $closeToMe[] = $value;
+        }
+    }
+    try {
+        echo buildItemList($closeToMe, "There are no nearby Events within an" . $_POST["location_request"][2] . "Range.", false);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */

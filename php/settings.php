@@ -86,9 +86,9 @@ if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVE
 /*                                             create Database tables                                                 */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-$_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["initDatabase"] : initDatabase(true);
+$_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["initDatabase"] : initDatabase();
 
-function initDatabase(bool $init = false) : void {
+function initDatabase() : void {
 
     global $db, $userStore, $addressStore, $eventStore, $blobObj, $flickrApi, $geoLocApi;
 

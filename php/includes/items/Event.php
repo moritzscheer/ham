@@ -85,7 +85,8 @@ class Event extends Item {
             "Date" => $item->getDate(),
             "startTime" => $item->getStartTime(),
             "endTime" => $item->getEndTime(),
-            "requirements" => $item->getRequirements()
+            "requirements" => $item->getRequirements(),
+            "distance" => $item->getDistance()
         );
     }
 

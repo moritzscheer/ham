@@ -87,7 +87,7 @@ slider.on('input change', function(e) {
     map.fitBounds(circle.getBounds());
 
     // ajax request
-    var message = [JSON.stringify(list), radius];
+    var message = '{"list": ' + list + ', "radius":' + radius + "}";
     var xhttp;
 
     xhttp = new XMLHttpRequest();
@@ -161,7 +161,7 @@ const addressSearchControl = L.control.addressSearch(myAPIKey, {
         }
 
         // ajax request
-        var message = [JSON.stringify(list), latitude, longitude, radius];
+        var message = '{"list": ' + JSON.stringify(list) + ', "lat":' + latitude + ', "lon":' + longitude + ', "radius":' + radius + "}";
         var xhttp;
 
         xhttp = new XMLHttpRequest();
