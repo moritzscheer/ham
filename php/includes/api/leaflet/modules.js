@@ -376,12 +376,13 @@
     });
 
 
-    source: https://github.com/consbio/Leaflet.Range/blob/master/L.Control.Range-min.js
+    // source: https://github.com/consbio/Leaflet.Range/blob/master/L.Control.Range-min.js
     L.Control.Range = L.Control.extend({
         options: {
+            position: 'topright',
             min: null,
             max: null,
-            value: null,
+            value: 1000,
             step: null,
             orient: null,
             iconClass: 'leaflet-range-icon',
@@ -392,16 +393,26 @@
             if (this.options.icon) {
                 L.DomUtil.create('span', this.options.iconClass, container);
             };
+            var text = L.DomUtil.create('div', '', container);
+            text.id = "range_label";
+            text.innerHTML = "<strong id='range_text'> " + this.options.value * 2 + " Km Diameter</strong>";
+
             var slider = L.DomUtil.create('input', '', container);
             slider.type = 'range';
             slider.setAttribute('orient', this.options.orient);
-            slider.min = this.options.min;
-            slider.max = this.options.max;
-            slider.step = this.options.step;
-            slider.value = this.options.value;
+            slider.id = "range_slider";
+            slider.min = this.options.min * 1000;
+            slider.max = this.options.max * 1000;
+            slider.step = this.options.step * 1000;
+            slider.value = this.options.value * 1000;
 
             L.DomEvent.on(slider, 'mousedown mouseup click touchstart', L.DomEvent.stopPropagation);
 
+            /* IE11 seems to process events in the wrong order, so the only way to prevent map movement while dragging the
+             * slider is to disable map dragging when the cursor enters the slider (by the time the mousedown event fires
+             * it's too late becuase the event seems to go to the map first, which results in any subsequent motion
+             * resulting in map movement even after map.dragging.disable() is called.
+             */
             L.DomEvent.on(slider, 'mouseenter', function(e) {
                 map.dragging.disable()
             });
@@ -427,7 +438,10 @@
             this.options.value = value;
             this._slider.value = value;
         },
+
     });
+
+    L.Control.Range.include(L.Evented.prototype)
     
 
 

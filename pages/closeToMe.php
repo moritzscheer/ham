@@ -1,14 +1,14 @@
 <?php
     global $error_message;
-    include_once "../php/includes/head/head.php"
+    include_once "../php/includes/head/head.php";
 ?>
 <body>
     <?php include_once "../php/includes/navigation/header/header.php" ?>
 
     <h1> Close to Me </h1>
 
-    <div class="closeToMe-Grid"">
-     <div>
+    <div class="closeToMe-Grid">
+        <div>
             <?php echo $_SESSION["map"] ?>
         </div>
 
@@ -30,6 +30,9 @@
     <script src="../php/includes/api/leaflet/modules.js"></script>
     <script src="../php/includes/api/leaflet/map.js"></script>
 </body>
+<script>
+    var list = <?php echo json_encode($_SESSION["events"]); ?>;
+</script>
 </html>
 
 

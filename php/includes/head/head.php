@@ -1,4 +1,10 @@
-<?php include_once "../php/includes/includes.php" ?>
+<?php
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/php/settings.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/php/controller/user_controller.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/php/controller/item_controller.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/php/controller/flickr_controller.php";
+    include_once $_SERVER['DOCUMENT_ROOT'] . "/php/controller/map_controller.php";
+?>
 <!DOCTYPE html>
 <html lang="de">
 

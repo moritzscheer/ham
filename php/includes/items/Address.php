@@ -1,6 +1,7 @@
 <?php
 
-namespace Item;
+namespace php\includes\items;
+
 class Address
 {
     private int $address_ID;

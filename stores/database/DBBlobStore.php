@@ -1,6 +1,12 @@
 <?php
 
-class blob {
+namespace stores\database;
+
+use Exception;
+use PDO;
+use RuntimeException;
+
+class DBBlobStore {
 
     private PDO $db;
 
@@ -66,7 +72,8 @@ class blob {
     /**
      * @throws Exception
      */
-    public function selectBlob($id) {
+    public function selectBlob($id): array
+    {
 
         $sql = "SELECT mime,
                         data
@@ -84,7 +91,8 @@ class blob {
             "data" => $data);
     }
     
-    public function delete($id) {
+    public function delete($id): void
+    {
         $sql = "DELETE FROM files WHERE id = '".$id."';";
         $this->db->exec($sql);
     }

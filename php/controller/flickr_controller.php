@@ -1,5 +1,20 @@
 <?php
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                            import and autoload classes                                             */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+namespace php;
+
 global $blobObj, $flickrApi;
+
+use RuntimeException;
+
+include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                               http request functions                                               */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
 $_SESSION["flickr_search"] = $_SESSION["flickr_search"] ?? "";
 $_SESSION["selectImageBox"] = $_SESSION["selectImageBox"] ?? "";
@@ -37,7 +52,7 @@ if (isset($_POST["upload_image"])) {
     try {
         $_SESSION["profile_preview"]["source"] = "../resources/images/profile/custom/".verifyImage($_POST["upload_image"], "profile/custom");
         $_SESSION["profile_preview"]["image"] = '<img src="'.$_SESSION["profile_preview"]["source"].'" alt="could not load image">';
-    } catch (RuntimeException $ex) {
+    } catch (RuntimeException) {
         $error_message = "could not upload Image";
     }
 }

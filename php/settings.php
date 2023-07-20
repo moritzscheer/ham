@@ -1,10 +1,28 @@
 <?php
 
-global $blobObj, $db, $flickrApi, $mapApi;
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                            import and autoload classes                                             */
+/* ------------------------------------------------------------------------------------------------------------------ */
 
-use Item\User;
-use Item\Event;
+namespace php;
 
+global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventOptions, $geoLocApi;
+
+use Exception;
+use PDO;
+use PDOException;
+use php\includes\api\Flickr;
+use php\includes\api\GeoLoc;
+use php\includes\items\Event;
+use php\includes\items\User;
+use stores\database\DBAddressStore;
+use stores\database\DBBlobStore;
+use stores\database\DBEventStore;
+use stores\database\DBUserStore;
+use stores\memory\FileEventStore;
+use stores\memory\FileUserStore;
+
+include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                   start session                                                    */
@@ -40,16 +58,18 @@ session_start();
 // sets the link to the stylesheet depending on which page is currently displayed
 if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile") || str_contains($_SERVER["PHP_SELF"], "editProfile")) {
     $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';
+
     if(str_contains($_SERVER["PHP_SELF"], "editProfile")) {
         $_SESSION["url"] .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
     }
+
 } elseif (str_contains($_SERVER["PHP_SELF"], "createEvent")) {
     $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/createEvent.css">'.
         '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/flickr.css">';
 
-    var_dump($_SESSION["url"]);
 } elseif (str_contains($_SERVER["PHP_SELF"], "bands") || str_contains($_SERVER["PHP_SELF"], "events")) {
     $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
+
 } elseif (str_contains($_SERVER["PHP_SELF"], "closeToMe")) {
     $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/closeToMe.css">'.
         '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">'.
@@ -57,6 +77,7 @@ if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVE
         '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />'.
         '<link rel="stylesheet" href="../resources/css/leaflet/range.css">'.
         '<link rel="stylesheet" href="../resources/css/leaflet/search.css">';
+
 } else {
     $_SESSION["url"] = '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/' . basename(basename($_SERVER["PHP_SELF"], '/ham/pages/'), '.php') . '.css">';
 }
@@ -65,46 +86,41 @@ if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVE
 /*                                             create Database tables                                                 */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-$_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["initDatabase"] : initDatabase();
+$_SESSION["initDatabase"] = (isset($_SESSION["initDatabase"])) ? $_SESSION["initDatabase"] : initDatabase(true);
 
-function initDatabase(): void {
+function initDatabase(bool $init = false) : void {
 
-    global $db, $userStore, $addressStore, $eventStore, $blobObj, $flickrApi, $mapApi;
+    global $db, $userStore, $addressStore, $eventStore, $blobObj, $flickrApi, $geoLocApi;
 
     try {
         $user = "root";
         $pw = null;
-        $dsn = "sqlite:../stores/sqlite-pdo.db";
+        $dsn = "sqlite:".$_SERVER['DOCUMENT_ROOT']."/stores/sqlite-pdo.db";
         $db = new PDO($dsn, $user, $pw);
-
-        /**
-         * Blob object
-         */
-        $blobObj = new Blob($db);
 
         /**
          * database
          */
+        $blobObj = new DBBlobStore($db);
         $addressStore = new DBAddressStore($db);
         $eventStore = new DBEventStore($db, $addressStore, $blobObj);
         $userStore = new DBUserStore($db, $addressStore, $blobObj);
 
+        /**
+         * Api's
+         */
         $flickrApi = new Flickr("3b8e15fa98c7850431166704a6ed5be0");
-        $mapApi = new GeoLocation("3e6cf917f419488cbeec8ac503210f17");
+        $geoLocApi = new GeoLoc("3e6cf917f419488cbeec8ac503210f17");
 
         insertDummies();
-
-        //todo: remove following line at deadline. Just use for memory Filestore Testing
-        //throw new PDOException("Use Memory Stores");
-
-    } catch (PDOException $exc) {
+    } catch (PDOException $e) {
         $db = NULL;
-
+        var_dump($e);
         /**
          * memory
          */
-        $eventStore = new FileEventStore("../resources/json/Events.json");
-        $userStore = new FileUserStore("../resources/json/user.json");
+        $eventStore = new FileEventStore($_SERVER['DOCUMENT_ROOT']."/resources/json/Events.json");
+        $userStore = new FileUserStore($_SERVER['DOCUMENT_ROOT']."/resources/json/user.json");
     }
 }
 
@@ -117,14 +133,14 @@ function closeConnection(): void {
 
 
 /**
- * sources for the dummies
- * www.facebook.com/seeedde/photos
+ * sources for the dummies images
+ * www.facebook.com/seeed/photos
  * www.facebook.com/amadeus.oldenburg
  * www.pixabay.com
  */
 function insertDummies() : void {
     global $userStore, $eventStore, $blobObj;
-    $content = file_get_contents("../resources/dummy/dummies.json", false);
+    $content = file_get_contents($_SERVER['DOCUMENT_ROOT']."/resources/dummy/dummies.json", false);
     $dummyJson = json_decode($content, true);
     try {
         foreach ($dummyJson["users"] as $user) {
@@ -136,9 +152,9 @@ function insertDummies() : void {
             $eventStore->create(Event::withAddress($event));
         }
         foreach ($dummyJson["images"] as $image) {
-            $blobObj->insertBlob($image["assignded_ID"], $image["category"], $image["path"], $image["mime"]);
+            $blobObj->insertBlob($image["assigned_ID"], $image["category"], $image["path"], $image["mime"]);
         }
-    } catch (Exception $ex) {
+    } catch (Exception) {
 
     }
 }

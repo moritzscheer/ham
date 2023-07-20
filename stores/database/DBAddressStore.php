@@ -1,11 +1,13 @@
 <?php
 
-use Item\Address;
-use Item\User;
-use Item\Event;
+namespace stores\database;
 
-include_once "../stores/interface/AddressStore.php";
-include_once "../php/includes/items/Address.php";
+use Exception;
+use PDO;
+use SQLiteException;
+use stores\interface\AddressStore;
+
+include_once $_SERVER['DOCUMENT_ROOT'].'/stores/interface/AddressStore.php';
 
 class DBAddressStore implements AddressStore {
 
@@ -96,47 +98,30 @@ class DBAddressStore implements AddressStore {
     }
 
     /**
-     * @param string $address_ID
+     * @param string $id
      * @return void
      */
-    public function delete(string $address_ID): void {
-        $sql = "DELETE FROM address WHERE address_ID = " . $address_ID;
+    public function delete(string $id): void {
+        $sql = "DELETE FROM address WHERE address_ID = " . $id;
         $this->db->exec($sql);
     }
 
     /**
-     * @param string $address_ID
+     * @param string $id
      * @return array
      */
-    public function findOne(string $address_ID): array {
+    public function findOne(string $id): array {
         $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(":address_ID" => $address_ID));
+        $stmt->execute(array(":address_ID" => $id));
         $stmt->bindColumn(2, $street_name);
         $stmt->bindColumn(3, $house_number);
         $stmt->bindColumn(4, $postal_code);
         $stmt->bindColumn(5, $city);
         $stmt->fetch(PDO::FETCH_BOUND);
-        return array("address_ID" => $address_ID
+        return array("address_ID" => $id
         , "street_name" => $street_name, "house_number" => $house_number
         , "postal_code" => $postal_code, "city" => $city);
-    }
-
-    /**
-     * @param array $ids
-     * @return array
-     */
-    public function findMany(array $ids): array {
-        foreach ($ids as $key => $id) {
-            $ids[$key] = "address_ID = " . $id;
-        }
-        $sql ="SELECT * FROM address WHERE ".
-            $ids.join(" OR ") ." LIMIT " .count($ids);
-        $addresses = $this->db->query($sql)->fetchAll();
-        foreach ($addresses as $key => $address) {
-            $addresses[$key] = Address::withAddressID($address);
-        }
-        return $addresses;
     }
 
     public function findAll(): array {

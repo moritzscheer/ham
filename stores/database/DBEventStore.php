@@ -1,16 +1,21 @@
 <?php
 
-use Item\Event;
+namespace stores\database;
 
-include_once "../stores/interface/EventStore.php";
+use Exception;
+use php\includes\items\Event;
+use PDO;
+use RuntimeException;
+use stores\interface\EventStore;
+use stores\interface\Store;
 
 class DBEventStore implements EventStore {
 
     private PDO $db;
     private Store $addressStore;
-    private Blob $blobObj;
+    private DBBlobStore $blobObj;
 
-    public function __construct(PDO $db, Store $addressStore, Blob $blobObj) {
+    public function __construct(PDO $db, Store $addressStore, DBBlobStore $blobObj) {
         $this->db = $db;
         $this->addressStore = $addressStore;
         $this->blobObj = $blobObj;
@@ -76,23 +81,23 @@ class DBEventStore implements EventStore {
     }
 
     /**
-     * @param string $event_ID
+     * @param string $id
      * @return void
      */
-    public function delete(string $event_ID): void {
-        $sql = "DELETE FROM event WHERE event_ID = '" . $event_ID . "' RETURNING address_ID;";
+    public function delete(string $id): void {
+        $sql = "DELETE FROM event WHERE event_ID = '" . $id . "' RETURNING address_ID;";
         $stmt = $this->db->exec($sql);
         $this->addressStore->delete($stmt);
     }
 
     /**
-     * @param string $event_ID
+     * @param string $id
      * @return Event
      */
-    public function findOne(string $event_ID): Event {
+    public function findOne(string $id): Event {
         $sql ="SELECT * FROM event WHERE event_ID = :event_ID;";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(":event_ID" => $event_ID));
+        $stmt->execute(array(":event_ID" => $id));
         $stmt->bindColumn(2, $address_ID);
         $stmt->bindColumn(3, $user_ID);
         $stmt->bindColumn(4, $name);
@@ -103,7 +108,7 @@ class DBEventStore implements EventStore {
         $stmt->bindColumn(9, $endTime);
         $stmt->fetch(PDO::FETCH_BOUND);
 
-        $event = array("event_ID" => $event_ID, "address_ID" => $address_ID, "user_ID" => $user_ID, "name" => $name
+        $event = array("event_ID" => $id, "address_ID" => $address_ID, "user_ID" => $user_ID, "name" => $name
         , "description" => $description, "requirements" => $requirements, "date" => $date, "startTime" => $startTime
         , "endTime" => $endTime, "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
 
@@ -124,27 +129,7 @@ class DBEventStore implements EventStore {
             $event["city"] = $city;
         }
 
-        return (new Item\Event)->withAddress($event);
-    }
-
-    /**
-     * @param array $ids
-     * @return array
-     */
-    public function findMany(array $ids): array {
-        foreach ($ids as $key => $id) {
-            $ids[$key] = "event_ID = " . $id;
-        }
-        $sql = "SELECT * FROM event                        ".
-               "  WHERE ". $ids.join(" OR ") ."    ".
-               "  INNER JOIN address                       ".
-               "  ON address.address_ID = event.address_ID;".
-               "  LIMIT " .count($ids).";                  ";
-        $events = $this->db->query($sql)->fetchAll();
-        foreach ($events as $key => $event) {
-            $events[$key] = Event::withAddress($event);
-        }
-        return $events;
+        return Event::withAddress($event);
     }
 
     /**
@@ -168,7 +153,7 @@ class DBEventStore implements EventStore {
     /**
      * @throws Exception
      */
-    public function findMy($user_ID): array {
+    public function findMy(string $user_ID): array {
         $sql = "SELECT * FROM event                         ".
                "    LEFT JOIN address                      ".
                "    ON address.address_ID = event.address_ID".

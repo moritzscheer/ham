@@ -11,13 +11,6 @@
     grid-gap: 30px;
     padding: 30px;
 }
-
-
-#map {
-    width: 100%;
-    height: 600px;
-}
-
 .closeToMe-Filter {
     grid-row: 1;
     display: grid;
@@ -56,6 +49,16 @@ input[type="text"] {
 #map, strong, span, input[type="text"] {
     color: black !important;
 }
+#map {
+    width: 100%;
+    height: 600px;
+}
+.my-label {
+    position: absolute;
+    width:1000px;
+    font-size:20px;
+}
+
 
 @media screen and (max-width: 500px) {
     .closeToMe-Filter {

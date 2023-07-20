@@ -7,5 +7,7 @@
     <orderEntry type="library" name="leaflet" level="application" />
     <orderEntry type="library" name="@geoapify/leaflet-address-search-plugin" level="application" />
     <orderEntry type="library" name="@highlightjs/cdn-assets" level="application" />
+    <orderEntry type="library" name="leaflet" level="application" />
+    <orderEntry type="library" name="@highlightjs/cdn-assets" level="application" />
   </component>
 </module>

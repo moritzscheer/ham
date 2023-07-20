@@ -1,8 +1,12 @@
 <?php
 
-use Item\Event;
+namespace stores\memory;
 
-include_once "../stores/interface/EventStore.php";
+use Exception;
+use php\includes\items\Event;
+use stores\interface\EventStore;
+
+include_once $_SERVER['DOCUMENT_ROOT'].'/stores/interface/EventStore.php';
 
 class FileEventStore implements EventStore
 {
@@ -20,7 +24,7 @@ class FileEventStore implements EventStore
      * Loads content of jsonfile into a variable
      * @return void
      */
-    private function reloadItemsFromJsonFile()
+    private function reloadItemsFromJsonFile(): void
     {
         $content = file_get_contents($this->eventFile, true);
         $this->itemsOfJsonfile = json_decode($content, false);
@@ -29,7 +33,6 @@ class FileEventStore implements EventStore
 
     /**
      * Adds an items\Event to json file
-     * @param array $item
      * @return bool
      */
     private function addItemsToJsonFile(): bool
@@ -58,8 +61,7 @@ class FileEventStore implements EventStore
     /**
      * Stores an items\Event to the event json file
      * @param Event $item an items\Event object
-     * @return bool return true if event was successfully written
-     * @throws Exception will be thrown if item is not an event object
+     * @return Event return true if event was successfully written
      */
     public function create(Event $item): Event
     {
@@ -72,6 +74,9 @@ class FileEventStore implements EventStore
         } else return new Event();
     }
 
+    /**
+     * @throws Exception
+     */
     public function update(Event $item): Event
     {
         // maybe other solution ?
@@ -95,6 +100,7 @@ class FileEventStore implements EventStore
      * Deletes an entry in the array and overwrites the json file
      * @param string $id
      * @return void
+     * @throws Exception
      */
     public function delete(string $id) : void
     {
@@ -108,21 +114,21 @@ class FileEventStore implements EventStore
         throw new Exception("No such items\Event was found.");
     }
 
-    public function findMany(array $ids)
-    {
-        $events = array();
-        foreach($ids as $id){
-            $event = $this->findOne($id);
-            if ($event->getEventID() == "") continue;
-            $events[] = $event;
-        }
-        return $events;
-    }
-
-
     public function findMy($user_ID): array
     {
-        // TODO: Implement findMy() method.
         return array();
+        // TODO: Implement findMy() method.
+    }
+
+    public function findAny(string $stmt): array
+    {
+        return array();
+        // TODO: Implement findAny() method.
+    }
+
+    public function createEventArray(string $sql): array
+    {
+        return array();
+        // TODO: Implement createEventArray() method.
     }
 }

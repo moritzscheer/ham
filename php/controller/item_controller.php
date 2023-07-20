@@ -1,14 +1,22 @@
 <?php
 
-global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventOptions;
-//include_once "../php/includes/includes.php";
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                            import and autoload classes                                             */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+namespace php;
+
+global $type, $eventStore, $blobObj, $geoLocApi;
+
+use Exception;
+use php\includes\items\Event;
+use php\includes\items\User;
+
+include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                  item variables                                                    */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-use Item\User;
-use Item\Event;
 
 $_SESSION["event"] = $_SESSION["event"] ?? new Event();
 
@@ -21,16 +29,16 @@ $_SESSION["allEntries"] = $_SESSION["allEntries"] ?? null;
 $_SESSION["search"] = $_POST["search"] ?? "";
 $_SESSION["searchDate"] = $_POST["searchDate"] ?? "";
 
-isset($_POST["event_name"]) && is_string($_POST["event_name"])   ?   $_SESSION["event"]->setName($_POST["event_name"])   :   "";
-isset($_POST["description"]) && is_string($_POST["description"])   ?   $_SESSION["event"]->setDescription($_POST["description"])   :   "";
-isset($_POST["requirements"]) && is_string($_POST["requirements"])   ?   $_SESSION["event"]->setRequirements($_POST["requirements"])   :   "";
-isset($_POST["date"]) && is_string($_POST["date"])   ?   $_SESSION["event"]->setDate($_POST["date"])   :   "";
-isset($_POST["startTime"]) && is_string($_POST["startTime"])   ?   $_SESSION["event"]->setStartTime($_POST["startTime"])   :   "";
-isset($_POST["endTime"]) && is_string($_POST["endTime"])   ?   $_SESSION["event"]->setEndTime($_POST["endTime"])   :   "";
-isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])   ?   $_SESSION["event"]->setStreetName($_POST["event_street_name"])   :   "";
-isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])   ?   $_SESSION["event"]->setHouseNumber($_POST["event_house_number"])  :   "";
-isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])   ?   $_SESSION["event"]->setPostalCode($_POST["event_postal_code"])   :   "";
-isset($_POST["event_city"]) && is_string($_POST["event_city"])   ?   $_SESSION["event"]->setCity($_POST["event_city"])   :   "";
+if(isset($_POST["event_name"]) && is_string($_POST["event_name"])) { $_SESSION["event"]->setName($_POST["event_name"]); }
+if(isset($_POST["description"]) && is_string($_POST["description"])) { $_SESSION["event"]->setDescription($_POST["description"]); }
+if(isset($_POST["requirements"]) && is_string($_POST["requirements"])) { $_SESSION["event"]->setRequirements($_POST["requirements"]); }
+if(isset($_POST["date"]) && is_string($_POST["date"])) { $_SESSION["event"]->setDate($_POST["date"]); }
+if(isset($_POST["startTime"]) && is_string($_POST["startTime"])) { $_SESSION["event"]->setStartTime($_POST["startTime"]); }
+if(isset($_POST["endTime"]) && is_string($_POST["endTime"])) { $_SESSION["event"]->setEndTime($_POST["endTime"]); }
+if(isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])) { $_SESSION["event"]->setStreetName($_POST["event_street_name"]); }
+if(isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])) { $_SESSION["event"]->setHouseNumber($_POST["event_house_number"]); }
+if(isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])) { $_SESSION["event"]->setPostalCode($_POST["event_postal_code"]); }
+if(isset($_POST["event_city"]) && is_string($_POST["event_city"])) { $_SESSION["event"]->setCity($_POST["event_city"]); }
 
 if(isset($_GET["type"]) && is_string($_GET["type"])) {
     $type = $_GET["type"];
@@ -41,7 +49,7 @@ $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? null;
 $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/*                                               account variables                                                    */
+/*                                               http request functions                                               */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /**
@@ -58,9 +66,10 @@ if (isset($_POST["submit"])) {
 
 
         // if an image was uploaded insert it in the files table
-        $_POST["image"] ?? $path = "../resources/images/events/" . verifyImage("image", "events");
-        $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
-
+        if(isset($_POST["image"])) {
+            $path = "../resources/images/events/" . verifyImage("image", "events");
+            $blobObj->insertBlob($_SESSION["event"]->getEventID(), "event", $path, "image/gif");
+        }
         header("Location: events.php?type=events");
         exit();
     } catch (Exception $e) {
@@ -135,16 +144,6 @@ if (isset($_POST["submitSearch"])) {
     }
 }
 
-
-/**
- * method for ajax
- */
-if (isset($_GET["submitSearchJavaScript"])) {
-    initDatabase();
-    echo htmlspecialchars(getAnyItems($_GET["submitSearchJavaScript"]));
-}
-
-
 /**
  * switches from ascending sort to descending sort.
  */
@@ -158,7 +157,7 @@ if (isset($_POST["sort"])) {
             $list = sortArray($list, $_POST["sort"], SORT_DESC);
         }
 
-        $_SESSION["itemList"] = buildItemList($type, $list, "could not sort", false);
+        $_SESSION["itemList"] = buildItemList($list, "could not sort", false);
     } catch (Exception $ex) {
        $error_message = $ex;
     }
@@ -172,31 +171,79 @@ if (isset($_POST["sort"])) {
  * @return array
  */
 function sortArray(array $array, $attribute, $dir) : array {
-    global $mapApi;
     $_SESSION["sort"] = $dir;
 
-    if ($attribute === "distance" && $_SESSION["loggedIn"]["user"]->getDsr() === "y") {
-        // gets the longitude and latitude from the client
-        $own_cord = $mapApi->getOwnCoordinates();
-    }
-    foreach ($array as $key => $value) {
+    foreach ($array as $value) {
         if($attribute === "Name") {
             $column[] = $value->getName();
         } elseif ($attribute === "Date") {
             $column[] = $value->getDate();
         } elseif ($attribute === "Genre") {
             $column[] = $value->getGenre();
-        } elseif ($attribute === "distance" && $_SESSION["loggedIn"]["user"]->getDsr() === "y") {
-            // gets the longitude and latitude from the item
-            $item_cord = $mapApi->getCoordinates($value->getStreetName(), $value->getHouseNumber(), $value->getPostalCode(), $value->getCity());
-
-            //calculates the distance and sets the distance attribute in object
-            $value->setDistance($mapApi->getDistance($item_cord, $own_cord));
-            $column[] = $value->getDistance();
         }
     }
     array_multisort($column, $dir, $array);
     return $array;
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                 ajax methods                                                       */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/**
+ * method for ajax
+ */
+if (isset($_GET["submitSearchJavaScript"])) {
+    initDatabase();
+    echo htmlspecialchars(getAnyItems($_GET["submitSearchJavaScript"], $type));
+}
+
+/**
+ * method for ajax
+ */
+if (isset($_POST["range_update"])) {
+    $_SESSION["closeToMe"] = array();
+    //$_SESSION["events"] = $_POST["range_update"][0];
+    var_dump($_POST["range_update"]);
+
+
+    /*
+        foreach ($_SESSION["events"] as $value) {
+            if($value->getDistance() <= $_POST["range_update"]) {
+                $_SESSION["closeToMe"][] = $value;
+            }
+        }
+        try {
+            echo buildItemList($_SESSION["closeToMe"], "There are no nearby Events within an" . $_POST["range_update"][1] . "Range.", false);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    */
+}
+
+if (isset($_POST["new_marker"])) {
+    $_SESSION["closeToMe"] = array();
+    //$_SESSION["events"] = $_POST["range_update"][0];
+    var_dump($_POST["new_marker"]);
+
+
+    /*
+    foreach ($_SESSION["events"] as $value) {
+        // gets the longitude and latitude from the item
+        $item_cord = $geoLocApi->getCoordinates($value->getStreetName(), $value->getHouseNumber(), $value->getPostalCode(), $value->getCity());
+
+        //calculates the distance and sets the distance attribute in object
+        $value->setDistance($geoLocApi->getDistance($item_cord, array("lat" => $_POST["new_marker"][1],"lon" => $_POST["new_marker"][2])));
+
+        if($value->getDistance() <= $_POST["new_marker"][3]) {
+            $_SESSION["closeToMe"][] = $value;
+        }
+    }
+    try {
+        echo buildItemList($_SESSION["closeToMe"], "There are no nearby Events within an" . $_POST["location_request"][2] . "Range.", false);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+    */
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -216,17 +263,12 @@ function getAllItems($type): string {
             $_SESSION["bands"] = $userStore->findAll();
             $list = $_SESSION["bands"];
             $msg = "There are no Musicians currently!";
-        } elseif ($type === "events") {
+        } else {
             $_SESSION["events"] = $eventStore->findAll();
             $list = $_SESSION["events"];
             $msg = "There are no Events uploaded currently!";
-        } else {
-            $_SESSION["closeToMe"] = $eventStore->findAll();
-            $list = $_SESSION["closeToMe"];
-            $msg = "There are no Events nearby!";
-            $list = sortArray($list, "distance", SORT_ASC);
         }
-        return buildItemList($type, $list, $msg, false);
+        return buildItemList($list, $msg, false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -240,6 +282,7 @@ function getAllItems($type): string {
  */
 function getAnyItems($stmt, $type): string {
     global $eventStore, $error_message, $type, $userStore;
+    $list = null; $msg = null;
 
     try {
         if($type === "bands") {
@@ -250,13 +293,8 @@ function getAnyItems($stmt, $type): string {
             $_SESSION["events"] = $eventStore->findAny($stmt);
             $list = $_SESSION["events"];
             $msg = 'There are no Events with: "'.$stmt.'".';
-        } else {
-            $_SESSION["allEntries"] = $eventStore->findAny($stmt);
-            $_SESSION["allEntries"] .= $userStore->findAny($stmt);
-            $list = $_SESSION["events"];
-            $msg = 'There are no Bands and Events with: "'.$stmt.'".';
         }
-        return buildItemList($type, $list, $msg, false);
+        return buildItemList($list, $msg, false);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -274,7 +312,7 @@ function getMyEvents($user_ID): string {
     try {
         $_SESSION["events"] = $eventStore->findMy($user_ID);
 
-        return buildItemList("events", $_SESSION["events"], "You have not created an Event!", true);
+        return buildItemList($_SESSION["events"], "You have not created an Event!", true);
     } catch (Exception $e) {
         $error_message = $e->getMessage();
         return "";
@@ -284,7 +322,7 @@ function getMyEvents($user_ID): string {
 /**
  * @throws Exception
  */
-function buildItemList($type, $list, $msg, $editVisible) : string {
+function buildItemList($list, $msg, $editVisible) : string {
     if (!empty($list)) {
         $return = "";
 
@@ -311,38 +349,37 @@ function buildItemList($type, $list, $msg, $editVisible) : string {
  * @return string
  */
 function getDetail(Object $item) : string {
-    return $string =
-        '<form method="post" id="item_details">                                                                '.
-        '    <div id="item">                                                                                   '.
-        '        <div id="item_image">                                                                         '.
-        '            <img src="' . $item->getImageSource() . '" alt="bandImage"/>                              '.
-        '        </div>                                                                                        '.
-        '        <div id="item_short_description" class="text-line-pre">                                       '.
-        '            <span>' . $item->getName() . '</span>                                                     '.
-        '            <br>                                                                                      '.
-        '            <span>Address: '.$item->getAddressAttributesAsList("value", false).'</span>               ' .
-        '            <br>                                                                                      '.
-        '            <span> ' . $item->getTime() . '</span>                                                    '.
-        '        </div>                                                                                        '.
-        '        <label id="exit">X                                                                            '.
-        '             <input type="submit" name="onItemClick" value="' . $item->getEventID() . '">             '.
-        '        </label>                                                                                      '.
-        '    </div>                                                                                            '.
-        '    <div id="detail">                                                                                 '.
-        '        <div id="item_description">                                                                   '.
-        '            <h2>Further Information</h2>                                                              '.
-        '            <p>' . $item->getDescription() . '</p>                                                    '.
-        '        </div>                                                                                        '.
-        '        <div class="item_requirements">                                                               '.
-        '            <h2>What we are looking for</h2>                                                          '.
-        '            <p>' . $item->getRequirements() . '</p>                                                   '.
-        '        </div>                                                                                        '.
-        '        <div id="item_contact">                                                                       '.
-        '            <h2>Contact Us</h2>                                                                       '.
-        '            <label id="profile_Link">link to profile                                                  '.
-        '                <input type="submit" name="viewProfile" value="' . $item->getUserID() . '">           '.
-        '            </label>                                                                                  '.
-        '        </div>                                                                                        '.
-        '    </div>                                                                                            '.
-        ' </form>                                                                                              ';
+    return '<form method="post" id="item_details">                                                         ' .
+    '    <div id="item">                                                                                   ' .
+    '        <div id="item_image">                                                                         ' .
+    '            <img src="' . $item->getImageSource() . '" alt="bandImage"/>                              ' .
+    '        </div>                                                                                        ' .
+    '        <div id="item_short_description" class="text-line-pre">                                       ' .
+    '            <span>' . $item->getName() . '</span>                                                     ' .
+    '            <br>                                                                                      ' .
+    '            <span>Address: '.$item->getAddressAttributesAsList("value", false).'</span>               ' .
+    '            <br>                                                                                      ' .
+    '            <span> ' . $item->getTime() . '</span>                                                    ' .
+    '        </div>                                                                                        ' .
+    '        <label id="exit">X                                                                            ' .
+    '             <input type="submit" name="onItemClick" value="' . $item->getEventID() . '">             ' .
+    '        </label>                                                                                      ' .
+    '    </div>                                                                                            ' .
+    '    <div id="detail">                                                                                 ' .
+    '        <div id="item_description">                                                                   ' .
+    '            <h2>Further Information</h2>                                                              ' .
+    '            <p>' . $item->getDescription() . '</p>                                                    ' .
+    '        </div>                                                                                        ' .
+    '        <div class="item_requirements">                                                               ' .
+    '            <h2>What we are looking for</h2>                                                          ' .
+    '            <p>' . $item->getRequirements() . '</p>                                                   ' .
+    '        </div>                                                                                        ' .
+    '        <div id="item_contact">                                                                       ' .
+    '            <h2>Contact Us</h2>                                                                       ' .
+    '            <label id="profile_Link">link to profile                                                  ' .
+    '                <input type="submit" name="viewProfile" value="' . $item->getUserID() . '">           ' .
+    '            </label>                                                                                  ' .
+    '        </div>                                                                                        ' .
+    '    </div>                                                                                            ' .
+    ' </form>                                                                                              ' ;
 }

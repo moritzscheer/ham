@@ -1,7 +1,8 @@
 <?php
 
-namespace Item;
-use Item\Item;
+namespace php\includes\items;
+
+include_once $_SERVER['DOCUMENT_ROOT'].'/php/includes/items/Item.php';
 
 class Event extends Item {
 

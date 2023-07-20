@@ -1,14 +1,28 @@
 <?php
-global $userStore, $addressStore, $blobObj, $registerFlag, $db, $success_message, $step;
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                            import and autoload classes                                             */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+namespace php;
+
+global $userStore, $blobObj, $step;
+
+use Exception;
+use php\includes\items\User;
+use RuntimeException;
+
+include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               loggedIn changes                                                     */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-use Item\User;
 
 // init loggedIn session variable
 $_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false, "profile_small" => "../resources/images/profile/default/defaultSmall.png", "user_ID" => "");
+
+$profile_header_box = "";
 
 if($_SESSION["loggedIn"]["status"] === true) {
     $_SESSION["loggedIn"]["user_ID"] = $_SESSION["loggedIn"]["user"]->getUserID();
@@ -318,18 +332,18 @@ if(isset($_POST["viewChangePassword"]) && $_POST["token"] === $_SESSION["token"]
  * @return User
  */
 function update_user_variable($user): User {
-    isset($_POST["type"]) && is_string($_POST["type"])   ?   $user->setType($_POST["type"])   :   "";
-    isset($_POST["name"]) && is_string($_POST["name"])   ?   $user->setName($_POST["name"])   :   "";
-    isset($_POST["surname"]) && is_string($_POST["surname"])   ?   $user->setSurname($_POST["surname"])   :   "";
-    isset($_POST["phone_number"]) && is_string($_POST["phone_number"])   ?   $user->setPhoneNumber($_POST["phone_number"])   :   "";
-    isset($_POST["email"]) && is_string($_POST["email"])   ?   $user->setEmail($_POST["email"])   :   "";
-    isset($_POST["genre"]) && is_string($_POST["genre"])   ?   $user->setGenre($_POST["genre"])   :   "";
-    isset($_POST["members"]) && is_string($_POST["members"])   ?   $user->setMembers($_POST["members"])   :   "";
-    isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])   ?   $user->setOtherRemarks($_POST["other_remarks"])   :   "";
-    isset($_POST["user_street_name"])&& is_string($_POST["user_street_name"])   ?   $user->setStreetName($_POST["user_street_name"])   :   "";
-    isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])   ?   $user->setHouseNumber($_POST["user_house_number"])  :   "";
-    isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])   ?   $user->setPostalCode($_POST["user_postal_code"])   :   "";
-    isset($_POST["user_city"]) && is_string($_POST["user_city"])   ?   $user->setCity($_POST["user_city"])   :   "";
+    if(isset($_POST["type"]) && is_string($_POST["type"])) { $user->setType($_POST["type"]); }
+    if(isset($_POST["name"]) && is_string($_POST["name"])) { $user->setName($_POST["name"]); }
+    if(isset($_POST["surname"]) && is_string($_POST["surname"])) { $user->setSurname($_POST["surname"]); }
+    if(isset($_POST["phone_number"]) && is_string($_POST["phone_number"])) { $user->setPhoneNumber($_POST["phone_number"]); }
+    if(isset($_POST["email"]) && is_string($_POST["email"])) { $user->setEmail($_POST["email"]); }
+    if(isset($_POST["genre"]) && is_string($_POST["genre"])) { $user->setGenre($_POST["genre"]); }
+    if(isset($_POST["members"]) && is_string($_POST["members"])) { $user->setMembers($_POST["members"]); }
+    if(isset($_POST["other_remarks"]) && is_string($_POST["other_remarks"])) { $user->setOtherRemarks($_POST["other_remarks"]); }
+    if(isset($_POST["user_street_name"])&& is_string($_POST["user_street_name"])) { $user->setStreetName($_POST["user_street_name"]); }
+    if(isset($_POST["user_house_number"]) && is_string($_POST["user_house_number"])) { $user->setHouseNumber($_POST["user_house_number"]); }
+    if(isset($_POST["user_postal_code"]) && is_string($_POST["user_postal_code"])) { $user->setPostalCode($_POST["user_postal_code"]); }
+    if(isset($_POST["user_city"]) && is_string($_POST["user_city"])) { $user->setCity($_POST["user_city"]); }
     return $user;
 }
 
@@ -367,6 +381,7 @@ function getImage($user_ID, $category, $altUrl, $isEdit) : string {
     global $blobObj;
 
     try {
+        var_dump($GLOBALS["blobObj"]);
         $ids = $blobObj->queryID($user_ID, $category);
 
         $output = "";
@@ -387,7 +402,7 @@ function getImage($user_ID, $category, $altUrl, $isEdit) : string {
             $category === "profile_gallery" ? $output .= $img : $output = $img;
         }
         return $output;
-    } catch (RuntimeException $e) {
+    } catch (RuntimeException) {
         if($category === "profile_gallery") {
             return $isEdit ? "" : "There are no Images uploaded!";
         } else {

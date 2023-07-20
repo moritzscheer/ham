@@ -1,6 +1,8 @@
 <?php
-//source: https://stackoverflow.com/questions/19452378/why-wont-the-images-that-are-grabbed-from-flickr-display
 
+namespace php\includes\api;
+
+//source: https://stackoverflow.com/questions/19452378/why-wont-the-images-that-are-grabbed-from-flickr-display
 class Flickr {
 
     private $api_key;

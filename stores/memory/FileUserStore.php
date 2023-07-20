@@ -1,8 +1,12 @@
 <?php
 
-use Item\User;
+namespace stores\memory;
 
-include_once "../stores/interface/UserStore.php";
+use Exception;
+use php\includes\items\User;
+use stores\interface\UserStore;
+
+include_once $_SERVER['DOCUMENT_ROOT'].'/stores/interface/UserStore.php';
 
 class FileUserStore implements UserStore
 {
@@ -22,24 +26,25 @@ class FileUserStore implements UserStore
     }
 
 
-    private function reloadUserFromJsonFile()
+    private function reloadUserFromJsonFile(): void
     {
         //todo: maybe add Exception if Reading doesn't work ?
         $content = file_get_contents($this->userJsonFile, true);
         $this->usersOfJsonFile = json_decode($content, false);
     }
 
-    private function addUsersToJsonFile(): bool
+    private function addUsersToJsonFile(): void
     {
         $var = file_put_contents($this->userJsonFile, json_encode($this->usersOfJsonFile));
         if ($var !== false) {
-            return true;
-        } else return false;
+
+        } else {
+        }
     }
 
     /**
      * methode to save register data of a user in the file
-     * @param object $user
+     * @param User $user
      * @return User
      * @throws Exception
      */
@@ -66,7 +71,7 @@ class FileUserStore implements UserStore
 
     /**
      * methode to update user information.
-     * @param object $user
+     * @param User $user
      * @return User
      * @throws Exception
      */
@@ -83,16 +88,16 @@ class FileUserStore implements UserStore
 
     /**
      * methode to delete a user
-     * @param string $user_ID
+     * @param string $id
      * @return void
      * @throws Exception
      */
-    public function delete(string $user_ID): void
+    public function delete(string $id): void
     {
 
         $i = 0;
         foreach ($this->usersOfJsonFile as $userJSON) {
-            if ($userJSON->user_ID == $user_ID) {
+            if ($userJSON->user_ID == $id) {
                 unset($this->usersOfJsonFile[$i]);
                 return;
             }
@@ -103,14 +108,14 @@ class FileUserStore implements UserStore
 
     /**
      * methode to find a user
-     * @param string $user_ID
+     * @param string $id
      * @return User
      * @throws Exception
      */
-    public function findOne(string $user_ID): User
+    public function findOne(string $id): User
     {
         foreach ($this->usersOfJsonFile as $userJSON) {
-            if ((string)$userJSON->user_ID === $user_ID) {
+            if ((string)$userJSON->user_ID === $id) {
                 return User::getJsonUser($userJSON);
             }
         }
@@ -134,25 +139,11 @@ class FileUserStore implements UserStore
         throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
     }
 
-    public function findMany(array $ids)
-    {
-        $users = array();
-        foreach ($ids as $id) {
-            try {
-                $users[] = $this->findOne($id);
-            } catch (Exception $e) {
-                yield $e;
-                continue;
-            }
-        }
-        return $users;
-    }
-
     /**
      * Returns all items\User stored in the user.json file
      * @return array
      */
-    public function findAll()
+    public function findAll(): array
     {
         $users = array();
         foreach ($this->usersOfJsonFile as $userJson) {
@@ -162,4 +153,21 @@ class FileUserStore implements UserStore
         return $users;
     }
 
+    public function findAny(string $stmt): array
+    {
+        return array();
+        // TODO: Implement findAny() method.
+    }
+
+    public function createUserArray(string $sql): array
+    {
+        return array();
+        // TODO: Implement createUserArray() method.
+    }
+
+    public function changePassword(object $user, $old_password, $new_password): User
+    {
+        return new User();
+        // TODO: Implement changePassword() method.
+    }
 }

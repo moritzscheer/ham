@@ -1,17 +1,23 @@
 <?php
 
-use Item\User;
+namespace stores\database;
 
-include_once "../stores/interface/UserStore.php";
+use Exception;
+use php\includes\items\User;
+use PDO;
+use RuntimeException;
+use stores\interface\Store;
+use stores\interface\UserStore;
+
 
 class DBUserStore implements UserStore
 {
     private PDO $db;
     private Store $addressStore;
-    private Blob $blobObj;
+    private DBBlobStore $blobObj;
 
 
-    public function __construct(PDO $db, Store $addressStore, Blob $blobObj)
+    public function __construct(PDO $db, Store $addressStore, DBBlobStore $blobObj)
     {
         $this->db = $db;
         $this->addressStore = $addressStore;
@@ -89,26 +95,26 @@ class DBUserStore implements UserStore
 
     /**
      * methode to delete a user
-     * @param string $user_ID
+     * @param string $id
      * @return void
      */
-    public function delete(string $user_ID): void
+    public function delete(string $id): void
     {
-        $sql = "DELETE FROM user WHERE user_ID = '" . $user_ID . "' RETURNING 'address_ID';";
+        $sql = "DELETE FROM user WHERE user_ID = '" . $id . "' RETURNING 'address_ID';";
         $stmt = $this->db->exec($sql);
         $this->addressStore->delete($stmt);
     }
 
     /**
      * methode to find a user
-     * @param string $user_ID
+     * @param string $id
      * @return User
      */
-    public function findOne(string $user_ID): User
+    public function findOne(string $id): User
     {
         $sql = "SELECT * FROM user WHERE user_ID = :user_ID;";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(":user_ID" => $user_ID));
+        $stmt->execute(array(":user_ID" => $id));
         $stmt->bindColumn(2, $address_ID);
         $stmt->bindColumn(3, $type);
         $stmt->bindColumn(4, $name);
@@ -122,7 +128,7 @@ class DBUserStore implements UserStore
         $stmt->bindColumn(12, $dsr);
         $stmt->fetch(PDO::FETCH_BOUND);
 
-        $user = array("user_ID" => $user_ID, "address_ID" => $address_ID, "type" => $type
+        $user = array("user_ID" => $id, "address_ID" => $address_ID, "type" => $type
         , "name" => $name, "surname" => $surname, "password" => $password, "phone_number" => $phone_number
         , "email" => $email, "genre" => $genre, "members" => $members, "other_remarks" => $other_remarks
         , "dsr" => $dsr, "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
@@ -145,69 +151,6 @@ class DBUserStore implements UserStore
         }
 
         return User::withAddress($user);
-    }
-
-    /**
-     * methode to find multiple users
-     * @param array $user_IDs
-     * @return false|int
-     */
-    public function findMany(array $user_IDs): false|int
-    {
-        foreach ($user_IDs as $user_ID) {
-            $id = "user_ID = " . $user_ID;
-        }
-        $sql = "SELECT * FROM user " .
-            "WHERE " . $user_IDs . join(" OR ") .
-            "INNER JOIN address " .
-            "ON address.address_ID = user.address_ID " .
-            "LIMIT " . count($user_IDs);
-        return $this->db->query($sql)->fetchAll();
-    }
-
-    /**
-     * @param $email
-     * @param $password
-     * @return User
-     * @throws Exception
-     */
-    public function login($email, $password): User
-    {
-        $sql = "SELECT * FROM user WHERE email = '" . $email . "';";
-        $stmt = $this->db->query($sql)->fetch();
-
-        if ($stmt === false) {
-            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
-        }
-        if (!password_verify($password, $stmt["password"])) {
-            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
-        }
-
-        return $this->findOne($stmt["user_ID"]);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function changePassword(object $user, $old_password, $new_password): User
-    {
-        // checking if new password already exist
-        $sql = "SELECT * FROM user WHERE password = '" . $new_password . "';";
-        $stmt = $this->db->query($sql)->fetch();
-        if ($stmt !== false) {
-            throw new Exception("Something went wrong! try again.");
-        }
-
-        // checking if user password is equal to typed in old password
-        $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
-        $stmt = $this->db->query($sql)->fetch();
-
-        if ($stmt[0] != $old_password) {
-            throw new Exception("Old Password is incorrect.");
-        }
-
-        $user->setPassword($new_password);
-        return $this->update($user);
     }
 
     /**
@@ -263,4 +206,48 @@ class DBUserStore implements UserStore
         return $return;
     }
 
+    /**
+     * @param $email
+     * @param $password
+     * @return User
+     * @throws Exception
+     */
+    public function login($email, $password): User
+    {
+        $sql = "SELECT * FROM user WHERE email = '" . $email . "';";
+        $stmt = $this->db->query($sql)->fetch();
+
+        if ($stmt === false) {
+            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
+        }
+        if (!password_verify($password, $stmt["password"])) {
+            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
+        }
+
+        return $this->findOne($stmt["user_ID"]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function changePassword(object $user, $old_password, $new_password): User
+    {
+        // checking if new password already exist
+        $sql = "SELECT * FROM user WHERE password = '" . $new_password . "';";
+        $stmt = $this->db->query($sql)->fetch();
+        if ($stmt !== false) {
+            throw new Exception("Something went wrong! try again.");
+        }
+
+        // checking if user password is equal to typed in old password
+        $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
+        $stmt = $this->db->query($sql)->fetch();
+
+        if ($stmt[0] != $old_password) {
+            throw new Exception("Old Password is incorrect.");
+        }
+
+        $user->setPassword($new_password);
+        return $this->update($user);
+    }
 }

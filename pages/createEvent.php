@@ -1,6 +1,7 @@
 <?php
-    use Item\Event;
-    include_once "../php/includes/head/head.php"
+
+use php\includes\items\Event;
+include_once "../php/includes/head/head.php"
 ?>
 <body>
 <?php

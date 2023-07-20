@@ -1,6 +1,6 @@
 <?php
 
-namespace Item;
+namespace php\includes\items;
 
 class User extends Item {
 

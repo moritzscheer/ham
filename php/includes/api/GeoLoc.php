@@ -1,6 +1,10 @@
 <?php
 
-class GeoLocation {
+namespace php\includes\api;
+
+use Exception;
+
+class GeoLoc {
     
     private $api_key;
 
@@ -104,12 +108,17 @@ class GeoLocation {
      * @param $location1
      * @param $location2
      * @return float
-     * @source: https://www.geodatasource.com/resources/tutorials/how-to-calculate-the-distance-between-2-locations-using-php/
+     * @source: https://stackoverflow.com/questions/639695/how-to-convert-latitude-or-longitude-to-meters
      */
     public function getDistance($location1, $location2) : float {
-        $theta = $location1["lon"] - $location2["lon"];
-        $dist = sin(deg2rad($location1["lat"])) * sin(deg2rad($location2["lat"])) +  cos(deg2rad($location1["lat"])) * cos(deg2rad($location2["lat"])) * cos(deg2rad($theta));
-        $dist = acos($dist);
-        return rad2deg($dist);
+        $radius = 6378.137; // Radius of earth in KM
+        $dLat = $location2["lat"] * pi() / 180 - $location1["lat"] * pi() / 180;
+        $dLon = $location2["lon"] * pi() / 180 - $location1["lon"] * pi() / 180;
+        $a = sin($dLat/2) * sin($dLat/2) +
+            cos($location1["lat"] * pi() / 180) * cos($location2["lat"] * pi() / 180) *
+            sin($dLon/2) * sin($dLon/2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $d = $radius * $c;
+        return $d * 1000; // meters
     }
 }
