@@ -4,7 +4,7 @@
 /*                                            import and autoload classes                                             */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-namespace php;
+namespace php\controller;
 
 global $type, $eventStore, $blobObj, $geoLocApi;
 
@@ -55,8 +55,21 @@ $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESS
 /**
  * Creates a new items\Event in the Eventstore
  */
-if (isset($_POST["submit"])) {
+if (isset($_POST["submit"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
+        if($geoLocApi->validateAddress(
+            $_SESSION["user"]->getStreetName(),
+            $_SESSION["user"]->getHouseNumber(),
+            $_SESSION["user"]->getPostalCode(),
+            $_SESSION["user"]->getCity()))
+        {
+            // redirect back to create or edit Event
+            header("Location: createEvent.php?status=".$_SESSION["status"]);
+            exit();
+        } else {
+            $error_message = "Address does not exist! Please type in an existing Address.";
+        }
+
         if ($_SESSION["status"] === "create") {
             $_SESSION["event"]->setUserID($_SESSION["loggedIn"]["user"]->getUserID());
             $_SESSION["event"] = $eventStore->create($_SESSION["event"]);
@@ -79,7 +92,7 @@ if (isset($_POST["submit"])) {
 /**
  *  If a user clicks on an event item a larger version is displayed at the top of the page
  */
-if (isset($_POST["onItemClick"])) {
+if (isset($_POST["onItemClick"]) && $_POST["token"] === $_SESSION["token"]) {
     foreach ($_SESSION["events"] as $event) {
         if ($_POST["onItemClick"] == $event->getEventID()) {
             if ($_SESSION["itemDetail"] === null) {
@@ -94,7 +107,7 @@ if (isset($_POST["onItemClick"])) {
 /**
  * Deletes an items\Event from the Eventstore
  */
-if (isset($_POST["onDelete"])) {
+if (isset($_POST["onDelete"]) && $_POST["token"] === $_SESSION["token"]) {
     $eventStore->delete($_POST["onDelete"]);
     unset($_POST["onDelete"]);
 }
@@ -103,7 +116,7 @@ if (isset($_POST["onDelete"])) {
  * Sets the current session event to the event the user wants to edit.
  * That means all fields in createEvent are filled with the data of the specific event
  */
-if (isset($_POST["onEdit"])){
+if (isset($_POST["onEdit"]) && $_POST["token"] === $_SESSION["token"]){
     $_SESSION["event"] = $eventStore->findOne($_POST["onEdit"]);
 
     header("Location: createEvent.php?status=edit");

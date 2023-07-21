@@ -20,7 +20,10 @@ header {
     margin: 30px 3% 30px 3%;
     height: 55px;
     overflow: visible;
-}                       
+}
+header .checked {
+    display: none !important;
+}
 
 /* navigation bar header */
 #navbar {

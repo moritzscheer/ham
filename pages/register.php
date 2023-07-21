@@ -1,4 +1,5 @@
 <?php
+    namespace php\controller;
     global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message, $progressBar;
     include_once "../php/controller/progressBar_controller.php";
     include_once "../php/includes/head/head.php"

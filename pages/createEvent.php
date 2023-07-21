@@ -1,46 +1,45 @@
 <?php
 
+global $error_message;
+
 use php\includes\items\Event;
 include_once "../php/includes/head/head.php"
 ?>
 <body>
-<?php
-    include_once "../php/includes/navigation/header/header.php";
-    global $newEvent;
-    if(!isset($_GET["status"]) || $_GET["status"] !== 'Edit') {
-    $_SESSION['event'] = new Event();
-}
-?>
 
-    <?php include_once "../php/includes/elements/flickr.php"?>
+    <section id="popup_elements">
+        <?php include_once "../php/includes/elements/flickr.php"?>
+    </section>
+
+    <?php include_once "../php/includes/navigation/header/header.php"; ?>
 
     <div>
         <h1> <?php echo $_SESSION["status"] ?> Event </h1>
-        <form method="post" class="create-event">
-            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
+
+        <div class="create-event">
             <div id="create-event-inputs">
-                <section class="left-column">
+                <form method="post" class="left-column">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                     <label id="image" class="big-text">Select Image
                         <input type="submit" id="imageLoader" value="event" name="onEditImage">
                     </label>
                     <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImageSource() ?>" alt="preview">
-                    <label id="description" class="big-text">Description: <br/>
-                        <textarea class="full-width" name="description"
-                                  rows="5"><?php echo $_SESSION["event"]->getDescription() ?></textarea>
-                    </label>
-                </section>
-                <div class="right-column">
+                </form>
+                <form method="post" class="right-column">
+                    <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                     <section>
                         <label id="name" class="big-text">Name:
                             <input class="name-input" type="text" name="event_name"
                                    value="<?php echo $_SESSION["event"]->getName() ?>" required>
                         </label>
                     </section>
-
                     <section>
                         <div>
                             <h3>Address</h3>
                         </div>
+
+                        <p id="error-message"><?php echo $error_message ?></p>
+                        
                         <div class="address-inputs">
                             <div class="street">
                                 <label id="street">Street:
@@ -100,14 +99,19 @@ include_once "../php/includes/head/head.php"
                             <textarea class="full-width" name="requirements"
                                       rows="5"><?php echo $_SESSION["event"]->getRequirements() ?></textarea>
                         </label>
+                        <label id="description" class="big-text">Description: <br/>
+                            <textarea class="full-width" name="description"
+                                      rows="5"><?php echo $_SESSION["event"]->getDescription() ?></textarea>
+                        </label>
                     </section>
+                    <div class="create-event-submit">
+                        <label id="createEventSubmit"><?php echo $_SESSION["status"] ?> Event
+                            <input type="submit" name="submit">
+                        </label>
+                    </div>
                 </div>
             </div>
-            <div class="create-event-submit">
-                <label id="createEventSubmit"><?php echo $_SESSION["status"] ?> Event
-                    <input type="submit" name="submit">
-                </label>
-            </div>
+
         </form>
     </div>
 

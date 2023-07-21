@@ -4,7 +4,7 @@
 /*                                            import and autoload classes                                             */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-namespace php;
+namespace php\controller;
 
 global $userStore, $blobObj, $step;
 
@@ -12,7 +12,7 @@ use Exception;
 use php\includes\items\User;
 use RuntimeException;
 
-include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               loggedIn changes                                                     */

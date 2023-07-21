@@ -4,7 +4,7 @@
 /*                                            import and autoload classes                                             */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-namespace php;
+namespace php\controller;
 
 global $blobObj, $flickrApi;
 

@@ -4,9 +4,9 @@
 /*                                            import and autoload classes                                             */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-namespace php;
+namespace php\controller;
 
-global $geoLocApi;
+global $geoLocApi, $step;
 
 use php\includes\items\Event;
 

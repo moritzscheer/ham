@@ -57,7 +57,6 @@ const slider = L.control.range({
     orient: 'horizontal',
 });
 
-
 slider.on('input change', function(e) {
     if (e.value <= 10000) {
         step = 1;
