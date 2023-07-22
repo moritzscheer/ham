@@ -22,18 +22,13 @@ class GeoLoc {
      */
     public function validateAddress($street, $houseNr, $postalCode, $city) : bool
     {
-        $street = urlencode($street);
-        $houseNr = urlencode($houseNr);
-        $postalCode = urlencode($postalCode);
-        $city = urlencode($city);
-
         try {
             // Construct the url
             $url = 'https://api.geoapify.com/v1/geocode/search?';
-            $url .= '&street=' . $street;
-            $url .= '&housenumber=' . $houseNr;
-            $url .= '&postcode=' . $postalCode;
-            $url .= '&city=' . $city;
+            $url .= 'street=' . urlencode($street);
+            $url .= '&housenumber=' . urlencode($houseNr);
+            $url .= '&postcode=' . urlencode($postalCode);
+            $url .= '&city=' . urlencode($city);
             $url .= '&format=json';
             $url .= '&apiKey=' . $this->api_key;
 
@@ -48,7 +43,7 @@ class GeoLoc {
                 throw new Exception();
             }
             return true;
-        } catch (Exception $e) {
+        } catch (Exception) {
             return false;
         }
     }
@@ -58,7 +53,7 @@ class GeoLoc {
      * @source: https://www.codexworld.com/get-geolocation-country-latitude-longitude-from-ip-address-using-php/
      */
     public function getOwnCoordinates() : array|bool {
-        $url = 'http://www.geoplugin.net/php.gp?';
+        $url = 'https://www.geoplugin.net/php.gp?';
         $url .= 'ip='.$_SERVER['REMOTE_ADDR'];
         $url .= '?access_key=ebd07dc289f9fba78d7dd33bdcb88827';
         $geoIP  = unserialize(file_get_contents($url));
@@ -73,18 +68,13 @@ class GeoLoc {
      * @return array|bool
      */
     public function getCoordinates($street, $houseNr, $postalCode, $city) : array|bool {
-        $street = urlencode($street);
-        $houseNr = urlencode($houseNr);
-        $postalCode = urlencode($postalCode);
-        $city = urlencode($city);
-
         try {
             // Construct the url
             $url = 'https://api.geoapify.com/v1/geocode/search?';
-            $url .= '&street=' . $street;
-            $url .= '&housenumber=' . $houseNr;
-            $url .= '&postcode=' . $postalCode;
-            $url .= '&city=' . $city;
+            $url .= 'street=' . urlencode($street);
+            $url .= '&housenumber=' . urlencode($houseNr);
+            $url .= '&postcode=' . urlencode($postalCode);
+            $url .= '&city=' . urlencode($city);
             $url .= '&format=json';
             $url .= '&apiKey=' . $this->api_key;
 
@@ -100,6 +90,7 @@ class GeoLoc {
             
             return array("lon" => $response->results[0]->lon, "lat" => $response->results[0]->lat);
         } catch (Exception $e) {
+            var_dump($e->getMessage());
             return false;
         }
     }

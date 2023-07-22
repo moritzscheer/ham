@@ -1,4 +1,5 @@
 <?php
+    namespace php\controller;
     global $error_message;
     include_once "../php/includes/head/head.php";
 ?>

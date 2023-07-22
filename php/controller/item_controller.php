@@ -11,6 +11,7 @@ global $type, $eventStore, $blobObj, $geoLocApi;
 use Exception;
 use php\includes\items\Event;
 use php\includes\items\User;
+use function php\initDatabase;
 
 include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 
@@ -43,10 +44,15 @@ if(isset($_POST["event_city"]) && is_string($_POST["event_city"])) { $_SESSION["
 if(isset($_GET["type"]) && is_string($_GET["type"])) {
     $type = $_GET["type"];
     $_SESSION["itemList"] = getAllItems($_GET["type"]);
+    $_SESSION["selectAllEvents"] = "selected";
+    $_SESSION["selectMyEvents"] = "";
 }
 
 $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? null;
 $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
+
+$_SESSION["selectMyEvents"] = $_SESSION["selectMyEvents"] ?? "";
+$_SESSION["selectAllEvents"] = $_SESSION["selectAllEvents"] ?? "";
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               http request functions                                               */
@@ -92,7 +98,7 @@ if (isset($_POST["submit"]) && $_POST["token"] === $_SESSION["token"]) {
 /**
  *  If a user clicks on an event item a larger version is displayed at the top of the page
  */
-if (isset($_POST["onItemClick"]) && $_POST["token"] === $_SESSION["token"]) {
+if (isset($_POST["onItemClick"])) {
     foreach ($_SESSION["events"] as $event) {
         if ($_POST["onItemClick"] == $event->getEventID()) {
             if ($_SESSION["itemDetail"] === null) {
@@ -128,6 +134,9 @@ if (isset($_POST["onEdit"]) && $_POST["token"] === $_SESSION["token"]){
  */
 if (isset($_POST["onGetAllEvents"])) {
     $_SESSION["itemList"] = getAllItems("events");
+    $_SESSION["itemDetail"] = null;
+    $_SESSION["selectAllEvents"] = "selected";
+    $_SESSION["selectMyEvents"] = "";
 }
 
 /**
@@ -135,6 +144,10 @@ if (isset($_POST["onGetAllEvents"])) {
  */
 if (isset($_POST["onGetMyEvents"])) {
     $_SESSION["itemList"] = getMyEvents($_SESSION["loggedIn"]["user_ID"]);
+    $_SESSION["itemDetail"] = null;
+    $_SESSION["selectMyEvents"] = "selected";
+    $_SESSION["selectAllEvents"] = "";
+
 }
 
 /**
@@ -201,6 +214,7 @@ function sortArray(array $array, $attribute, $dir) : array {
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                 ajax methods                                                       */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
 /**
  * method for ajax
  */
@@ -217,43 +231,47 @@ if (isset($_POST["range_update"])) {
     initDatabase();
 
     $closeToMe = array();
-    $message = json_decode($_POST["range_update"], true);
+    $_SESSION["events"] = json_decode($_POST["range_update"], true);
 
-    foreach ($message["list"] as $value) {
-        if($value["distance"] <= $_POST["range_update"]["range"]) {
+    foreach ($_SESSION["events"]["list"] as $value) {
+        if($value["distance"] <= $_SESSION["events"]["radius"]) {
             $closeToMe[] = $value;
         }
     }
     try {
-        echo buildItemList($closeToMe, "There are no nearby Events within an" . $_POST["range_update"][1] . "Range.", false);
+        echo buildItemList($closeToMe, "There are no nearby Events within an " . $_SESSION["events"]["radius"] . " Km Range.", false);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
 }
 
+/**
+ * method for ajax
+ */
 if (isset($_POST["new_marker"])) {
     include $_SERVER['DOCUMENT_ROOT'] . "/php/settings.php";
     initDatabase();
 
     $closeToMe = array();
-    $message = json_decode($_POST["new_marker"], true);
+    $_SESSION["events"] = json_decode($_POST["new_marker"], true);
 
-    foreach ($message["list"] as $value) {
+    foreach ($_SESSION["events"]["list"] as $value) {
         // gets the longitude and latitude from the item
         $item_cord = $geoLocApi->getCoordinates($value["street"], $value["houseNr"], $value["postalCode"], $value["city"]);
 
         //calculates the distance and sets the distance attribute in object
-        $value["distance"] = $geoLocApi->getDistance($item_cord, array("lat" => $_POST["new_marker"]["lat"],"lon" => $_POST["new_marker"]["lon"]));
+        $value["distance"] = $geoLocApi->getDistance($item_cord, array("lat" => $_SESSION["events"]["lat"],"lon" => $_SESSION["events"]["lon"]));
 
-        if($value["distance"] <= $_POST["new_marker"]["range"]) {
+        if($value["distance"] <= $_SESSION["events"]["radius"]) {
             $closeToMe[] = $value;
         }
     }
     try {
-        echo buildItemList($closeToMe, "There are no nearby Events within an" . $_POST["location_request"][2] . "Range.", false);
+        echo buildItemList($closeToMe, "There are no nearby Events within an " . $_SESSION["events"]["radius"] . " Km Range.", false);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
+
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */

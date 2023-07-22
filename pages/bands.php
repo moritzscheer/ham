@@ -27,7 +27,7 @@
         </form>
     </div>
 
-    <h1 id="header">Bands</h1>
+    <h1 id="header">All Bands</h1>
 
     <!-- remove final deadline-->
     <p id="error-message"><?php echo $error_message ?></p>

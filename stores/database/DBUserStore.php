@@ -94,18 +94,6 @@ class DBUserStore implements UserStore
     }
 
     /**
-     * methode to delete a user
-     * @param string $id
-     * @return void
-     */
-    public function delete(string $id): void
-    {
-        $sql = "DELETE FROM user WHERE user_ID = '" . $id . "' RETURNING 'address_ID';";
-        $stmt = $this->db->exec($sql);
-        $this->addressStore->delete($stmt);
-    }
-
-    /**
      * methode to find a user
      * @param string $id
      * @return User
@@ -243,11 +231,23 @@ class DBUserStore implements UserStore
         $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
         $stmt = $this->db->query($sql)->fetch();
 
-        if ($stmt[0] != $old_password) {
+        if (!password_verify($old_password, $stmt["password"])) {
             throw new Exception("Old Password is incorrect.");
         }
 
         $user->setPassword($new_password);
         return $this->update($user);
+    }
+
+    /**
+     * methode to delete a user
+     * @param string $id
+     * @return void
+     */
+    public function delete(string $id): void
+    {
+        $sql = "DELETE FROM user WHERE user_ID = '" . $id . "' RETURNING 'address_ID';";
+        $stmt = $this->db->exec($sql);
+        $this->addressStore->delete($stmt);
     }
 }

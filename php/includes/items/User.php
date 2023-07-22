@@ -112,9 +112,11 @@ class User extends Item {
             '           <br>                                                                                      ' .
             '           <span>Genre: ' . $this->getGenre() . '</span>                                             ' .
             '           <br>                                                                                      ' .
-            '           <span>Members:<br>' . $this->getMembers() . '</span>                                      ' .
+            '           <span>Members:</span>                                                                     ' .
+            '           <p>' . $this->getMembers() . '</p>                                                        ' .
             '           <br>                                                                                      ' .
-            '           <span>Other Remarks:<br>' . $this->getOtherRemarks() . '</span>                           ' .
+            '           <span>Other Remarks:</span>                                                               ' .
+            '           <p>' . $this->getOtherRemarks() . '</p>                                                   ' .
             '           <br>                                                                                      ' .
             '           <form method="post">                                                                      ' .
             '               <label id="profile_Link">link to profile                                              ' .

@@ -83,10 +83,10 @@
                         <legend>Type:</legend>
                         <div id="type-entry" class="entry">
                             <label>Musician
-                                <input type="radio" name="type" value="Musician" <?php echo $_SESSION["Musician"] ?> required>
+                                <input type="radio" name="type" value="Musician" <?php echo $_SESSION["loggedIn"]["Musician"] ?> required onclick="document.getElementById('update_profile').click()">
                             </label>
                             <label>Host
-                                <input type="radio" name="type" value="Host" <?php echo $_SESSION["Host"] ?> required>
+                                <input type="radio" name="type" value="Host" <?php echo $_SESSION["loggedIn"]["Host"] ?> required onclick="document.getElementById('update_profile').click()">
                             </label>
                         </div>
                     </fieldset>

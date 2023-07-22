@@ -175,6 +175,9 @@ header .checked {
     .login {
         display: none !important;
     }
+    .closeToMe {
+        display: none !important;
+    }
     #navbar-Profile {
         display: grid;
         grid-template-rows: auto auto;

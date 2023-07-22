@@ -278,85 +278,85 @@
   ],
   "images": [
     {
-      "assignded_ID": "2",
+      "assigned_ID": "2",
       "category": "event",
       "path": "../resources/dummy/images/image_event2.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "1",
+      "assigned_ID": "1",
       "category": "event",
       "path": "../resources/dummy/images/image_event1.gif",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "3",
+      "assigned_ID": "3",
       "category": "event",
       "path": "../resources/dummy/images/image_event3.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "4",
+      "assigned_ID": "4",
       "category": "event",
       "path": "../resources/dummy/images/image_event4.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "5",
+      "assigned_ID": "5",
       "category": "event",
       "path": "../resources/dummy/images/image_event5.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "2",
+      "assigned_ID": "2",
       "category": "profile_large",
       "path": "../resources/dummy/images/image_user2_large.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "2",
+      "assigned_ID": "2",
       "category": "profile_small",
       "path": "../resources/dummy/images/image_user2_small.png",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "2",
+      "assigned_ID": "2",
       "category": "profile_gallery",
       "path": "../resources/dummy/images/image_user2_gallery1.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "2",
+      "assigned_ID": "2",
       "category": "profile_gallery",
       "path": "../resources/dummy/images/image_user2_gallery2.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "3",
+      "assigned_ID": "3",
       "category": "profile_small",
       "path": "../resources/dummy/images/image_user3_small.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "3",
+      "assigned_ID": "3",
       "category": "profile_small",
       "path": "../resources/dummy/images/image_user3_small.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "3",
+      "assigned_ID": "3",
       "category": "profile_large",
       "path": "../resources/dummy/images/image_user3_large.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "3",
+      "assigned_ID": "3",
       "category": "profile_gallery",
       "path": "../resources/dummy/images/image_user3_gallery1.jpg",
       "mime": "image/gif"
     },
     {
-      "assignded_ID": "3",
+      "assigned_ID": "3",
       "category": "profile_gallery",
       "path": "../resources/dummy/images/image_user3_gallery2.jpg", 
       "mime": "image/gif"

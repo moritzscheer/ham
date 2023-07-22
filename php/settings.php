@@ -6,8 +6,6 @@
 
 namespace php;
 
-global $type, $bandStore, $eventStore, $addressStore, $blobObj, $db, $showEventOptions, $geoLocApi;
-
 use Exception;
 use PDO;
 use PDOException;
@@ -53,7 +51,6 @@ session_start();
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                  assign urls to stylesheets                                        */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
 
 // sets the link to the stylesheet depending on which page is currently displayed
 if (str_contains($_SERVER["PHP_SELF"], "changePassword") || str_contains($_SERVER["PHP_SELF"], "profile") || str_contains($_SERVER["PHP_SELF"], "editProfile")) {
@@ -113,9 +110,10 @@ function initDatabase() : void {
         $geoLocApi = new GeoLoc("3e6cf917f419488cbeec8ac503210f17");
 
         insertDummies();
+
     } catch (PDOException $e) {
         $db = NULL;
-        var_dump($e);
+
         /**
          * memory
          */
@@ -140,6 +138,7 @@ function closeConnection(): void {
  */
 function insertDummies() : void {
     global $userStore, $eventStore, $blobObj;
+
     $content = file_get_contents($_SERVER['DOCUMENT_ROOT']."/resources/dummy/dummies.json", false);
     $dummyJson = json_decode($content, true);
     try {

@@ -20,6 +20,7 @@
         </label>
     </form>
     <form method="post" id="delete">
+        <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
         <span>Are you Sure you want to delete your Account?</span>
         <span>All your Information will be deleted.</span>
         <div id="profile_submit">
