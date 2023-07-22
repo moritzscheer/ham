@@ -20,7 +20,13 @@ require $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 
 
 // init loggedIn session variable
-$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array("status" => false, "profile_small" => "../resources/images/profile/default/defaultSmall.png", "user_ID" => "");
+$_SESSION["loggedIn"] = $_SESSION["loggedIn"] ?? array(
+    "status" => false,
+    "profile_small" => "../resources/images/profile/default/defaultSmall.png",
+    "user_ID" => "",
+    "Musician" => "",
+    "Host" => ""
+);
 
 $profile_header_box = "";
 
@@ -37,8 +43,8 @@ if($_SESSION["loggedIn"]["status"] === true) {
         $_SESSION["loggedIn"]["user"]->getType().
         '</div>                                            ';
 
-    $_SESSION["Musician"] = ($_SESSION["loggedIn"]["user"]->getType() === "Musician") ? "checked" : "";
-    $_SESSION["Host"] = ($_SESSION["loggedIn"]["user"]->getType() === "Host") ? "checked" : "";
+    $_SESSION["loggedIn"]["Musician"] = ($_SESSION["loggedIn"]["user"]->getType() === "Musician") ? "checked" : "";
+    $_SESSION["loggedIn"]["Host"] = ($_SESSION["loggedIn"]["user"]->getType() === "Host") ? "checked" : "";
 }
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               account variables                                                    */
@@ -54,10 +60,6 @@ $old_password = isset($_POST["old_password"]) && is_string($_POST["old_password"
 $new_password = isset($_POST["new_password"]) && is_string($_POST["new_password"])   ?   $_POST["new_password"]   :   "";
 $repeat_new_password = isset($_POST["repeat_new_password"]) && is_string($_POST["repeat_new_password"])   ?   $_POST["repeat_new_password"]   :   "";
 
-// for the checkbox in profile
-$_SESSION["Musician"] = ($_SESSION["user"]->getType() === "Musician") ? "checked" : "";
-$_SESSION["Host"] = ($_SESSION["user"]->getType() === "Host") ? "checked" : "";
-
 // Which header should be shown
 $_SESSION["normalHeader"] = $_SESSION["loggedIn"]["status"] === true ? "hidden" : "visible";
 $_SESSION["profileHeader"] = $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
@@ -67,13 +69,9 @@ $_SESSION["delete"] = $_SESSION["delete"] ?? "";
 $_SESSION["token"] = $_SESSION["token"] ?? "";
 $_SESSION["hintField"] = $_SESSION["hintField"] ?? array("showAlways" => false, "message" => "", "visibility" => "", "button" => "hidden");
 
-$error_message = "";
-
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                               post methods                                                         */
 /* ------------------------------------------------------------------------------------------------------------------ */
-
-
 
 /**
  * If a user clicks on logout or on Sign up
@@ -90,7 +88,7 @@ if(isset($_POST["register"])) {
         if($password === $repeat_password) {
             // sets password in user object
             $_SESSION["user"]->setPassword(password_hash($password, PASSWORD_DEFAULT));
-            isset($_POST["dsr"]) && is_string($_POST["dsr"]) ? $_SESSION["user"]->setDsr($_POST["dsr"]) : $_SESSION["user"]->setDsr("n");
+            $_SESSION["user"]->setDsr("y");
 
             // creates user and address in store
             $_SESSION["user"] = $userStore->create($_SESSION["user"]);
@@ -160,15 +158,32 @@ if(isset($_POST["logout"]) && $_POST["token"] === $_SESSION["token"]) {
 }
 
 /**
- * If a user clicks on delete account
+ *  if a user wants to delete the account a popup is displayed
+ */
+if(isset($_POST["onDeleteClicked"]) && $_POST["token"] === $_SESSION["token"]) {
+    if($_SESSION["delete"] === "") {
+        $_SESSION["delete"] = "visible";
+    } else {
+        $_SESSION["delete"] = "";
+
+    }
+}
+
+/**
+ * If a user then clicks on delete account
  */
 if(isset($_POST["delete"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
-        // delete all user information
+        // deletes user information
         $userStore->delete($_SESSION["loggedIn"]["user"]->getUserID());
-        $ids = $blobObj->queryOwnIDs($_SESSION["loggedIn"]["user"]->getUserID());
-        foreach ($ids as $image) {
-            $blobObj->delete($image[0]);
+
+        // deletes all images from user
+        try {
+            $ids = $blobObj->queryOwnIDs($_SESSION["loggedIn"]["user"]->getUserID());
+            foreach ($ids as $image) {
+                $blobObj->delete($image[0]);
+            }
+        } catch (Exception) {
         }
 
         reset_variables();
@@ -178,6 +193,7 @@ if(isset($_POST["delete"]) && $_POST["token"] === $_SESSION["token"]) {
         exit();
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
+        var_dump($ex->getMessage());
     }
 }
 
@@ -231,17 +247,7 @@ if(isset($_POST["show_hint"]) && $_POST["token"] === $_SESSION["token"]) {
     }
 }
 
-/**
- *  if a user wants to delete the account
- */
-if(isset($_POST["onDeleteClicked"]) && $_POST["token"] === $_SESSION["token"]) {
-    if($_SESSION["delete"] === "") {
-        $_SESSION["delete"] = "visible";
-    } else {
-        $_SESSION["delete"] = "";
 
-    }
-}
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -297,7 +303,10 @@ if(isset($_POST["viewEditProfile"]) && $_POST["token"] === $_SESSION["token"]) {
             $_SESSION["hintField"]["visibility"] = "hintVisible";
             $_SESSION["hintField"]["message"] = 'Hint: To Change Images in Profile hover on an image and select "Edit Image".';
         }
-        
+
+        // hides flickr box if visible before
+        $_SESSION["ImageBox"] = "";
+
         // redirect to edit profile page
         header("Location: editProfile.php");
         exit();
@@ -381,7 +390,6 @@ function getImage($user_ID, $category, $altUrl, $isEdit) : string {
     global $blobObj;
 
     try {
-        var_dump($GLOBALS["blobObj"]);
         $ids = $blobObj->queryID($user_ID, $category);
 
         $output = "";

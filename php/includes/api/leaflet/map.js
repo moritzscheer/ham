@@ -86,7 +86,7 @@ slider.on('input change', function(e) {
     map.fitBounds(circle.getBounds());
 
     // ajax request
-    var message = '{"list": ' + list + ', "radius":' + radius + "}";
+    var message = '{"list": ' + JSON.stringify(list) + ', "radius":' + radius + "}";
     var xhttp;
 
     xhttp = new XMLHttpRequest();

@@ -1,4 +1,3 @@
-<?php global $newEvent?>
 <header>
     <div id="navbar">
         <div class="logo">
@@ -19,13 +18,13 @@
             </label>
         </form>
 
-        <form action="closeToMe.php?map=init" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?>">
+        <form action="closeToMe.php?map=init" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?> closeToMe">
             <label id="navbar-button">Close to Me
                 <input type="submit" id="navbar-button">
             </label>
         </form>
 
-        <form action="createEvent.php?status=create" id="mobile" class="<?php echo $_SESSION["profileHeader"], $_SESSION["Musician"] ?> create">
+        <form action="createEvent.php?status=create" id="mobile" class="<?php echo $_SESSION["profileHeader"] ?> create <?php echo $_SESSION["loggedIn"]["Musician"] ?>">
             <label id="navbar-button">create
                 <input type="submit">
             </label>
@@ -78,7 +77,7 @@
             </label>
         </form>
 
-        <form action="createEvent.php?status=create" id="desktop" class="<?php echo $_SESSION["profileHeader"], $_SESSION["Musician"] ?>">
+        <form action="createEvent.php?status=create" id="desktop" class="<?php echo $_SESSION["profileHeader"], $_SESSION["loggedIn"]["Musician"] ?>">
             <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <label id="navbar-button">create
                 <input type="submit" name="onCreate" value="create">
