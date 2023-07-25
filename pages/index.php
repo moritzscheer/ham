@@ -13,9 +13,6 @@
             Then you've come to the right place with <i>ham</i>. <i>ham</i> stands for "high authentic music-events"
             and offers you the opportunity to connect with organizers and artists. Register now!
         </p>
-        <form action="register.php">
-            <input id="about-register-button" type="submit" value="Register">
-        </form>
     </div>
 </section>
 
