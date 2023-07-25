@@ -62,26 +62,32 @@ input::placeholder{
     margin-bottom: 20px;
 }
 
-/*label of stay loggin*/
+/*label of stay loggin
 .staylogin-container {
     display: grid;
     grid-template-columns: 20px auto;
     position: relative;
     padding-left: 40px;
+}*/
+.staylogin-container {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding-left: 40px;
 }
 
 #stayLogin-Text {
-    grid-column: 2;
     color: var(--white);
     font-size: small;
 }
 
 /* old checkbox */
 #stayLogin-checkbox {
-    appearance: none;
+    margin: 4px 4px 4px 4px;
 }
 
-/* new checkbox*/
+
+/* new checkbox
 #stayLogin-checkmark {
     grid-column: 1;
     position: absolute;
@@ -96,7 +102,10 @@ input::placeholder{
     display: none;
 }
 
-/* checked box: change color*/
+*/
+
+
+/* checked box: change color
 .staylogin-container:has(#stayLogin-checkbox:checked) #stayLogin-checkmark {
     background-color: var(--grey);
 }
@@ -104,6 +113,10 @@ input::placeholder{
 .staylogin-container:has(#stayLogin-checkbox:checked) #stayLogin-checkmark:after{
     display: block;
 }
+
+*/
+
+
 /*
 .staylogin-container #stayLogin-checkmark:after {
     left: 9px;
