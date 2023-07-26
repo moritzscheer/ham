@@ -11,16 +11,15 @@
         </div>
         <?php echo $error_message ?>
         <div class="loginElement">
-            <input type="email" id="lemail" name="email" placeholder="E-Mail adresse" required>
+            <input type="email" id="lemail" name="email" placeholder="e-mail address" required>
         </div>
         <div class="loginElement">
-            <input type="password" id="lpassword" name="password" placeholder="Passwort" required>
+            <input type="password" id="lpassword" name="password" placeholder="password" required>
         </div>
         <div class="loginElement staylogin">
             <label class="staylogin-container">
-                <span id="stayLogin-Text">Stay Logged In</span>
                 <input type="checkbox" id="stayLogin-checkbox" name="login">
-                <span id="stayLogin-checkmark"></span>
+                <span id="stayLogin-Text">Stay Logged In</span>
             </label>
         </div>
         <div class="loginElement">
