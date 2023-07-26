@@ -47,7 +47,7 @@ class Flickr {
 
                 $title = $single_photo->title;
 
-                $photo_url = 'http://farm' . $farm_id . '.staticflickr.com/' . $server_id . '/' . $photo_id . '_' . $secret_id . '_' . $size . '.' . 'jpg';
+                $photo_url = 'https://farm' . $farm_id . '.staticflickr.com/' . $server_id . '/' . $photo_id . '_' . $secret_id . '_' . $size . '.' . 'jpg';
 
                 if ($count % 3 === 0) {
                     if ($count % 2 == 0) {

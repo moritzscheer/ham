@@ -14,21 +14,26 @@ class GeoLoc {
     }
 
     /**
-     * @param $street
-     * @param $houseNr
-     * @param $postalCode
-     * @param $city
+     * @param object $item
      * @return bool
+     * @throws Exception
      */
-    public function validateAddress($street, $houseNr, $postalCode, $city) : bool
+    public function validateAddress(object $item) : bool
     {
+        if ($item->getStreetName() === "" ||
+            $item->getHouseNumber() === "" ||
+            $item->getPostalCode() === "" ||
+            $item->getCity() === "") {
+            throw new Exception();
+        }
+
         try {
             // Construct the url
             $url = 'https://api.geoapify.com/v1/geocode/search?';
-            $url .= 'street=' . urlencode($street);
-            $url .= '&housenumber=' . urlencode($houseNr);
-            $url .= '&postcode=' . urlencode($postalCode);
-            $url .= '&city=' . urlencode($city);
+            $url .= 'street=' . urlencode($item->getStreetName());
+            $url .= '&housenumber=' . urlencode($item->getHouseNumber());
+            $url .= '&postcode=' . urlencode($item->getPostalCode());
+            $url .= '&city=' . urlencode($item->getCity());
             $url .= '&format=json';
             $url .= '&apiKey=' . $this->api_key;
 
@@ -89,8 +94,7 @@ class GeoLoc {
             }
             
             return array("lon" => $response->results[0]->lon, "lat" => $response->results[0]->lat);
-        } catch (Exception $e) {
-            var_dump($e->getMessage());
+        } catch (Exception) {
             return false;
         }
     }

@@ -14,20 +14,20 @@ class Item {
      * @param $withApostroph
      * @return string
      */
-    protected function concatList($result, $key, $value, $keyOrValue, $withApostroph): string
+    protected function concatList($str, $key, $value, $keyOrValue, $withApostroph): string
     {
         $attr = $keyOrValue === "value" ? $value : $key;
         if($withApostroph) {
             $attr = "'" . $attr . "'";
         }
         if ($value !== null && $value !== "") {
-            if ($result === "") {
-                $result = $attr;
+            if ($str === "") {
+                $str = $attr;
             } else {
-                $result = $result . ", " . $attr;
+                $str = $str . ", " . $attr;
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -37,13 +37,13 @@ class Item {
      * @param $separator
      * @return string
      */
-    protected function concatSet($result, $key, $value, $separator): string
+    protected function concatSet($str, $key, $value, $separator): string
     {
-        if ($result === "") {
-            $result = $key . " = '" . $value . "'";
+        if ($str === "") {
+            $str = $key . " = '" . $value . "'";
         } else {
-            $result = $result . " " . $separator . " " . $key . " = '" . $value . "'";
+            $str = $str . " " . $separator . " " . $key . " = '" . $value . "'";
         }
-        return $result;
+        return $str;
     }
 }

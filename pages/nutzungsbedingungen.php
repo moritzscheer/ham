@@ -109,7 +109,7 @@
         wird. Sind einzelne Formulierungen dieser Forum-Nutzungsbedingung nicht mehr ganz oder nicht mehr vollständig
         konform mit der geltenden Rechtslage, so ist davon auszugehen, dass die übrigen Regelungen der
         Nutzungsbedingungen bestehen bleiben.</p>
-    <p>Diese <a href="http://www.jurarat.de/muster-nutzungsbedingungen">Nutzungsbedingungen</a> wurden freundlicherweise
+    <p>Diese <a href="https://www.jurarat.de/muster-nutzungsbedingungen">Nutzungsbedingungen</a> wurden freundlicherweise
         von
         www.jurarat.de zur Verfügung gestellt.
 

@@ -29,15 +29,15 @@
                 <p id="error-message"><?php echo $error_message ?></p>
 
                 <label class="entry">Old Password:
-                    <input type="password" name="old_password" id="password_actuell">
+                    <input type="password" name="old_password" id="old_password">
                 </label>
 
                 <label class="entry">New Password:
-                    <input type="password" name="new_password" id="password_new_1">
+                    <input type="password" name="new_password" id="new_password">
                 </label>
 
                 <label class="entry">Repeat new Password:
-                    <input type="password" name="repeat_new_password" id="password_new_2">
+                    <input type="password" name="repeat_new_password" id="repeat_new_password">
                 </label>
             </div>
 
@@ -45,7 +45,7 @@
                 <label>Cancel
                     <input type="submit" name="viewProfile" value="<?php echo $_SESSION["loggedIn"]["user_ID"] ?>">
                 </label>
-                <label>Save <Change></Change>
+                <label>Save Changes
                     <input type="submit" name="change_password">
                 </label>
             </div>

@@ -231,15 +231,17 @@ if (isset($_POST["range_update"])) {
     initDatabase();
 
     $closeToMe = array();
-    $_SESSION["events"] = json_decode($_POST["range_update"], true);
+    $range_update = json_decode($_POST["range_update"], true);
 
-    foreach ($_SESSION["events"]["list"] as $value) {
-        if($value["distance"] <= $_SESSION["events"]["radius"]) {
+    foreach ($range_update["list"] as $value) {
+        $value = Event::withAddress($value);
+
+        if($value->getDistance() <= $range_update["radius"]) {
             $closeToMe[] = $value;
         }
     }
     try {
-        echo buildItemList($closeToMe, "There are no nearby Events within an " . $_SESSION["events"]["radius"] . " Km Range.", false);
+        echo buildItemList($closeToMe, "There are no nearby Events within an " . $range_update["radius"] . " Km Range.", false);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
@@ -253,21 +255,25 @@ if (isset($_POST["new_marker"])) {
     initDatabase();
 
     $closeToMe = array();
-    $_SESSION["events"] = json_decode($_POST["new_marker"], true);
+    $new_marker = json_decode($_POST["new_marker"], true);
 
-    foreach ($_SESSION["events"]["list"] as $value) {
+    foreach ($new_marker["list"] as $value) {
+        $value = Event::withAddress($value);
+        $value->
+
         // gets the longitude and latitude from the item
-        $item_cord = $geoLocApi->getCoordinates($value["street"], $value["houseNr"], $value["postalCode"], $value["city"]);
+        $item_cord = $geoLocApi->getCoordinates($value->getStreetName(), $value->getHouseNumber(), $value->getPostalCode(), $value->getCity());
 
-        //calculates the distance and sets the distance attribute in object
-        $value["distance"] = $geoLocApi->getDistance($item_cord, array("lat" => $_SESSION["events"]["lat"],"lon" => $_SESSION["events"]["lon"]));
+        // calculates the distance and sets the distance attribute in object
+        $value->setDistance($geoLocApi->getDistance($item_cord, array("lat" => $new_marker["lat"],"lon" => $new_marker["lon"])));
 
-        if($value["distance"] <= $_SESSION["events"]["radius"]) {
+        // chooses only the events that are in the radius
+        if($value->getDistance() <= $new_marker["radius"]) {
             $closeToMe[] = $value;
         }
     }
     try {
-        echo buildItemList($closeToMe, "There are no nearby Events within an " . $_SESSION["events"]["radius"] . " Km Range.", false);
+        echo buildItemList($closeToMe, "There are no nearby Events within an " . $new_marker["radius"] . " Km Range.", false);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
@@ -355,15 +361,10 @@ function buildItemList($list, $msg, $editVisible) : string {
         $return = "";
 
         foreach ($list as $item) {
-            if($item instanceof User) {
+            if($item instanceof User || (is_array($item) && in_array("type", $item)))
                 $return = $return . $item->getBandHTML();
-            } else if ($item instanceof Event) {
-                if ($editVisible) {
-                    $return = $return . $item->getEditableEventHTML(); // adds the "Delete" and "Edit" Button
-                } else {
-                    $return = $return . $item->getEventHTML();
-                }
-            }
+            if ($item instanceof Event || (is_array($item) && in_array("event_ID", $item)))
+                $return = $return . $item->getEventHTML($editVisible);
         }
         return $return;
     } else {

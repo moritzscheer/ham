@@ -159,6 +159,23 @@ const addressSearchControl = L.control.addressSearch(myAPIKey, {
             map.setView([address.lat, address.lon], 15);
         }
 
+        if(event_locations) {
+            map.removeLayer(event);
+
+            for (let i = 0; i < event_locations.length; i++) {
+                var distance = calcDistance(latitude, longitude, event_locations[i].lat, event_locations[i].lon);
+                list[i].distance = distance;
+                console.log(list[i])
+                console.log(radius)
+                if(distance < radius) {
+                    var event = new L.Marker([event_locations[i].lat, event_locations[i].lon]);
+                    event.addTo(map);
+                }
+            }
+        } else {
+            map.removeLayer(event);
+        }
+
         // ajax request
         var message = '{"list": ' + JSON.stringify(list) + ', "lat":' + latitude + ', "lon":' + longitude + ', "radius":' + radius + "}";
         var xhttp;
@@ -172,13 +189,33 @@ const addressSearchControl = L.control.addressSearch(myAPIKey, {
         xhttp.open("POST", "../php/controller/item_controller.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send("new_marker=" + encodeURIComponent(message));
-        },
-    suggestionsCallback: (suggestions) => {
-        console.log(suggestions);
-    }
+        }
 });
 map.addControl(addressSearchControl);
 
 
+
+// https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
+function calcDistance(lat1, lon1, lat2, lon2, unit) {
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+        return 0;
+    }
+    else {
+        var radlat1 = Math.PI * lat1/180;
+        var radlat2 = Math.PI * lat2/180;
+        var theta = lon1-lon2;
+        var radtheta = Math.PI * theta/180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180/Math.PI;
+        dist = dist * 60 * 1.1515;
+        if (unit=="K") { dist = dist * 1.609344 }
+        if (unit=="N") { dist = dist * 0.8684 }
+        return dist;
+    }
+}
 
 

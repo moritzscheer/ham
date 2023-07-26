@@ -13,7 +13,4 @@ interface UserStore extends Store {
     public function findOne(string $id);
     public function findAny(string $stmt): array;
     public function findAll(): array;
-    public function createUserArray(string $sql): array;
-    public function login($email, $password): User;
-    public function changePassword(object $user, $old_password, $new_password): User;
 }

@@ -60,6 +60,8 @@
                         </label>
                     </div>
 
+                    <p id="error-message" class="red"><?php echo $error_message ?></p>
+
                     <div id="split">
                         <label id="input-entry" class="entry">Street:
                             <input type="text" name="user_street_name" value="<?php echo $_SESSION["user"]->getStreetName() ?>">
@@ -128,7 +130,6 @@
             <form id="gallery_container" method="post" enctype="multipart/form-data" >
                 <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                 <?php echo $_SESSION["profile_gallery"] ?>
-                <?php echo $error_message ?>
                 <div class="gallery_edit">
                     <label>Add Image
                         <input type="submit" value="profile_gallery" name="onEditImage">

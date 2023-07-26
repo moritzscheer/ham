@@ -4,7 +4,6 @@ namespace stores\database;
 
 use Exception;
 use PDO;
-use SQLiteException;
 use stores\interface\AddressStore;
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/stores/interface/AddressStore.php';
@@ -32,21 +31,18 @@ class DBAddressStore implements AddressStore {
 
     /**
      * @param object $item
-     * @return string
+     * @return string|bool
      */
-    public function create(object $item): string {
-        // checking if an entry already exist
-        $sql = "SELECT address_ID FROM address WHERE " . $item->getAddressAttributesAsSet("AND") . ";";
-        $stmt = $this->db->query($sql)->fetch();
-
-        if ($stmt !== false) { // if an entry exist
-            return $stmt["address_ID"];
-        }
-
+    public function create(object $item): string|false
+    {
         // inserting an entry
-        $sql = "INSERT INTO address (".$item->getAddressAttributesAsList("key", false).") VALUES (".$item->getAddressAttributesAsList("value", true).");";
-        $this->db->exec($sql);
-        return $this->db->lastInsertId();
+        $insert = $this->preparedInsert($item);
+
+        if ($insert === false) {
+            return $this->findOne($item);
+        } else {
+            return $insert;
+        }
     }
 
     /**
@@ -56,43 +52,50 @@ class DBAddressStore implements AddressStore {
      */
     public function update(object $item): string {
         try {
-            // selects all addresses with the same data
-            $sql = "SELECT address_ID FROM address WHERE " . $item->getAddressAttributesAsSet("AND") . ";";
-            $stmt1 = $this->db->query($sql)->fetch();
-            $DataInDB = $stmt1 !== false;
+            // flag for entries that already exist in database. if none exist false is saved, else address_ID.
+            $DataInDB = $this->findOne($item);
 
-            // checking if address_ID is saved in any entry
+            // checking if address_ID is saved in any entry. if other entries use this address_ID true is saved, else false.
             $sql = "SELECT COUNT(*) FROM (".
                 "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
                 "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
             $stmt2 = $this->db->query($sql)->fetch();
-            $IDUsedAnywhereElse = $stmt2["COUNT(*)"] > 1;
+            $IDInUse = $stmt2["COUNT(*)"] > 1;
 
-            if($item->getAddressID() === "") {  // if item had no address_ID
-                if ($item->getStreetName() === "" && $item->getHouseNumber() === "" && $item->getPostalCode() === "" && $item->getCity() === "") {
-                    // if no address was typed In
+            if ($item->getAddressID() === "") {
+                // if item had no address_ID
+
+                if (!$item->hasAddressInputs()) {
+                    // if no address was typed in
                     return "";
-                } elseif ($DataInDB) {
-                    return $stmt1["address_ID"];
-                } else {
+
+                } elseif ($DataInDB === false) {
                     return $this->create($item);
+
+                } else {
+                    return $DataInDB;
                 }
-            } else {  // if item had an address_ID
-                if ($item->getStreetName() === "" && $item->getHouseNumber() === "" && $item->getPostalCode() === "" && $item->getCity() === "") {
-                    // if no address was typed In
-                    if(!$IDUsedAnywhereElse) {
+
+            } else {
+                // if item had an address_ID
+                if (!$item->hasAddressInputs()) {
+                    // if address was deleted
+                    if ($IDInUse === false) {
                         $this->delete($item->getAddressID());
                     }
                     return "";
-                } elseif ($DataInDB) {
+
+                } elseif ($DataInDB === false) {
+                    $this->preparedUpdate($item);
+
                     return $item->getAddressID();
+
                 } else {
-                    $sql = "UPDATE address SET ".$item->getAddressAttributesAsSet(",")." WHERE address_ID = ". $item->getAddressID().";";
-                    $this->db->exec($sql);
-                    return $item->getAddressID();
+                    return $DataInDB;
+
                 }
             }
-        } catch (SQLiteException $e) {
+        } catch (Exception) {
             return $item->getAddressID();
         }
     }
@@ -107,31 +110,80 @@ class DBAddressStore implements AddressStore {
     }
 
     /**
-     * @param string $id
-     * @return array
+     * @param object $item
+     * @return string|false
      */
-    public function findOne(string $id): array {
-        $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
+    public function findOne(object $item): mixed {
+        $sql = 'SELECT address_ID FROM address WHERE '.
+               'street_name = :street_name AND house_number = :house_number AND '.
+               'postal_code = :postal_code AND city = :city';
+
         $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(":address_ID" => $id));
-        $stmt->bindColumn(2, $street_name);
-        $stmt->bindColumn(3, $house_number);
-        $stmt->bindColumn(4, $postal_code);
-        $stmt->bindColumn(5, $city);
-        $stmt->fetch(PDO::FETCH_BOUND);
-        return array("address_ID" => $id
-        , "street_name" => $street_name, "house_number" => $house_number
-        , "postal_code" => $postal_code, "city" => $city);
-    }
 
-    public function findAll(): array {
-        $findAll = "SELECT * FROM address";
-        $addresses =  $this->db->query($findAll)->fetchAll();
-        foreach ($addresses as $key => $address) {
-            $addresses[$key] = Address::withAddressID($address);
+        $stmt->bindValue('street_name', $item->getStreetName());
+        $stmt->bindValue('house_number', $item->getHouseNumber());
+        $stmt->bindValue('postal_code', $item->getPostalCode());
+        $stmt->bindValue('city', $item->getCity());
+
+        $stmt->execute();
+
+        /* Bind result by address_ID */
+        $stmt->bindColumn("address_ID", $address_ID);
+
+        if ($stmt->fetch( PDO::FETCH_BOUND)) {
+            return $address_ID;
+        } else {
+            return false;
         }
-        return $addresses;
     }
 
+    /**
+     * method to update data into the database
+     * @param object $item
+     * @return void
+     */
+    private function preparedUpdate(object $item) : void
+    {
+        $sql = 'UPDATE address SET street_name = :street_name, house_number = :house_number, '.
+               'postal_code = :postal_code, city = :city WHERE address_ID = :address_ID';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('addressID', $item->getAddressID());
+        $stmt->bindValue('street_name', $item->getStreetName());
+        $stmt->bindValue('house_number', $item->getHouseNumber());
+        $stmt->bindValue('postal_code', $item->getPostalCode());
+        $stmt->bindValue('city', $item->getCity());
+
+        $stmt->execute();
+    }
+
+    /**
+     * method to insert data into the database
+     * @param object $item
+     * @return string|false
+     */
+    private function preparedInsert(object $item) : string|false
+    {
+        try {
+            $sql = 'INSERT INTO address (street_name, house_number, postal_code, city) '.
+                'VALUES (:street_name, :house_number, :postal_code, :city)';
+
+            $stmt = $this->db->prepare($sql);
+
+            $stmt->bindValue('street_name', $item->getStreetName());
+            $stmt->bindValue('house_number', $item->getHouseNumber());
+            $stmt->bindValue('postal_code', $item->getPostalCode());
+            $stmt->bindValue('city', $item->getCity());
+
+            if ($stmt->execute() === false) {
+                return false;
+            } else {
+                return $this->db->lastInsertId();
+            }
+        } catch (Exception) {
+            return false;
+        }
+    }
 
 }

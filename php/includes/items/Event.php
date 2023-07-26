@@ -2,14 +2,18 @@
 
 namespace php\includes\items;
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/php/includes/items/Item.php';
+use stdClass;
 
+/**
+ * This class defines an Event and is transferred from the stores to the controller and other way around.
+ */
 class Event extends Item {
 
-    // event attributes
-    private ?int $event_ID = null;
+    /* -------- Event attributes -------- */
+
+    private ?string $event_ID = null;
     private ?string $address_ID = "";
-    private ?int $user_ID = null;
+    private ?string $user_ID = null;
     private ?string $name = "";
     private ?string $description = "";
     private ?string $requirements = "";
@@ -17,18 +21,25 @@ class Event extends Item {
     private ?string $startTime = "";
     private ?string $endTime = "";
 
-    // address attributes
+    /* -------- Address attributes -------- */
+
     private ?string $street_name = "";
     private ?string $house_number = "";
     private ?string $postal_code = "";
     private ?string $city = "";
 
-    // image attributes
-    private ?array $blobData = null;
+    /* -------- Image attribute -------- */
 
-    // distance to user
+    private ?string $image = "../resources/images/events/event1.jpg";
+
+    /* -------- distance from marker attribute -------- */
+
     private ?float $distance = 0;
-    
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                                 constructors                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
     /**
      * @param array $item
      * @return Event
@@ -51,7 +62,7 @@ class Event extends Item {
         return $instance;
     }
 
-    public static function getJsonEvent($item): Event {
+    public static function getJsonEvent(stdClass $item): Event {
         $instance = new self();
         $instance->event_ID = (int)$item->id;
         $instance->address_ID = $item->address_ID;
@@ -71,18 +82,18 @@ class Event extends Item {
 
     public static function toArrayForJsonEntry(Event $item): array {
         return array(
-            "image" => $item->getImageSource(),
-            "id" => uniqid('ev_'),
-            "authorID" => $item->getUserID(),
+            "image" => $item->getImage(),
+            "event_ID" => uniqid('ev_'),
+            "user_ID" => $item->getUserID(),
             "type" => "event",
             "description" => $item->getDescription(),
             "name" => $item->getName(),
             "address_ID" => $item->getAddressID(),
-            "street" => $item->getStreetName(),
-            "houseNr" => $item->getHouseNumber(),
-            "postalCode" => $item->getPostalCode(),
+            "street_name" => $item->getStreetName(),
+            "house_number" => $item->getHouseNumber(),
+            "postal_code" => $item->getPostalCode(),
             "city" => $item->getCity(),
-            "Date" => $item->getDate(),
+            "date" => $item->getDate(),
             "startTime" => $item->getStartTime(),
             "endTime" => $item->getEndTime(),
             "requirements" => $item->getRequirements(),
@@ -90,55 +101,63 @@ class Event extends Item {
         );
     }
 
-    public function getEventHTML(): string {
-        return '<form method="post" name="event_ID" id="item">                                                    ' .
-            '       <div id="item_image">                                                                         ' .
-            '           <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
-            '       </div>                                                                                        ' .
-            '       <div id="item_short_description" class="text-line-pre">                                       ' .
-            '           <span>' . $this->name . '</span>                                                          ' .
-            '           <br>                                                                                      ' .
-            '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
-            '           <br>                                                                                      ' .
-            '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
-            '           <br>                                                                                      ' .
-            '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
-            '       </div>                                                                                        ' .
-            '       <label>click to display more / less                                                           ' .
-            '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
-            '       </label>                                                                                      ' .
-            '   </form>                                                                                           ' ;
-    }
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               public methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
 
-    //todo: fix line 120 to 127 with ajax ?
-    public function getEditableEventHTML(): string {
-        return '<form method="post" name="event_ID" id="item">                                                    ' .
-            '       <div id="item_image">                                                                         ' .
-            '           <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
-            '       </div>                                                                                        ' .
-            '       <div id="item_editable">                                                                      ' .
-            '            <label>Edit                                                                              ' .
-            '                  <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
-            '                  <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
-            '            </label>                                                                                 ' .
-            '            <label>Delete                                                                            ' .
-            '                  <a href="events.php"  name="onDelete" ></a>                                        ' .
-            '                  <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
-            '             </label>                                                                                ' .
-            '       </div>                                                                                        ' .
-            '       <div id="item_short_description" class="text-line-pre">                                       ' .
-            '           <span>' . $this->name . '</span>                                                          ' .
-            '           <br>                                                                                      ' .
-            '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
-            '           <br>                                                                                      ' .
-            '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
-            '           <br>                                                                                      ' .
-            '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
-            '       </div>                                                                                        ' .
-            '       <label>click to display more / less                                                           ' .
-            '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
-            '       </label>                                                                                      ' .
-            '   </form>                                                                                           ' ;
+    /**
+     * @param $isEditable
+     * @return string
+     */
+    public function getEventHTML($isEditable): string {
+        if($isEditable) {
+            return '<form method="post" name="event_ID" id="item">                                                    ' .
+                '       <div id="item_image">                                                                         ' .
+                '           <img src="' . $this->image . '" alt="bandImage"/>                                         ' .
+                '       </div>                                                                                        ' .
+                '       <div id="item_editable">                                                                      ' .
+                '            <label>Edit                                                                              ' .
+                '                  <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
+                '                  <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
+                '            </label>                                                                                 ' .
+                '            <label>Delete                                                                            ' .
+                '                  <a href="events.php"  name="onDelete" ></a>                                        ' .
+                '                  <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
+                '             </label>                                                                                ' .
+                '       </div>                                                                                        ' .
+                '       <div id="item_short_description" class="text-line-pre">                                       ' .
+                '           <span>' . $this->name . '</span>                                                          ' .
+                '           <br>                                                                                      ' .
+                '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
+                '           <br>                                                                                      ' .
+                '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
+                '           <br>                                                                                      ' .
+                '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
+                '       </div>                                                                                        ' .
+                '       <label>click to display more / less                                                           ' .
+                '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
+                '       </label>                                                                                      ' .
+                '   </form>                                                                                           ' ;
+        } else {
+            return '<form method="post" name="event_ID" id="item">                                                    ' .
+                '       <div id="item_image">                                                                         ' .
+                '           <img src="' . $this->image . '" alt="bandImage"/>                                         ' .
+                '       </div>                                                                                        ' .
+                '       <div id="item_short_description" class="text-line-pre">                                       ' .
+                '           <span>' . $this->name . '</span>                                                          ' .
+                '           <br>                                                                                      ' .
+                '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
+                '           <br>                                                                                      ' .
+                '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
+                '           <br>                                                                                      ' .
+                '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
+                '       </div>                                                                                        ' .
+                '       <label>click to display more / less                                                           ' .
+                '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
+                '       </label>                                                                                      ' .
+                '   </form>                                                                                           ' ;
+        }
+
     }
 
     /**
@@ -147,13 +166,13 @@ class Event extends Item {
      * @return string
      */
     public function getEventAttributesAsList($keyOrValue, $withApostroph): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
-                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "image" && $key !== "distance") {
+                $str = $this->concatList($str, $key, $value, $keyOrValue, $withApostroph);
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -161,13 +180,13 @@ class Event extends Item {
      * @return string
      */
     public function getEventAttributesAsSet($separator): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
-                $result = $this->concatSet($result, $key, $value, $separator);
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "image" && $key !== "distance") {
+                $str = $this->concatSet($str, $key, $value, $separator);
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -176,13 +195,13 @@ class Event extends Item {
      * @return string
      */
     public function getAddressAttributesAsList($keyOrValue, $withApostroph): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
+                $str = $this->concatList($str, $key, $value, $keyOrValue, $withApostroph);
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -190,53 +209,44 @@ class Event extends Item {
      * @return string
      */
     public function getAddressAttributesAsSet($separator): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = parent::concatSet($result, $key, $value, $separator);
+                $str = parent::concatSet($str, $key, $value, $separator);
             }
         }
-        return $result;
+        return $str;
     }
 
-    /* -------------------------------------------------------------------------------------------------------------- */
-    /*                                               getter and setter                                                */
-    /* -------------------------------------------------------------------------------------------------------------- */
-
     /**
-     * @return string
+     * @return bool
      */
-    public function getImageSource(): string {
-        if (empty($this->blobData)) {
-            return htmlspecialchars("../resources/images/events/event1.jpg");
+    public function hasAddressInputs() : bool {
+        if ($this->street_name === "" &&
+            $this->house_number === "" &&
+            $this->postal_code === "" &&
+            $this->city === "") {
+            return false;
         } else {
-            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
+            return true;
         }
     }
 
-    /**
-     * @return int|null
-     */
-    public function getEventID(): ?int
-    {
-        return $this->event_ID;
-    }
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               combined getters                                                 */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /* -------- Address output -------- */
 
     /**
-     * @return int
+     * @return string|null
      */
-    public function getUserID(): int
+    public function getAddress(): ?string
     {
-        return htmlspecialchars($this->user_ID);
+        return htmlspecialchars($this->getAddressAttributesAsList("value", false));
     }
 
-    /**
-     * @param int $user_ID
-     */
-    public function setUserID(int $user_ID): void
-    {
-        $this->user_ID = $user_ID;
-    }
+    /* -------- Time attribute -------- */
 
     /**
      * @return string
@@ -246,13 +256,21 @@ class Event extends Item {
         return htmlspecialchars($this->startTime . " - " . $this->endTime);
     }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               getter and setter                                                */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /* -------- Event ID attribute -------- */
+
     /**
-     * @param array|null $blobData
+     * @return int|null
      */
-    public function setBlobData(?array $blobData): void
+    public function getEventID(): ?int
     {
-        $this->blobData = $blobData;
+        return $this->event_ID;
     }
+
+    /* -------- Address ID attribute -------- */
 
     /**
      * @return string|null
@@ -270,6 +288,26 @@ class Event extends Item {
         $this->address_ID = $address_ID;
     }
 
+    /* -------- User ID attribute -------- */
+
+    /**
+     * @return int
+     */
+    public function getUserID(): int
+    {
+        return htmlspecialchars($this->user_ID);
+    }
+
+    /**
+     * @param int $user_ID
+     */
+    public function setUserID(int $user_ID): void
+    {
+        $this->user_ID = $user_ID;
+    }
+
+    /* -------- Name attribute -------- */
+
     /**
      * @return string|null
      */
@@ -285,6 +323,8 @@ class Event extends Item {
     {
         $this->name = $name;
     }
+
+    /* -------- Description attribute -------- */
 
     /**
      * @return string|null
@@ -302,6 +342,8 @@ class Event extends Item {
         $this->description = $description;
     }
 
+    /* -------- Requirement attribute -------- */
+
     /**
      * @return string|null
      */
@@ -317,6 +359,8 @@ class Event extends Item {
     {
         $this->requirements = $requirements;
     }
+
+    /* -------- Date attribute -------- */
 
     /**
      * @return string|null
@@ -334,6 +378,8 @@ class Event extends Item {
         $this->date = $date;
     }
 
+    /* -------- Start Time attribute -------- */
+
     /**
      * @return string|null
      */
@@ -349,6 +395,8 @@ class Event extends Item {
     {
         $this->startTime = $startTime;
     }
+
+    /* -------- End Time attribute -------- */
 
     /**
      * @return string|null
@@ -366,61 +414,7 @@ class Event extends Item {
         $this->endTime = $endTime;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getAddress(): ?string
-    {
-        return htmlspecialchars($this->getAddressAttributesAsList("value", false));
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getHouseNumber(): ?string
-    {
-        return htmlspecialchars($this->house_number);
-    }
-
-    /**
-     * @param string|null $house_number
-     */
-    public function setHouseNumber(?string $house_number): void
-    {
-        $this->house_number = $house_number;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPostalCode(): ?string
-    {
-        return htmlspecialchars($this->postal_code);
-    }
-
-    /**
-     * @param string|null $postal_code
-     */
-    public function setPostalCode(?string $postal_code): void
-    {
-        $this->postal_code = $postal_code;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCity(): ?string
-    {
-        return htmlspecialchars($this->city);
-    }
-
-    /**
-     * @param string|null $city
-     */
-    public function setCity(?string $city): void
-    {
-        $this->city = $city;
-    }
+    /* -------- Street Name attribute -------- */
 
     /**
      * @return string|null
@@ -438,6 +432,80 @@ class Event extends Item {
         $this->street_name = $street_name;
     }
 
+    /* -------- House Number attribute -------- */
+
+    /**
+     * @return string|null
+     */
+    public function getHouseNumber(): ?string
+    {
+        return htmlspecialchars($this->house_number);
+    }
+
+    /**
+     * @param string|null $house_number
+     */
+    public function setHouseNumber(?string $house_number): void
+    {
+        $this->house_number = $house_number;
+    }
+
+    /* -------- Postal Code attribute -------- */
+
+    /**
+     * @return string|null
+     */
+    public function getPostalCode(): ?string
+    {
+        return htmlspecialchars($this->postal_code);
+    }
+
+    /**
+     * @param string|null $postal_code
+     */
+    public function setPostalCode(?string $postal_code): void
+    {
+        $this->postal_code = $postal_code;
+    }
+
+    /* -------- City attribute -------- */
+
+    /**
+     * @return string|null
+     */
+    public function getCity(): ?string
+    {
+        return htmlspecialchars($this->city);
+    }
+
+    /**
+     * @param string|null $city
+     */
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    /* -------- Image attribute -------- */
+
+    /**
+     * @param array|null $blobData
+     */
+    public function setImage(?array $blobData): void
+    {
+        $this->image = "data:" . $blobData["mime"] . ";base64," . base64_encode($blobData["data"]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return htmlspecialchars($this->image);
+    }
+
+    /* -------- Distance attribute -------- */
+
     /**
      * @return float|null
      */
@@ -453,6 +521,4 @@ class Event extends Item {
     {
         $this->distance = $distance;
     }
-
-
 }

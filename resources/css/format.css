@@ -171,6 +171,9 @@ input:-webkit-autofill {
 #success_message {
     color:green;
 }
+.red {
+    color: red;
+}
 
 
 /* formatting for entry sets (attribute and value) */

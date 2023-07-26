@@ -2,9 +2,15 @@
 
 namespace php\includes\items;
 
+use stdClass;
+
+/**
+ * This class defines a User and is transferred from the stores to the controller and other way around.
+ */
 class User extends Item {
 
-    // user attributes
+    /* -------- User attributes -------- */
+
     private ?string $user_ID = "";
     private ?string $address_ID = "";
     private ?string $type = "";
@@ -18,24 +24,27 @@ class User extends Item {
     private ?string $other_remarks = "";
     private ?string $dsr = "";
 
-    // address attributes
+    /* -------- Address attributes -------- */
+
     private ?string $street_name = "";
     private ?string $house_number = "";
     private ?string $postal_code = "";
     private ?string $city = "";
 
-    // small profile picture attributes
-    private ?array $blobData = null;
+    /* -------- Image attribute -------- */
 
-    // distance to user
-    private ?float $distance = 0;
+    private ?string $image = "../resources/images/profile/default/defaultLarge.jpeg";
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                                 constructors                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
 
     /**
      * constructor
-     * @param $user
+     * @param array $user
      * @return User
      */
-    public static function withAddress($user): User {
+    public static function withAddress(array $user): User {
         $instance = new self();
         $instance->user_ID = (string)$user["user_ID"];
         $instance->address_ID = $user["address_ID"];
@@ -56,6 +65,10 @@ class User extends Item {
         return $instance;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
     public static function toArrayForJsonEntry(User $user): array {
         return array(
             "user_ID" => $user->getUserID(),
@@ -80,7 +93,7 @@ class User extends Item {
         );
     }
 
-    public static function getJsonUser($user): User {
+    public static function getJsonUser(stdClass $user): User {
         $instance = new self();
         $instance->user_ID = (string)$user->user_ID;
         $instance->type = $user->type;
@@ -102,10 +115,17 @@ class User extends Item {
         return $instance;
     }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               public methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * @return string
+     */
     public function getBandHTML(): string {
         return '<form method="post" name="event_ID" id="item">                                                    ' .
             '       <div id="item_image">                                                                         ' .
-            '           <img src="' . $this->getImageSource() . '" alt="bandImage"/>                              ' .
+            '           <img src="' . $this->image . '" alt="bandImage"/>                                         ' .
             '       </div>                                                                                        ' .
             '       <div id="item_short_description" class="text-line-pre">                                       ' .
             '           <span>' . $this->getName() . ' ' . $this->getSurname() . '</span>                         ' .
@@ -124,7 +144,7 @@ class User extends Item {
             '               </label>                                                                              ' .
             '           </form>                                                                                   ' .
             '       </div>                                                                                        ' .
-            '   </form>                                                                                           ';
+            '   </form>                                                                                           ' ;
     }
 
     /**
@@ -133,13 +153,13 @@ class User extends Item {
      * @return string
      */
     public function getUserAttributesAsList($keyOrValue, $withApostroph): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
-                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "image" && $key !== "distance") {
+                $str = $this->concatList($str, $key, $value, $keyOrValue, $withApostroph);
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -147,13 +167,13 @@ class User extends Item {
      * @return string
      */
     public function getUserAttributesAsSet($separator): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
-            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "blobData" && $key !== "distance") {
-                $result = $this->concatSet($result, $key, $value, $separator);
+            if ($key !== "street_name" && $key !== "house_number" && $key !== "postal_code" && $key !== "city" && $key !== "image" && $key !== "distance") {
+                $str = $this->concatSet($str, $key, $value, $separator);
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -162,13 +182,13 @@ class User extends Item {
      * @return string
      */
     public function getAddressAttributesAsList($keyOrValue, $withApostroph): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = $this->concatList($result, $key, $value, $keyOrValue, $withApostroph);
+                $str = $this->concatList($str, $key, $value, $keyOrValue, $withApostroph);
             }
         }
-        return $result;
+        return $str;
     }
 
     /**
@@ -176,29 +196,62 @@ class User extends Item {
      * @return string
      */
     public function getAddressAttributesAsSet($separator): string {
-        $result = "";
+        $str = "";
         foreach ($this as $key => $value) {
             if ($key === "street_name" || $key === "house_number" || $key === "postal_code" || $key === "city") {
-                $result = parent::concatSet($result, $key, $value, $separator);
+                $str = parent::concatSet($str, $key, $value, $separator);
             }
         }
-        return $result;
+        return $str;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasAddressInputs() : bool {
+        if ($this->street_name === "" &&
+            $this->house_number === "" &&
+            $this->postal_code === "" &&
+            $this->city === "") {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               combined getters                                                 */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /* -------- Address output -------- */
+
+    /**
+     * @return string|null
+     */
+    public function getAddress(): ?string
+    {
+        return htmlspecialchars($this->getAddressAttributesAsList("value", false));
+    }
+
+    /* -------- Dsr checkbox output -------- */
+
+    /**
+     * @return string|null
+     */
+    public function getDsrCheckBox(): ?string
+    {
+        if($this->dsr === "y") {
+            return "checked";
+        } else {
+            return "";
+        }
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
     /*                                               getter and setter                                                */
     /* -------------------------------------------------------------------------------------------------------------- */
 
-    /**
-     * @return string
-     */
-    public function getImageSource(): string {
-        if (empty($this->blobData)) {
-            return htmlspecialchars("../resources/images/profile/default/defaultLarge.jpeg");
-        } else {
-            return htmlspecialchars("data:" . $this->blobData["mime"] . ";base64," . base64_encode($this->blobData["data"]));
-        }
-    }
+    /* -------- User ID attribute -------- */
 
     /**
      * @return string
@@ -217,6 +270,8 @@ class User extends Item {
         $this->user_ID = $id;
     }
 
+    /* -------- Address ID attribute -------- */
+
     /**
      * @return string|null
      */
@@ -232,6 +287,8 @@ class User extends Item {
     {
         $this->address_ID = $address_ID;
     }
+
+    /* -------- Type attribute -------- */
 
     /**
      * @return string|null
@@ -249,6 +306,8 @@ class User extends Item {
         $this->type = $type;
     }
 
+    /* -------- Name attribute -------- */
+
     /**
      * @return string|null
      */
@@ -264,6 +323,8 @@ class User extends Item {
     {
         $this->name = $name;
     }
+
+    /* -------- Surname attribute -------- */
 
     /**
      * @return string|null
@@ -281,6 +342,8 @@ class User extends Item {
         $this->surname = $surname;
     }
 
+    /* -------- Password attribute -------- */
+
     /**
      * @return string|null
      */
@@ -296,6 +359,8 @@ class User extends Item {
     {
         $this->password = $password;
     }
+
+    /* -------- Phone Number attribute -------- */
 
     /**
      * @return string|null
@@ -313,6 +378,8 @@ class User extends Item {
         $this->phone_number = $phone_number;
     }
 
+    /* -------- E-Mail attribute -------- */
+
     /**
      * @return string|null
      */
@@ -328,6 +395,8 @@ class User extends Item {
     {
         $this->email = $email;
     }
+
+    /* -------- Genre attribute -------- */
 
     /**
      * @return string|null
@@ -345,6 +414,8 @@ class User extends Item {
         $this->genre = $genre;
     }
 
+    /* -------- Members attribute -------- */
+
     /**
      * @return string|null
      */
@@ -360,6 +431,8 @@ class User extends Item {
     {
         $this->members = $members;
     }
+
+    /* -------- Other Remarks attribute -------- */
 
     /**
      * @return string|null
@@ -377,6 +450,8 @@ class User extends Item {
         $this->other_remarks = $other_remarks;
     }
 
+    /* -------- Street Name attribute -------- */
+
     /**
      * @return string|null
      */
@@ -392,6 +467,8 @@ class User extends Item {
     {
         $this->street_name = $street_name;
     }
+
+    /* -------- House Number attribute -------- */
 
     /**
      * @return string|null
@@ -409,6 +486,8 @@ class User extends Item {
         $this->house_number = $house_number;
     }
 
+    /* -------- Postal Code attribute -------- */
+
     /**
      * @return string|null
      */
@@ -424,6 +503,8 @@ class User extends Item {
     {
         $this->postal_code = $postal_code;
     }
+
+    /* -------- City attribute -------- */
 
     /**
      * @return string|null
@@ -441,21 +522,25 @@ class User extends Item {
         $this->city = $city;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getAddress(): ?string
-    {
-        return htmlspecialchars($this->getAddressAttributesAsList("value", false));
-    }
+    /* -------- Image attribute -------- */
 
     /**
      * @param array|null $blobData
      */
-    public function setBlobData(?array $blobData): void
+    public function setImage(?array $blobData): void
     {
-        $this->blobData = $blobData;
+        $this->image = "data:" . $blobData["mime"] . ";base64," . base64_encode($blobData["data"]);
     }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return htmlspecialchars($this->image);
+    }
+
+    /* -------- Dsr attribute -------- */
 
     /**
      * @return string|null
@@ -466,38 +551,10 @@ class User extends Item {
     }
 
     /**
-     * @return string|null
-     */
-    public function getDsrCheckBox(): ?string
-    {
-        if($this->dsr === "y") {
-            return "checked";
-        } else {
-            return "";
-        }
-    }
-
-    /**
      * @param string|null $dsr
      */
     public function setDsr(?string $dsr): void
     {
         $this->dsr = $dsr;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getDistance(): ?float
-    {
-        return $this->distance;
-    }
-
-    /**
-     * @param float|null $distance
-     */
-    public function setDistance(?float $distance): void
-    {
-        $this->distance = $distance;
     }
 }

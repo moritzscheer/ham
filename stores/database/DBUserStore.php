@@ -16,7 +16,11 @@ class DBUserStore implements UserStore
     private Store $addressStore;
     private DBBlobStore $blobObj;
 
-
+    /**
+     * @param PDO $db
+     * @param Store $addressStore
+     * @param DBBlobStore $blobObj
+     */
     public function __construct(PDO $db, Store $addressStore, DBBlobStore $blobObj)
     {
         $this->db = $db;
@@ -41,11 +45,14 @@ class DBUserStore implements UserStore
         $db->exec($sql);
     }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               public methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
     /**
-     * methode to register a user into the database. First it searches the database, if the email or password
-     * already exist, then the data set is inserted and returned as a items\User object. Else an exception is thrown.
-     * @param User $user the user object given in
-     * @return User the returned user object with the user_ID in it
+     * creates the data from the user given in
+     * @param User $user
+     * @return User
      * @throws Exception
      */
     public function create(User $user): User
@@ -55,21 +62,22 @@ class DBUserStore implements UserStore
 
             // checking if an entry already exist with the password an email
             $sql = "SELECT * FROM user WHERE email = '" . $user->getEmail() . "' OR password = '" . $user->getPassword() . "';";
-
             $stmt = $this->db->query($sql)->fetch();
             if ($stmt !== false) {
                 throw new Exception("Email or Password already exist");
             }
 
-            if ($user->getStreetName() !== "" || $user->getHouseNumber() !== "" || $user->getPostalCode() !== "" || $user->getCity() !== "") {
+            // if any address attribute is not empty
+            if ($user->hasAddressInputs()) {
                 $address_ID = $this->addressStore->create($user);
                 $user->setAddressID($address_ID);
             }
+            // inserting user data
+            $this->preparedInsert($user);
 
-            $sql = "INSERT INTO user (" . $user->getUserAttributesAsList("key", false) . ") VALUES (" . $user->getUserAttributesAsList("value", true) . ");";
-            $this->db->exec($sql);
-
+            // gets inserted data
             $user = $this->findOne($this->db->lastInsertId());
+
             $this->db->commit();
             return $user;
         } catch (Exception $ex) {
@@ -79,74 +87,58 @@ class DBUserStore implements UserStore
     }
 
     /**
-     * methode to update user information.
+     * updates the data from the user given in
      * @param User $user
      * @return User
      */
     public function update(User $user): User
     {
+        // updates address data
         $address_ID = $this->addressStore->update($user);
         $user->setAddressID($address_ID);
 
-        $sql = "UPDATE user SET " . $user->getUserAttributesAsSet(",") . " WHERE user_ID = '" . $user->getUserID() . "';";
-        $this->db->exec($sql);
+        // updating user data
+        $this->preparedUpdate($user);
+
+        // gets updated data
         return $this->findOne($user->getUserID());
     }
 
     /**
-     * methode to find a user
+     * deletes the data from the user with the given id
+     * @param string $id
+     * @return void
+     */
+    public function delete(string $id): void
+    {
+        // deletes user data
+        $sql = "DELETE FROM user WHERE user_ID = '" . $id . "' RETURNING 'address_ID';";
+        $stmt = $this->db->exec($sql);
+
+        // deletes address data
+        $this->addressStore->delete($stmt);
+    }
+
+    /**
+     * gets the data from the user with the given id
      * @param string $id
      * @return User
      */
     public function findOne(string $id): User
     {
-        $sql = "SELECT * FROM user WHERE user_ID = :user_ID;";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(":user_ID" => $id));
-        $stmt->bindColumn(2, $address_ID);
-        $stmt->bindColumn(3, $type);
-        $stmt->bindColumn(4, $name);
-        $stmt->bindColumn(5, $surname);
-        $stmt->bindColumn(6, $password);
-        $stmt->bindColumn(7, $phone_number);
-        $stmt->bindColumn(8, $email);
-        $stmt->bindColumn(9, $genre);
-        $stmt->bindColumn(10, $members);
-        $stmt->bindColumn(11, $other_remarks);
-        $stmt->bindColumn(12, $dsr);
-        $stmt->fetch(PDO::FETCH_BOUND);
-
-        $user = array("user_ID" => $id, "address_ID" => $address_ID, "type" => $type
-        , "name" => $name, "surname" => $surname, "password" => $password, "phone_number" => $phone_number
-        , "email" => $email, "genre" => $genre, "members" => $members, "other_remarks" => $other_remarks
-        , "dsr" => $dsr, "street_name" => "", "house_number" => "", "postal_code" => "", "city" => "");
-        
-        if ($address_ID !== NULL) {
-            $sql = "SELECT * FROM address WHERE address_ID = :address_ID;";
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute(array(":address_ID" => $address_ID));
-            $stmt->bindColumn(2, $street_name);
-            $stmt->bindColumn(3, $house_number);
-            $stmt->bindColumn(4, $postal_code);
-            $stmt->bindColumn(5, $city);
-            $stmt->fetch(PDO::FETCH_BOUND);
-
-            $user["street_name"] = $street_name;
-            $user["house_number"] = $house_number;
-            $user["postal_code"] = $postal_code;
-            $user["city"] = $city;
-        }
-
-        return User::withAddress($user);
+        $sql = "SELECT * FROM user LEFT JOIN address ON user.address_ID = address.address_ID WHERE user_ID = " . $id . ";";
+        $stmt = $this->db->query($sql)->fetch();
+        return User::withAddress($stmt);
     }
 
     /**
+     * gets the data from all users with the $stmt in any attribute
      * @param string $stmt
      * @return array
      * @throws Exception
      */
-    public function findAny(string $stmt): array {
+    public function findAny(string $stmt): array
+    {
         $sql = "SELECT * FROM user ".
             "LEFT JOIN address ".
             "ON address.address_ID = user.address_ID ".
@@ -160,39 +152,20 @@ class DBUserStore implements UserStore
     }
 
     /**
+     * gets the data from all users
      * @throws Exception
      */
-    public function findAll(): array {
+    public function findAll(): array
+    {
         $sql = "SELECT * FROM user LEFT JOIN address ".
                "ON address.address_ID = user.address_ID ".
                "WHERE type = 'Musician';";
         return $this->createUserArray($sql);
     }
 
-    /**
-     * @param string $sql
-     * @return array
-     * @throws Exception
-     */
-    public function createUserArray(string $sql): array {
-        $stmt = $this->db->query($sql);
-        $stmt = $stmt->fetchAll();
-
-        $return = array();
-        foreach ($stmt as $user) {
-            $newUser = User::withAddress($user);
-
-            try {
-                $imageID = $this->blobObj->queryID($newUser->getUserID(), "profile_large");
-                $image = $this->blobObj->selectBlob($imageID[0]["id"]);
-                $newUser->setBlobData($image);
-                $return[] = $newUser;
-            } catch (RuntimeException $ex) {
-                $return[] = $newUser;
-            }
-        }
-        return $return;
-    }
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               custom methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
 
     /**
      * @param $email
@@ -205,49 +178,138 @@ class DBUserStore implements UserStore
         $sql = "SELECT * FROM user WHERE email = '" . $email . "';";
         $stmt = $this->db->query($sql)->fetch();
 
-        if ($stmt === false) {
+        // if email does not exist
+        if ($stmt === false)
             throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
-        }
-        if (!password_verify($password, $stmt["password"])) {
-            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
-        }
 
+        // if password is wrong
+        if (!password_verify($password, $stmt["password"]))
+            throw new Exception('<p id="loginError">Email or Password are not correct!</p>');
+
+        // gets user data
         return $this->findOne($stmt["user_ID"]);
     }
 
     /**
+     * @param User $user
+     * @param $old_password
+     * @param $new_password
+     * @return User
      * @throws Exception
      */
-    public function changePassword(object $user, $old_password, $new_password): User
+    public function changePassword(User $user, $old_password, $new_password): User
     {
-        // checking if new password already exist
-        $sql = "SELECT * FROM user WHERE password = '" . $new_password . "';";
-        $stmt = $this->db->query($sql)->fetch();
-        if ($stmt !== false) {
-            throw new Exception("Something went wrong! try again.");
+        try {
+            $this->db->beginTransaction();
+
+            // checking if new password already exist
+            $sql = "SELECT * FROM user WHERE password = '" . $new_password . "';";
+            $stmt = $this->db->query($sql)->fetch();
+            if ($stmt !== false)
+                throw new Exception("Something went wrong! try again.");
+
+            // checking if user password is equal to typed in old password
+            $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
+            $stmt = $this->db->query($sql)->fetch();
+            if (!password_verify($old_password, $stmt["password"]))
+                throw new Exception("Old Password is incorrect.");
+
+            $user->setPassword($new_password);
+
+            // updates user data
+            return $this->update($user);
+        } catch (Exception $ex) {
+            $this->db->rollBack();
+            throw new Exception($ex->getMessage());
         }
+    }
 
-        // checking if user password is equal to typed in old password
-        $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
-        $stmt = $this->db->query($sql)->fetch();
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                              private methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
 
-        if (!password_verify($old_password, $stmt["password"])) {
-            throw new Exception("Old Password is incorrect.");
+    /**
+     * @param string $sql
+     * @return array
+     * @throws Exception
+     */
+    private function createUserArray(string $sql): array {
+        $stmt = $this->db->query($sql);
+        $stmt = $stmt->fetchAll();
+
+        $return = array();
+        foreach ($stmt as $user) {
+            $newUser = User::withAddress($user);
+
+            try {
+                $imageID = $this->blobObj->queryID($newUser->getUserID(), "profile_large");
+                $image = $this->blobObj->selectBlob($imageID[0]["id"]);
+                $newUser->setImage($image);
+                $return[] = $newUser;
+            } catch (RuntimeException) {
+                $return[] = $newUser;
+            }
         }
-
-        $user->setPassword($new_password);
-        return $this->update($user);
+        return $return;
     }
 
     /**
-     * methode to delete a user
-     * @param string $id
+     * method to update data into the database
+     * @param User $user
      * @return void
      */
-    public function delete(string $id): void
-    {
-        $sql = "DELETE FROM user WHERE user_ID = '" . $id . "' RETURNING 'address_ID';";
-        $stmt = $this->db->exec($sql);
-        $this->addressStore->delete($stmt);
+    private function preparedUpdate(User $user) : void {
+        $sql = 'UPDATE user SET address_ID = :address_ID, type = :type, name = :name, surname = :surname, password = :password, phone_number = :phone_number, email = :email, genre = :genre, '.
+            'members = :members, other_remarks = :other_remarks, dsr = :dsr WHERE user_ID = :user_ID';
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->bindValue('address_ID', $user->getAddressID());
+        $stmt->bindValue('user_ID', $user->getUserID());
+        $stmt->bindValue('type', $user->getType());
+        $stmt->bindValue('name', $user->getName());
+        $stmt->bindValue('surname', $user->getSurname());
+        $stmt->bindValue('password', $user->getPassword());
+        $stmt->bindValue('phone_number', $user->getPhoneNumber());
+        $stmt->bindValue('email', $user->getEmail());
+        $stmt->bindValue('genre', $user->getGenre());
+        $stmt->bindValue('members', $user->getMembers());
+        $stmt->bindValue('other_remarks', $user->getOtherRemarks());
+        $stmt->bindValue('dsr', $user->getDsr());
+
+        $stmt->execute();
+    }
+
+    /**
+     * method to insert data into the database
+     * @param User $user
+     * @return void
+     */
+    private function preparedInsert(User $user) : void {
+        if ($user->getAddressID() === "") {
+            $sql = 'INSERT INTO user (type, name , surname, password, phone_number, email, genre, members, '.
+                'other_remarks, dsr) VALUES (:type, :name , :surname, :password, :phone_number, :email, :genre, '.
+                ':members, :other_remarks, :dsr)';
+            $stmt = $this->db->prepare($sql);
+        } else {
+            $sql = 'INSERT INTO user (address_ID, type, name , surname, password, phone_number, email, genre, '.
+                'members, other_remarks, dsr) VALUES (:address_ID, :type, :name , :surname, :password, :phone_number, '.
+                ':email, :genre, :members, :other_remarks, :dsr)';
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue('address_ID', $user->getAddressID());
+        }
+
+        $stmt->bindValue('type', $user->getType());
+        $stmt->bindValue('name', $user->getName());
+        $stmt->bindValue('surname', $user->getSurname());
+        $stmt->bindValue('password', $user->getPassword());
+        $stmt->bindValue('phone_number', $user->getPhoneNumber());
+        $stmt->bindValue('email', $user->getEmail());
+        $stmt->bindValue('genre', $user->getGenre());
+        $stmt->bindValue('members', $user->getMembers());
+        $stmt->bindValue('other_remarks', $user->getOtherRemarks());
+        $stmt->bindValue('dsr', $user->getDsr());
+
+        $stmt->execute();
     }
 }

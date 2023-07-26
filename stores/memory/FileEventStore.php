@@ -60,28 +60,28 @@ class FileEventStore implements EventStore
 
     /**
      * Stores an items\Event to the event json file
-     * @param Event $item an items\Event object
+     * @param Event $event an items\Event object
      * @return Event return true if event was successfully written
      */
-    public function create(Event $item): Event
+    public function create(Event $event): Event
     {
-        $jsonEvent = Event::toArrayForJsonEntry($item);
+        $jsonEvent = Event::toArrayForJsonEntry($event);
         $this->itemsOfJsonfile[] = $jsonEvent;
         $var = $this->addItemsToJsonFile();
         if ($var) {
             $this->reloadItemsFromJsonFile();
-            return $item;
+            return $event;
         } else return new Event();
     }
 
     /**
      * @throws Exception
      */
-    public function update(Event $item): Event
+    public function update(Event $event): Event
     {
         // maybe other solution ?
-        $this->delete($item->getEventID());
-        return $this->create($item);
+        $this->delete($event->getEventID());
+        return $this->create($event);
     }
 
     public function findOne(string $id): Event

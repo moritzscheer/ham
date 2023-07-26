@@ -31,9 +31,6 @@
     <script src="../php/includes/api/leaflet/modules.js"></script>
     <script src="../php/includes/api/leaflet/map.js"></script>
 </body>
-<script>
-    var list = <?php echo json_encode($_SESSION["events"]); ?>;
-</script>
 </html>
 
 
