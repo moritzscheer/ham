@@ -42,7 +42,7 @@
         das
         Recht vor, gegen Sie folgende Schritte vorzunehmen:</p>
     <p>1. Ihre eingestellten Beiträge zu löschen und diese abzuändern,</p>
-    <p>2. Verbot weiterhin im Forum Beiträge zu verfassen und</p>
+    <p>2. Verbot weiterhin Beiträge auf der Website zu verfassen und</p>
     <p>3. Sperrung des Zugangs als Nutzer/Nutzerin.</p>
     <p>(3)&nbsp;&nbsp;Haben Sie als Nutzer/Nutzerin nicht die Regeln beachtet und sind hierdurch
         mögliche
@@ -59,20 +59,20 @@
     <p><strong>§ 3 Übertragung von Nutzungsrechten</strong></p>
     <p>Sie, als Nutzer/Nutzerin&nbsp; haben die alleinige Verantwortung des Urheberrechts i.S.d.
         Urhebergesetzes
-        bei Veröffentlichung von Beiträgen und Themen im Forum zu beachten. <sup>2</sup>Als Nutzer/Nutzerin räumen Sie
+        bei Veröffentlichung von Beiträgen und Themen auf der Website zu beachten. <sup>2</sup>Als Nutzer/Nutzerin räumen Sie
         lediglich uns mit Veröffentlichung Ihres Beitrages auf deren Homepage das Recht ein, den Beitrag dauerhaft zum
         Abruf bereitzustellen. <sup>3</sup>Ferner hat unser Team das Recht, Ihre Themen und Beiträge zu löschen, zu
         bearbeiten und innerhalb seiner Homepage zu verschieben, um diese mit anderen Inhalten zu verknüpfen oder zu
         schließen.</p>
     <p>&nbsp;</p>
     <p><strong>§ 4 Haftungsbeschränkung</strong></p>
-    <p>(1) Wir übernehmen keinerlei Gewähr für die im Forum veröffentlichten und eingestellten Beiträge, Themen,
+    <p>(1) Wir übernehmen keinerlei Gewähr für die auf der Website veröffentlichten und eingestellten Beiträge, Themen,
         externen Links und die daraus resultierenden Inhalte, insbesondere nicht für deren Richtigkeit, Vollständigkeit
         und Aktualität. Wir sind auch nicht verpflichtet, permanent die Übermittelten und gespeicherten Beiträge der
         Nutzer/Nutzerinnen zu überwachen oder nach den Umständen zu erforschen, ob sie auf einen rechtswidrigen Inhalt
         hinweisen. Wir haften grundsätzlich nur im Falle einer vorsätzlichen oder grob fahrlässigen
         Pflichtverletzung.</p>
-    <p>(2) WIr weisen ausdrücklich darauf hin, dass die juristischen Beiträge und Diskussionen im Forum vollkommen
+    <p>(2) Wir weisen ausdrücklich darauf hin, dass die juristischen Beiträge auf der Website vollkommen
         unverbindlich sind. <sup>2</sup>Die Nutzung der Beiträge und deren Verwertung erfolgt auf Ihre eigene Gefahr.
     </p>
     <p>(3)&nbsp;&nbsp; Bei Werbeschaltungen übernehmen wir keine Haftung für den Inhalt und die Richtigkeit.
@@ -105,8 +105,8 @@
         gekündigt werden.</p>
     <p>&nbsp;</p>
     <p><strong>§ 8 Salvatorische Klausel</strong></p>
-    <p>Diese Forum-Nutzungsbedingung ist als Teil unserer Webseite zu betrachten, von dem aus auf diese Seite verwiesen
-        wird. Sind einzelne Formulierungen dieser Forum-Nutzungsbedingung nicht mehr ganz oder nicht mehr vollständig
+    <p>Diese Nutzungsbedingungen ist als Teil unserer Webseite zu betrachten, von dem aus auf diese Seite verwiesen
+        wird. Sind einzelne Formulierungen dieser Nutzungsbedingungen nicht mehr ganz oder nicht mehr vollständig
         konform mit der geltenden Rechtslage, so ist davon auszugehen, dass die übrigen Regelungen der
         Nutzungsbedingungen bestehen bleiben.</p>
     <p>Diese <a href="https://www.jurarat.de/muster-nutzungsbedingungen">Nutzungsbedingungen</a> wurden freundlicherweise

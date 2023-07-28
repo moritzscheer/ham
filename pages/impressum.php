@@ -28,9 +28,14 @@
         DE999999999</p>
 
     <h2>Redaktionell verantwortlich</h2>
-    <p>Artur Scheling<br/>
+    <p>Moritz Scheer<br/>
+        Cloppenburger Straße 58c <br/>
+        26135 Oldenburg<br/>
+        <br/>
+        Artur Scheling<br/>
         Bookhorner Weg 18<br/>
-        27777 Ganderkesee</p>
+        27777 Ganderkesee
+    </p>
 
     <h2>EU-Streitschlichtung</h2>
     <p>Die Europ&auml;ische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a
