@@ -13,10 +13,10 @@
         26129 26129 Oldenburg</p>
 
     <p><strong>Vertreten durch:</strong><br/>
-        Moritz Scheer, Artur Scheling, (Holger Dirks)</p>
+        Moritz Scheer und Artur Scheling</p>
 
     <p><strong>Vorsitzender des Aufsichtsrats:</strong><br/>
-        Moritz Scheer, Artur Scheling, (Holger Dirks)</p>
+        Moritz Scheer und Artur Scheling</p>
 
     <h2>Kontakt</h2>
     <p>Telefon: +49 441 798-0<br/>
