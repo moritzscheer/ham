@@ -6,9 +6,7 @@
 
 <section>
     <!-- CHANGE THIS !!!-->
-    <p>&nbsp;</p><h4><span
-                style="text-decoration: underline;">Besondere Nutzungsbedingungen für die Registrierung bei </span><span
-                style="text-decoration: underline;">ham</span><span style="text-decoration: underline;">:</span>
+    <p>&nbsp;</p><h4><span>Besondere Nutzungsbedingungen für die Registrierung bei </span><span>ham</span><span>:</span>
     </h4>
     <p>&nbsp;</p>
     <p><strong>§ 1 Geltungsbereich</strong></p>
@@ -25,7 +23,7 @@
     <p><sup>&nbsp;</sup>(1) Einer Ihrer Pflichten als Nutzer/Nutzerin ist es, dass Sie keine Beiträge veröffentlichen,
         die
         gegen diese Regeln, gegen die guten Sitten oder sonst gegen geltendes deutsches Recht verstoßen.</p>
-    <p><span style="text-decoration: underline;">Folgende Punkte sind Ihnen nicht genehmigt:</span></p>
+    <p><span>Folgende Punkte sind Ihnen nicht genehmigt:</span></p>
     <p>1. Inhalte zu veröffentlichen, die unwahr sind und deren Veröffentlichung einen Straftatbestand oder eine
         Ordnungswidrigkeit erfüllt,<br/>2. Versendung von Spam an andere Nutzer/Nutzerin,<br/>3.
         Verwendung von gesetzlich durch Urheber- und Markenrecht geschätzte Inhalte ohne rechtmäßige Berechtigung (z.B.
@@ -59,7 +57,8 @@
     <p><strong>§ 3 Übertragung von Nutzungsrechten</strong></p>
     <p>Sie, als Nutzer/Nutzerin&nbsp; haben die alleinige Verantwortung des Urheberrechts i.S.d.
         Urhebergesetzes
-        bei Veröffentlichung von Beiträgen und Themen auf der Website zu beachten. <sup>2</sup>Als Nutzer/Nutzerin räumen Sie
+        bei Veröffentlichung von Beiträgen und Themen auf der Website zu beachten. <sup>2</sup>Als Nutzer/Nutzerin
+        räumen Sie
         lediglich uns mit Veröffentlichung Ihres Beitrages auf deren Homepage das Recht ein, den Beitrag dauerhaft zum
         Abruf bereitzustellen. <sup>3</sup>Ferner hat unser Team das Recht, Ihre Themen und Beiträge zu löschen, zu
         bearbeiten und innerhalb seiner Homepage zu verschieben, um diese mit anderen Inhalten zu verknüpfen oder zu
@@ -109,7 +108,8 @@
         wird. Sind einzelne Formulierungen dieser Nutzungsbedingungen nicht mehr ganz oder nicht mehr vollständig
         konform mit der geltenden Rechtslage, so ist davon auszugehen, dass die übrigen Regelungen der
         Nutzungsbedingungen bestehen bleiben.</p>
-    <p>Diese <a href="https://www.jurarat.de/muster-nutzungsbedingungen">Nutzungsbedingungen</a> wurden freundlicherweise
+    <p>Diese <a href="https://www.jurarat.de/muster-nutzungsbedingungen">Nutzungsbedingungen</a> wurden
+        freundlicherweise
         von
         www.jurarat.de zur Verfügung gestellt.
 

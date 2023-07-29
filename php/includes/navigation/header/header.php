@@ -47,7 +47,7 @@
                 <?php echo $_SESSION["profileHeaderBox"]; ?>
             </div>
             <div ID="pictureSmall_image">
-                <?php echo $_SESSION["loggedIn"]["profile_small"] ?>
+                <img src="<?php echo $_SESSION["loggedIn"]["profile_small"] ?>" alt="could not load profile picture">
             </div>
         </form>
 
