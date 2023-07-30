@@ -1,9 +1,22 @@
 DI-12-F
 Namen der Studierenden:
 
-- Holger Dirks
-- Artur Scheling
 - Moritz Scheer
+- Artur Scheling
+- (Holger Dirks, der aus formälen Gründen das Projekt nicht bis zum Schluss mitmachen konnte)
+
+
+Nutzungsvoraussetzungen:
+
+Zum Betrieb der Website wird u.a.die index.php ausgeführt. Dies ist die Homepage der Website.
+Weitere Voraussetzungen:
+ - In der php.ini müssen die folgende Extensions unkommentiert werden:
+   - pdo...
+
+ - Anmeldedaten eines Beispielsnutzers: 
+   - Email: test@uni.de 
+   - Passwort: 1
+
 
 Aufgabe zu Aufgabenblatt 6
 
