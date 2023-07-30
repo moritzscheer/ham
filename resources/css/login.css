@@ -87,50 +87,6 @@ input::placeholder{
 }
 
 
-/* new checkbox
-#stayLogin-checkmark {
-    grid-column: 1;
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background-color: var(--bluegrey);
-}
-
-#stayLogin-checkmark:after {
-    grid-column: 1;
-    position: absolute;
-    display: none;
-}
-
-*/
-
-
-/* checked box: change color
-.staylogin-container:has(#stayLogin-checkbox:checked) #stayLogin-checkmark {
-    background-color: var(--grey);
-}
-
-.staylogin-container:has(#stayLogin-checkbox:checked) #stayLogin-checkmark:after{
-    display: block;
-}
-
-*/
-
-
-/*
-.staylogin-container #stayLogin-checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}*/
-
-
 /*login button*/
 #loginSubmit {
     color: white;
@@ -202,10 +158,4 @@ input::placeholder{
     margin-top: 10px;
     margin-bottom: 15px;
     box-sizing: content-box;
-}
-
-@media screen and (max-width: 800px) {
-   .login-view {
-
-   }
 }
