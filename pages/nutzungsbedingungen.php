@@ -13,10 +13,10 @@
     <p>(1)&nbsp;Die nachfolgenden Bedingungen gelten für die Nutzung von ham.&nbsp;Für die Nutzung dieser Website ist
         wichtig, dass Sie als Nutzer/Nutzerin die nachfolgenden
         Regeln bzw. Nutzungsbedingungen akzeptieren. Die Registrierung und Benutzung ist kostenlos.</p>
-    <p>(2)&nbsp;Mit der Registrierung sind Sie mit den Nutzungsbedingungen unserer Webseite einverstanden. Durch Ihr
+    <p>(2)&nbsp;Mit der Registrierung sind Sie mit den Nutzungsbedingungen unserer Website einverstanden. Durch Ihr
         Einverständnis garantieren Sie uns, dass Sie keine Beiträge erstellen werden, die gegen die Nutzungsbedingung
         verstoßen.</p>
-    <p>(3) Durch das Benutzen von unserer Webseite kommt kein Vertrag zwischen den Nutzern/Nutzerinnen und uns
+    <p>(3) Durch das Benutzen von unserer Website kommt kein Vertrag zwischen den Nutzern/Nutzerinnen und uns
         zustande.</p>
     <p><strong>&nbsp;</strong></p>
     <p><strong>§ 2 Pflichten als Nutzer/Nutzerinnen</strong></p>
@@ -78,15 +78,15 @@
         <sup>2 </sup>Für
         den Inhalt der Werbeanzeigen ist der jeweilige Autor einzig und allein verantwortlich; gleiches gilt für den
         Inhalt
-        der beworbenen Webseite. <sup>3</sup>Bei Darstellung der Werbeanzeige auf unserer Webseite , sind wir nicht
+        der beworbenen Website. <sup>3</sup>Bei Darstellung der Werbeanzeige auf unserer Website , sind wir nicht
         gleichzeitig mit dem rechtswidrigen Inhalt einverstanden. <sup>4</sup>Daher liegt die Haftung ausschließlich bei
         dem Werbekunden.</p>
-    <p>(4)&nbsp;&nbsp; Es ist wird nicht für einen ständigen unterbrechungsfreien Abruf der Webseite garantiert.
+    <p>(4)&nbsp;&nbsp; Es ist wird nicht für einen ständigen unterbrechungsfreien Abruf der Website garantiert.
         <sup>2</sup>Einer Haftung diesbezüglich wird hiermit ausdrücklich widersprochen. <sup>3</sup>Auch bei großer
         Sorgfalt können Ausfallzeiten leider nicht ausgeschlossen werden.</p>
     <p>&nbsp;</p>
     <p><strong>§ 5 Urheberrecht</strong></p>
-    <p>Sämtliche Texte, Bilder und andere auf unserer Webseite veröffentlichten Informationen und Daten unterliegen -
+    <p>Sämtliche Texte, Bilder und andere auf unserer Website veröffentlichten Informationen und Daten unterliegen -
         sofern nicht anders gekennzeichnet - dem Copyright unserer Seite. Jede Form von Wiedergabe und/oder Modifikation
         darf nur mit der schriftlichen Genehmigung durch uns erfolgen. Andersfalls behalten wir uns das Recht vor
         gerichtlich gegen diese Rechtsverletzung vorzugehen. <sup>4</sup>Alle Kosten, die durch eine Rechtsverletzung
@@ -97,7 +97,7 @@
         die aktuelle Nutzungsbedingungen werden auf dieser
         Webseite veröffentlicht.</p>
     <p>&nbsp;</p>
-    <p><strong>§ 7 Kündigung und Laufzeit der Mitgliedschaft bei unserer Webseite <br/></strong></p>
+    <p><strong>§ 7 Kündigung und Laufzeit der Mitgliedschaft bei unserer Website <br/></strong></p>
     <p>Die Laufzeit der Mitgliedschaft beginnt mit der Registrierung und mit dem Einverständnis unseren
         Nutzungsbedingungen
         und besteht auf eine unbestimmte Zeit. Die Mitgliedschaft kann jederzeit ohne Angabe von Kündigen fristlos
