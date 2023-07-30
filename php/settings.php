@@ -64,7 +64,7 @@ switch ($page) {
     case "events":
     case "bands":
         $url .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/posts.css">';
-        break;
+    break;
     case "profile":
     case "changePassword":
         $url .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/profile.css">';

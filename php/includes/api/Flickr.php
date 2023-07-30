@@ -70,9 +70,8 @@ class Flickr {
                 $count++;
             }
             return $string;
-        } catch (Exception $ex) {
-            return $ex->getMessage();
-            //return "Could not load any fotos. Try again.";
+        } catch (Exception) {
+            return "Could not load any fotos. Try again.";
         }
     }
 }

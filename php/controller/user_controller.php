@@ -217,8 +217,8 @@ if (isset($_POST["change_password"]) && $_POST["token"] === $_SESSION["token"]) 
         $_SESSION["loggedIn"]["user"] = $userStore->changePassword($_SESSION["user"], $old_password, $new_password);
 
         // redirect to homepage
-        //header("Location: profile.php");
-        //exit();
+        header("Location: profile.php");
+        exit();
     } catch (Exception $ex) {
         $old_password = "";
         $new_password = "";

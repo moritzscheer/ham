@@ -29,8 +29,8 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/@highlightjs/cdn-assets@11.3.1/highlight.min.js"></script>
 
-    <script src="../php/includes/api/leaflet/modules.js"></script>
-    <script src="../php/includes/api/leaflet/map.js"></script>
+    <script src="../JavaScript/leaflet/modules.js"></script>
+    <script src="../JavaScript/leaflet/map.js"></script>
 </body>
 </html>
 

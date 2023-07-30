@@ -140,6 +140,8 @@
         </div>
     </section>
 
-<?php include_once "../php/includes/navigation/footer/footer.php" ?>
+    <script src="../JavaScript/flickr.js"></script>
+
+    <?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
 </html>

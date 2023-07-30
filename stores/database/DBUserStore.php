@@ -206,12 +206,12 @@ class DBUserStore implements UserStore
             $this->db->beginTransaction();
 
             // checking if new password already exist
-            $sql = "SELECT password FROM user;";
+            $sql = "SELECT password FROM user WHERE user_ID NOT LIKE '".$user->getUserID()."';";
             $stmt = $this->db->query($sql)->fetchAll();
 
             if ($stmt !== false) {
                 foreach ($stmt as $password) {
-                    if (password_verify($password["password"], $new_password)) {
+                    if (password_verify($new_password, $password["password"])) {
                         throw new Exception("Something went wrong! try again.");
                     }
                 }
@@ -226,7 +226,8 @@ class DBUserStore implements UserStore
             $user->setPassword(password_hash($new_password, PASSWORD_DEFAULT));
 
             // updates user data
-            return $this->update($user);
+            $this->preparedUpdate($user);
+            return $user;
         } catch (Exception $e) {
             $this->db->rollBack();
             throw new Exception($e->getMessage());
@@ -270,8 +271,7 @@ class DBUserStore implements UserStore
      */
     private function preparedUpdate(User $user) : void
     {
-        $sql = 'UPDATE user SET address_ID = :address_ID, type = :type, name = :name, surname = :surname, password = :password, phone_number = :phone_number, email = :email, genre = :genre, '.
-            'members = :members, other_remarks = :other_remarks, dsr = :dsr WHERE user_ID = :user_ID';
+        $sql = 'UPDATE user SET address_ID = :address_ID, type = :type, name = :name, surname = :surname, password = :password, phone_number = :phone_number, email = :email, genre = :genre, members = :members, other_remarks = :other_remarks, dsr = :dsr WHERE user_ID = :user_ID;';
 
         $stmt = $this->db->prepare($sql);
 
