@@ -60,7 +60,6 @@
         xmlhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("item_list").innerHTML = this.responseText;
-                console.log(this);
             }
         }
         xmlhttp.send();

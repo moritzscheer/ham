@@ -34,7 +34,7 @@ class Flickr {
             $response = json_decode(file_get_contents($url));
 
             // Check if the status didn't fail
-            if($response->stat === "fail") throw new Exception();
+            if ($response->stat === "fail") throw new Exception();
 
             $photo_array = $response->photos->photo;
 

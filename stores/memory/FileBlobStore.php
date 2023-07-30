@@ -43,9 +43,9 @@ class FileBlobStore implements Store
 
         $id = rand(1, 2147483647);
 
-        if($category == "profile_small" || $category == "profile_large") {
+        if ($category == "profile_small" || $category == "profile_large") {
             foreach ($this->itemsOfJsonFile as $image) {
-                if($image->assigned_ID == $assigned_ID || $image->category == $category) {
+                if ($image->assigned_ID == $assigned_ID || $image->category == $category) {
                     $this->update($assigned_ID, $category, $filePath, $mime);
                 }
             }
@@ -90,7 +90,7 @@ class FileBlobStore implements Store
         $this->reloadItemsFromJsonFile();
 
         foreach ($this->itemsOfJsonFile as $image)  {
-            if($image->id == $id) {
+            if ($image->id == $id) {
                 return $image->data;
             }
         }
@@ -145,7 +145,7 @@ class FileBlobStore implements Store
                 $array[] = array("id" => $image->id);
             }
         }
-        if(empty($array)) throw new RuntimeException("could not find any");
+        if (empty($array)) throw new RuntimeException("could not find any");
         return $array;
     }
 
@@ -171,6 +171,6 @@ class FileBlobStore implements Store
     private function addItemsToJsonFile(): void
     {
         $var = file_put_contents($this->imageFile, json_encode($this->itemsOfJsonFile), LOCK_EX);
-        if($var == false) throw new Exception("Error: Could not send data to remote server.");
+        if ($var == false) throw new Exception("Error: Could not send data to remote server.");
     }
 }

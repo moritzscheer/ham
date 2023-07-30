@@ -109,6 +109,7 @@
 }
 #profile_Link {
     text-decoration: underline;
+    margin-top: auto;
 }
 #profile_Link:hover {
     font-weight: bold;
@@ -172,18 +173,24 @@
     align-items: center;
     width: max-content;
     height: 40px;
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 #option1:active, #option1:hover, #option2:active, #option2:hover {
     border-bottom: 1px white outset;
 }
 #item_short_description {
-    grid-row: 3;
     display: flex;
     flex-direction: column;
     margin: 20px 40px;
-    gap: 10px;
 }
+.event {
+    gap: 10px;
+    grid-row: 3;
+}
+.user {
+    grid-row: 2;
+}
+
 #item > label {
     grid-row: 4;
     height: 50px;
@@ -199,7 +206,6 @@
 }
 #item p {
     margin: 0;
-    text-align: justify;
 }
 
 

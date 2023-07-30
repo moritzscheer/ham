@@ -26,10 +26,10 @@ class DBBlobStore {
 
     public function create($assigned_ID, $category, $filePath, $mime): void
     {
-        if($category === "profile_small" || $category === "profile_large") {
+        if ($category === "profile_small" || $category === "profile_large") {
             $sql = "SELECT * FROM files WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
             $result = $this->db->query($sql)->fetch();
-            if($result !== false) {
+            if ($result !== false) {
                 $this->update($assigned_ID, $category, $filePath, $mime);
             }
         }
@@ -90,7 +90,7 @@ class DBBlobStore {
 
         $stmt->fetch(PDO::FETCH_BOUND);
 
-        if($mime !== null && $data !== null) {
+        if ($mime !== null && $data !== null) {
             return "data:" . $mime . ";base64," . base64_encode($data);
         } else {
             return null;

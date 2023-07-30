@@ -44,7 +44,7 @@ class FileAddressStore implements Store
 
             // if an entry already exist return address_ID
             $foundOne = $this->alreadyExist($item);
-            if($foundOne !== false) return $foundOne;
+            if ($foundOne !== false) return $foundOne;
 
             // inserting data
             $this->itemsOfJsonFile[] = $jsonAddress;
@@ -103,7 +103,7 @@ class FileAddressStore implements Store
                 } elseif ($DataInDB === false) {
                     // updating address data
                     foreach ($this->itemsOfJsonFile as $address) {
-                        if($address->address_ID === $item->getAddressID())
+                        if ($address->address_ID === $item->getAddressID())
                             unset($item);
 
                         // inserting data
@@ -199,6 +199,6 @@ class FileAddressStore implements Store
     private function addItemsToJsonFile(): void
     {
         $var = file_put_contents($this->addressFile, json_encode($this->itemsOfJsonFile), LOCK_EX);
-        if($var === false) throw new Exception("Error: Could not send data to remote server.");
+        if ($var === false) throw new Exception("Error: Could not send data to remote server.");
     }
 }

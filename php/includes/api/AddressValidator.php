@@ -23,25 +23,25 @@ class AddressValidator {
         global $error_message, $street_name, $house_number, $city, $postal_code;
 
         $flag = false;
-        if(empty($item->getStreetName())) {
+        if (empty($item->getStreetName())) {
             $_SESSION["user"]->setStreetName("");
             $street_name = "address_error";
             $error_message = "Please fill in remaining Address Fields";
             $flag = true;
         }
-        if(empty($item->getHouseNumber())) {
+        if (empty($item->getHouseNumber())) {
             $_SESSION["user"]->setHouseNumber("");
             $house_number = "address_error";
             $error_message = "Please fill in remaining Address Fields";
             $flag = true;
         }
-        if(empty($item->getPostalCode())) {
+        if (empty($item->getPostalCode())) {
             $_SESSION["user"]->setPostalCode("");
             $postal_code = "address_error";
             $error_message = "Please fill in remaining Address Fields";
             $flag = true;
         }
-        if(empty($item->getCity())) {
+        if (empty($item->getCity())) {
             $_SESSION["user"]->setCity("");
             $city = "address_error";
             $error_message = "Please fill in remaining Address Fields";
@@ -60,9 +60,9 @@ class AddressValidator {
         global $error_message, $house_number, $city, $postal_code;
 
         try {
-            if(!$item->hasAddressInputs()) return true;
+            if (!$item->hasAddressInputs()) return true;
 
-            if($this->checkInputFields($item)) return false;
+            if ($this->checkInputFields($item)) return false;
 
             // Construct the url
             $url = 'https://api.geoapify.com/v1/geocode/search?';
@@ -77,7 +77,7 @@ class AddressValidator {
             $response = json_decode(file_get_contents($url));
 
             // if no address was found
-            if(count($response->results) === 0) throw new Exception();
+            if (count($response->results) === 0) throw new Exception();
 
             // get data from array
             $result = $response->results[0];
@@ -93,7 +93,7 @@ class AddressValidator {
 
             } else {
                 // address is PARTIALLY_CONFIRMED
-                if(property_exists($result, "confidence_street_level")) {
+                if (property_exists($result, "confidence_street_level")) {
                     if ($result->rank->confidence_street_level >= $this->ACCEPT_LEVEL) {
                         // BUILDING_NOT_FOUND
                         $_SESSION["user"]->setHouseNumber(""); // reset field

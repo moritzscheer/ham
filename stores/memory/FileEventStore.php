@@ -47,19 +47,19 @@ class FileEventStore implements EventStore
         try {
             $this->reloadItemsFromJsonFile();
 
-            if($event->getEventID() === null)
+            if ($event->getEventID() === null)
                 $event->setEventID(rand(1, 2147483647));
 
             $jsonEvent = $event->getJsonEvent();
 
             // checking if an entry already exist with the name
             foreach ($this->itemsOfJsonfile as $item) {
-                if($item->name === $jsonEvent["name"])
+                if ($item->name === $jsonEvent["name"])
                     throw new Exception("There is already an Event called ".$jsonEvent["name"]."!");
             }
 
             // if any address attribute is not empty
-            if($event->hasAddressInputs()) {
+            if ($event->hasAddressInputs()) {
                 $address_ID = $this->addressStore->create($event);
                 $event->setAddressID($address_ID);
             }
@@ -92,7 +92,7 @@ class FileEventStore implements EventStore
 
             // updating event data
             foreach ($this->itemsOfJsonfile as $item) {
-                if($item->event_ID === $jsonEvent["event_ID"])
+                if ($item->event_ID === $jsonEvent["event_ID"])
                 unset($item);
 
                 // inserting data
@@ -159,7 +159,7 @@ class FileEventStore implements EventStore
         $events = array();
         foreach ($this->itemsOfJsonfile as $item) {
             foreach ($item as $attribute) {
-                if($attribute === $stmt) {
+                if ($attribute === $stmt) {
                     $events[] = $this->createEvent($item);
                     break;
                 }
@@ -195,7 +195,7 @@ class FileEventStore implements EventStore
         $events = array();
         foreach ($this->itemsOfJsonfile as $item) {
             foreach ($item as $attribute) {
-                if($attribute === "user_ID" && $attribute === $user_ID) {
+                if ($attribute === "user_ID" && $attribute === $user_ID) {
                     $events[] = $this->createEvent($item);
                     break;
                 }
@@ -218,7 +218,7 @@ class FileEventStore implements EventStore
         $event = Event::stdClassToEvent($event, $address);
 
         $imageID = $this->blobObj->queryID($event->getUserID(), "event");
-        if($imageID !== null) {
+        if ($imageID !== null) {
             $image = $this->blobObj->findOne($imageID);
             $event->setImage($image);
         }
@@ -243,6 +243,6 @@ class FileEventStore implements EventStore
     private function addItemsToJsonFile(): void
     {
         $var = file_put_contents($this->eventFile, json_encode($this->itemsOfJsonfile), LOCK_EX);
-        if($var === false) throw new Exception("Error: Could not send data to remote server.");
+        if ($var === false) throw new Exception("Error: Could not send data to remote server.");
     }
 }

@@ -8,12 +8,14 @@
 
         <form action="events.php?type=events" method="post" id="desktop">
             <label id="navbar-button">Events
+                <input type="hidden" name="init" value="true">
                 <input type="submit">
             </label>
         </form>
 
         <form action="bands.php?type=bands" method="post" id="desktop">
             <label id="navbar-button">Bands
+                <input type="hidden" name="init" value="true">
                 <input type="submit">
             </label>
         </form>
@@ -28,6 +30,7 @@
 
         <form action="createEvent.php?status=create" method="post" id="mobile" class="<?php echo $_SESSION["profileHeader"] ?> create <?php echo $_SESSION["loggedIn"]["Musician"] ?>">
             <label id="navbar-button">create
+                <input type="hidden" name="init" value="true">
                 <input type="submit">
             </label>
         </form>
@@ -49,7 +52,7 @@
                 <?php echo $_SESSION["profileHeaderBox"]; ?>
             </div>
             <div ID="pictureSmall_image">
-                <img src="<?php echo $_SESSION["loggedIn"]["profile_small"] ?>" alt="could not load profile picture">
+                <?php echo $_SESSION["loggedIn"]["profile_small"] ?>
             </div>
         </form>
 

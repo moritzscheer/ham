@@ -318,12 +318,15 @@ if (isset($_POST["viewProfile"])) {
             $_SESSION["navigation"] = "../php/includes/navigation/profile/public.php";
         }
 
+        // removes the hint button
+        $_SESSION["hintField"]["button"] = "hidden";
+
         // sets the images of the profile via user_ID
         setProfileImages($_POST["viewProfile"], false);
 
         // redirect to profile page
-        //header("Location: profile.php");
-        //exit();
+        header("Location: profile.php");
+        exit();
     } catch (Exception $ex) {
         $error_message = $ex->getMessage();
     }

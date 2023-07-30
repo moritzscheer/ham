@@ -211,7 +211,6 @@ class DBUserStore implements UserStore
 
             if ($stmt !== false) {
                 foreach ($stmt as $password) {
-                    var_dump(password_verify($password["password"], $new_password));
                     if (password_verify($password["password"], $new_password)) {
                         throw new Exception("Something went wrong! try again.");
                     }

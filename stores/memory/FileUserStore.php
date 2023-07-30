@@ -47,7 +47,7 @@ class FileUserStore implements UserStore
         try {
             $this->reloadItemsFromJsonFile();
 
-            if($user->getUserID() === null)
+            if ($user->getUserID() === null)
                 $user->setUserID(rand(1, 2147483647));
             $jsonUser = $user->getJsonUser();
 

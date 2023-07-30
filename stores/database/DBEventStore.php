@@ -60,12 +60,12 @@ class DBEventStore implements EventStore {
             // checking if an entry already exist with the name
             $sql = "SELECT * FROM event WHERE name = '".$event->getName()."';";
             $stmt = $this->db->query($sql)->fetch();
-            if($stmt !== false) {
+            if ($stmt !== false) {
                 throw new Exception("There is already an Event called ".$event->getName()."!");
             }
 
             // if any address attribute is not empty
-            if($event->hasAddressInputs()) {
+            if ($event->hasAddressInputs()) {
                 $address_ID = $this->addressStore->create($event);
                 $event->setAddressID($address_ID);
             }

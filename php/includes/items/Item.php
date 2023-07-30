@@ -17,7 +17,7 @@ class Item {
     protected function concatList($str, $key, $value, $keyOrValue, $withApostroph): string
     {
         $attr = $keyOrValue === "value" ? $value : $key;
-        if($withApostroph) {
+        if ($withApostroph) {
             $attr = "'" . $attr . "'";
         }
         if ($value !== null && $value !== "") {

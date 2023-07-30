@@ -57,7 +57,7 @@ async function initMap() {
 async function getUserCoordinates() {
     var location = null;
 
-    if(userAddress == undefined) {
+    if (userAddress === undefined) {
         // source: https://stackdiary.com/tutorials/how-to-get-a-clients-ip-address-using-javascript/
         await fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
@@ -90,7 +90,7 @@ async function getUserCoordinates() {
  * @returns {Promise<void>}
  */
 async function getEventCoordinates() {
-    if(events != undefined) {
+    if (events != undefined) {
         for (let i = 0; i < events.length; i++) {
             await fetch('https://api.geoapify.com/v1/geocode/search?'+
                 'street='+encodeURI(events[i].street_name)+
@@ -114,7 +114,7 @@ async function getEventCoordinates() {
                     marker = new L.Marker([latitude, longitude]);
                     markers[i] = marker;
 
-                    if(distance < radius / 1000) {
+                    if (distance < radius / 1000) {
                         // sets a marker if it is in radius
                         marker.addTo(map);
 
@@ -161,8 +161,6 @@ function calcDistance(lat1, lon1, lat2, lon2, unit) {
 /*                                                    range field                                                     */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-console.log(radius)
-
 // Range slider
 const slider = L.control.range({
     position: 'topright',
@@ -194,11 +192,11 @@ slider.on('input change', function(e) {
     closeToMe = [];
 
     // if there are any events
-    if(events != undefined) {
+    if (events != undefined) {
         for (let i = 0; i < events.length; i++) {
             marker = markers[i];
             map.removeLayer(marker);
-            if(events[i].distance < radius / 1000) {
+            if (events[i].distance < radius / 1000) {
                 marker.addTo(map);
 
                 closeToMe.push(events[i])
@@ -216,7 +214,7 @@ map.addControl(slider);
  * creates a new circle and deletes old ones
  */
 function createNewCircle() {
-    if(circle != undefined) {
+    if (circle != undefined) {
         map.removeLayer(circle);
     }
 

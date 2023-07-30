@@ -79,7 +79,7 @@ class Event extends Item {
         $instance->date = $event->date;
         $instance->startTime = $event->startTime;
         $instance->endTime = $event->endTime;
-        if($address !== NULL) {
+        if ($address !== NULL) {
             $instance->address_ID = $event->address_ID;
             $instance->street_name = $address->street_name;
             $instance->house_number = $address->house_number;
@@ -128,7 +128,7 @@ class Event extends Item {
             '    <div id="item_image">                                                                     ' .
             '       <img src="' . $this->image . '" alt="bandImage"/>                                      ' .
             '    </div>                                                                                    ' ;
-        if($isEditable)
+        if ($isEditable)
             $html .=
                 '<div id="item_editable">                                                                  ' .
                 '    <label>Edit                                                                           ' .
@@ -141,11 +141,11 @@ class Event extends Item {
                 '        <input type="submit" name="onDelete" value="' . $this->event_ID . '">             ' .
                 '    </label>                                                                              ' .
                 '</div>                                                                                    ' ;
-        if($isCloseToMe)
+        if ($isCloseToMe)
             $html .=
                 '<input type="hidden" name="init" value="false">                                           ' ;
         $html .=
-            '    <div id="item_short_description" class="text-line-pre">                                   ' .
+            '    <div id="item_short_description" class="text-line-pre event">                             ' .
             '        <span>' . $this->name . '</span>                                                      ' .
             '        <br>                                                                                  ' .
             '        <span>Address: ' . $this->getAddress() . '</span>                                     ' .
@@ -224,10 +224,10 @@ class Event extends Item {
      * @return bool
      */
     public function hasAddressInputs() : bool {
-        if ($this->street_name === "" &&
-            $this->house_number === "" &&
-            $this->postal_code === "" &&
-            $this->city === "") {
+        if ($this->street_name == "" &&
+            $this->house_number == "" &&
+            $this->postal_code == "" &&
+            $this->city == "") {
             return false;
         } else {
             return true;

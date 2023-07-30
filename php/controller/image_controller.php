@@ -25,7 +25,7 @@ $_SESSION["profile_preview"] = $_SESSION["profile_preview"] ?? array("source" =>
  * if an image was clicked the editImage box will be displayed
  */
 if (isset($_POST["onEditImage"])) {
-    if($_POST["onEditImage"] === "hide") {
+    if ($_POST["onEditImage"] === "hide") {
         $_SESSION["ImageBox"] = "hidden";
         unset($_SESSION["profile_preview"]);
         unset($_SESSION["flickr_search"]);
@@ -35,7 +35,7 @@ if (isset($_POST["onEditImage"])) {
         // sets the category of the image
         $_SESSION["profile_preview"]["category"] = $_POST["onEditImage"];
 
-        if($_SESSION["loggedIn"]["user"]->getDsr() === "n") {
+        if ($_SESSION["loggedIn"]["user"]->getDsr() === "n") {
             $_SESSION["flickr_search"] =
                 '<span id="agreementText">If you want to see the content of Third party companies accept the <a id="agreementLinks" href="impressum.php" target="_blank" rel="noopener noreferrer">Legal Disclosure</a>' .
                 ', <a id="agreementLinks" href="nutzungsbedingungen.php" target="_blank" rel="noopener noreferrer">Terms of Use</a>' .
@@ -68,11 +68,11 @@ if (isset($_POST["select_image"])) {
 /**
  * submits the preview image
  */
-if(isset($_POST["submit_image"])) {
+if (isset($_POST["submit_image"])) {
     // if any photo was selected
-    if($_SESSION["profile_preview"]["source"] != null) {
+    if ($_SESSION["profile_preview"]["source"] != null) {
 
-        if($_SESSION["profile_preview"]["category"] === "event") {
+        if ($_SESSION["profile_preview"]["category"] === "event") {
             $_SESSION["event"]->setImage($_SESSION["profile_preview"]["source"]);
 
         } else {
@@ -97,7 +97,7 @@ if(isset($_POST["submit_image"])) {
 /**
  * gets flickr images depending on the search tags
  */
-if(isset($_POST["flickr_search"])) {
+if (isset($_POST["flickr_search"])) {
     $_SESSION["flickr_search"] = $flickrApi->searchPhotos($_POST["flickr_search"], 1);
 
 }

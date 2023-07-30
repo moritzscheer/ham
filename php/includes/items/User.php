@@ -85,7 +85,7 @@ class User extends Item {
         $instance->members = $user->members;
         $instance->other_remarks = $user->other_remarks;
         $instance->dsr = $user->dsr;
-        if($address !== NULL) {
+        if ($address !== NULL) {
             $instance->address_ID = $user->address_ID;
             $instance->street_name = $address->street_name;
             $instance->house_number = $address->house_number;
@@ -137,7 +137,7 @@ class User extends Item {
             '       <div id="item_image">                                                                         ' .
             '           <img src="' . $this->image . '" alt="bandImage"/>                                         ' .
             '       </div>                                                                                        ' .
-            '       <div id="item_short_description" class="text-line-pre">                                       ' .
+            '       <div id="item_short_description" class="text-line-pre user">                                  ' .
             '           <span>' . $this->getName() . ' ' . $this->getSurname() . '</span>                         ' .
             '           <br>                                                                                      ' .
             '           <span>Genre: ' . $this->getGenre() . '</span>                                             ' .
@@ -219,10 +219,10 @@ class User extends Item {
      * @return bool
      */
     public function hasAddressInputs() : bool {
-        if ($this->street_name === "" &&
-            $this->house_number === "" &&
-            $this->postal_code === "" &&
-            $this->city === "") {
+        if ($this->street_name == "" &&
+            $this->house_number == "" &&
+            $this->postal_code == "" &&
+            $this->city == "") {
             return false;
         } else {
             return true;
@@ -250,7 +250,7 @@ class User extends Item {
      */
     public function getDsrCheckBox(): ?string
     {
-        if($this->dsr === "y") {
+        if ($this->dsr === "y") {
             return "checked";
         } else {
             return "";
@@ -262,7 +262,7 @@ class User extends Item {
      */
     public function getHostCheckBox(): ?string
     {
-        if($this->type === "Host") {
+        if ($this->type === "Host") {
             return "checked";
         } else {
             return "";
@@ -274,7 +274,7 @@ class User extends Item {
      */
     public function getMusicianCheckBox(): ?string
     {
-        if($this->type === "Musician") {
+        if ($this->type === "Musician") {
             return "checked";
         } else {
             return "";

@@ -30,9 +30,9 @@ $step = (isset($_GET["step"]) && is_string($_GET["step"])) ? $_GET["step"] : "1"
 /*                                        setting variables to make steps visible                                     */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-if(!isset($_POST["cancel"])) {
+if (!isset($_POST["cancel"])) {
     // different states depending on the $step
-    if($step == 1) {
+    if ($step == 1) {
         $step_1 = "visible";
     } elseif ($step == 2) {
         $step_2 = "visible";
@@ -41,7 +41,7 @@ if(!isset($_POST["cancel"])) {
         $step_3 = "visible";
         $progress_2 = "active";
         $progress_3 = "active";
-    } elseif($step == 4) {
+    } else if ($step == 4) {
         $step_4 = "visible";
         $progressBar = "hidden";
     }

@@ -35,16 +35,16 @@ $map .= '<a id="agreementLinks" href="impressum.php">Legal Disclosure</a>, ';
 $map .= '<a id="agreementLinks" href="nutzungsbedingungen.php">Terms of Use</a> and the ';
 $map .= '<a id="agreementLinks" href="datenschutz.php">Privacy Policy.</span>';
 
-if(isset($_POST["event_name"]) && is_string($_POST["event_name"])) { $_SESSION["event"]->setName($_POST["event_name"]); }
-if(isset($_POST["description"]) && is_string($_POST["description"])) { $_SESSION["event"]->setDescription($_POST["description"]); }
-if(isset($_POST["requirements"]) && is_string($_POST["requirements"])) { $_SESSION["event"]->setRequirements($_POST["requirements"]); }
-if(isset($_POST["date"]) && is_string($_POST["date"])) { $_SESSION["event"]->setDate($_POST["date"]); }
-if(isset($_POST["startTime"]) && is_string($_POST["startTime"])) { $_SESSION["event"]->setStartTime($_POST["startTime"]); }
-if(isset($_POST["endTime"]) && is_string($_POST["endTime"])) { $_SESSION["event"]->setEndTime($_POST["endTime"]); }
-if(isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])) { $_SESSION["event"]->setStreetName($_POST["event_street_name"]); }
-if(isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])) { $_SESSION["event"]->setHouseNumber($_POST["event_house_number"]); }
-if(isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])) { $_SESSION["event"]->setPostalCode($_POST["event_postal_code"]); }
-if(isset($_POST["event_city"]) && is_string($_POST["event_city"])) { $_SESSION["event"]->setCity($_POST["event_city"]); }
+if (isset($_POST["event_name"]) && is_string($_POST["event_name"])) { $_SESSION["event"]->setName($_POST["event_name"]); }
+if (isset($_POST["description"]) && is_string($_POST["description"])) { $_SESSION["event"]->setDescription($_POST["description"]); }
+if (isset($_POST["requirements"]) && is_string($_POST["requirements"])) { $_SESSION["event"]->setRequirements($_POST["requirements"]); }
+if (isset($_POST["date"]) && is_string($_POST["date"])) { $_SESSION["event"]->setDate($_POST["date"]); }
+if (isset($_POST["startTime"]) && is_string($_POST["startTime"])) { $_SESSION["event"]->setStartTime($_POST["startTime"]); }
+if (isset($_POST["endTime"]) && is_string($_POST["endTime"])) { $_SESSION["event"]->setEndTime($_POST["endTime"]); }
+if (isset($_POST["event_street_name"]) && is_string($_POST["event_street_name"])) { $_SESSION["event"]->setStreetName($_POST["event_street_name"]); }
+if (isset($_POST["event_house_number"]) && is_string($_POST["event_house_number"])) { $_SESSION["event"]->setHouseNumber($_POST["event_house_number"]); }
+if (isset($_POST["event_postal_code"]) && is_string($_POST["event_postal_code"])) { $_SESSION["event"]->setPostalCode($_POST["event_postal_code"]); }
+if (isset($_POST["event_city"]) && is_string($_POST["event_city"])) { $_SESSION["event"]->setCity($_POST["event_city"]); }
 
 $map_events = array();
 $map_loggedInUser = array();
@@ -60,10 +60,10 @@ $_SESSION["selectAllEvents"] = $_SESSION["selectAllEvents"] ?? "";
 /*                                               http request functions                                               */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-if(isset($_GET["type"]) && is_string($_GET["type"])) {
+if (isset($_GET["type"]) && is_string($_GET["type"])) {
     $type = $_GET["type"];
 
-    if($type === "closeToMe" && $_SESSION["loggedIn"]["user"]->getDsr() === "y") {
+    if ($type === "closeToMe" && $_SESSION["loggedIn"]["user"]->getDsr() === "y") {
         // necessary for leaflet
         $map = '<div id="map"></div>';
 
@@ -91,16 +91,21 @@ if(isset($_GET["type"]) && is_string($_GET["type"])) {
             $map_loggedInUser["city"] = $_SESSION["loggedIn"]["user"]->getCity();
         }
     } elseif ($type === "events") {
+        if (isset($_POST["init"]) && $_POST["init"]) $_SESSION["itemDetail"] = null;;
         $_SESSION["selectAllEvents"] = "selected";
         $_SESSION["selectMyEvents"] = "";
         $itemList = getAllItems($type);
     } else {
+        if (isset($_POST["init"]) && $_POST["init"]) $_SESSION["itemDetail"] = null;;
         $itemList = getAllItems($type);
     }
 }
 
 if (isset($_GET["status"]) && is_string($_GET["status"])) {
     $_SESSION["status"] = $_GET["status"];
+    if (isset($_POST["init"]) && $_POST["init"]) {
+        $_SESSION["event"] = new Event();
+    }
 }
 
 /**
@@ -108,7 +113,7 @@ if (isset($_GET["status"]) && is_string($_GET["status"])) {
  */
 if (isset($_POST["submit"]) && $_POST["token"] === $_SESSION["token"]) {
     try {
-        if($geoLocApi->validateAddress($_SESSION["user"]) === false)
+        if ($geoLocApi->validateAddress($_SESSION["user"]) === false)
             throw new Exception("Address does not exist! Please type in an existing Address.");
 
         if ($_SESSION["status"] === "create") {
@@ -202,12 +207,12 @@ if (isset($_POST["onGetMyEvents"])) {
  * if a user submits a search, all events with the statement are displayed
  */
 if (isset($_POST["submitSearch"])) {
-    if($type === "events") {
-        if(isset($_POST["searchDate"]) && $_POST["search"] === "") {
+    if ($type === "events") {
+        if (isset($_POST["searchDate"]) && $_POST["search"] === "") {
             $itemList = getAnyItems($_POST["searchDate"], "events");
         } elseif (isset($_POST["search"]) && $_POST["searchDate"] === "") {
             $itemList = getAnyItems($_POST["search"], "events");
-        } elseif(isset($_POST["search"]) && isset($_POST["searchDate"])) {
+        } elseif (isset($_POST["search"]) && isset($_POST["searchDate"])) {
             $itemDate = getAnyItems($_POST["searchDate"], "events");
             $itemSearch = getAnyItems($_POST["search"], "events");
             $itemList = $itemDate.$itemSearch;
@@ -225,7 +230,7 @@ if (isset($_POST["sort"])) {
     $list = ($type === "bands" ? $_SESSION["bands"] : ($type === "events" ? $_SESSION["events"] : ""));
 
     try {
-        if(!isset($_SESSION["sort"]) || $_SESSION["sort"] === SORT_DESC) {
+        if (!isset($_SESSION["sort"]) || $_SESSION["sort"] === SORT_DESC) {
             $list = sortArray($list, $_POST["sort"], SORT_ASC);
         } elseif ($_SESSION["sort"] === SORT_ASC) {
             $list = sortArray($list, $_POST["sort"], SORT_DESC);
@@ -248,7 +253,7 @@ function sortArray(array $array, $attribute, $dir) : array {
     $_SESSION["sort"] = $dir;
 
     foreach ($array as $value) {
-        if($attribute === "Name") {
+        if ($attribute === "Name") {
             $column[] = $value->getName();
         } elseif ($attribute === "Date") {
             $column[] = $value->getDate();
@@ -312,7 +317,7 @@ function getAllItems($type): string {
     $msg = "";
 
     try {
-        if($type === "bands") {
+        if ($type === "bands") {
             $_SESSION["bands"] = $userStore->findAll();
             $list = $_SESSION["bands"];
             $msg = "There are no Musicians currently!";
@@ -338,7 +343,7 @@ function getAnyItems($stmt, $type): string {
     $list = null; $msg = "";
 
     try {
-        if($type === "bands") {
+        if ($type === "bands") {
             $_SESSION["bands"] = $userStore->findAny($stmt);
             $list = $_SESSION["bands"];
             $msg = 'There are no Bands with: "'.$stmt.'".';
@@ -380,7 +385,7 @@ function buildItemList($list, $editVisible, $isCloseToMe) : string {
         $return = "";
 
         foreach ($list as $item) {
-            if($item instanceof User || (is_array($item) && in_array("type", $item)))
+            if ($item instanceof User || (is_array($item) && in_array("type", $item)))
                 $return = $return . $item->getBandHTML();
             if ($item instanceof Event || (is_array($item) && in_array("event_ID", $item)))
                 $return = $return . $item->getEventHTML($editVisible, $isCloseToMe);
@@ -413,7 +418,7 @@ function getDetail(Object $item) : string {
         '            <span> ' . $item->getTime() . '</span>                                                ' .
         '        </div>                                                                                    ' .
         '        <label id="exit">X                                                                        ' ;
-    if($type === "closeToMe")
+    if ($type === "closeToMe")
         $html .=
             '         <input type="hidden" name="init" value="false">                                      ' ;
     $html .=
