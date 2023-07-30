@@ -115,6 +115,6 @@
 
 </section>
 
+<?php include_once "../php/includes/navigation/footer/footer.php" ?>
 </body>
-
 </html>

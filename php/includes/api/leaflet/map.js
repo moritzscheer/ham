@@ -37,7 +37,9 @@ L.tileLayer(mapURL, {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-initMap();
+if(init === "true") {
+    initMap();
+}
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                 get user location                                                  */

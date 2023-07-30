@@ -375,7 +375,7 @@
     </ul>
     <p><strong>Weitere Hinweise zu Verarbeitungsprozessen, Verfahren und Diensten:</strong></p>
     <ul class="m-elements">
-        <li><strong>Einbindung von Drittsoftware, Skripten oder Frameworks (z. B. jQuery): </strong>Wir binden in unser
+        <li><strong>Einbindung von Drittsoftware, Skripten oder Frameworks (z. B. jQuery, Leaflet, Ipify, Geoapify, Flickr): </strong>Wir binden in unser
             Onlineangebot Software ein, die wir von Servern anderer Anbieter abrufen (z.B. Funktions-Bibliotheken, die
             wir zwecks Darstellung oder Nutzerfreundlichkeit unseres Onlineangebotes verwenden). Hierbei erheben die
             jeweiligen Anbieter die IP-Adresse der Nutzer und können diese zu Zwecken der Übermittlung der Software an
