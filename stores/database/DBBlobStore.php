@@ -10,7 +10,8 @@ class DBBlobStore {
 
     private PDO $db;
 
-    public function __construct(PDO $db) {
+    public function __construct(PDO $db)
+    {
         $this->db = $db;
 
         $sql = "CREATE TABLE IF NOT EXISTS files (".
@@ -23,16 +24,13 @@ class DBBlobStore {
         $db->exec($sql);
     }
 
-    public function insertBlob($assigned_ID, $category, $filePath, $mime): bool {
-        $this->db->beginTransaction();
-
+    public function create($assigned_ID, $category, $filePath, $mime): void
+    {
         if($category === "profile_small" || $category === "profile_large") {
             $sql = "SELECT * FROM files WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
             $result = $this->db->query($sql)->fetch();
             if($result !== false) {
-                $result = $this->updateBlob($assigned_ID, $category, $filePath, $mime);
-                $this->db->commit();
-                return $result;
+                $this->update($assigned_ID, $category, $filePath, $mime);
             }
         }
 
@@ -46,12 +44,18 @@ class DBBlobStore {
         $stmt->bindParam(':mime', $mime);
         $stmt->bindParam(':data', $blob, PDO::PARAM_LOB);
 
-        $result = $stmt->execute();
-        $this->db->commit();
-        return $result;
+        $stmt->execute();
     }
 
-    function updateBlob($assigned_ID, $category, $filePath, $mime): bool {
+    /**
+     * @param $assigned_ID
+     * @param $category
+     * @param $filePath
+     * @param $mime
+     * @return void
+     */
+    public function update($assigned_ID, $category, $filePath, $mime): void
+    {
         $blob = fopen($filePath, 'rb');
 
         $sql = "UPDATE files
@@ -66,15 +70,14 @@ class DBBlobStore {
         $stmt->bindParam(':mime', $mime);
         $stmt->bindParam(':data', $blob, PDO::PARAM_LOB);
 
-        return $stmt->execute();
+        $stmt->execute();
     }
 
     /**
      * @throws Exception
      */
-    public function selectBlob($id): array
+    public function findOne($id): ?string
     {
-
         $sql = "SELECT mime,
                         data
                    FROM files
@@ -87,10 +90,18 @@ class DBBlobStore {
 
         $stmt->fetch(PDO::FETCH_BOUND);
 
-        return array("mime" => $mime,
-            "data" => $data);
+        if($mime !== null && $data !== null) {
+            return "data:" . $mime . ";base64," . base64_encode($data);
+        } else {
+            return null;
+        }
     }
-    
+
+    /**
+     * methode to delete an image
+     * @param $id
+     * @return void
+     */
     public function delete($id): void
     {
         $sql = "DELETE FROM files WHERE id = '".$id."';";
@@ -98,9 +109,12 @@ class DBBlobStore {
     }
 
     /**
-     * @throws Exception
+     * @param $assigned_ID
+     * @param $category
+     * @return array
      */
-    public function queryID($assigned_ID, $category) : array {
+    public function queryID($assigned_ID, $category) : array
+    {
         $sql = "SELECT id
                 FROM files
                 WHERE assigned_ID = '".$assigned_ID."' AND category = '".$category."';";
@@ -109,7 +123,12 @@ class DBBlobStore {
         return ($stmt == null) ? throw new RuntimeException("could not find any"): $stmt;
     }
 
-    public function queryOwnIDs($assigned_ID) : array {
+    /**
+     * @param $assigned_ID
+     * @return array
+     */
+    public function queryOwnIDs($assigned_ID) : array
+    {
         $sql = "SELECT id
                 FROM files
                 WHERE assigned_ID = '".$assigned_ID."';";

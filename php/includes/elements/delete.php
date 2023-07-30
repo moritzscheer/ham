@@ -17,6 +17,7 @@
     <form method="post" class="row3">
         <label>
             <input type="submit" name="onDeleteClicked">
+            <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
         </label>
     </form>
     <form method="post" id="delete">

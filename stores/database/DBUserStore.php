@@ -17,6 +17,8 @@ class DBUserStore implements UserStore
     private DBBlobStore $blobObj;
 
     /**
+     * constructor:
+     * creates user table
      * @param PDO $db
      * @param Store $addressStore
      * @param DBBlobStore $blobObj
@@ -64,7 +66,7 @@ class DBUserStore implements UserStore
             $sql = "SELECT * FROM user WHERE email = '" . $user->getEmail() . "' OR password = '" . $user->getPassword() . "';";
             $stmt = $this->db->query($sql)->fetch();
             if ($stmt !== false) {
-                throw new Exception("Email or Password already exist");
+                throw new Exception("Email or Password invalid. Please try again.");
             }
 
             // if any address attribute is not empty
@@ -80,9 +82,9 @@ class DBUserStore implements UserStore
 
             $this->db->commit();
             return $user;
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
             $this->db->rollBack();
-            throw new Exception($ex->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -112,11 +114,12 @@ class DBUserStore implements UserStore
     public function delete(string $id): void
     {
         // deletes user data
-        $sql = "DELETE FROM user WHERE user_ID = '" . $id . "' RETURNING 'address_ID';";
-        $stmt = $this->db->exec($sql);
+        $stmt = $this->db->prepare("DELETE FROM user WHERE user_ID=? RETURNING address_ID;");
+        $stmt->execute([$id]);
+        $stmt = $stmt->fetch();
 
         // deletes address data
-        $this->addressStore->delete($stmt);
+        $this->addressStore->delete($stmt["address_ID"]);
     }
 
     /**
@@ -203,10 +206,17 @@ class DBUserStore implements UserStore
             $this->db->beginTransaction();
 
             // checking if new password already exist
-            $sql = "SELECT * FROM user WHERE password = '" . $new_password . "';";
-            $stmt = $this->db->query($sql)->fetch();
-            if ($stmt !== false)
-                throw new Exception("Something went wrong! try again.");
+            $sql = "SELECT password FROM user;";
+            $stmt = $this->db->query($sql)->fetchAll();
+
+            if ($stmt !== false) {
+                foreach ($stmt as $password) {
+                    var_dump(password_verify($password["password"], $new_password));
+                    if (password_verify($password["password"], $new_password)) {
+                        throw new Exception("Something went wrong! try again.");
+                    }
+                }
+            }
 
             // checking if user password is equal to typed in old password
             $sql = "SELECT password FROM user WHERE user_ID = '" . $user->getUserID() . "';";
@@ -214,13 +224,13 @@ class DBUserStore implements UserStore
             if (!password_verify($old_password, $stmt["password"]))
                 throw new Exception("Old Password is incorrect.");
 
-            $user->setPassword($new_password);
+            $user->setPassword(password_hash($new_password, PASSWORD_DEFAULT));
 
             // updates user data
             return $this->update($user);
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
             $this->db->rollBack();
-            throw new Exception($ex->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -233,7 +243,8 @@ class DBUserStore implements UserStore
      * @return array
      * @throws Exception
      */
-    private function createUserArray(string $sql): array {
+    private function createUserArray(string $sql): array
+    {
         $stmt = $this->db->query($sql);
         $stmt = $stmt->fetchAll();
 
@@ -243,7 +254,7 @@ class DBUserStore implements UserStore
 
             try {
                 $imageID = $this->blobObj->queryID($newUser->getUserID(), "profile_large");
-                $image = $this->blobObj->selectBlob($imageID[0]["id"]);
+                $image = $this->blobObj->findOne($imageID[0]["id"]);
                 $newUser->setImage($image);
                 $return[] = $newUser;
             } catch (RuntimeException) {
@@ -258,7 +269,8 @@ class DBUserStore implements UserStore
      * @param User $user
      * @return void
      */
-    private function preparedUpdate(User $user) : void {
+    private function preparedUpdate(User $user) : void
+    {
         $sql = 'UPDATE user SET address_ID = :address_ID, type = :type, name = :name, surname = :surname, password = :password, phone_number = :phone_number, email = :email, genre = :genre, '.
             'members = :members, other_remarks = :other_remarks, dsr = :dsr WHERE user_ID = :user_ID';
 
@@ -285,7 +297,8 @@ class DBUserStore implements UserStore
      * @param User $user
      * @return void
      */
-    private function preparedInsert(User $user) : void {
+    private function preparedInsert(User $user) : void
+    {
         if ($user->getAddressID() === "") {
             $sql = 'INSERT INTO user (type, name , surname, password, phone_number, email, genre, members, '.
                 'other_remarks, dsr) VALUES (:type, :name , :surname, :password, :phone_number, :email, :genre, '.

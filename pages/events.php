@@ -1,6 +1,6 @@
 <?php
     namespace php\controller;
-    global $error_message, $selectAllEvents, $selectMyEvents;
+    global $error_message, $itemList;
     include_once "../php/includes/head/head.php"
 ?>
 <body>
@@ -42,7 +42,7 @@
     <p id="error-message"><?php echo $error_message ?></p>
     <?php echo $_SESSION["itemDetail"] ?>
     <section id="item_list">
-        <?php echo $_SESSION["itemList"] ?>
+        <?php echo $itemList ?>
     </section>
 
 </section>

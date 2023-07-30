@@ -1,6 +1,6 @@
 <?php
     namespace php\controller;
-    global $error_message;
+    global $error_message, $map, $itemList;
     include_once "../php/includes/head/head.php";
 ?>
 <body>
@@ -10,16 +10,17 @@
 
     <div class="closeToMe-Grid">
         <div>
-            <?php echo $_SESSION["map"] ?>
+            <?php echo $map ?>
         </div>
 
         <p id="error-message"><?php echo $error_message ?></p>
-    
-        <?php echo $_SESSION["itemDetail"] ?>
-        <section id="item_list">
-            <?php echo $_SESSION["itemList"] ?>
-        </section>
 
+        <div id="item_detail">
+            <?php echo $_SESSION["itemDetail"] ?>
+        </div>
+        <section id="item_list">
+            <?php echo $itemList ?>
+        </section>
     </div>
 
     <?php include_once "../php/includes/navigation/footer/footer.php" ?>

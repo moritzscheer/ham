@@ -1,9 +1,6 @@
 <?php
-
-global $error_message;
-
-use php\includes\items\Event;
-include_once "../php/includes/head/head.php"
+    global $error_message;
+    include_once "../php/includes/head/head.php"
 ?>
 <body>
 
@@ -21,9 +18,9 @@ include_once "../php/includes/head/head.php"
                 <form method="post" class="left-column">
                     <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
                     <label id="image" class="big-text">Select Image
-                        <input type="submit" id="imageLoader" value="event" name="onEditImage">
+                        <input type="submit" id="imageLoader" value="event" name="onEditImage" onclick="document.getElementById('submit_event').click()">
                     </label>
-                    <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImageSource() ?>" alt="preview">
+                    <img id="preview" class="full-width" src="<?php echo $_SESSION["event"]->getImage() ?>" alt="preview">
                 </form>
                 <form method="post" class="right-column">
                     <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
@@ -39,7 +36,7 @@ include_once "../php/includes/head/head.php"
                         </div>
 
                         <p id="error-message"><?php echo $error_message ?></p>
-                        
+
                         <div class="address-inputs">
                             <div class="street">
                                 <label id="street">Street:
@@ -105,14 +102,13 @@ include_once "../php/includes/head/head.php"
                         </label>
                     </section>
                     <div class="create-event-submit">
-                        <label id="createEventSubmit"><?php echo $_SESSION["status"] ?> Event
-                            <input type="submit" name="submit">
+                        <label id="createEventSubmit"><?php echo $_SESSION["status"] ?>
+                            <input type="submit" name="submit" id="submit_event">
                         </label>
                     </div>
-                </div>
+                </form>
             </div>
-
-        </form>
+        </div>
     </div>
 
 <?php include_once "../php/includes/navigation/footer/footer.php" ?>

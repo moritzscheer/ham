@@ -14,17 +14,19 @@
 
         <form action="bands.php?type=bands" method="post" id="desktop">
             <label id="navbar-button">Bands
-                <input type="submit" id="navbar-button">
+                <input type="submit">
             </label>
         </form>
 
-        <form action="closeToMe.php?map=init" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?> closeToMe">
+        <form action="closeToMe.php?type=closeToMe" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"]?> closeToMe">
             <label id="navbar-button">Close to Me
-                <input type="submit" id="navbar-button">
+                <input type="hidden" name="init" value="true">
+                <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
+                <input type="submit">
             </label>
         </form>
 
-        <form action="createEvent.php?status=create" id="mobile" class="<?php echo $_SESSION["profileHeader"] ?> create <?php echo $_SESSION["loggedIn"]["Musician"] ?>">
+        <form action="createEvent.php?status=create" method="post" id="mobile" class="<?php echo $_SESSION["profileHeader"] ?> create <?php echo $_SESSION["loggedIn"]["Musician"] ?>">
             <label id="navbar-button">create
                 <input type="submit">
             </label>
@@ -77,7 +79,7 @@
             </label>
         </form>
 
-        <form action="createEvent.php?status=create" id="desktop" class="<?php echo $_SESSION["profileHeader"], $_SESSION["loggedIn"]["Musician"] ?>">
+        <form action="createEvent.php?status=create" method="post" id="desktop" class="<?php echo $_SESSION["profileHeader"], $_SESSION["loggedIn"]["Musician"] ?>">
             <input type="hidden" name="token" value="<?php echo $_SESSION["token"] ?>">
             <label id="navbar-button">create
                 <input type="submit" name="onCreate" value="create">

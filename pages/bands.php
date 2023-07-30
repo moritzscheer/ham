@@ -1,5 +1,5 @@
 <?php
-    global $itemList, $error_message;
+    global $itemList, $error_message, $itemList;
     include_once "../php/includes/head/head.php"
 ?>
 <body>
@@ -32,7 +32,7 @@
     <!-- remove final deadline-->
     <p id="error-message"><?php echo $error_message ?></p>
     <section id="item_list">
-        <?php echo $_SESSION["itemList"] ?>
+        <?php echo $itemList ?>
     </section>
 
 </section>
@@ -41,7 +41,7 @@
 </body>
 </html>
 <script>
-    function searchBand(search){
+    function searchBand(search) {
         search = search.value;
 
         var xmlhttp = new XMLHttpRequest();

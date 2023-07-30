@@ -5,7 +5,6 @@ namespace stores\database;
 use Exception;
 use php\includes\items\Event;
 use PDO;
-use RuntimeException;
 use stores\interface\EventStore;
 use stores\interface\Store;
 
@@ -16,6 +15,8 @@ class DBEventStore implements EventStore {
     private DBBlobStore $blobObj;
 
     /**
+     * constructor:
+     * creates event table
      * @param PDO $db
      * @param Store $addressStore
      * @param DBBlobStore $blobObj
@@ -76,15 +77,17 @@ class DBEventStore implements EventStore {
             $event = $this->findOne($this->db->lastInsertId());
             $this->db->commit();
             return $event;
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
             $this->db->rollBack();
-            throw new Exception($ex);
+            throw new Exception($e->getMessage());
         }
     }
 
     /**
+     * updates the data from the event given in
      * @param Event $event
      * @return Event
+     * @throws Exception
      */
     public function update(Event $event):Event
     {
@@ -107,11 +110,12 @@ class DBEventStore implements EventStore {
     public function delete(string $id): void
     {
         // deletes event data
-        $sql = "DELETE FROM event WHERE event_ID = '" . $id . "' RETURNING address_ID;";
-        $stmt = $this->db->exec($sql);
+        $stmt = $this->db->prepare("DELETE FROM event WHERE event_ID=? RETURNING address_ID;");
+        $stmt->execute([$id]);
+        $stmt = $stmt->fetch();
 
         // deletes address data
-        $this->addressStore->delete($stmt);
+        $this->addressStore->delete($stmt["address_ID"]);
     }
 
     /**
@@ -123,7 +127,7 @@ class DBEventStore implements EventStore {
     {
         $sql = "SELECT * FROM event LEFT JOIN address ON event.address_ID = address.address_ID WHERE event_ID = ".$id.";";
         $stmt = $this->db->query($sql)->fetch();
-        return Event::withAddress($stmt);
+        return Event::create($stmt);
     }
 
     /**
@@ -180,20 +184,21 @@ class DBEventStore implements EventStore {
      * @return array
      * @throws Exception
      */
-    private function createEventArray(string $sql): array {
+    private function createEventArray(string $sql): array
+    {
         $stmt = $this->db->query($sql);
         $stmt = $stmt->fetchAll();
 
         $return = array();
         foreach ($stmt as $event) {
-            $newEvent = Event::withAddress($event);
+            $newEvent = Event::create($event);
 
             try {
                 $imageID = $this->blobObj->queryID($newEvent->getEventID(), "event");
-                $image = $this->blobObj->selectBlob($imageID[0]["id"]);
+                $image = $this->blobObj->findOne($imageID[0]["id"]);
                 $newEvent->setImage($image);
                 $return[] = $newEvent;
-            } catch (RuntimeException) {
+            } catch (Exception) {
                 $return[] = $newEvent;
             }
         }
@@ -205,9 +210,10 @@ class DBEventStore implements EventStore {
      * @param Event $event
      * @return void
      */
-    private function preparedUpdate(Event $event) : void {
-        $sql = 'UPDATE user SET address_ID = :address_ID, user_ID = :user_ID, name = :name, description = :description, requirement = '.
-            ':requirement, date = :date, startTime = :startTime, endTime = :endTime WHERE event_ID = :event_ID';
+    private function preparedUpdate(Event $event) : void
+    {
+        $sql = 'UPDATE event SET address_ID = :address_ID, user_ID = :user_ID, name = :name, description = :description, requirements = '.
+            ':requirements, date = :date, startTime = :startTime, endTime = :endTime WHERE event_ID = :event_ID';
 
         $stmt = $this->db->prepare($sql);
 
@@ -228,7 +234,8 @@ class DBEventStore implements EventStore {
      * @param Event $event
      * @return void
      */
-    private function preparedInsert(Event $event) : void {
+    private function preparedInsert(Event $event) : void
+    {
         if ($event->getAddressID() === "") {
             $sql = 'INSERT INTO event (user_ID, name, description, requirements, date, startTime, endTime) '.
                 'VALUES (:user_ID, :name , :description, :requirements, :date, :startTime, :endTime)';

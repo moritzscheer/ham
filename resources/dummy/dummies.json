@@ -14,7 +14,7 @@
       "other_remarks": "Test",
       "dsr": "y",
       "street_name": "Cloppenburger Straße",
-      "house_number": "21",
+      "house_number": "22",
       "postal_code": "26135",
       "city": "Oldenburg"
     },
@@ -290,24 +290,6 @@
       "mime": "image/gif"
     },
     {
-      "assigned_ID": "3",
-      "category": "event",
-      "path": "../resources/dummy/images/image_event3.jpg",
-      "mime": "image/gif"
-    },
-    {
-      "assigned_ID": "4",
-      "category": "event",
-      "path": "../resources/dummy/images/image_event4.jpg",
-      "mime": "image/gif"
-    },
-    {
-      "assigned_ID": "5",
-      "category": "event",
-      "path": "../resources/dummy/images/image_event5.jpg",
-      "mime": "image/gif"
-    },
-    {
       "assigned_ID": "2",
       "category": "profile_large",
       "path": "../resources/dummy/images/image_user2_large.jpg",
@@ -333,8 +315,8 @@
     },
     {
       "assigned_ID": "3",
-      "category": "profile_small",
-      "path": "../resources/dummy/images/image_user3_small.jpg",
+      "category": "event",
+      "path": "../resources/dummy/images/image_event3.jpg",
       "mime": "image/gif"
     },
     {
@@ -358,7 +340,43 @@
     {
       "assigned_ID": "3",
       "category": "profile_gallery",
-      "path": "../resources/dummy/images/image_user3_gallery2.jpg", 
+      "path": "../resources/dummy/images/image_user3_gallery2.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "4",
+      "category": "event",
+      "path": "../resources/dummy/images/image_event4.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "5",
+      "category": "event",
+      "path": "../resources/dummy/images/image_event5.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "7",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user7_large.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "8",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user8_large.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "9",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user9_large.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "11",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user11_large.jpg",
       "mime": "image/gif"
     }
   ]

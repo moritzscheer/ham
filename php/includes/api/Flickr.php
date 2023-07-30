@@ -2,6 +2,8 @@
 
 namespace php\includes\api;
 
+use Exception;
+
 //source: https://stackoverflow.com/questions/19452378/why-wont-the-images-that-are-grabbed-from-flickr-display
 class Flickr {
 
@@ -9,7 +11,7 @@ class Flickr {
 
     // Setting up flickr_key and flickr_secret
     public function __construct( $api_key ) {
-        $this->$api_key = $api_key;
+        $this->api_key = $api_key;
     }
 
     public function searchPhotos($tag, $page) : string {
@@ -28,11 +30,12 @@ class Flickr {
             $url .= '&format=json';
             $url .= '&nojsoncallback=1';
 
-
             // Get search results
             $response = json_decode(file_get_contents($url));
 
             // Check if the status didn't fail
+            if($response->stat === "fail") throw new Exception();
+
             $photo_array = $response->photos->photo;
 
             $count = 0;
@@ -68,7 +71,8 @@ class Flickr {
             }
             return $string;
         } catch (Exception $ex) {
-            return "Could not load any fotos. Try again.";
+            return $ex->getMessage();
+            //return "Could not load any fotos. Try again.";
         }
     }
 }
