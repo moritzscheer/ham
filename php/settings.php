@@ -137,7 +137,7 @@ function initDatabase() : void {
         insertDummies();
 
         // um den FileStore zu Testen die Exception auskommentieren.
-        throw new Exception();
+        //throw new Exception();
     } catch (Exception) {
         $db = NULL;
 
