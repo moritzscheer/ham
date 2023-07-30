@@ -104,7 +104,7 @@
         gekündigt werden.</p>
     <p>&nbsp;</p>
     <p><strong>§ 8 Salvatorische Klausel</strong></p>
-    <p>Diese Nutzungsbedingungen ist als Teil unserer Webseite zu betrachten, von dem aus auf diese Seite verwiesen
+    <p>Diese Nutzungsbedingungen ist als Teil unserer Website zu betrachten, von dem aus auf diese Seite verwiesen
         wird. Sind einzelne Formulierungen dieser Nutzungsbedingungen nicht mehr ganz oder nicht mehr vollständig
         konform mit der geltenden Rechtslage, so ist davon auszugehen, dass die übrigen Regelungen der
         Nutzungsbedingungen bestehen bleiben.</p>
