@@ -1,5 +1,8 @@
 DI-12-F
 
+Das Produkt Dokument befindet sich im Ordner "planning"
+Die index.php Datei befindet sich im Ordner "pages"
+
 ### Namen der Studierenden:
 
 - Moritz Scheer
@@ -29,7 +32,7 @@ Weitere Voraussetzungen und Informationen:
 
 ### Funktionalitäten
 
-Als unangemeldeter und angemeldeter Nutzer:
+**Als unangemeldeter und angemeldeter Nutzer:**
 
 - Beim Klicken auf das "ham"-Logo im Navigationsteil, wird man auf die Homepage geleitet
 - Man kann alle Veranstaltungen und registrierten Bands sehen/finden
@@ -39,7 +42,7 @@ Als unangemeldeter und angemeldeter Nutzer:
 - Auf der Seite der "Events" kann man nach Veranstaltungen suchen. Dies geschieht entweder durch eintippen des Namens oder durch die Eingabe eines Datums
 - Man kann die Veranstaltungen nach Namen(alphabetische Sortierung) und Datum (chronologische Reihenfolge) sortieren lassen
 
-Als unangemeldeter Nutzer:
+**Als unangemeldeter Nutzer:**
 
 - Wenn man als Nutzer(Veranstalter oder Musiker) registriert ist, kann man sich anmelden
 - Man kann sich als Nutzer registrieren (Veranstalter oder Musiker)
@@ -47,7 +50,7 @@ Als unangemeldeter Nutzer:
   Name(Vor- und Nachname), Telefonnummer(optional), Adresse(Straße, Hausnummmer, Postleitzahl, Stadt)(optional), Typ(Veranstalter oder Musiker), Genre(optional), Mitglieder(optional), weitere Bemerkungen(optional), Email, Passwort und Zustimmung des Impressums, Nutzungsbedingungen und Datenschutzrichtlinien 
 - Beim Anmelden kann man über einen Haken angeben, dass man angemeldet bleiben soll
 
-Als angemeldeter Nutzer (Veranstalter oder Musiker):
+**Als angemeldeter Nutzer (Veranstalter oder Musiker):**
 
 - Nur ein angemeldeter Veranstalter kann eine Veranstaltung erstellen (dies impliziert, dass er ebenso registriert ist)
 - Beim Erstellen einer Veranstaltung werden folgende Daten angegeben: Veranstaltungsname, Veranstaltungort, Datum und Uhrzeit, Anforderungen, Beschreibung und ein Veranstaltungsbild
@@ -68,13 +71,17 @@ Als angemeldeter Nutzer (Veranstalter oder Musiker):
 
 ### Nicht bearbeitete Aufgaben
 
-In Aufgabenblatt 6 wurde die Aufgabe 9 (datenschutzrechtlich einwandfreie Registrierung) nicht bearbeitet.
+In Aufgabenblatt 6 wurde die Aufgabe 9 (datenschutzrechtlich einwandfreie Registrierung) nicht vollständig bearbeitet.
 Sofern ein Nutzer sich mit einer Email anmelden möchte, 
 die bereits existiert, wird angegeben, dass die Email oder das Passwort ungültig oder nicht zulässig ist.
 
 ### Fehler und Mängel
 
 - Beim registrieren kann der Nutzer einstellen, ob dieser angemeldet bleiben möchte oder nicht. Falls dem so ist wird der Session Cookie 1 Woche gespeichert und falls nicht direkt nach schließen des Fensters. Das Problem liegt dennoch dabei, dass Browser wie Chrome einstellungen besitzen, die trotzdem die Cookies nach schließen des Browsers behalten werden. Somit ist unklar wie lange die gespeichert werden.
+
+### Besonderheiten
+
+Siehe bei dem Punkt "Funktionalitäten" die letzten beiden Stichpunkte
 
 ### Weitere Hinweise:
 
