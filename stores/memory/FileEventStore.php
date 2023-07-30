@@ -5,6 +5,7 @@ namespace stores\memory;
 use Exception;
 use php\includes\items\Event;
 use stores\interface\EventStore;
+use stores\interface\Store;
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/stores/interface/EventStore.php';
 
@@ -13,12 +14,216 @@ class FileEventStore implements EventStore
     private string $eventFile;
     private mixed $itemsOfJsonfile;
 
-    public function __construct($eventFile)
+    private Store $addressStore;
+    private FileBlobStore $blobObj;
+
+    /**
+     * constructor:
+     * creates user table
+     * @param string $eventFile
+     * @param Store $addressStore
+     * @param FileBlobStore $blobObj
+     */
+    public function __construct(string $eventFile, Store $addressStore, FileBlobStore $blobObj)
     {
+        $this->blobObj = $blobObj;
+        $this->addressStore = $addressStore;
         $this->eventFile = $eventFile;
         $this->reloadItemsFromJsonFile();
     }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               public methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * methode to save data of an event in the file
+     * @param Event $event an items\Event object
+     * @return Event return true if event was successfully written
+     * @throws Exception
+     */
+    public function create(Event $event): Event
+    {
+        try {
+            $this->reloadItemsFromJsonFile();
+
+            if($event->getEventID() === null)
+                $event->setEventID(rand(1, 2147483647));
+
+            $jsonEvent = $event->getJsonEvent();
+
+            // checking if an entry already exist with the name
+            foreach ($this->itemsOfJsonfile as $item) {
+                if($item->name === $jsonEvent["name"])
+                    throw new Exception("There is already an Event called ".$jsonEvent["name"]."!");
+            }
+
+            // if any address attribute is not empty
+            if($event->hasAddressInputs()) {
+                $address_ID = $this->addressStore->create($event);
+                $event->setAddressID($address_ID);
+            }
+
+            // inserting data
+            $this->itemsOfJsonfile[] = $jsonEvent;
+            $this->addItemsToJsonFile();
+
+            // gets inserted data
+            return $event;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * updates the data from the event given in the JSON-File
+     * @throws Exception
+     */
+    public function update(Event $event): Event
+    {
+        try {
+            $this->reloadItemsFromJsonFile();
+
+            $jsonEvent = $event->getJsonEvent();
+
+            // updates address data
+            $address_ID = $this->addressStore->update($event);
+            $event->setAddressID($address_ID);
+
+            // updating event data
+            foreach ($this->itemsOfJsonfile as $item) {
+                if($item->event_ID === $jsonEvent["event_ID"])
+                unset($item);
+
+                // inserting data
+                $this->itemsOfJsonfile[] = $jsonEvent;
+                $this->addItemsToJsonFile();
+
+                break;
+            }
+
+            // gets updated data
+            return $event;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * deletes the data from the event with the given id
+     * @param string $id
+     * @return void
+     * @throws Exception
+     */
+    public function delete(string $id) : void
+    {
+        $this->reloadItemsFromJsonFile();
+
+        // deletes event data
+        foreach ($this->itemsOfJsonfile as $item) {
+            if ($id === $item->id) {
+                unset($this->itemsOfJsonfile[$item]);
+                $this->addItemsToJsonFile();
+                break;
+            }
+        }
+
+        // deletes address data
+        $this->addressStore->delete($id);
+    }
+
+    /**
+     * @param $count
+     * @param $address_ID
+     * @return mixed
+     */
+    public function findOne($count, $address_ID): int
+    {
+        $this->reloadItemsFromJsonFile();
+
+        foreach ($this->itemsOfJsonfile as $user) {
+            if ($user->address_ID === $address_ID) $count++;
+        }
+        return $count;
+    }
+
+    /**
+     * gets the data from the events with the $stmt in any attribute
+     * @param string $stmt
+     * @return array
+     */
+    public function findAny(string $stmt): array
+    {
+        $this->reloadItemsFromJsonFile();
+
+        $events = array();
+        foreach ($this->itemsOfJsonfile as $item) {
+            foreach ($item as $attribute) {
+                if($attribute === $stmt) {
+                    $events[] = $this->createEvent($item);
+                    break;
+                }
+            }
+        }
+        return $events;
+    }
+
+    /**
+     * gets the data from all events
+     * @return array
+     */
+    public function findAll(): array
+    {
+        $this->reloadItemsFromJsonFile();
+
+        $events = array();
+        foreach ($this->itemsOfJsonfile as $item) {
+            $events[] = $this->createEvent($item);
+        }
+        return $events;
+    }
+
+    /**
+     * gets the data from all events which were created by the user with the given user_ID
+     * @param $user_ID
+     * @return array
+     */
+    public function findMy($user_ID): array
+    {
+        $this->reloadItemsFromJsonFile();
+
+        $events = array();
+        foreach ($this->itemsOfJsonfile as $item) {
+            foreach ($item as $attribute) {
+                if($attribute === "user_ID" && $attribute === $user_ID) {
+                    $events[] = $this->createEvent($item);
+                    break;
+                }
+            }
+        }
+        return $events;
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                              private methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
+     * @param mixed $event
+     * @return Event
+     */
+    private function createEvent(mixed $event): Event
+    {
+        $address = $this->addressStore->findOne($event->address_ID);
+        $event = Event::stdClassToEvent($event, $address);
+
+        $imageID = $this->blobObj->queryID($event->getUserID(), "event");
+        if($imageID !== null) {
+            $image = $this->blobObj->findOne($imageID);
+            $event->setImage($image);
+        }
+        return $event;
+    }
 
     /**
      * Loads content of jsonfile into a variable
@@ -30,105 +235,14 @@ class FileEventStore implements EventStore
         $this->itemsOfJsonfile = json_decode($content, false);
     }
 
-
     /**
      * Adds an items\Event to json file
-     * @return bool
-     */
-    private function addItemsToJsonFile(): bool
-    {
-        $var = file_put_contents($this->eventFile, json_encode($this->itemsOfJsonfile));
-        if ($var !== false) {
-            return true;
-        } else return false;
-    }
-
-
-    /**
-     * Loads all Events from json file
-     * @return Event[]
-     */
-    public function findAll(): array
-    {
-        $events = array();
-        foreach ($this->itemsOfJsonfile as $item) {
-            $event = Event::getJsonEvent($item);
-            $events[] = $event;
-        }
-        return $events;
-    }
-
-    /**
-     * Stores an items\Event to the event json file
-     * @param Event $event an items\Event object
-     * @return Event return true if event was successfully written
-     */
-    public function create(Event $event): Event
-    {
-        $jsonEvent = Event::toArrayForJsonEntry($event);
-        $this->itemsOfJsonfile[] = $jsonEvent;
-        $var = $this->addItemsToJsonFile();
-        if ($var) {
-            $this->reloadItemsFromJsonFile();
-            return $event;
-        } else return new Event();
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function update(Event $event): Event
-    {
-        // maybe other solution ?
-        $this->delete($event->getEventID());
-        return $this->create($event);
-    }
-
-    public function findOne(string $id): Event
-    {
-        foreach ($this->itemsOfJsonfile as $item) {
-            if ($item->id == $id) {
-                return Event::getJsonEvent($item);
-            }
-        }
-        return new Event(); // object or exception ?
-    }
-
-    /**
-     * Deletes items\Event form json file by given id
-     *
-     * Deletes an entry in the array and overwrites the json file
-     * @param string $id
      * @return void
      * @throws Exception
      */
-    public function delete(string $id) : void
+    private function addItemsToJsonFile(): void
     {
-        foreach ($this->itemsOfJsonfile as $item) {
-            if ($id == $item->id) {
-                unset($this->itemsOfJsonfile[$item]);
-                $this->addItemsToJsonFile();
-                return;
-            }
-        }
-        throw new Exception("No such items\Event was found.");
-    }
-
-    public function findMy($user_ID): array
-    {
-        return array();
-        // TODO: Implement findMy() method.
-    }
-
-    public function findAny(string $stmt): array
-    {
-        return array();
-        // TODO: Implement findAny() method.
-    }
-
-    public function createEventArray(string $sql): array
-    {
-        return array();
-        // TODO: Implement createEventArray() method.
+        $var = file_put_contents($this->eventFile, json_encode($this->itemsOfJsonfile), LOCK_EX);
+        if($var === false) throw new Exception("Error: Could not send data to remote server.");
     }
 }

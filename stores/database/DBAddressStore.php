@@ -13,9 +13,12 @@ class DBAddressStore implements AddressStore {
     private PDO $db;
 
     /**
+     * constructor:
+     * creates address table
      * @param $db
      */
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
 
         // creates the address table
@@ -29,11 +32,15 @@ class DBAddressStore implements AddressStore {
         $this->db->exec($sql);
     }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                               public methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
     /**
      * @param object $item
-     * @return string|bool
+     * @return string
      */
-    public function create(object $item): string|false
+    public function create(object $item): string
     {
         // inserting an entry
         $insert = $this->preparedInsert($item);
@@ -50,17 +57,11 @@ class DBAddressStore implements AddressStore {
      * @return string
      * @throws Exception
      */
-    public function update(object $item): string {
+    public function update(object $item): string
+    {
         try {
             // flag for entries that already exist in database. if none exist false is saved, else address_ID.
             $DataInDB = $this->findOne($item);
-
-            // checking if address_ID is saved in any entry. if other entries use this address_ID true is saved, else false.
-            $sql = "SELECT COUNT(*) FROM (".
-                "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
-                "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
-            $stmt2 = $this->db->query($sql)->fetch();
-            $IDInUse = $stmt2["COUNT(*)"] > 1;
 
             if ($item->getAddressID() === "") {
                 // if item had no address_ID
@@ -75,9 +76,14 @@ class DBAddressStore implements AddressStore {
                 } else {
                     return $DataInDB;
                 }
-
             } else {
-                // if item had an address_ID
+                // if item has no address. check if address_ID is saved in any entry.
+                $sql = "SELECT COUNT(*) FROM (".
+                    "SELECT event_ID FROM event WHERE event.address_ID = '".$item->getAddressID()."' UNION ".
+                    "SELECT user_ID FROM user WHERE user.address_ID = '".$item->getAddressID()."');";
+                $stmt2 = $this->db->query($sql)->fetch();
+                $IDInUse = $stmt2["COUNT(*)"] > 1;
+
                 if (!$item->hasAddressInputs()) {
                     // if address was deleted
                     if ($IDInUse === false) {
@@ -92,7 +98,6 @@ class DBAddressStore implements AddressStore {
 
                 } else {
                     return $DataInDB;
-
                 }
             }
         } catch (Exception) {
@@ -104,7 +109,8 @@ class DBAddressStore implements AddressStore {
      * @param string $id
      * @return void
      */
-    public function delete(string $id): void {
+    public function delete(string $id): void
+    {
         $sql = "DELETE FROM address WHERE address_ID = " . $id;
         $this->db->exec($sql);
     }
@@ -113,7 +119,8 @@ class DBAddressStore implements AddressStore {
      * @param object $item
      * @return string|false
      */
-    public function findOne(object $item): mixed {
+    public function findOne(object $item): mixed
+    {
         $sql = 'SELECT address_ID FROM address WHERE '.
                'street_name = :street_name AND house_number = :house_number AND '.
                'postal_code = :postal_code AND city = :city';
@@ -137,6 +144,10 @@ class DBAddressStore implements AddressStore {
         }
     }
 
+    /* -------------------------------------------------------------------------------------------------------------- */
+    /*                                              private methods                                                   */
+    /* -------------------------------------------------------------------------------------------------------------- */
+
     /**
      * method to update data into the database
      * @param object $item
@@ -145,11 +156,11 @@ class DBAddressStore implements AddressStore {
     private function preparedUpdate(object $item) : void
     {
         $sql = 'UPDATE address SET street_name = :street_name, house_number = :house_number, '.
-               'postal_code = :postal_code, city = :city WHERE address_ID = :address_ID';
+            'postal_code = :postal_code, city = :city WHERE address_ID = :address_ID;';
 
         $stmt = $this->db->prepare($sql);
 
-        $stmt->bindValue('addressID', $item->getAddressID());
+        $stmt->bindValue('address_ID', $item->getAddressID());
         $stmt->bindValue('street_name', $item->getStreetName());
         $stmt->bindValue('house_number', $item->getHouseNumber());
         $stmt->bindValue('postal_code', $item->getPostalCode());
@@ -185,5 +196,4 @@ class DBAddressStore implements AddressStore {
             return false;
         }
     }
-
 }

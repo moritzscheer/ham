@@ -44,7 +44,8 @@ class Event extends Item {
      * @param array $item
      * @return Event
      */
-    public static function withAddress(array $item): Event {
+    public static function create(array $item): Event
+    {
         $instance = new self();
         $instance->event_ID = $item["event_ID"];
         $instance->address_ID = $item["address_ID"];
@@ -62,41 +63,53 @@ class Event extends Item {
         return $instance;
     }
 
-    public static function getJsonEvent(stdClass $item): Event {
+    /**
+     * @param stdClass $event
+     * @param stdClass|null $address
+     * @return Event
+     */
+    public static function stdClassToEvent(stdClass $event, ?stdClass $address): Event
+    {
         $instance = new self();
-        $instance->event_ID = (int)$item->id;
-        $instance->address_ID = $item->address_ID;
-        $instance->user_ID = (int)$item->authorID;
-        $instance->name = $item->name;
-        $instance->description = $item->description;
-        $instance->requirements = $item->requirements;
-        $instance->date = $item->Date;
-        $instance->startTime = $item->startTime;
-        $instance->endTime = $item->endTime;
-        $instance->street_name = $item->street;
-        $instance->house_number = $item->houseNr;
-        $instance->postal_code = $item->postalCode;
-        $instance->city = $item->city;
+        $instance->event_ID = $event->event_ID;
+        $instance->user_ID = $event->user_ID;
+        $instance->name = $event->name;
+        $instance->description = $event->description;
+        $instance->requirements = $event->requirements;
+        $instance->date = $event->date;
+        $instance->startTime = $event->startTime;
+        $instance->endTime = $event->endTime;
+        if($address !== NULL) {
+            $instance->address_ID = $event->address_ID;
+            $instance->street_name = $address->street_name;
+            $instance->house_number = $address->house_number;
+            $instance->postal_code = $address->postal_code;
+            $instance->city = $address->city;
+        }
         return $instance;
     }
 
-    public static function toArrayForJsonEntry(Event $item): array {
+    /**
+     * @param Event $item
+     * @return array
+     */
+    public static function EventToArray(Event $item): array
+    {
         return array(
-            "image" => $item->getImage(),
-            "event_ID" => uniqid('ev_'),
-            "user_ID" => $item->getUserID(),
-            "type" => "event",
-            "description" => $item->getDescription(),
-            "name" => $item->getName(),
+            "event_ID" => $item->getEventID(),
             "address_ID" => $item->getAddressID(),
+            "user_ID" => $item->getUserID(),
+            "name" => $item->getName(),
+            "description" => $item->getDescription(),
+            "requirements" => $item->getRequirements(),
+            "date" => $item->getDate(),
+            "startTime" => $item->getStartTime(),
+            "endTime" => $item->getEndTime(),
             "street_name" => $item->getStreetName(),
             "house_number" => $item->getHouseNumber(),
             "postal_code" => $item->getPostalCode(),
             "city" => $item->getCity(),
-            "date" => $item->getDate(),
-            "startTime" => $item->getStartTime(),
-            "endTime" => $item->getEndTime(),
-            "requirements" => $item->getRequirements(),
+            "image" => $item->getImage(),
             "distance" => $item->getDistance()
         );
     }
@@ -109,56 +122,45 @@ class Event extends Item {
      * @param $isEditable
      * @return string
      */
-    public function getEventHTML($isEditable): string {
-        if($isEditable) {
-            return '<form method="post" name="event_ID" id="item">                                                    ' .
-                '       <div id="item_image">                                                                         ' .
-                '           <img src="' . $this->image . '" alt="bandImage"/>                                         ' .
-                '       </div>                                                                                        ' .
-                '       <div id="item_editable">                                                                      ' .
-                '            <label>Edit                                                                              ' .
-                '                  <a href="createEvent.php"  name="onEdit" ></a>                                     ' .
-                '                  <input type="submit" name="onEdit" value="' . $this->event_ID . '">                ' .
-                '            </label>                                                                                 ' .
-                '            <label>Delete                                                                            ' .
-                '                  <a href="events.php"  name="onDelete" ></a>                                        ' .
-                '                  <input type="submit" name="onDelete" value="' . $this->event_ID . '">              ' .
-                '             </label>                                                                                ' .
-                '       </div>                                                                                        ' .
-                '       <div id="item_short_description" class="text-line-pre">                                       ' .
-                '           <span>' . $this->name . '</span>                                                          ' .
-                '           <br>                                                                                      ' .
-                '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
-                '           <br>                                                                                      ' .
-                '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
-                '           <br>                                                                                      ' .
-                '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
-                '       </div>                                                                                        ' .
-                '       <label>click to display more / less                                                           ' .
-                '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
-                '       </label>                                                                                      ' .
-                '   </form>                                                                                           ' ;
-        } else {
-            return '<form method="post" name="event_ID" id="item">                                                    ' .
-                '       <div id="item_image">                                                                         ' .
-                '           <img src="' . $this->image . '" alt="bandImage"/>                                         ' .
-                '       </div>                                                                                        ' .
-                '       <div id="item_short_description" class="text-line-pre">                                       ' .
-                '           <span>' . $this->name . '</span>                                                          ' .
-                '           <br>                                                                                      ' .
-                '           <span>Address: ' . $this->getAddress() . '</span>                                         ' .
-                '           <br>                                                                                      ' .
-                '           <span>Date: ' . $this->getDate() . '</span>                                               ' .
-                '           <br>                                                                                      ' .
-                '           <span>Time: ' . $this->getTime() . '</span>                                               ' .
-                '       </div>                                                                                        ' .
-                '       <label>click to display more / less                                                           ' .
-                '            <input type="submit" name="onItemClick" value="' . $this->event_ID . '">                 ' .
-                '       </label>                                                                                      ' .
-                '   </form>                                                                                           ' ;
-        }
-
+    public function getEventHTML($isEditable, $isCloseToMe): string {
+        $html =
+            '<form method="post" id="item">                                                                ' .
+            '    <div id="item_image">                                                                     ' .
+            '       <img src="' . $this->image . '" alt="bandImage"/>                                      ' .
+            '    </div>                                                                                    ' ;
+        if($isEditable)
+            $html .=
+                '<div id="item_editable">                                                                  ' .
+                '    <label>Edit                                                                           ' .
+                '    <input type="hidden" name="token" value="'. $_SESSION["token"] . '">                  ' .
+                '        <a href="createEvent.php"  name="onEdit" ></a>                                    ' .
+                '        <input type="submit" name="onEdit" value="' . $this->event_ID . '">               ' .
+                '    </label>                                                                              ' .
+                '    <label>Delete                                                                         ' .
+                '        <a href="events.php"  name="onDelete" ></a>                                       ' .
+                '        <input type="submit" name="onDelete" value="' . $this->event_ID . '">             ' .
+                '    </label>                                                                              ' .
+                '</div>                                                                                    ' ;
+        if($isCloseToMe)
+            $html .=
+                '<input type="hidden" name="init" value="false">                                           ' ;
+        $html .=
+            '    <div id="item_short_description" class="text-line-pre">                                   ' .
+            '        <span>' . $this->name . '</span>                                                      ' .
+            '        <br>                                                                                  ' .
+            '        <span>Address: ' . $this->getAddress() . '</span>                                     ' .
+            '        <br>                                                                                  ' .
+            '        <span>Date: ' . $this->getDate() . '</span>                                           ' .
+            '        <br>                                                                                  ' .
+            '        <span>Time: ' . $this->getTime() . '</span>                                           ' .
+            '    </div>                                                                                    ' .
+            '    <label>click to display more / less                                                       ' .
+            '        <input type="submit" name="onItemClick" value="' . $this->event_ID . '">              ' .
+            '    </label>                                                                                  ' .
+            '</form>                                                                                       ' ;
+        return $html;
     }
+
 
     /**
      * @param $keyOrValue
@@ -256,6 +258,36 @@ class Event extends Item {
         return htmlspecialchars($this->startTime . " - " . $this->endTime);
     }
 
+    /**
+     * @return array
+     */
+    public function getJsonEvent(): array {
+        return array(
+            "event_ID" => $this->event_ID,
+            "address_ID" => $this->address_ID,
+            "user_ID" => $this->user_ID,
+            "name" => $this->name,
+            "description" => $this->description,
+            "requirements" => $this->requirements,
+            "date" => $this->date,
+            "startTime" => $this->startTime,
+            "endTime" => $this->endTime,
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getJsonAddress(): array {
+        return array(
+            "address_ID" => $this->address_ID,
+            "street_name" => $this->street_name,
+            "house_number" => $this->house_number,
+            "postal_code" => $this->postal_code,
+            "city" => $this->city,
+        );
+    }
+
     /* -------------------------------------------------------------------------------------------------------------- */
     /*                                               getter and setter                                                */
     /* -------------------------------------------------------------------------------------------------------------- */
@@ -263,11 +295,19 @@ class Event extends Item {
     /* -------- Event ID attribute -------- */
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getEventID(): ?int
+    public function getEventID(): ?string
     {
         return $this->event_ID;
+    }
+
+    /**
+     * @param string|null $event_ID
+     */
+    public function setEventID(?string $event_ID): void
+    {
+        $this->event_ID = $event_ID;
     }
 
     /* -------- Address ID attribute -------- */
@@ -489,11 +529,11 @@ class Event extends Item {
     /* -------- Image attribute -------- */
 
     /**
-     * @param array|null $blobData
+     * @param string|null $image
      */
-    public function setImage(?array $blobData): void
+    public function setImage(?string $image): void
     {
-        $this->image = "data:" . $blobData["mime"] . ";base64," . base64_encode($blobData["data"]);
+        $this->image = $image;
     }
 
     /**
@@ -501,7 +541,7 @@ class Event extends Item {
      */
     public function getImage(): string
     {
-        return htmlspecialchars($this->image);
+        return $this->image;
     }
 
     /* -------- Distance attribute -------- */

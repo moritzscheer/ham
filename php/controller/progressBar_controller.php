@@ -6,7 +6,7 @@
 
 namespace php\controller;
 
-global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3;
+global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $progressBar;
 
 include $_SERVER['DOCUMENT_ROOT'] . '/autoloader.php';
 

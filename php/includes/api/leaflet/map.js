@@ -7,15 +7,17 @@ var map = L.map('map', { zoomControl: false }).setView([48.1500327, 11.5753989],
 
 var myAPIKey = "3e6cf917f419488cbeec8ac503210f17";
 
-var marker = null;
-
-var radius = 1000;
-
-var longitude = null;
-
-var latitude = null;
+var circle = null;
 
 var step = 1;
+
+var markers = [];
+
+var userLocation = [];
+
+var eventLocations = [];
+
+var closeToMe = [];
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                      build map                                                     */
@@ -35,167 +37,104 @@ L.tileLayer(mapURL, {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
+initMap();
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /*                                                 get user location                                                  */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-// Get a user location roughly
-fetch(`https://api.geoapify.com/v1/ipinfo?apiKey=${myAPIKey}`).then(result => result.json()).then(result => {
-    map.setView([result.location.latitude, result.location.longitude], 8);
-});
+async function initMap() {
+    userLocation = await getUserCoordinates();
 
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                                    range field                                                     */
-/* ------------------------------------------------------------------------------------------------------------------ */
-// Range slider
-const slider = L.control.range({
-    position: 'topright',
-    min: 1,
-    max: 100,
-    value: 1,
-    step: step,
-    orient: 'horizontal',
-});
+    await createNewCircle();
 
-slider.on('input change', function(e) {
-    if (e.value <= 10000) {
-        step = 1;
-        slider.options.step = step;
-    } else if (e.value <= 50000) {
-        step = 2;
-        slider.options.step = step;
+    getEventCoordinates();
+}
+
+/**
+ * gets the coordination from the logged-in-user
+ */
+async function getUserCoordinates() {
+    var location = null;
+
+    if(userAddress == undefined) {
+        // source: https://stackdiary.com/tutorials/how-to-get-a-clients-ip-address-using-javascript/
+        await fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+
+                // Get a user location roughly
+                fetch('https://api.geoapify.com/v1/ipinfo?ip=' + data.ip + '&apiKey=' + myAPIKey)
+                    .then(result => result.json())
+                    .then(async result => {
+                        location = [result.location.latitude, result.location.longitude];
+                    });
+            });
     } else {
-        step = 5;
-        slider.options.step = step;
+        await fetch('https://api.geoapify.com/v1/geocode/search?'+
+            'street='+encodeURI(userAddress.street_name)+
+            '&housenumber='+encodeURI(userAddress.house_number)+
+            '&postcode='+encodeURI(userAddress.postal_code)+
+            '&city='+encodeURI(userAddress.city)+
+            '&format=json&apiKey=3e6cf917f419488cbeec8ac503210f17')
+            .then(response => response.json())
+            .then(data => {
+                location = [data.results[0].lat, data.results[0].lon];
+            });
     }
+    return location;
+}
 
-    document.getElementById("range_text").innerHTML = e.value / 1000 * 2 + " Km Diameter";
+/**
+ * gets the coordinates of the events
+ * @returns {Promise<void>}
+ */
+async function getEventCoordinates() {
+    if(events != undefined) {
+        for (let i = 0; i < events.length; i++) {
+            await fetch('https://api.geoapify.com/v1/geocode/search?'+
+                'street='+encodeURI(events[i].street_name)+
+                '&housenumber='+encodeURI(events[i].house_number)+
+                '&postcode='+encodeURI(events[i].postal_code)+
+                '&city='+encodeURI(events[i].city)+
+                '&format=json&apiKey=3e6cf917f419488cbeec8ac503210f17')
+                .then(response => response.json())
+                .then(data => {
+                    latitude = data.results[0].lat;
+                    longitude = data.results[0].lon;
 
-    if(map.hasLayer(circle)) {
-        map.removeLayer(circle);
-        radius = e.value;
-        circle = L.circle({lat: latitude, lng: longitude}, {
-            color: 'steelblue',
-            radius: radius,
-            fillColor: 'steelblue',
-            opacity: 0.5
-        }).addTo(map)
-    } else {
-        radius = e.value;
+                    eventLocations.push([latitude, longitude]);
+
+                    // calculate distance to user
+                    distance = calcDistance(userLocation[0], userLocation[1], latitude, longitude, "K");
+
+                    // set the distance
+                    events[i].distance = distance;
+
+                    marker = new L.Marker([latitude, longitude]);
+                    markers[i] = marker;
+
+                    if(distance < radius / 1000) {
+                        // sets a marker if it is in radius
+                        marker.addTo(map);
+
+                        closeToMe.push(events[i])
+                    }
+                });
+        }
+        sendAjaxRequestToUpdateList();
     }
-    map.fitBounds(circle.getBounds());
+}
 
-    // ajax request
-    var message = '{"list": ' + JSON.stringify(list) + ', "radius":' + radius + "}";
-    var xhttp;
-
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("item_list").innerHTML = this.responseText;
-        }
-    };
-    xhttp.open("POST", "../php/controller/item_controller.php", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("range_update=" + encodeURIComponent(message));});
-
-map.addControl(slider);
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-/*                                                    input field                                                     */
-/* ------------------------------------------------------------------------------------------------------------------ */
-
-var circle = null;
-
-// Geoapify Address Search control
-var suggestionMarkers = [];
-const suggestionsMarkerIcon = L.icon({
-    iconUrl: `https://api.geoapify.com/v1/icon/?type=awesome&shadowColor=%23fafafa&color=%23fff351&size=small&scaleFactor=2&apiKey=${myAPIKey}` /* get an API Key on https://myprojects.geoapify.com */,
-    iconSize: [25, 37], // size of the icon
-    iconAnchor: [12.5, 34], // the point on the icon which will correspond to the marker's location, substruct the shadow
-    popupAnchor: [0, -36] // the point from which the popup should open relative to the iconAnchor
-});
-
-const resultMarkerIcon = L.icon({
-    iconUrl: `https://api.geoapify.com/v1/icon/?type=awesome&shadowColor=%23fafafa&color=%2336d867&scaleFactor=2&apiKey=${myAPIKey}` /* get an API Key on https://myprojects.geoapify.com */,
-    iconSize: [31, 46],
-    iconAnchor: [15.5, 42],
-    popupAnchor: [0, -45]
-});
-
-const addressSearchControl = L.control.addressSearch(myAPIKey, {
-    position: 'topleft',
-    mapViewBias: true,
-    className: 'custom-address-field',
-    resultCallback: (address) => {
-        if (marker) {
-            marker.remove();
-        }
-
-        if (!address) {
-            return;
-        }
-
-        longitude = address.lon;
-        latitude = address.lat;
-
-        marker = L.marker([latitude, longitude]).addTo(map);
-
-
-        if (circle != undefined) {
-            map.removeLayer(circle);
-        };
-
-        circle = L.circle({lat: latitude, lng: longitude}, {
-            color: 'steelblue',
-            radius: radius,
-            fillColor: 'steelblue',
-            opacity: 0.5
-        }).addTo(this.map)
-
-        if (address.bbox && address.bbox.lat1 !== address.bbox.lat2 && address.bbox.lon1 !== address.bbox.lon2) {
-            map.fitBounds(circle.getBounds())
-        } else {
-            map.setView([address.lat, address.lon], 15);
-        }
-
-        if(event_locations) {
-            map.removeLayer(event);
-
-            for (let i = 0; i < event_locations.length; i++) {
-                var distance = calcDistance(latitude, longitude, event_locations[i].lat, event_locations[i].lon);
-                list[i].distance = distance;
-                console.log(list[i])
-                console.log(radius)
-                if(distance < radius) {
-                    var event = new L.Marker([event_locations[i].lat, event_locations[i].lon]);
-                    event.addTo(map);
-                }
-            }
-        } else {
-            map.removeLayer(event);
-        }
-
-        // ajax request
-        var message = '{"list": ' + JSON.stringify(list) + ', "lat":' + latitude + ', "lon":' + longitude + ', "radius":' + radius + "}";
-        var xhttp;
-
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("item_list").innerHTML = this.responseText;
-            }
-        };
-        xhttp.open("POST", "../php/controller/item_controller.php", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("new_marker=" + encodeURIComponent(message));
-        }
-});
-map.addControl(addressSearchControl);
-
-
-
-// https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
+/**
+ * https://stackoverflow.com/questions/18883601/function-to-calculate-distance-between-two-coordinates
+ * @param lat1
+ * @param lon1
+ * @param lat2
+ * @param lon2
+ * @param unit
+ * @returns {number}
+ */
 function calcDistance(lat1, lon1, lat2, lon2, unit) {
     if ((lat1 == lat2) && (lon1 == lon2)) {
         return 0;
@@ -218,4 +157,97 @@ function calcDistance(lat1, lon1, lat2, lon2, unit) {
     }
 }
 
+/* ------------------------------------------------------------------------------------------------------------------ */
+/*                                                    range field                                                     */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+console.log(radius)
+
+// Range slider
+const slider = L.control.range({
+    position: 'topright',
+    min: 1,
+    max: 50,
+    value: radius,
+    step: step,
+    orient: 'horizontal',
+});
+
+slider.on('input change', function(e) {
+    if (radius <= 5) {
+        step = 1;
+    } else if (radius <= 10) {
+        step = 3;
+    } else {
+        step = 5;
+    }
+
+    // updates ui text
+    document.getElementById("range_text").innerHTML = e.value / 1000 + " Km Radius";
+
+    // updates radius
+    radius = e.value;
+
+    createNewCircle();
+
+    // resets marker and closeToMe array
+    closeToMe = [];
+
+    // if there are any events
+    if(events != undefined) {
+        for (let i = 0; i < events.length; i++) {
+            marker = markers[i];
+            map.removeLayer(marker);
+            if(events[i].distance < radius / 1000) {
+                marker.addTo(map);
+
+                closeToMe.push(events[i])
+            }
+        }
+        sendAjaxRequestToUpdateList();
+    }
+});
+
+map.addControl(slider);
+
+
+
+/**
+ * creates a new circle and deletes old ones
+ */
+function createNewCircle() {
+    if(circle != undefined) {
+        map.removeLayer(circle);
+    }
+
+    // creates circle around user location
+    circle = L.circle({lat: userLocation[0], lng: userLocation[1]}, {
+        color: 'steelblue',
+        radius: radius,
+        fillColor: 'steelblue',
+        opacity: 0.5
+    }).addTo(this.map)
+
+    // sets view to circle size
+    map.fitBounds(circle.getBounds());
+}
+
+/**
+ * sends an ajax request to the client to update the event list
+ */
+function sendAjaxRequestToUpdateList() {
+    // ajax request
+    var message = '{"list": ' + JSON.stringify(closeToMe) + ', "radius":' + radius + '}';
+    var xhttp;
+
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("item_list").innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("POST", "../php/controller/item_controller.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("range_update=" + encodeURIComponent(message));
+}
 

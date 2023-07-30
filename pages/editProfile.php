@@ -1,5 +1,6 @@
 <?php
-    global $error_message;
+    namespace php\controller;
+    global $error_message, $street_name, $house_number, $city, $postal_code;
     include_once "../php/includes/head/head.php"
 ?>
 <body>
@@ -64,20 +65,20 @@
 
                     <div id="split">
                         <label id="input-entry" class="entry">Street:
-                            <input type="text" name="user_street_name" value="<?php echo $_SESSION["user"]->getStreetName() ?>">
+                            <input type="text" name="user_street_name" value="<?php echo $_SESSION["user"]->getStreetName() ?>" id="<?php echo $street_name ?>">
                         </label>
                         <label id="input-entry" class="entry">House Number:
                             <input type="text" name="user_house_number"
-                                   value="<?php echo $_SESSION["user"]->getHouseNumber() ?>">
+                                   value="<?php echo $_SESSION["user"]->getHouseNumber() ?>" id="<?php echo $house_number ?>">
                         </label>
                     </div>
 
                     <div id="split">
                         <label id="input-entry" class="entry">City:
-                            <input type="text" name="user_city" value="<?php echo $_SESSION["user"]->getCity() ?>">
+                            <input type="text" name="user_city" value="<?php echo $_SESSION["user"]->getCity() ?>" id="<?php echo $city ?>">
                         </label>
                         <label id="input-entry" class="entry">Postal Code:
-                            <input type="text" name="user_postal_code" value="<?php echo $_SESSION["user"]->getPostalCode() ?>">
+                            <input type="text" name="user_postal_code" value="<?php echo $_SESSION["user"]->getPostalCode() ?>" id="<?php echo $postal_code ?>">
                         </label>
                     </div>
 
@@ -85,10 +86,10 @@
                         <legend>Type:</legend>
                         <div id="type-entry" class="entry">
                             <label>Musician
-                                <input type="radio" name="type" value="Musician" <?php echo $_SESSION["loggedIn"]["Musician"] ?> required onclick="document.getElementById('update_profile').click()">
+                                <input type="radio" name="type" value="Musician" <?php echo $_SESSION["user"]->getMusicianCheckBox() ?> required onclick="document.getElementById('update_profile').click()">
                             </label>
                             <label>Host
-                                <input type="radio" name="type" value="Host" <?php echo $_SESSION["loggedIn"]["Host"] ?> required onclick="document.getElementById('update_profile').click()">
+                                <input type="radio" name="type" value="Host" <?php echo $_SESSION["user"]->getHostCheckBox() ?> required onclick="document.getElementById('update_profile').click()">
                             </label>
                         </div>
                     </fieldset>

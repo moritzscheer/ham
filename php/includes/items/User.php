@@ -44,7 +44,8 @@ class User extends Item {
      * @param array $user
      * @return User
      */
-    public static function withAddress(array $user): User {
+    public static function withAddress(array $user): User
+    {
         $instance = new self();
         $instance->user_ID = (string)$user["user_ID"];
         $instance->address_ID = $user["address_ID"];
@@ -66,10 +67,41 @@ class User extends Item {
     }
 
     /**
+     * @param stdClass $user
+     * @param stdClass|null $address
+     * @return User
+     */
+    public static function stdClassToUser(stdClass $user, ?stdClass $address): User
+    {
+        $instance = new self();
+        $instance->user_ID = $user->user_ID;
+        $instance->type = $user->type;
+        $instance->name = $user->name;
+        $instance->surname = $user->surname;
+        $instance->password = $user->password;
+        $instance->phone_number = $user->phone_number;
+        $instance->email = $user->email;
+        $instance->genre = $user->genre;
+        $instance->members = $user->members;
+        $instance->other_remarks = $user->other_remarks;
+        $instance->dsr = $user->dsr;
+        if($address !== NULL) {
+            $instance->address_ID = $user->address_ID;
+            $instance->street_name = $address->street_name;
+            $instance->house_number = $address->house_number;
+            $instance->postal_code = $address->postal_code;
+            $instance->city = $address->city;
+        }
+        return $instance;
+    }
+
+
+    /**
      * @param User $user
      * @return array
      */
-    public static function toArrayForJsonEntry(User $user): array {
+    public static function UserToArray(User $user): array
+    {
         return array(
             "user_ID" => $user->getUserID(),
             "type" => $user->getType(),
@@ -91,28 +123,6 @@ class User extends Item {
             "postal_code" => $user->getPostalCode(),
             "city" => $user->getCity()
         );
-    }
-
-    public static function getJsonUser(stdClass $user): User {
-        $instance = new self();
-        $instance->user_ID = (string)$user->user_ID;
-        $instance->type = $user->type;
-        $instance->address_ID = $user->address_ID;
-        $instance->name = $user->name;
-        $instance->surname = $user->surname;
-        $instance->password = $user->password;
-        $instance->phone_number = $user->phone_number;
-        $instance->email = $user->email;
-        $instance->genre = $user->genre;
-        $instance->members = $user->members;
-        $instance->other_remarks = $user->other_remarks;
-        $instance->dsr = $user->dsr;
-        $instance->street_name = $user->street_name;
-        $instance->house_number = $user->house_number;
-        $instance->postal_code = $user->postal_code;
-        $instance->city = $user->city;
-
-        return $instance;
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
@@ -245,6 +255,63 @@ class User extends Item {
         } else {
             return "";
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHostCheckBox(): ?string
+    {
+        if($this->type === "Host") {
+            return "checked";
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMusicianCheckBox(): ?string
+    {
+        if($this->type === "Musician") {
+            return "checked";
+        } else {
+            return "";
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getJsonUser(): array {
+        return array(
+            "user_ID" => $this->user_ID,
+            "address_ID" => $this->address_ID,
+            "type" => $this->type,
+            "name" => $this->name,
+            "surname" => $this->surname,
+            "password" => $this->password,
+            "phone_number" => $this->phone_number,
+            "email" => $this->email,
+            "genre" => $this->genre,
+            "members" => $this->members,
+            "other_remarks" => $this->other_remarks,
+            "dsr" => $this->dsr,
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getJsonAddress(): array {
+        return array(
+            "address_ID" => $this->address_ID,
+            "street_name" => $this->street_name,
+            "house_number" => $this->house_number,
+            "postal_code" => $this->postal_code,
+            "city" => $this->city,
+        );
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
@@ -525,11 +592,11 @@ class User extends Item {
     /* -------- Image attribute -------- */
 
     /**
-     * @param array|null $blobData
+     * @param string|null $image
      */
-    public function setImage(?array $blobData): void
+    public function setImage(?string $image): void
     {
-        $this->image = "data:" . $blobData["mime"] . ";base64," . base64_encode($blobData["data"]);
+        $this->image = $image;
     }
 
     /**

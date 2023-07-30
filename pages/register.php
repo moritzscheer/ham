@@ -1,6 +1,7 @@
 <?php
     namespace php\controller;
-    global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message, $progressBar;
+    global $step, $step_1, $step_2, $step_3, $step_4, $progress_2, $progress_3, $error_message, $progressBar,
+           $street_name, $house_number, $city, $postal_code;
     include_once "../php/controller/progressBar_controller.php";
     include_once "../php/includes/head/head.php"
 ?>
@@ -23,11 +24,12 @@
 
     <div class="progressBar-Content">
 
-        <p id="error-message" class="<?php echo $progressBar ?>"><?php echo $error_message ?></p>
-
+        <!------------------------------------------- Step 1 of progressbar ------------------------------------------->
         <form method="post" id="<?php echo $step_1 ?>">
             <h1>Personal Data</h1>
-            
+
+            <p id="error-message" class="<?php echo $progressBar ?>"><?php echo $error_message ?></p>
+
             <label id="input-entry" class="entry">* Name:
                 <input type="text" value="<?php echo $_SESSION["user"]->getName() ?>" name="name" required>
             </label>
@@ -41,21 +43,24 @@
             </label>
 
             <div id="split">
-                <label id="input-entry" class="entry">* Street:
-                    <input type="text" name="user_street_name" value="<?php echo $_SESSION["user"]->getStreetName() ?>">
+                <label id="input-entry" class="entry">Street:
+                    <input type="text" name="user_street_name" value="<?php echo $_SESSION["user"]->getStreetName() ?>"
+                           id="<?php echo $street_name ?>">
                 </label>
-                <label id="input-entry" class="entry">* House Number:
+                <label id="input-entry" class="entry">House Number:
                     <input type="text" name="user_house_number"
-                           value="<?php echo $_SESSION["user"]->getHouseNumber() ?>">
+                           value="<?php echo $_SESSION["user"]->getHouseNumber() ?>" id="<?php echo $house_number ?>">
                 </label>
             </div>
 
             <div id="split">
-                <label id="input-entry" class="entry">* City:
-                    <input type="text" name="user_city" value="<?php echo $_SESSION["user"]->getCity() ?>">
+                <label id="input-entry" class="entry">City:
+                    <input type="text" name="user_city" value="<?php echo $_SESSION["user"]->getCity() ?>"
+                           id="<?php echo $city ?>">
                 </label>
-                <label id="input-entry" class="entry">* Postal Code:
-                    <input type="text" name="user_postal_code" value="<?php echo $_SESSION["user"]->getPostalCode() ?>">
+                <label id="input-entry" class="entry">Postal Code:
+                    <input type="text" name="user_postal_code" value="<?php echo $_SESSION["user"]->getPostalCode() ?>"
+                           id="<?php echo $postal_code ?>">
                 </label>
             </div>
 
@@ -67,18 +72,20 @@
             </div>
         </form>
 
-
-        <form method="post" action="<?php echo getNextUrl($step) ?>" id="<?php echo $step_2 ?>">
+        <!------------------------------------------- Step 2 of progressbar ------------------------------------------->
+        <form method="post" id="<?php echo $step_2 ?>">
             <h1>More Information</h1>
 
+            <p id="error-message" class="<?php echo $progressBar ?>"><?php echo $error_message ?></p>
+
             <fieldset>
-                <legend>Type:</legend>
+                <legend>* Type:</legend>
                 <div id="type-entry" class="entry">
                     <label>Musician
-                        <input type="radio" name="type" value="Musician" required>
+                        <input type="radio" name="type" value="Musician" <?php echo $_SESSION["user"]->getMusicianCheckBox() ?> required>
                     </label>
                     <label>Host
-                        <input type="radio" name="type" value="Host" required>
+                        <input type="radio" name="type" value="Host" <?php echo $_SESSION["user"]->getHostCheckBox() ?> required>
                     </label>
                 </div>
             </fieldset>
@@ -99,13 +106,16 @@
             <div class="submit">
                 <a href="<?php echo getLastUrl($step) ?>">Last Step</a>
                 <label>Next Step
-                    <input type="submit">
+                    <input type="submit" name="toStep3">
                 </label>
             </div>
         </form>
 
+        <!------------------------------------------- Step 3 of progressbar ------------------------------------------->
         <form method="post" id="<?php echo $step_3 ?>">
             <h1>Email and Password</h1>
+
+            <p id="error-message" class="<?php echo $progressBar ?>"><?php echo $error_message ?></p>
 
             <label id="input-entry" class="entry">* E-Mail address:
                 <input type="email" name="email">
@@ -133,6 +143,7 @@
             </div>
         </form>
 
+        <!------------------------------------------- Step 4 of progressbar ------------------------------------------->
         <form method="post" action="index.php" id="<?php echo $step_4 ?>" class="lastStep">
             <h1 id="success_message"><?php echo $_SESSION["success_message"] ?></h1>
 

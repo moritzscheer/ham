@@ -8,7 +8,6 @@
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: max-content auto auto;
-    grid-gap: 30px;
     padding: 30px;
 }
 .closeToMe-Filter {
@@ -46,12 +45,13 @@ input[type="text"] {
     border: unset !important;
     outline: unset !important;
 }
-#map, strong, span, input[type="text"] {
+#map, strong {
     color: black !important;
 }
 #map {
-    width: 100%;
-    height: 600px;
+    width: 95%;
+    margin: auto;
+    height: 500px;
 }
 .my-label {
     position: absolute;
