@@ -5,7 +5,7 @@
 <?php include_once "../php/includes/navigation/header/header.php" ?>
 
 <section>
-    <!-- CHANGE THIS !!!-->
+
     <p>&nbsp;</p><h4><span>Besondere Nutzungsbedingungen für die Registrierung bei </span><span>ham</span><span>:</span>
     </h4>
     <p>&nbsp;</p>

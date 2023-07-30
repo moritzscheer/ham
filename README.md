@@ -5,20 +5,29 @@ Namen der Studierenden:
 - Artur Scheling
 - (Holger Dirks, der aus formälen Gründen das Projekt nicht bis zum Schluss mitmachen konnte)
 
+Betrieb und Nutzungsvoraussetzungen:
 
-Nutzungsvoraussetzungen:
+Vor dem Betrieb muss die php.ini-Datei abgeändert werden:
+- In der php.ini müssen die folgende Extensions unkommentiert werden:
+    - sqlite3
+    - pdo_sqlite
 
-Zum Betrieb der Website wird u.a.die index.php ausgeführt. Dies ist die Homepage der Website.
-Weitere Voraussetzungen:
- - In der php.ini müssen die folgende Extensions unkommentiert werden:
-   - pdo...
+- Gebenenfalls muss ebenso folgende extensions eingefügt werden:
+  - extension=bz2
+  - extension=php_pdo_sqlite.dll
+  - extension=php_pdo_mysql.dll
+  - extension=php_sqlite3.dll
 
- - Anmeldedaten eines Beispielsnutzers: 
-   - Email: test@uni.de 
-   - Passwort: 1
+Zum Betrieb der Website wird als erstes via Xampp der Apache-Server gestartet und die index.php ausgeführt. 
+Die index.php befindet sich im Ordner "pages".
+
+Weitere Voraussetzungen und Informationen:
+- Anmeldedaten eines Beispielsnutzers:
+    - Email: test@uni.de
+    - Passwort: 1
 
 
-Aufgabe zu Aufgabenblatt 6
+Zu Aufgabenblatt 6
 
 Hinweise:
 
@@ -37,7 +46,3 @@ Hinweise:
 
 Dateinamen für die Abgabe:
 DI-12-F-Dirks-Scheer-Scheling.zip
-
-    Anmeldedaten für test account  
-    E-Mail: test@uni.de  
-    Passwort: 1
