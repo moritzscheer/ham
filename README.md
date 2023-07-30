@@ -1,11 +1,12 @@
 DI-12-F
-Namen der Studierenden:
+
+### Namen der Studierenden:
 
 - Moritz Scheer
 - Artur Scheling
-- (Holger Dirks, der aus formälen Gründen das Projekt nicht bis zum Schluss mitmachen konnte)
+- (Holger Dirks, der aus formalen Gründen das Projekt nicht bis zum Schluss mitmachen konnte)
 
-Betrieb und Nutzungsvoraussetzungen:
+### Betrieb und Nutzungsvoraussetzungen:
 
 Vor dem Betrieb muss die php.ini-Datei abgeändert werden:
 - In der php.ini müssen die folgende Extensions unkommentiert werden:
@@ -26,10 +27,32 @@ Weitere Voraussetzungen und Informationen:
     - Email: test@uni.de
     - Passwort: 1
 
+### Funktionalitäten
+
+ - Man kann alle Veranstaltungen und registrierten Bands sehen/finden
+ - Man kann sich als Nutzer registrieren (Veranstalter oder Musiker)
+ - Wenn man als Nutzer registriert ist, kann man sich anmelden
+ - Wenn man als Veranstalter registriert und angemeldet ist, kann man eine Veranstaltung erstellen
+ - Beim Erstellen einer Veranstaltung kann man alle möglichen Informationen wie Veranstaltungsname, Beschreibung, Veranstaltungort, Datum und Uhrzeit, Anforderungen und ein Bild hochladen
+
+ - Ein angemeldeter Nutzer kann sein Profil ansehen und bearbeiten
+ - Ein angemeldeter Nutzer kann das Passwort für seinen Account ändern
+ - Ein angemeldeter Nutzer kann ein Profilbild hinzufügen oder ändern und weitere Bilder zum Porfil hinzufügen
+ - Ein angemeldeter Nutzer kann seinen Account löschen
+ - Ein angemeldeter Nutzer kann sich abmelden
+
+### Nicht bearbeitete Aufgaben
+
+...
+
+### Fehler und Mängel
+
+...
+
 
 Zu Aufgabenblatt 6
 
-Hinweise:
+### Weitere Hinweise:
 
 - Löschen von Datenbankeinträgen:
   Beim Löschen von Events (Veranstaltungen)
