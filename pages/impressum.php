@@ -9,14 +9,15 @@
 
     <h2>Angaben gem&auml;&szlig; &sect; 5 TMG</h2>
     <p>ham<br/>
+        <br/>
         Ammerl&auml;nder Heerstra&szlig;e 114-118<br/>
         26129 26129 Oldenburg</p>
 
     <p><strong>Vertreten durch:</strong><br/>
-        Moritz Scheer, Artur Scheling, (Holger Dirks)</p>
+        Moritz Scheer und Artur Scheling</p>
 
     <p><strong>Vorsitzender des Aufsichtsrats:</strong><br/>
-        Moritz Scheer, Artur Scheling, (Holger Dirks)</p>
+        Moritz Scheer und Artur Scheling</p>
 
     <h2>Kontakt</h2>
     <p>Telefon: +49 441 798-0<br/>
@@ -28,9 +29,14 @@
         DE999999999</p>
 
     <h2>Redaktionell verantwortlich</h2>
-    <p>Artur Scheling<br/>
+    <p>Moritz Scheer<br/>
+        Cloppenburger Straße 58c <br/>
+        26135 Oldenburg<br/>
+        <br/>
+        Artur Scheling<br/>
         Bookhorner Weg 18<br/>
-        27777 Ganderkesee</p>
+        27777 Ganderkesee
+    </p>
 
     <h2>EU-Streitschlichtung</h2>
     <p>Die Europ&auml;ische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a
