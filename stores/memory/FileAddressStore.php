@@ -89,8 +89,8 @@ class FileAddressStore implements Store
             } else {
                 // if item has no address. check if address_ID is saved in any entry.
                 $count = 0;
-                $count = $userStore->findOne($item->getAddressID(), $count);
-                $count = $eventStore->findOne($item->getAddressID(), $count);
+                $count = $userStore->getOne($item->getAddressID(), $count);
+                $count = $eventStore->getOne($item->getAddressID(), $count);
                 $IDInUse = $count > 1;
 
                 if (!$item->hasAddressInputs()) {
@@ -146,9 +146,9 @@ class FileAddressStore implements Store
 
     /**
      * @param string $address_ID
-     * @return false
+     * @return false|null
      */
-    public function findOne(string $address_ID)
+    public function findOne(string $address_ID): ?false
     {
         $this->reloadItemsFromJsonFile();
 

@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "address_ID": "1356246917",
+    "street_name": "Cloppenburger Stra\u00dfe",
+    "house_number": "22",
+    "postal_code": "26135",
+    "city": "Oldenburg"
+  },
+  {
+    "address_ID": "1596751174",
+    "street_name": "Im Kolbengarten",
+    "house_number": "16",
+    "postal_code": "69123",
+    "city": "Heidelberg"
+  },
+  {
+    "address_ID": "139132827",
+    "street_name": "Werderstra\u00dfe",
+    "house_number": "58",
+    "postal_code": "28199",
+    "city": "Bremen"
+  },
+  {
+    "address_ID": "1300485782",
+    "street_name": "Asmusstedt",
+    "house_number": "13",
+    "postal_code": "6493",
+    "city": "Ballenstedt"
+  }
+]

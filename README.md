@@ -79,6 +79,12 @@ die bereits existiert, wird angegeben, dass die Email oder das Passwort ungülti
 
 - Beim registrieren kann der Nutzer einstellen, ob dieser angemeldet bleiben möchte oder nicht. Falls dem so ist wird der Session Cookie 1 Woche gespeichert und falls nicht direkt nach schließen des Fensters. Das Problem liegt dennoch dabei, dass Browser wie Chrome einstellungen besitzen, die trotzdem die Cookies nach schließen des Browsers behalten werden. Somit ist unklar wie lange die gespeichert werden.
 
+- Passwort ändern funktioniert nicht. Prepared Statement wird ausgeführt aber nichts ändert sich.
+
+- responsive design für selectImage ist nicht für smartphone größe optimal angepasst.
+
+- FileStore: Addresse und Bilder können nicht geladen werden.
+
 ### Besonderheiten
 
 Siehe bei dem Punkt "Funktionalitäten" die letzten beiden Stichpunkte

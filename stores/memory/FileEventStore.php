@@ -133,16 +133,34 @@ class FileEventStore implements EventStore
     }
 
     /**
-     * @param $count
-     * @param $address_ID
-     * @return mixed
+     * @param $user_ID
+     * @return Event|null
      */
-    public function findOne($count, $address_ID): int
+    public function findOne($user_ID): ?Event
     {
         $this->reloadItemsFromJsonFile();
 
-        foreach ($this->itemsOfJsonfile as $user) {
-            if ($user->address_ID === $address_ID) $count++;
+        foreach ($this->itemsOfJsonfile as $item) {
+            if ($item->user_ID === $user_ID) {
+                $address = $this->addressStore->findOne($item->address_ID);
+                return Event::stdClassToEvent($item, $address);
+
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param $count
+     * @param $address_ID
+     * @return int|mixed
+     */
+    public function getOne($count, $address_ID): mixed
+    {
+        $this->reloadItemsFromJsonFile();
+
+        foreach ($this->itemsOfJsonfile as $item) {
+            if ($item->address_ID === $address_ID) $count++;
         }
         return $count;
     }

@@ -113,7 +113,7 @@
       "address_ID": "",
       "type": "Musician",
       "name": "Jakub",
-      "surname": "Jakub Zytecki",
+      "surname": "Zytecki",
       "password": "jakub",
       "phone_number": "0176 135126461",
       "email": "jakub.zytecki@gmail.com",
@@ -167,7 +167,7 @@
       "address_ID": "",
       "type": "Musician",
       "name": "Jacob",
-      "surname": "Puppy",
+      "surname": "Collier",
       "password": "Collier",
       "phone_number": "(0 55 22) 40 62 86",
       "email": "jacob.collier@gmail.com",
@@ -371,6 +371,12 @@
       "assigned_ID": "9",
       "category": "profile_large",
       "path": "../resources/dummy/images/image_user9_large.jpg",
+      "mime": "image/gif"
+    },
+    {
+      "assigned_ID": "10",
+      "category": "profile_large",
+      "path": "../resources/dummy/images/image_user10_large.jpg",
       "mime": "image/gif"
     },
     {

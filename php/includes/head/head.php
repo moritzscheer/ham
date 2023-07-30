@@ -24,6 +24,5 @@
         var events = <?php echo json_encode($map_events) ?>;
         var userAddress = <?php echo json_encode($map_loggedInUser) ?>;
         var radius = <?php echo $_SESSION["radius"] ?>;
-        var init = <?php echo $init ?>;
     </script>
 </head>

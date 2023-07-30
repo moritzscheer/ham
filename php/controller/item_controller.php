@@ -49,7 +49,6 @@ if (isset($_POST["event_city"]) && is_string($_POST["event_city"])) { $_SESSION[
 $map_events = array();
 $map_loggedInUser = array();
 $_SESSION["radius"] = $_SESSION["radius"] ?? 1000;
-$init = "false";
 
 $_SESSION["itemDetail"] = $_SESSION["itemDetail"] ?? null;
 $_SESSION["showEventOptions"] = isset($_SESSION["loggedIn"]["status"]) && $_SESSION["loggedIn"]["status"] === false ? "hidden" : "visible";
@@ -75,7 +74,6 @@ if (isset($_GET["type"]) && is_string($_GET["type"])) {
             $_SESSION["itemDetail"] = null;
             $_SESSION["events"] = $eventStore->findAll();
             $events = $_SESSION["events"];
-            $init = "true";
         }
 
         // converts objects to json array

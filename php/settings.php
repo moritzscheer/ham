@@ -94,6 +94,15 @@ switch ($page) {
     case "register":
         $url .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/register.css">';
         break;
+    case "nutzungsbedingungen":
+        $url .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/nutzungsbedingungen.css">';
+        break;
+    case "impressum":
+        $url .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/impressum.css">';
+        break;
+    case "datenschutz":
+        $url .= '<link rel="stylesheet" type="text/css" media="screen" href="../resources/css/datenschutz.css">';
+        break;
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -117,7 +126,6 @@ function initDatabase() : void {
          */
         $flickrApi = new Flickr("3b8e15fa98c7850431166704a6ed5be0");
         $geoLocApi = new AddressValidator("3e6cf917f419488cbeec8ac503210f17");
-
         /**
          * database
          */
@@ -128,6 +136,8 @@ function initDatabase() : void {
 
         insertDummies();
 
+        // um den FileStore zu Testen die Exception auskommentieren.
+        throw new Exception();
     } catch (Exception) {
         $db = NULL;
 
@@ -159,6 +169,7 @@ function closeConnection(): void {
  * www.facebook.com/snarkypuppy/photos
  * www.facebook.com/Evanescence/photos
  * www.facebook.com/Gogopenguin/photos
+ * www.facebook.com/photo.php
  */
 function insertDummies() : void {
     global $userStore, $eventStore, $blobObj;
@@ -178,7 +189,7 @@ function insertDummies() : void {
             $blobObj->create($image["assigned_ID"], $image["category"], $image["path"], $image["mime"]);
         }
 
-    } catch (Exception $e) {
+    } catch (Exception) {
     }
 }
 

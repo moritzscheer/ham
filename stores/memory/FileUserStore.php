@@ -134,11 +134,28 @@ class FileUserStore implements UserStore
     }
 
     /**
+     * @param $user_ID
+     * @return User|null
+     */
+    public function findOne($user_ID): ?User
+    {
+        $this->reloadItemsFromJsonFile();
+
+        foreach ($this->itemsOfJsonFile as $user) {
+            if ($user->user_ID === $user_ID) {
+                $address = $this->addressStore->findOne($user->address_ID);
+                return User::stdClassToUser($user, $address);
+            }
+        }
+        return null;
+    }
+
+    /**
      * @param $count
      * @param $address_ID
-     * @return mixed
+     * @return int|mixed
      */
-    public function findOne($count, $address_ID): int
+    public function getOne($count, $address_ID): mixed
     {
         $this->reloadItemsFromJsonFile();
 
