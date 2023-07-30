@@ -1,5 +1,5 @@
 <?php
-    global $map_events, $map_loggedInUser, $initMap, $url;
+    global $map_events, $map_loggedInUser, $initMap, $url, $init;
     include "../php/settings.php";
     include "../php/controller/image_controller.php";
     include "../php/controller/user_controller.php";
@@ -24,5 +24,6 @@
         var events = <?php echo json_encode($map_events) ?>;
         var userAddress = <?php echo json_encode($map_loggedInUser) ?>;
         var radius = <?php echo $_SESSION["radius"] ?>;
+        var init = <?php echo $init ?>;
     </script>
 </head>
